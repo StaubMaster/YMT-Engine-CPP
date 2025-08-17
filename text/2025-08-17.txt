@@ -52,3 +52,19 @@ do PolyHedra for better bodys		done (somewhat)
 make Shader with Uniforms for less clutter
 
 
+
+almost a basic Engine that can be used for the Projects
+still needed:
+	improve Performance
+	rename things ?
+		YMT_ prefix ?
+	PolyHedra
+		Textures
+		Normals
+	Shader
+		Matrixes
+		Text ?
+		Instance
+		Light
+
+

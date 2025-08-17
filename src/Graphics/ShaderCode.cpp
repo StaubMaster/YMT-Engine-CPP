@@ -100,7 +100,7 @@ std::string FileReadAllText(const std::string & path)
 	return (text);
 }
 
-ShaderCode * ShaderCode::FromFile(const std::string & path)
+ShaderCode ShaderCode::FromFile(const std::string & path)
 {
 	GLenum type;
 	if (str_ends_with(path, ".glsg")) { throw EInvalidFileExtention(path); }
@@ -108,7 +108,7 @@ ShaderCode * ShaderCode::FromFile(const std::string & path)
 	else if (str_ends_with(path, ".geom")) { type = GL_GEOMETRY_SHADER; }
 	else if (str_ends_with(path, ".frag")) { type = GL_FRAGMENT_SHADER; }
 	else { throw EInvalidFileExtention(path); }
-	return new ShaderCode(type, FileReadAllText(path), path);
+	return ShaderCode(type, FileReadAllText(path), path);
 }
 
 ShaderCode::EInvalidFileExtention::EInvalidFileExtention(const std::string & path)

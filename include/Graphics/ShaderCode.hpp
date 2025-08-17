@@ -18,6 +18,9 @@ class ShaderCode
 	public:
 		~ShaderCode();
 
+		ShaderCode(const ShaderCode & other);
+		const ShaderCode & operator = (const ShaderCode & other);
+
 	public:
 		void Attach(int ProgramID) const;
 		void Detach(int ProgramID) const;
@@ -41,7 +44,7 @@ class ShaderCode
 
 
 	public:
-		static ShaderCode * FromFile(const std::string & path);
+		static ShaderCode FromFile(const std::string & path);
 
 	private:
 		class EInvalidFileExtention : std::exception

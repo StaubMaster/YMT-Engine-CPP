@@ -1,4 +1,3 @@
-
 #ifndef POS_COL_BUFFER
 # define POS_COL_BUFFER
 

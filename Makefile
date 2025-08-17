@@ -11,6 +11,7 @@ FILES_SRC = \
 	Window.cpp \
 	PolyHedra.cpp \
 	PolyHedraBuffer.cpp \
+	PolyHedraShader.cpp \
 \
 	Graphics/ShaderCode.cpp \
 	Graphics/BaseShader.cpp \

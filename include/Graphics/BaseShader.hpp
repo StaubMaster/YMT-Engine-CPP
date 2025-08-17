@@ -11,9 +11,9 @@ class BaseShader
 	private:
 		int ID;
 
+	protected:
+		BaseShader(const ShaderCode * code, int count);
 	public:
-	//protected:
-		BaseShader(const ShaderCode ** code, int count);
 		~BaseShader();
 
 	public:
@@ -27,7 +27,7 @@ class BaseShader
 		int UniformFind(const std::string & name) const;
 
 	private:
-		void Compile(const ShaderCode ** code, int count);
+		void Compile(const ShaderCode * code, int count);
 
 		class ECompileLog : std::exception
 		{

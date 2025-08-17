@@ -16,6 +16,7 @@
 
 #include "PolyHedra.hpp"
 #include "PolyHedraBuffer.hpp"
+#include "PolyHedraShader.hpp"
 
 
 
@@ -37,13 +38,8 @@ void MoveFlatX(Transformation3D & trans, Angle3D spin)
 
 Window * win;
 
-BaseShader * testShader;
-UniTransformation3D * UniTrans;
-UniTransformation3D * UniViewTrans;
-UniDepth * Depth;
-UniScale * WindowScale;
-
-PolyHedra * MainPoly;
+PolyHedraShader * PolyShader;
+PolyHedra * Poly0;
 
 
 
@@ -75,13 +71,13 @@ void Frame(double timeDelta)
 	int w, h;
 	glfwGetFramebufferSize(win -> win, &w, &h);
 
-	testShader -> Use();
-	WindowScale -> Value(w, h);
-	Depth -> Value(0.1f, 10.0f);
-	UniTrans -> Value(test_trans);
-	UniViewTrans -> Value(view_trans);
+	PolyShader -> Use();
+	PolyShader -> WindowScale.Value(w, h);
+	PolyShader -> Depth.Value(0.1f, 10.0f);
+	PolyShader -> UniTrans.Value(test_trans);
+	PolyShader -> UniViewTrans.Value(view_trans);
 
-	MainPoly -> Draw();
+	Poly0 -> Draw();
 }
 
 
@@ -117,33 +113,23 @@ int main(void)
 
 	try
 	{
-		const ShaderCode * test_code[2] = {
-			ShaderCode::FromFile("Shaders/test.vert"),
-			ShaderCode::FromFile("Shaders/test.frag"),
-		};
-		testShader = new BaseShader(test_code, 2);
-		delete test_code[0];
-		delete test_code[1];
+		PolyShader = new PolyHedraShader();
 	}
 	catch (std::exception & ex)
 	{
 		std::cout << "exception: " << ex.what() << "\n";
-		testShader = NULL;
+		PolyShader = NULL;
 	}
 	catch (...)
 	{
 		std::cout << "Unknown\n";
-		testShader = NULL;
+		PolyShader = NULL;
 	}
-	UniTrans = new UniTransformation3D(testShader, "trans");
-	UniViewTrans = new UniTransformation3D(testShader, "view");
-	Depth = new UniDepth(testShader, "depthFactor");
-	WindowScale = new UniScale(testShader, "contentScale");
 
 
 
-	MainPoly = PolyHedra::Cube();
-	MainPoly -> ToBuffer();
+	Poly0 = PolyHedra::Cube();
+	Poly0 -> ToBuffer();
 
 
 
@@ -165,14 +151,8 @@ int main(void)
 
 
 
-	delete testShader;
-	delete UniTrans;
-	delete UniViewTrans;
-	delete Depth;
-
-	delete WindowScale;
-
-	delete MainPoly;
+	delete Poly0;
+	delete PolyShader;
 
 	delete win;
 
