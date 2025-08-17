@@ -9,20 +9,26 @@ FLAGS = -Wall -Wextra -Werror
 FILES_SRC = \
 \
 	Window.cpp \
+	PolyHedra.cpp \
+	PolyHedraBuffer.cpp \
 \
 	Graphics/ShaderCode.cpp \
 	Graphics/BaseShader.cpp \
 	Graphics/BaseBuffer.cpp \
-	Graphics/PosColBuffer.cpp \
 \
 	Graphics/Uniform/UniBase.cpp \
 	Graphics/Uniform/Float/UniFloatN.cpp \
+	Graphics/Uniform/Float/UniFloat1.cpp \
+	Graphics/Uniform/Float/UniFloat2.cpp \
 	Graphics/Uniform/Float/UniFloat3.cpp \
 	Graphics/Uniform/Float/UniTransformation3D.cpp \
+	Graphics/Uniform/Float/UniDepth.cpp \
+	Graphics/Uniform/Float/UniScale.cpp \
 \
 	Abstract3D/Point3D.cpp \
 	Abstract3D/Angle3D.cpp \
 	Abstract3D/Transformation3D.cpp \
+	Abstract3D/Undex3D.cpp \
 \
 	Abstract2D/Point2D.cpp \
 \

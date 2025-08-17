@@ -7,8 +7,9 @@ class UniFloatN : public UniBase
 {
 	protected:
 		int Count;
+	private:
 		int Size;
-		const float * UpdateData;
+		float * UpdateData;
 
 	protected:
 		UniFloatN(const BaseShader * program, const std::string & name, int count, int len);
@@ -16,6 +17,8 @@ class UniFloatN : public UniBase
 
 	public:
 		void Update();
+	protected:
+		void StoreData(const float * data);
 
 	public:
 		virtual void Set(const float * data) = 0;

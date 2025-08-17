@@ -22,7 +22,7 @@ void BaseShader::Use()
 }
 bool BaseShader::Is() const
 {
-	return false;
+	return true;
 }
 
 

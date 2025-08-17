@@ -4,8 +4,10 @@
 
 Window::Window(float w, float h, void (*init)(), void (*frame)(double), void (*free)())
 {
-	glfwWindowHint(GLFW_CONTEXT_VERSION_MAJOR, 3);
-	glfwWindowHint(GLFW_CONTEXT_VERSION_MINOR, 3);
+	//glfwWindowHint(GLFW_CONTEXT_VERSION_MAJOR, 3);
+	//glfwWindowHint(GLFW_CONTEXT_VERSION_MINOR, 3);
+	glfwWindowHint(GLFW_CONTEXT_VERSION_MAJOR, 4);
+	glfwWindowHint(GLFW_CONTEXT_VERSION_MINOR, 1);
 	glfwWindowHint(GLFW_MAXIMIZED, GLFW_FALSE);
 	glfwWindowHint(GLFW_DECORATED, GLFW_TRUE);
 	glfwWindowHint(GLFW_VISIBLE, GLFW_TRUE);
@@ -111,13 +113,23 @@ void Window::Run()
 {
 	if (InitFunc != NULL) { InitFunc(); }
 
+	glEnable(GL_CULL_FACE);
+	glCullFace(GL_BACK);
+	glFrontFace(GL_CW);
+
+	glEnable(GL_DEPTH_TEST);
+	glDepthMask(GL_TRUE);
+	glDepthFunc(GL_LESS);
+
 	while (!glfwWindowShouldClose(win))
 	{
 		double FrameTimeCurr = glfwGetTime();
 		FrameTimeDelta = FrameTimeCurr - FrameTimeLast;
 		if (FrameTimeDelta >= (1.0f / 64.0f))
 		{
-			//std::cout << "FPS: " << (1 / FrameTimeDelta) << "\n";
+			glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT);
+			glClearColor(0.5f, 0.5f, 0.5f, 1.0f);
+
 			FrameFunc(FrameTimeDelta);
 			FrameTimeLast = FrameTimeCurr;
 

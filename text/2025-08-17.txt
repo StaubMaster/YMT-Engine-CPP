@@ -18,12 +18,12 @@ but it still consumes a lot
 
 stuff I still need to do
 	finish Abstract3D
-	Uniforms
+	Uniforms			partial
 	finish PolyHedra
 	Textures
 	finish Shaders
-	ScaleRatio
-	DepthRatio
+	ScaleRatio			done
+	DepthRatio			done
 
 
 
@@ -43,5 +43,12 @@ should all shaders start or end with Shader ?
 
 also should I put them into a directory called Shader ?
 do I need to do both ?
+
+
+
+do ScaleRatio for better visuals ?	done
+do PolyHedra for better bodys		done (somewhat)
+
+make Shader with Uniforms for less clutter
 
 

@@ -9,7 +9,10 @@ UniFloatN::UniFloatN(const BaseShader * program, const std::string & name, int c
 }
 UniFloatN::~UniFloatN()
 {
-	
+	if (UpdateData != NULL)
+	{
+		delete [] UpdateData;
+	}
 }
 
 
@@ -18,8 +21,24 @@ void UniFloatN::Update()
 {
 	if (UpdateData != NULL)
 	{
-		const float * data = UpdateData;
-		UpdateData = NULL;
-		Set(data);
+		if (Program -> Is())
+		{
+			Set(UpdateData);
+			delete [] UpdateData;
+			UpdateData = NULL;
+		}
+	}
+}
+void UniFloatN::StoreData(const float * data)
+{
+	if (UpdateData != NULL)
+	{
+		delete [] UpdateData;
+	}
+
+	UpdateData = new float[Size];
+	for (int i = 0; i < Size; i++)
+	{
+		UpdateData[i] = data[i];
 	}
 }

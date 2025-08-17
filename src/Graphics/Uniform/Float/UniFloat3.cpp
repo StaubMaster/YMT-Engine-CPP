@@ -14,13 +14,12 @@ UniFloat3::~UniFloat3()
 
 void UniFloat3::Set(const float * data)
 {
-	//if (Program -> Is())
-	if (true)
+	if (Program -> Is())
 	{
 		glUniform3fv(Location, Count, data);
 	}
 	else
 	{
-		UpdateData = data;
+		StoreData(data);
 	}
 }

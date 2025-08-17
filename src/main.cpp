@@ -2,8 +2,9 @@
 #include "../OpenGL/openGL.h"
 
 #include "Graphics/BaseShader.hpp"
-#include "Graphics/PosColBuffer.hpp"
 #include "Graphics/Uniform/Float/UniTransformation3D.hpp"
+#include "Graphics/Uniform/Float/UniDepth.hpp"
+#include "Graphics/Uniform/Float/UniScale.hpp"
 
 #include "Abstract3D/Point3D.hpp"
 #include "Abstract3D/Angle3D.hpp"
@@ -11,8 +12,10 @@
 
 #include "Abstract2D/Point2D.hpp"
 
-#include "PolyHedra.hpp"
 #include "Window.hpp"
+
+#include "PolyHedra.hpp"
+#include "PolyHedraBuffer.hpp"
 
 
 
@@ -37,8 +40,10 @@ Window * win;
 BaseShader * testShader;
 UniTransformation3D * UniTrans;
 UniTransformation3D * UniViewTrans;
+UniDepth * Depth;
+UniScale * WindowScale;
 
-PosColBuffer * testBuffer;
+PolyHedra * MainPoly;
 
 
 
@@ -61,19 +66,22 @@ void Free()
 
 void Frame(double timeDelta)
 {
-	MoveFlatX(view_trans, win -> MoveFromKeys(1.0f * timeDelta));
+	MoveFlatX(view_trans, win -> MoveFromKeys(2.0f * timeDelta));
 	MoveFlatX(view_trans, win -> SpinFromCursor(0.2f * timeDelta));
 
-	//test_trans.Rot.x += 1.0f * timeDelta;
-	//test_trans.Rot.UpdateSinCos();
+	test_trans.Rot.x += 1.0f * timeDelta;
+	test_trans.Rot.UpdateSinCos();
 
-	glClear(GL_COLOR_BUFFER_BIT);
+	int w, h;
+	glfwGetFramebufferSize(win -> win, &w, &h);
 
 	testShader -> Use();
+	WindowScale -> Value(w, h);
+	Depth -> Value(0.1f, 10.0f);
 	UniTrans -> Value(test_trans);
 	UniViewTrans -> Value(view_trans);
 
-	testBuffer -> Draw();
+	MainPoly -> Draw();
 }
 
 
@@ -129,38 +137,13 @@ int main(void)
 	}
 	UniTrans = new UniTransformation3D(testShader, "trans");
 	UniViewTrans = new UniTransformation3D(testShader, "view");
+	Depth = new UniDepth(testShader, "depthFactor");
+	WindowScale = new UniScale(testShader, "contentScale");
 
 
 
-	testBuffer = new PosColBuffer();
-	{
-		float test_data[] {
-			-1, -1, -1,		0.0f, 0.0f, 0.0f,
-			+1, -1, -1,		1.0f, 0.0f, 0.0f,
-			-1, +1, -1,		0.0f, 1.0f, 0.0f,
-
-			-1, -1, -1,		0.0f, 0.0f, 0.0f,
-			-1, +1, -1,		0.0f, 1.0f, 0.0f,
-			-1, -1, +1,		0.0f, 0.0f, 1.0f,
-
-			-1, -1, -1,		0.0f, 0.0f, 0.0f,
-			-1, -1, +1,		0.0f, 0.0f, 1.0f,
-			+1, -1, -1,		1.0f, 0.0f, 0.0f,
-
-			-1, +1, +1,		0.0f, 1.0f, 1.0f,
-			+1, -1, +1,		1.0f, 0.0f, 1.0f,
-			+1, +1, +1,		1.0f, 1.0f, 1.0f,
-
-			+1, -1, +1,		1.0f, 0.0f, 1.0f,
-			+1, +1, -1,		1.0f, 1.0f, 0.0f,
-			+1, +1, +1,		1.0f, 1.0f, 1.0f,
-
-			+1, +1, -1,		1.0f, 1.0f, 0.0f,
-			-1, +1, +1,		0.0f, 1.0f, 1.0f,
-			+1, +1, +1,		1.0f, 1.0f, 1.0f,
-		};
-		testBuffer -> Data(18, test_data);
-	}
+	MainPoly = PolyHedra::Cube();
+	MainPoly -> ToBuffer();
 
 
 
@@ -185,8 +168,11 @@ int main(void)
 	delete testShader;
 	delete UniTrans;
 	delete UniViewTrans;
+	delete Depth;
 
-	delete testBuffer;
+	delete WindowScale;
+
+	delete MainPoly;
 
 	delete win;
 

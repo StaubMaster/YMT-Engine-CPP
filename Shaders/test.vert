@@ -1,10 +1,12 @@
 #version 430
 
-
-
 uniform vec3[3] view = { vec3(0, 0, 0), vec3(0, 0, 0), vec3(1, 1, 1) };
 
+uniform float[7] depthFactor;
+
 uniform vec3[3] trans = { vec3(0, 0, 0), vec3(0, 0, 0), vec3(1, 1, 1) };
+
+uniform vec2[2] contentScale;
 
 
 
@@ -49,12 +51,11 @@ vec4 proj(in vec3 p_inn)
 
 	p_out.x = p_inn.x;
 	p_out.y = p_inn.y;
-	//p_out.z = p_inn.z * depthFactor[5] - depthFactor[6];
-	p_out.z = 0;
+	p_out.z = p_inn.z * depthFactor[5] - depthFactor[6];
 	p_out.w = p_inn.z;
 
-	//p_out.x = p_out.x * screenRatios[1].x;
-	//p_out.y = p_out.y * screenRatios[1].y;
+	p_out.x = p_out.x * contentScale[1].x;
+	p_out.y = p_out.y * contentScale[1].y;
 
 	return p_out;
 }
