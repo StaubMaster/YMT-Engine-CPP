@@ -1,49 +1,111 @@
 #include <iostream>
 #include "../OpenGL/openGL.h"
 
-#include "../include/Graphics/BaseShader.hpp"
-#include "../include/Graphics/PosColBuffer.hpp"
+#include "Graphics/BaseShader.hpp"
+#include "Graphics/PosColBuffer.hpp"
+#include "Graphics/Uniform/Float/UniTransformation3D.hpp"
 
-#include "../include/Abstract3D/Point3D.hpp"
-#include "../include/Abstract3D/Angle3D.hpp"
+#include "Abstract3D/Point3D.hpp"
+#include "Abstract3D/Angle3D.hpp"
+#include "Abstract3D/Transformation3D.hpp"
 
-#include "../include/Abstract2D/Point2D.hpp"
-#include "../include/PolyHedra.hpp"
+#include "Abstract2D/Point2D.hpp"
+
+#include "PolyHedra.hpp"
+#include "Window.hpp"
+
+
+
+void MoveFlatX(Transformation3D & trans, Point3D move)
+{
+	//trans.Pos = trans.Pos + trans.Rot.rotate_back(move);
+	trans.Pos = trans.Pos + (Angle3D(trans.Rot.x, 0, 0).rotate_back(move));
+}
+void MoveFlatX(Transformation3D & trans, Angle3D spin)
+{
+	//trans.Rot = trans.Rot.rotate_fore(spin);
+	trans.Rot.x = trans.Rot.x + spin.x;
+	trans.Rot.y = trans.Rot.y + spin.y;
+	trans.Rot.z = 0;
+	trans.Rot.UpdateSinCos();
+}
+
+
+
+Window * win;
+
+BaseShader * testShader;
+UniTransformation3D * UniTrans;
+UniTransformation3D * UniViewTrans;
+
+PosColBuffer * testBuffer;
+
+
+
+Transformation3D test_trans;
+Transformation3D view_trans;
+
+
+
+void Init()
+{
+	std::cout << "Init 0\n";
+	std::cout << "Init 1\n";
+}
+
+void Free()
+{
+	std::cout << "Free 0\n";
+	std::cout << "Free 1\n";
+}
+
+void Frame(double timeDelta)
+{
+	MoveFlatX(view_trans, win -> MoveFromKeys(1.0f * timeDelta));
+	MoveFlatX(view_trans, win -> SpinFromCursor(0.2f * timeDelta));
+
+	//test_trans.Rot.x += 1.0f * timeDelta;
+	//test_trans.Rot.UpdateSinCos();
+
+	glClear(GL_COLOR_BUFFER_BIT);
+
+	testShader -> Use();
+	UniTrans -> Value(test_trans);
+	UniViewTrans -> Value(view_trans);
+
+	testBuffer -> Draw();
+}
+
+
 
 int main(void)
 {
-	GLFWwindow* window;
-
 	if (glfwInit() == 0)
 	{
+		std::cout << "Init Failed\n";
 		return -1;
 	}
 
-	glfwWindowHint(GLFW_CONTEXT_VERSION_MAJOR, 3);
-	glfwWindowHint(GLFW_CONTEXT_VERSION_MINOR, 3);
-	glfwWindowHint(GLFW_MAXIMIZED, GLFW_FALSE);
-	glfwWindowHint(GLFW_DECORATED, GLFW_TRUE);
-	glfwWindowHint(GLFW_VISIBLE, GLFW_TRUE);
-	glfwWindowHint(GLFW_OPENGL_PROFILE, GLFW_OPENGL_CORE_PROFILE);
-	glfwWindowHint(GLFW_OPENGL_FORWARD_COMPAT, GLFW_TRUE);
-	glfwWindowHint(GLFW_RESIZABLE, GLFW_FALSE);
 
-	window = glfwCreateWindow(640, 480, "Hello World", NULL, NULL);
-	if (window == NULL)
+
+	try
 	{
+		win = new Window(640, 480, Init, Frame, Free);
+	}
+	catch (const char * err)
+	{
+		std::cerr << "String Error: "<< err << "\n";
+		glfwTerminate();
+		return -1;
+	}
+	catch (...)
+	{
+		std::cerr << "Unknown Error" << "\n";
 		glfwTerminate();
 		return -1;
 	}
 
-	glfwMakeContextCurrent(window);
 
-	if(!gladLoadGLLoader((GLADloadproc)glfwGetProcAddress))
-	{
-		glfwTerminate();
-		return -1;
-	}
-
-	BaseShader * testShader;
 
 	try
 	{
@@ -65,75 +127,70 @@ int main(void)
 		std::cout << "Unknown\n";
 		testShader = NULL;
 	}
+	UniTrans = new UniTransformation3D(testShader, "trans");
+	UniViewTrans = new UniTransformation3D(testShader, "view");
 
-	unsigned int UniTrans = testShader -> UniformFind("trans");
 
-	PosColBuffer * testBuffer = new PosColBuffer();
 
+	testBuffer = new PosColBuffer();
 	{
 		float test_data[] {
-			-1, -1, -1,		0.0f, 0.0f,
-			+1, -1, -1,		1.0f, 0.0f,
-			-1, +1, -1,		0.0f, 1.0f,
+			-1, -1, -1,		0.0f, 0.0f, 0.0f,
+			+1, -1, -1,		1.0f, 0.0f, 0.0f,
+			-1, +1, -1,		0.0f, 1.0f, 0.0f,
 
-			-1, -1, -1,		0.0f, 0.0f,
-			-1, +1, -1,		1.0f, 0.0f,
-			-1, -1, +1,		0.0f, 1.0f,
+			-1, -1, -1,		0.0f, 0.0f, 0.0f,
+			-1, +1, -1,		0.0f, 1.0f, 0.0f,
+			-1, -1, +1,		0.0f, 0.0f, 1.0f,
 
-			-1, -1, -1,		0.0f, 0.0f,
-			-1, -1, +1,		1.0f, 0.0f,
-			+1, -1, -1,		0.0f, 1.0f,
+			-1, -1, -1,		0.0f, 0.0f, 0.0f,
+			-1, -1, +1,		0.0f, 0.0f, 1.0f,
+			+1, -1, -1,		1.0f, 0.0f, 0.0f,
 
-			+1, +1, +1,		1.0f, 1.0f,
-			-1, +1, +1,		1.0f, 0.0f,
-			+1, -1, +1,		0.0f, 1.0f,
+			-1, +1, +1,		0.0f, 1.0f, 1.0f,
+			+1, -1, +1,		1.0f, 0.0f, 1.0f,
+			+1, +1, +1,		1.0f, 1.0f, 1.0f,
 
-			+1, +1, +1,		1.0f, 1.0f,
-			+1, -1, +1,		1.0f, 0.0f,
-			+1, +1, -1,		0.0f, 1.0f,
+			+1, -1, +1,		1.0f, 0.0f, 1.0f,
+			+1, +1, -1,		1.0f, 1.0f, 0.0f,
+			+1, +1, +1,		1.0f, 1.0f, 1.0f,
 
-			+1, +1, +1,		1.0f, 1.0f,
-			+1, +1, -1,		1.0f, 0.0f,
-			-1, +1, +1,		0.0f, 1.0f,
+			+1, +1, -1,		1.0f, 1.0f, 0.0f,
+			-1, +1, +1,		0.0f, 1.0f, 1.0f,
+			+1, +1, +1,		1.0f, 1.0f, 1.0f,
 		};
 		testBuffer -> Data(18, test_data);
 	}
 
-	Point3D test_Pos = Point3D(0, 0, 3);
-	Angle3D test_Rot = Angle3D(0, 0, 0);
 
-	double	FrameTimeLast = glfwGetTime();
-	double	FrameTimeCurr;
-	double	FrameTimeDelta;
 
-	while (!glfwWindowShouldClose(window))
-	{
-		FrameTimeCurr = glfwGetTime();
-		FrameTimeDelta = FrameTimeCurr - FrameTimeLast;
-		FrameTimeLast = FrameTimeCurr;
+	test_trans = Transformation3D(
+		Point3D(0, 0, 0),
+		Angle3D(0, 0, 0)
+	);
 
-		test_Rot.x += 1.0f * FrameTimeDelta;
-		test_Rot.UpdateSinCos();
+	view_trans = Transformation3D(
+		Point3D(0, 0, 0),
+		Angle3D(0, 0, 0)
+	);
 
-		glClear(GL_COLOR_BUFFER_BIT);
 
-		testShader -> Use();
-		float trans[9] = {
-			test_Pos.X, test_Pos.Y, test_Pos.Z,
-			test_Rot.sin_x, test_Rot.sin_y, test_Rot.sin_z,
-			test_Rot.cos_x, test_Rot.cos_y, test_Rot.cos_z,
-		};
-		glUniform3fv(UniTrans, 9, trans);
 
-		testBuffer -> Draw();
+	std::cout << "++++ Run\n";
+	win -> Run();
+	std::cout << "---- Run\n";
 
-		glfwSwapBuffers(window);
-		glfwPollEvents();
-	}
+
+
+	delete testShader;
+	delete UniTrans;
+	delete UniViewTrans;
 
 	delete testBuffer;
 
-	delete testShader;
+	delete win;
+
+
 
 	glfwTerminate();
 	return 0;

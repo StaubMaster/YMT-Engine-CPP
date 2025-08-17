@@ -1,4 +1,4 @@
-#include "../../include/Graphics/BaseShader.hpp"
+#include "Graphics/BaseShader.hpp"
 
 
 
@@ -20,14 +20,14 @@ void BaseShader::Use()
 {
 	glUseProgram(ID);
 }
-bool BaseShader::Is()
+bool BaseShader::Is() const
 {
 	return false;
 }
 
 
 
-int BaseShader::UniformFind(const std::string & name)
+int BaseShader::UniformFind(const std::string & name) const
 {
 	int location = glGetUniformLocation(ID, name.c_str());
 	if (location == -1)

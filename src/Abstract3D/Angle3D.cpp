@@ -1,4 +1,4 @@
-#include "../../include/Abstract3D/Angle3D.hpp"
+#include "Abstract3D/Angle3D.hpp"
 
 Angle3D::Angle3D() : x(0), y(0), z(0)
 {

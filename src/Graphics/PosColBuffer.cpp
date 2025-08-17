@@ -1,4 +1,4 @@
-#include "../../include/Graphics/PosColBuffer.hpp"
+#include "Graphics/PosColBuffer.hpp"
 
 
 
@@ -19,7 +19,7 @@ void PosColBuffer::Data(int count, const void * data)
 {
 	Use();
 
-	int size = sizeof(float) * 5;
+	int size = sizeof(float) * 6;
 
 	glBindBuffer(GL_ARRAY_BUFFER, *MainID);
 	glBufferData(GL_ARRAY_BUFFER, size * count, data, GL_STATIC_DRAW);
@@ -28,7 +28,7 @@ void PosColBuffer::Data(int count, const void * data)
 	glVertexAttribPointer(0, 3, GL_FLOAT, false, size, (void *)(sizeof(float) * 0));
 
 	glEnableVertexAttribArray(1);
-	glVertexAttribPointer(1, 2, GL_FLOAT, false, size, (void *)(sizeof(float) * 3));
+	glVertexAttribPointer(1, 3, GL_FLOAT, false, size, (void *)(sizeof(float) * 3));
 
 	Count = count;
 }

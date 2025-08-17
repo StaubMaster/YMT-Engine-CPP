@@ -18,13 +18,13 @@ class BaseShader
 
 	public:
 		void Use();
-		bool Is();
+		bool Is() const;
 
 	protected:
 		//virtual void UpdateUniform();
 
 	public:
-		int UniformFind(const std::string & name);
+		int UniformFind(const std::string & name) const;
 
 	private:
 		void Compile(const ShaderCode ** code, int count);

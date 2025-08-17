@@ -9,7 +9,7 @@ uniform vec3[3] trans = { vec3(0, 0, 0), vec3(0, 0, 0), vec3(1, 1, 1) };
 
 
 layout(location = 0) in vec3 VPos;
-layout(location = 1) in vec2 VTex;
+layout(location = 1) in vec3 VCol;
 
 out ColorBlock {
 	vec3 Color;
@@ -61,10 +61,10 @@ vec4 proj(in vec3 p_inn)
 
 void main()
 {
-	vs_out.Color = vec3(VTex.x, (VTex.x + VTex.y) * 0.5, VTex.y);
+	vs_out.Color = VCol;
 
 	vec3 pos = VPos;
 	pos = DSA(pos, trans[1], trans[2]) + trans[0];
-	//pos = ASD(pos - view[0], view[1], view[2]);
+	pos = ASD(pos - view[0], view[1], view[2]);
 	gl_Position = proj(pos);
 }

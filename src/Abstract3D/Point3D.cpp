@@ -1,4 +1,4 @@
-#include "../../include/Abstract3D/Point3D.hpp"
+#include "Abstract3D/Point3D.hpp"
 
 Point3D::Point3D()
 {

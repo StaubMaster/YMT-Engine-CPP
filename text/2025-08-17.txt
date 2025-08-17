@@ -1,0 +1,47 @@
+
+its hard for me to Implement stuff because I dont know where to start
+some things are weird to port from C# to C++
+and I dont want to make things worse
+
+also some stuff already exists for the most part
+like mouse centering
+or at atleast locking
+it allows the mose to move infinitly
+but I still need to center it ?
+
+also it consumes a lot of CPU
+it was running with unlimited speed
+to I made it run at 64Hz
+but it still consumes a lot
+
+
+
+stuff I still need to do
+	finish Abstract3D
+	Uniforms
+	finish PolyHedra
+	Textures
+	finish Shaders
+	ScaleRatio
+	DepthRatio
+
+
+
+Implement something
+then Clean Up
+
+so right now Uniforms are bad
+so clean those up first ?
+
+
+
+Uniform Base up to Trans3D done
+should I rename Transformation3D to Trans3D ?
+
+how should I name things ?
+should all shaders start or end with Shader ?
+
+also should I put them into a directory called Shader ?
+do I need to do both ?
+
+

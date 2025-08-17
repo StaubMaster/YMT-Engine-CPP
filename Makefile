@@ -8,13 +8,21 @@ FLAGS = -Wall -Wextra -Werror
 
 FILES_SRC = \
 \
+	Window.cpp \
+\
 	Graphics/ShaderCode.cpp \
 	Graphics/BaseShader.cpp \
 	Graphics/BaseBuffer.cpp \
 	Graphics/PosColBuffer.cpp \
 \
+	Graphics/Uniform/UniBase.cpp \
+	Graphics/Uniform/Float/UniFloatN.cpp \
+	Graphics/Uniform/Float/UniFloat3.cpp \
+	Graphics/Uniform/Float/UniTransformation3D.cpp \
+\
 	Abstract3D/Point3D.cpp \
 	Abstract3D/Angle3D.cpp \
+	Abstract3D/Transformation3D.cpp \
 \
 	Abstract2D/Point2D.cpp \
 \
@@ -36,19 +44,19 @@ $(NAME): $(addprefix $(DIR_OBJ), $(FILES_OBJ)) $(ARC_OPENGL)
 	$(COMPILER) $(FLAGS) -o $(NAME) $(addprefix $(DIR_OBJ), $(FILES_OBJ)) $(ARC_OPENGL) E:/Utility/glfw-3.4.bin.WIN64/lib-mingw-w64/libglfw3.a -lgdi32
 
 all:
-	$(MAKE) $(addprefix $(DIR_OBJ), $(FILES_OBJ))
-	$(MAKE) $(NAME)
+	@$(MAKE) $(addprefix $(DIR_OBJ), $(FILES_OBJ))
+	@$(MAKE) $(NAME)
 
 clean:
 	rm -f $(addprefix $(DIR_OBJ), $(FILES_OBJ))
 
 fclean:
-	$(MAKE) clean
+	@$(MAKE) clean
 	rm -f $(NAME)
 
 re:
-	$(MAKE) fclean
-	$(MAKE) all
+	@$(MAKE) fclean
+	@$(MAKE) all
 
 .PHONY: all clean fclean re
 
@@ -56,6 +64,6 @@ re:
 
 $(DIR_OBJ)%.o : $(DIR_SRC)%.cpp
 	@mkdir -p $(dir $@)
-	$(COMPILER) $(FLAGS) -c $^ -o $@
+	$(COMPILER) $(FLAGS) -I include -c $^ -o $@
 
 

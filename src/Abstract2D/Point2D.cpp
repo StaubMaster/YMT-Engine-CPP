@@ -1,4 +1,4 @@
-#include "../../include/Abstract2D/Point2D.hpp"
+#include "Abstract2D/Point2D.hpp"
 
 Point2D::Point2D()
 {
