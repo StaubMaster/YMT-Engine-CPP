@@ -1,5 +1,5 @@
 
-NAME = main.exe
+NAME = test.exe
 COMPILER = c++
 
 FLAGS = -Wall -Wextra -Werror
@@ -22,17 +22,20 @@ ARC = $(addprefix $(ARC_DIR), $(ARC_NAME))
 
 
 
-$(NAME): $(ARC)
-	$(COMPILER) $(FLAGS) -o $(NAME) $(ARC) -lgdi32
+$(NAME): $(ARC) $(FILES_OBJ)
+	$(COMPILER) $(FLAGS) -o $(NAME) $(FILES_OBJ) $(ARC) -lgdi32
 
 all:
-	@$(MAKE) $(addprefix $(DIR_OBJ), $(FILES_OBJ))
+	$(MAKE) -C $(ARC_DIR) all
+	@$(MAKE) $(FILES_OBJ)
 	@$(MAKE) $(NAME)
 
 clean:
-	rm -f $(addprefix $(DIR_OBJ), $(FILES_OBJ))
+	$(MAKE) -C $(ARC_DIR) fclean
+	rm -f $(FILES_OBJ)
 
 fclean:
+	$(MAKE) -C $(ARC_DIR) clean
 	@$(MAKE) clean
 	rm -f $(NAME)
 
@@ -45,7 +48,7 @@ re:
 
 
 %.o : %.cpp
-	$(COMPILER) $(FLAGS) -c $^ -o $@
+	$(COMPILER) $(FLAGS) -I ../include -c $^ -o $@
 
 $(ARC) :
 	@$(MAKE) -C $(ARC_DIR) all
