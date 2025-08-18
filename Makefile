@@ -1,5 +1,6 @@
 
-NAME = a.exe
+#NAME = a.exe
+NAME = YMT.a
 COMPILER = c++
 
 FLAGS = -Wall -Wextra -Werror
@@ -40,22 +41,33 @@ FILES_OBJ = $(FILES_SRC:.cpp=.o)
 DIR_SRC = src/
 DIR_OBJ = obj/
 
-
-
-ARC_OPENGL_PATH = ./OpenGL
-ARC_OPENGL = $(ARC_OPENGL_PATH)/openGL.a
+FILES_ABS_OBJ = $(addprefix $(DIR_OBJ), $(FILES_OBJ))
 
 
 
-$(NAME): $(addprefix $(DIR_OBJ), $(FILES_OBJ)) $(ARC_OPENGL)
-	$(COMPILER) $(FLAGS) -o $(NAME) $(addprefix $(DIR_OBJ), $(FILES_OBJ)) $(ARC_OPENGL) E:/Utility/glfw-3.4.bin.WIN64/lib-mingw-w64/libglfw3.a -lgdi32
+ARC_OPENGL_PATH = OpenGL/
+ARC_OPENGL = $(ARC_OPENGL_PATH)openGL.a
+
+
+
+ARC_X_DIR = obj/arc/
+
+
+
+$(NAME) : $(FILES_ABS_OBJ) $(ARC_OPENGL)
+	@mkdir -p $(ARC_X_DIR)
+	cd $(ARC_X_DIR) && ar -x ../../$(ARC_OPENGL)
+	cd $(ARC_X_DIR) && ar -x E:/Utility/glfw-3.4.bin.WIN64/lib-mingw-w64/libglfw3.a
+	ar -rcs $(NAME) $(FILES_ABS_OBJ) $(ARC_X_DIR)* -lgdi32
+#	$(COMPILER) $(FLAGS) -o $(NAME) $(addprefix $(DIR_OBJ), $(FILES_OBJ)) $(ARC_OPENGL) E:/Utility/glfw-3.4.bin.WIN64/lib-mingw-w64/libglfw3.a -lgdi32
 
 all:
-	@$(MAKE) $(addprefix $(DIR_OBJ), $(FILES_OBJ))
+	@$(MAKE) $(FILES_ABS_OBJ)
 	@$(MAKE) $(NAME)
 
 clean:
-	rm -f $(addprefix $(DIR_OBJ), $(FILES_OBJ))
+	rm -f $(FILES_ABS_OBJ)
+	rm -f $(ARC_X_DIR)*
 
 fclean:
 	@$(MAKE) clean

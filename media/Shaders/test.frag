@@ -4,6 +4,8 @@ uniform float[7]	depthFactor;
 const float[3]	depthFadeRange = { 0.8, 0.2, 1.0 };
 const vec3		depthFadeColor = vec3(0.5, 0.5, 0.5);
 
+uniform sampler2DArray texture0;
+
 
 
 in ColorBlock {
@@ -28,7 +30,11 @@ void main()
 
 
 
-	vec3 col = fs_inn.Color;
+	vec3 tex_pos = vec3(fs_inn.Color.xy, 0.0);
+	vec4 tex_col = texture(texture0, tex_pos);
+
+	//vec3 col = fs_inn.Color;
+	vec3 col = tex_col.rgb;
 
 	//	depth
 	col = (col * (1.0 - depth_factor)) + (depth_factor * depthFadeColor);

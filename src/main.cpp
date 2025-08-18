@@ -41,6 +41,8 @@ Window * win;
 PolyHedraShader * PolyShader;
 PolyHedra * Poly0;
 
+unsigned int tex_arr;
+
 
 
 Transformation3D test_trans;
@@ -65,8 +67,8 @@ void Frame(double timeDelta)
 	MoveFlatX(view_trans, win -> MoveFromKeys(2.0f * timeDelta));
 	MoveFlatX(view_trans, win -> SpinFromCursor(0.2f * timeDelta));
 
-	test_trans.Rot.x += 1.0f * timeDelta;
-	test_trans.Rot.UpdateSinCos();
+	//test_trans.Rot.x += 1.0f * timeDelta;
+	//test_trans.Rot.UpdateSinCos();
 
 	int w, h;
 	glfwGetFramebufferSize(win -> win, &w, &h);
@@ -76,6 +78,9 @@ void Frame(double timeDelta)
 	PolyShader -> Depth.Value(0.1f, 10.0f);
 	PolyShader -> UniTrans.Value(test_trans);
 	PolyShader -> UniViewTrans.Value(view_trans);
+
+	glActiveTexture(GL_TEXTURE_2D_ARRAY);
+	glBindTexture(GL_TEXTURE_2D_ARRAY, tex_arr);
 
 	Poly0 -> Draw();
 }
@@ -95,6 +100,12 @@ int main(void)
 	try
 	{
 		win = new Window(640, 480, Init, Frame, Free);
+		PolyShader = new PolyHedraShader();
+	}
+	catch (std::exception & ex)
+	{
+		std::cout << "exception: " << ex.what() << "\n";
+		PolyShader = NULL;
 	}
 	catch (const char * err)
 	{
@@ -109,27 +120,39 @@ int main(void)
 		return -1;
 	}
 
-
-
-	try
-	{
-		PolyShader = new PolyHedraShader();
-	}
-	catch (std::exception & ex)
-	{
-		std::cout << "exception: " << ex.what() << "\n";
-		PolyShader = NULL;
-	}
-	catch (...)
-	{
-		std::cout << "Unknown\n";
-		PolyShader = NULL;
-	}
-
-
-
 	Poly0 = PolyHedra::Cube();
 	Poly0 -> ToBuffer();
+
+
+
+	{
+		glGenTextures(1, &tex_arr);
+		glBindTexture(GL_TEXTURE_2D_ARRAY, tex_arr);
+		
+		int tex_count = 1;
+		int tex_w = 6;
+		int tex_h = 6;
+
+		glTexImage3D(GL_TEXTURE_2D_ARRAY, 0, GL_RGBA8, tex_w, tex_h, tex_count, 0, GL_RGBA, GL_UNSIGNED_INT_8_8_8_8_REV, NULL);
+
+		int i = 0;
+		unsigned int data[6 * 6] = {
+			0xFF000000, 0xFF0000FF, 0xFF000000, 0xFF00FF00, 0xFF000000, 0xFFFF0000,
+			0xFF00FF00, 0xFF00FFFF, 0xFFFF0000, 0xFFFFFF00, 0xFF0000FF, 0xFFFF00FF,
+			0xFFFFFFFF, 0xFF000000, 0xFFFFFFFF, 0xFF000000, 0xFFFFFFFF, 0xFF000000,
+			0xFF000000, 0xFFFFFFFF, 0xFF000000, 0xFFFFFFFF, 0xFF000000, 0xFFFFFFFF,
+			0xFFFFFFFF, 0xFFFF00FF, 0xFFFFFFFF, 0xFF00FFFF, 0xFFFFFFFF, 0xFFFFFF00,
+			0xFFFFFF00, 0xFFFF0000, 0xFFFF00FF, 0xFF0000FF, 0xFF00FFFF, 0xFF00FF00,
+		};
+		glTexSubImage3D(GL_TEXTURE_2D_ARRAY, 0, 0, 0, i, tex_w, tex_h, 1, GL_RGBA, GL_UNSIGNED_INT_8_8_8_8_REV, data);
+
+		glTexParameteri(GL_TEXTURE_2D_ARRAY, GL_TEXTURE_WRAP_S, GL_REPEAT);
+		glTexParameteri(GL_TEXTURE_2D_ARRAY, GL_TEXTURE_WRAP_T, GL_REPEAT);
+		glTexParameteri(GL_TEXTURE_2D_ARRAY, GL_TEXTURE_MIN_FILTER, GL_NEAREST);
+		glTexParameteri(GL_TEXTURE_2D_ARRAY, GL_TEXTURE_MAG_FILTER, GL_NEAREST);
+
+		glGenerateMipmap(GL_TEXTURE_2D_ARRAY);
+	}
 
 
 
@@ -150,6 +173,8 @@ int main(void)
 	std::cout << "---- Run\n";
 
 
+
+	glDeleteTextures(1, &tex_arr);
 
 	delete Poly0;
 	delete PolyShader;

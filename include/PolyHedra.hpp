@@ -32,6 +32,14 @@ class PolyHedra
 			Point3D	Z;
 			//	3D for Color for Testing
 		};
+		struct TexUndex
+		{
+			unsigned int Udx;
+			Point2D Tex;
+
+			public:
+			TexUndex(unsigned int udx, float tex_x, float tex_y);
+		};
 
 	private:
 		EditableArray<Point3D>	Corners;
@@ -50,6 +58,8 @@ class PolyHedra
 
 	private:
 		void Edit_Face_Color(unsigned int idx0, unsigned int idx1, unsigned int idx2, unsigned int col);
+		void Edit_Face3(TexUndex corn0, TexUndex corn1, TexUndex corn2);
+		void Edit_Face4(TexUndex corn0, TexUndex corn1, TexUndex corn2, TexUndex corn3);
 		void Edit_Trim();
 
 	public:

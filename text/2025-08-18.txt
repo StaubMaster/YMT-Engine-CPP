@@ -1,0 +1,54 @@
+
+still needed:
+	improve Performance
+	rename things ?
+		YMT_ prefix ?
+		namespace ?
+			ymt or YMT
+			having it be lower case is Standard but do I cate ?
+	PolyHedra
+		Textures
+		Normals
+	Shader
+		Matrixes
+		Text ?
+		Instance
+		Light
+
+
+
+Texture
+	simple implementation works
+	how should this be handled ?
+	how should it work with PolyHedra ?
+	if a PolyHedra wants a Texture,
+		check if that texture is alrady loaded ?
+		have a texture for a simple Color Pallet ?
+	use string name ?
+	or SHA256 of Image data ?
+
+
+
+the ol' PNG Loader has some stuff that might me useful in general ?
+stuff that might be helpful
+	FileReader
+		SaveText
+		LoadText
+			I redo reading the whole file into a string every time
+			because C++ cant do that by iteslf ?
+	uint
+		uint8
+		uint16
+		uint32
+		uint64
+		so I dont have to do "unsigned int" every time
+	DataStream
+		rename to ByteStream
+		reads from data, one Byte at a time
+		kind of like TextLoop ?
+		maybe change so it can read larger values ?
+		not sure if its even used
+
+
+
+
