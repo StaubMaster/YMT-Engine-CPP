@@ -48,7 +48,7 @@ re:
 
 
 %.o : %.cpp
-	$(COMPILER) $(FLAGS) -I ../include -c $^ -o $@
+	$(COMPILER) $(FLAGS) -I ../include -I ../other -c $^ -o $@
 
 $(ARC) :
 	@$(MAKE) -C $(ARC_DIR) all
