@@ -17,6 +17,9 @@ class PolyHedraShader : public BaseShader
 	public:
 		PolyHedraShader();
 		~PolyHedraShader();
+
+	private:
+		void UniformUpdate();
 };
 
 #endif

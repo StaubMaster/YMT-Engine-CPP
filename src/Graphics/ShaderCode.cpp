@@ -82,10 +82,10 @@ std::string FileReadAllText(const std::string & path)
 	std::ifstream file;
 	file.open(path.c_str());
 	std::string text = "";
-	
+
 	if (file.fail())
 	{
-		std::cout << "Error\n";
+		std::cout << "Error when opening File " + path + "\n";
 		return "";
 	}
 

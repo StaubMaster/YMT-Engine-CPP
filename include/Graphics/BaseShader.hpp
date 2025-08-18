@@ -3,26 +3,28 @@
 # define BASE_SHADER
 
 # include <iostream>
-# include "../../OpenGL/openGL.h"
+# include "OpenGL/openGL.h"
 # include "ShaderCode.hpp"
 
 class BaseShader
 {
+	private:
+		static int CurrentID;
+
 	private:
 		int ID;
 
 	protected:
 		BaseShader(const ShaderCode * code, int count);
 	public:
-		~BaseShader();
+		virtual ~BaseShader();
 
 	public:
 		void Use();
 		bool Is() const;
 
 	protected:
-		//virtual void UpdateUniform();
-
+		virtual void UniformUpdate() = 0;
 	public:
 		int UniformFind(const std::string & name) const;
 

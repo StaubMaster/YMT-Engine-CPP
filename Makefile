@@ -1,18 +1,21 @@
 
+
+
 #NAME = a.exe
 NAME = YMT.a
 COMPILER = c++
-
 FLAGS = -Wall -Wextra -Werror
 
 
 
 FILES_SRC = \
 \
-	Window.cpp \
-	PolyHedra.cpp \
-	PolyHedraBuffer.cpp \
-	PolyHedraShader.cpp \
+	Abstract3D/Point3D.cpp \
+	Abstract3D/Angle3D.cpp \
+	Abstract3D/Transformation3D.cpp \
+	Abstract3D/Undex3D.cpp \
+\
+	Abstract2D/Point2D.cpp \
 \
 	Graphics/ShaderCode.cpp \
 	Graphics/BaseShader.cpp \
@@ -27,14 +30,12 @@ FILES_SRC = \
 	Graphics/Uniform/Float/UniDepth.cpp \
 	Graphics/Uniform/Float/UniScale.cpp \
 \
-	Abstract3D/Point3D.cpp \
-	Abstract3D/Angle3D.cpp \
-	Abstract3D/Transformation3D.cpp \
-	Abstract3D/Undex3D.cpp \
-\
-	Abstract2D/Point2D.cpp \
-\
-	main.cpp
+	PolyHedra.cpp \
+	PolyHedraBuffer.cpp \
+	PolyHedraShader.cpp \
+	Window.cpp
+
+
 
 FILES_OBJ = $(FILES_SRC:.cpp=.o)
 
@@ -45,21 +46,23 @@ FILES_ABS_OBJ = $(addprefix $(DIR_OBJ), $(FILES_OBJ))
 
 
 
-ARC_OPENGL_PATH = OpenGL/
-ARC_OPENGL = $(ARC_OPENGL_PATH)openGL.a
-
-
-
+ARC_X = 
 ARC_X_DIR = obj/arc/
 
+ARC_OPENGL_PATH = other/OpenGL/
+ARC_OPENGL = $(ARC_OPENGL_PATH)openGL.a
+
+ARC_FILEPARSER_PATH = other/FileParse/
+ARC_FILEPARSER = $(ARC_FILEPARSER_PATH)fileParser.a
 
 
-$(NAME) : $(FILES_ABS_OBJ) $(ARC_OPENGL)
+
+$(NAME) : $(FILES_ABS_OBJ)
 	@mkdir -p $(ARC_X_DIR)
 	cd $(ARC_X_DIR) && ar -x ../../$(ARC_OPENGL)
+	cd $(ARC_X_DIR) && ar -x ../../$(ARC_FILEPARSER)
 	cd $(ARC_X_DIR) && ar -x E:/Utility/glfw-3.4.bin.WIN64/lib-mingw-w64/libglfw3.a
 	ar -rcs $(NAME) $(FILES_ABS_OBJ) $(ARC_X_DIR)* -lgdi32
-#	$(COMPILER) $(FLAGS) -o $(NAME) $(addprefix $(DIR_OBJ), $(FILES_OBJ)) $(ARC_OPENGL) E:/Utility/glfw-3.4.bin.WIN64/lib-mingw-w64/libglfw3.a -lgdi32
 
 all:
 	@$(MAKE) $(FILES_ABS_OBJ)
@@ -77,12 +80,12 @@ re:
 	@$(MAKE) fclean
 	@$(MAKE) all
 
-.PHONY: all clean fclean re
+.PHONY: all clean fclean re arc
 
 
 
 $(DIR_OBJ)%.o : $(DIR_SRC)%.cpp
 	@mkdir -p $(dir $@)
-	$(COMPILER) $(FLAGS) -I include -c $^ -o $@
+	$(COMPILER) $(FLAGS) -I include -I other -c $^ -o $@
 
 

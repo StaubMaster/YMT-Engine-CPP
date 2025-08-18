@@ -2,6 +2,10 @@
 
 
 
+int BaseShader::CurrentID = -1;
+
+
+
 BaseShader::BaseShader(const ShaderCode * code, int count)
 {
 	ID = glCreateProgram();
@@ -18,11 +22,16 @@ BaseShader::~BaseShader()
 
 void BaseShader::Use()
 {
-	glUseProgram(ID);
+	if (!Is())
+	{
+		glUseProgram(ID);
+		BaseShader::CurrentID = ID;
+		UniformUpdate();
+	}
 }
 bool BaseShader::Is() const
 {
-	return true;
+	return (BaseShader::CurrentID == ID);
 }
 
 

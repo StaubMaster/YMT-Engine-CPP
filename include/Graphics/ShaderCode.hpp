@@ -1,11 +1,15 @@
 
+#ifndef SHADER_DIR
+# define SHADER_DIR "../media/Shaders/"
+#endif
+
 #ifndef SHADER_CODE
 # define SHADER_CODE
 
 # include <exception>
 # include <string>
 # include <fstream>
-# include "../../OpenGL/openGL.h"
+# include "OpenGL/openGL.h"
 
 class ShaderCode
 {

@@ -1,7 +1,7 @@
 #ifndef WINDOW_HPP
 # define WINDOW_HPP
 
-# include "../OpenGL/openGL.h"
+# include "OpenGL/openGL.h"
 
 # include "Abstract3D/Point3D.hpp"
 # include "Abstract3D/Angle3D.hpp"
@@ -25,17 +25,18 @@ class Window
 	public:
 		GLFWwindow * win;
 
-		void (*InitFunc)();
-		void (*FrameFunc)(double);
-		void (*FreeFunc)();
-
 	private:
-	public:
 		double FrameTimeLast;
 		double FrameTimeDelta;
 
 	public:
-		Window(float w, float h, void (*init)(), void (*frame)(double), void (*free)());
+		void (*InitFunc)();
+		void (*FrameFunc)(double);
+		void (*FreeFunc)();
+		void (*ResizeFunc)(int, int);
+
+	public:
+		Window(float w, float h);
 		~Window();
 
 	private:

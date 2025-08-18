@@ -2,10 +2,8 @@
 
 
 
-Window::Window(float w, float h, void (*init)(), void (*frame)(double), void (*free)())
+Window::Window(float w, float h)
 {
-	//glfwWindowHint(GLFW_CONTEXT_VERSION_MAJOR, 3);
-	//glfwWindowHint(GLFW_CONTEXT_VERSION_MINOR, 3);
 	glfwWindowHint(GLFW_CONTEXT_VERSION_MAJOR, 4);
 	glfwWindowHint(GLFW_CONTEXT_VERSION_MINOR, 1);
 	glfwWindowHint(GLFW_MAXIMIZED, GLFW_FALSE);
@@ -33,9 +31,10 @@ Window::Window(float w, float h, void (*init)(), void (*frame)(double), void (*f
 	glfwSetFramebufferSizeCallback(win, Callback_Resize);
 	glfwSetKeyCallback(win, Callback_Key);
 
-	InitFunc = init;
-	FrameFunc = frame;
-	FreeFunc = free;
+	InitFunc = NULL;
+	FrameFunc = NULL;
+	FreeFunc = NULL;
+	ResizeFunc = NULL;
 }
 Window::~Window()
 {
@@ -47,8 +46,8 @@ Window::~Window()
 void Window::Callback_Resize(GLFWwindow * window, int w, int h)
 {
 	Window * win = (Window *)glfwGetWindowUserPointer(window);
-	(void)win;
 	glViewport(0, 0, w, h);
+	if (win -> ResizeFunc != NULL) { win -> ResizeFunc(w, h); }
 }
 void Window::Callback_Key(GLFWwindow * window, int key, int scancode, int action, int mods)
 {
@@ -120,6 +119,10 @@ void Window::Run()
 	glEnable(GL_DEPTH_TEST);
 	glDepthMask(GL_TRUE);
 	glDepthFunc(GL_LESS);
+
+	int w, h;
+	glfwGetFramebufferSize(win, &w, &h);
+	if (ResizeFunc != NULL) { ResizeFunc(w, h); }
 
 	while (!glfwWindowShouldClose(win))
 	{

@@ -48,7 +48,13 @@ stuff that might be helpful
 		kind of like TextLoop ?
 		maybe change so it can read larger values ?
 		not sure if its even used
+Problem with this:
+	it would probably be most convenient if FileParser was its own things
+	but then if I use uint.cpp in the main thing, would it conflict ?
+	no, I can just have it multiple times, and the header Guard will prevent problems ?
 
-
+not I have OpenGL and FileParser mixed in with src and stuff, I dont like that
+make a new dir for "other"
+but at this point its becoming a very unconventional structure ?
 
 

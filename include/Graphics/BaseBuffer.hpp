@@ -3,7 +3,7 @@
 # define BASE_BUFFER
 
 # include <iostream>
-# include "../../OpenGL/openGL.h"
+# include "OpenGL/openGL.h"
 
 class BaseBuffer
 {
