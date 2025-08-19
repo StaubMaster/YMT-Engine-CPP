@@ -17,6 +17,8 @@
 #include "PolyHedra.hpp"
 #include "PolyHedraBuffer.hpp"
 #include "PolyHedraShader.hpp"
+#include "PolyHedraInstBuffer.hpp"
+#include "PolyHedraInstShader.hpp"
 
 #include "FileParse/PNG/PNG_Image.hpp"
 
@@ -43,6 +45,8 @@ void MoveFlatX(Transformation3D & trans, Angle3D spin)
 Window * win;
 
 PolyHedraShader * PolyShader;
+PolyHedraInstShader * PolyInstShader;
+PolyHedraInstBuffer * PolyInstBuffer;
 PolyHedra * Poly0;
 
 unsigned int tex_arr;
@@ -51,6 +55,9 @@ unsigned int tex_arr;
 
 Transformation3D test_trans;
 Transformation3D view_trans;
+
+Transformation3D * TransArr;
+unsigned int TransNum;
 
 
 
@@ -74,20 +81,23 @@ void Frame(double timeDelta)
 	//test_trans.Rot.x += 1.0f * timeDelta;
 	//test_trans.Rot.UpdateSinCos();
 
+	glActiveTexture(GL_TEXTURE0);
+	glBindTexture(GL_TEXTURE_2D_ARRAY, tex_arr);
+
 	PolyShader -> Use();
 	PolyShader -> UniTrans.Value(test_trans);
 	PolyShader -> UniViewTrans.Value(view_trans);
-
-	glActiveTexture(GL_TEXTURE_2D_ARRAY);
-	glBindTexture(GL_TEXTURE_2D_ARRAY, tex_arr);
-
 	Poly0 -> Draw();
+
+	PolyInstShader -> Use();
+	PolyInstShader -> UniViewTrans.Value(view_trans);
+	PolyInstBuffer -> Draw();
 }
 
 void Resize(int w, int h)
 {
-	std::cout << "Resize: " << w << " : " << h << "\n";
 	PolyShader -> WindowScale.Value(w, h);
+	PolyInstShader -> WindowScale.Value(w, h);
 }
 
 
@@ -109,7 +119,9 @@ int main(void)
 		win -> FrameFunc = Frame;
 		win -> FreeFunc = Free;
 		win -> ResizeFunc = Resize;
+
 		PolyShader = new PolyHedraShader();
+		PolyInstShader = new PolyHedraInstShader();
 	}
 	catch (std::exception & ex)
 	{
@@ -130,14 +142,16 @@ int main(void)
 	}
 
 	{
-		int w, h;
-		glfwGetFramebufferSize(win -> win, &w, &h);
-		PolyShader -> WindowScale.Value(w, h);
-		PolyShader -> Depth.Value(0.1f, 10.0f);
+		float near = 0.1f;
+		float far = 10.0f;
+		PolyShader -> Depth.Value(near, far);
+		PolyInstShader -> Depth.Value(near, far);
 	}
 
 	Poly0 = PolyHedra::Cube();
 	Poly0 -> ToBuffer();
+	PolyInstBuffer = new PolyHedraInstBuffer();
+	Poly0 -> ToBuffer(*PolyInstBuffer);
 
 	{
 		glGenTextures(1, &tex_arr);
@@ -167,7 +181,7 @@ int main(void)
 
 
 	test_trans = Transformation3D(
-		Point3D(0, 0, 0),
+		Point3D(2, 2, 2),
 		Angle3D(0, 0, 0)
 	);
 
@@ -175,6 +189,16 @@ int main(void)
 		Point3D(0, 0, 0),
 		Angle3D(0, 0, 0)
 	);
+
+	TransArr = new Transformation3D[4]
+	{
+		Transformation3D(Point3D(0, 0, 0), Angle3D(0, 0, 0)),
+		Transformation3D(Point3D(2, 3, 4), Angle3D(1, 2, 3)),
+		Transformation3D(Point3D(3, 0, 0), Angle3D(1, 0, 0)),
+		Transformation3D(Point3D(0, 0, 2), Angle3D(0, 0, 1)),
+	};
+	TransNum = 4;
+	PolyInstBuffer -> DataTrans(TransNum, TransArr);
 
 
 
@@ -189,10 +213,15 @@ int main(void)
 	delete Poly0;
 	delete PolyShader;
 
+	delete PolyInstShader;
+	delete PolyInstBuffer;
+	delete [] TransArr;
+
 	delete win;
 
 
 
 	glfwTerminate();
+	std::cout << "main() return";
 	return 0;
 }
