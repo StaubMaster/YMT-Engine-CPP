@@ -9,14 +9,14 @@ uniform vec2[2] contentScale;
 
 
 layout(location = 0) in vec3 VPos;
-layout(location = 1) in vec3 VCol;
+layout(location = 1) in vec3 VTex;
 
 layout(location = 2) in vec3 IPos;
 layout(location = 3) in vec3 ISin;
 layout(location = 4) in vec3 ICos;
 
-out ColorBlock {
-	vec3 Color;
+out Vert {
+	vec3 Tex;
 } vs_out;
 
 
@@ -64,7 +64,7 @@ vec4 proj(in vec3 p_inn)
 
 void main()
 {
-	vs_out.Color = VCol;
+	vs_out.Tex = VTex;
 
 	vec3 pos = VPos;
 	pos = DSA(pos, ISin, ICos) + IPos;

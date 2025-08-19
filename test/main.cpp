@@ -1,24 +1,19 @@
 #include <iostream>
 #include "OpenGL/openGL.h"
 
-#include "Graphics/BaseShader.hpp"
-#include "Graphics/Uniform/Float/UniTransformation3D.hpp"
-#include "Graphics/Uniform/Float/UniDepth.hpp"
-#include "Graphics/Uniform/Float/UniScale.hpp"
-
 #include "Abstract3D/Point3D.hpp"
 #include "Abstract3D/Angle3D.hpp"
 #include "Abstract3D/Transformation3D.hpp"
 
 #include "Abstract2D/Point2D.hpp"
 
-#include "Window.hpp"
-
 #include "PolyHedra.hpp"
 #include "PolyHedraBuffer.hpp"
 #include "PolyHedraShader.hpp"
 #include "PolyHedraInstBuffer.hpp"
 #include "PolyHedraInstShader.hpp"
+
+#include "Window.hpp"
 
 #include "FileParse/PNG/PNG_Image.hpp"
 
@@ -102,7 +97,7 @@ void Resize(int w, int h)
 
 
 
-int main(void)
+int main()
 {
 	if (glfwInit() == 0)
 	{
