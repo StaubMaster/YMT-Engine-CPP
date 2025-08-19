@@ -7,6 +7,7 @@
 # include "Abstract3D/Undex3D.hpp"
 
 # include "PolyHedraBuffer.hpp"
+# include "PolyHedraInstBuffer.hpp"
 
 /*
 	should everything be in one ?
@@ -52,8 +53,11 @@ class PolyHedra
 	public:
 		~PolyHedra();
 
+	private:
+		RenderPoint3D * ToBufferData(int & count);
 	public:
 		void ToBuffer();
+		void ToBuffer(PolyHedraInstBuffer & Buffer);
 		void Draw();
 
 	private:

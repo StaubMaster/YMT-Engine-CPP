@@ -2,9 +2,10 @@
 
 BaseBuffer::BaseBuffer(int count)
 {
-	glGenVertexArrays(1, &ArrayID);
 	BufferCount = count;
 	BufferIDs = new unsigned int[count];
+	glGenVertexArrays(1, &ArrayID);
+	glBindVertexArray(ArrayID);
 	glGenBuffers(BufferCount, BufferIDs);
 	std::cout << "++++ BaseBuffer\n";
 }

@@ -5,7 +5,7 @@ still needed:
 		YMT_ prefix ?
 		namespace ?
 			ymt or YMT
-			having it be lower case is Standard but do I cate ?
+			having it be lower case is Standard but do I care ?
 	PolyHedra
 		Textures
 		Normals

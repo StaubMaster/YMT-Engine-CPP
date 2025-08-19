@@ -33,6 +33,8 @@ FILES_SRC = \
 	PolyHedra.cpp \
 	PolyHedraBuffer.cpp \
 	PolyHedraShader.cpp \
+	PolyHedraInstBuffer.cpp \
+	PolyHedraInstShader.cpp \
 	Window.cpp
 
 

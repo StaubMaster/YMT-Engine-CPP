@@ -1,0 +1,62 @@
+
+still needed:
+	improve Performance ?
+		not sure why it takes so much CPU
+	PolyHedra
+		Normals
+	Shader
+		Text ?
+		Matrixes
+		Instance
+		Light
+		Form
+
+
+
+Text: seems important to show info
+
+From: might also be fun ?
+	but text is part of that and seems more important
+
+Instance:
+	probably the easiest to get working
+	but how should I do it
+
+change Editable Array
+	QRemove
+		give each Element a variable on if it should be removed
+		then remove them all at once
+		so that reorganizing is done once instead of every time
+	QInsert
+		inserting needs to copy everything over
+		when the old Memory size is full
+		how would that work ?
+		allocate seperate Memory
+			then store Queue in there
+			what if that gets full as well ?
+				recursion ?
+				if the Queue gets full, it makes its own Queue ?
+				when the Queue is being done
+				dont assable the Queues together
+				just go through all of them in order
+				Queue remove as well ?
+		first check how much additional space is needed
+	MinSize
+	MaxSize
+	InsertMulti
+	RemoveMulti
+
+	CopyMemory ?
+		ptr0
+		idx0
+		prt1
+		idx1
+		len
+
+	Insert at Index
+		when queuing an insert
+		that insert needs to change the index of the other inserts that are effacted
+
+
+
+

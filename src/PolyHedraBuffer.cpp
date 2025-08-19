@@ -2,9 +2,9 @@
 
 
 
-PolyHedraBuffer::PolyHedraBuffer() : BaseBuffer(1)
+PolyHedraBuffer::PolyHedraBuffer() : BaseBuffer(1),
+	MainID(BufferIDs[0])
 {
-	MainID = &BufferIDs[0];
 	Count = 0;
 	std::cout << "++++ PolyHedraBuffer\n";
 }
@@ -17,18 +17,15 @@ PolyHedraBuffer::~PolyHedraBuffer()
 
 void PolyHedraBuffer::Data(int count, const RenderPoint3D * data)
 {
-	Use();
-
 	int size = sizeof(RenderPoint3D);
-	
-	glBindBuffer(GL_ARRAY_BUFFER, *MainID);
-	glBufferData(GL_ARRAY_BUFFER, size * count, data, GL_STATIC_DRAW);
-
 	int offset = 0;
+	
+	Use();
+	glBindBuffer(GL_ARRAY_BUFFER, MainID);
+	glBufferData(GL_ARRAY_BUFFER, size * count, data, GL_STATIC_DRAW);
 
 	glEnableVertexAttribArray(0);
 	glVertexAttribPointer(0, 3, GL_FLOAT, false, size, (const void *)(intptr_t)offset);
-
 	offset += sizeof(Point3D);
 
 	glEnableVertexAttribArray(1);

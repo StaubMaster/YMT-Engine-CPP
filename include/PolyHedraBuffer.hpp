@@ -2,6 +2,7 @@
 # define POS_COL_BUFFER
 
 # include "Graphics/BaseBuffer.hpp"
+# include "RenderPoint3D.hpp"
 
 # include "Abstract2D/Point2D.hpp"
 # include "Abstract3D/Point3D.hpp"
@@ -9,17 +10,10 @@
 
 
 
-struct RenderPoint3D
-{
-	Point3D	Position;
-	Point3D	Normal;
-	Point2D	Texture;
-};
-
 class PolyHedraBuffer : public BaseBuffer
 {
 	private:
-		unsigned int * MainID;
+		unsigned int & MainID;
 		unsigned int Count;
 
 	public:

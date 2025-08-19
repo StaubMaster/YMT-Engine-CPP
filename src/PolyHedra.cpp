@@ -16,13 +16,10 @@ PolyHedra::~PolyHedra()
 }
 
 
-
-void PolyHedra::ToBuffer()
+RenderPoint3D * PolyHedra::ToBufferData(int & count)
 {
-	Buffer = new PolyHedraBuffer();
-
-	int count = FaceIndexes.Length * 3;
-	RenderPoint3D data[count];
+	count = FaceIndexes.Length * 3;
+	RenderPoint3D * data = new RenderPoint3D[count];
 
 	for (unsigned int i = 0; i < FaceIndexes.Length; i++)
 	{
@@ -43,7 +40,25 @@ void PolyHedra::ToBuffer()
 		data[c + 2].Texture = Point2D();
 	}
 
+	return data;
+}
+void PolyHedra::ToBuffer()
+{
+	Buffer = new PolyHedraBuffer();
+
+	int count;
+	RenderPoint3D * data;
+	data = ToBufferData(count);
 	Buffer -> Data(count, data);
+	delete [] data;
+}
+void PolyHedra::ToBuffer(PolyHedraInstBuffer & Buffer)
+{
+	int count;
+	RenderPoint3D * data;
+	data = ToBufferData(count);
+	Buffer.DataPolyHedra(count, data);
+	delete [] data;
 }
 void PolyHedra::Draw()
 {
