@@ -128,42 +128,42 @@ PolyHedra * PolyHedra::Cube(float scale)
 
 	temp -> Edit_Face4(
 		TexUndex(0b000, 0.00f, 0.00f),
-		TexUndex(0b010, 1.00f, 0.00f),
-		TexUndex(0b001, 0.00f, 1.00f),
-		TexUndex(0b011, 1.00f, 1.00f)
+		TexUndex(0b010, 0.00f, 0.50f),
+		TexUndex(0b001, 0.25f, 0.00f),
+		TexUndex(0b011, 0.25f, 0.50f)
 	);
 	temp -> Edit_Face4(
-		TexUndex(0b000, 0.00f, 0.00f),
-		TexUndex(0b100, 1.00f, 0.00f),
-		TexUndex(0b010, 0.00f, 1.00f),
-		TexUndex(0b110, 1.00f, 1.00f)
+		TexUndex(0b000, 0.25f, 0.00f),
+		TexUndex(0b100, 0.25f, 0.50f),
+		TexUndex(0b010, 0.50f, 0.00f),
+		TexUndex(0b110, 0.50f, 0.50f)
 	);
 	temp -> Edit_Face4(
-		TexUndex(0b000, 0.00f, 0.00f),
-		TexUndex(0b001, 1.00f, 0.00f),
-		TexUndex(0b100, 0.00f, 1.00f),
-		TexUndex(0b101, 1.00f, 1.00f)
+		TexUndex(0b000, 0.50f, 0.00f),
+		TexUndex(0b001, 0.50f, 0.50f),
+		TexUndex(0b100, 0.75f, 0.00f),
+		TexUndex(0b101, 0.75f, 0.50f)
 	);
 
 
 
 	temp -> Edit_Face4(
-		TexUndex(0b111, 0.00f, 0.00f),
+		TexUndex(0b111, 0.25f, 1.00f),
 		TexUndex(0b110, 0.00f, 1.00f),
-		TexUndex(0b101, 1.00f, 0.00f),
-		TexUndex(0b100, 1.00f, 1.00f)
+		TexUndex(0b101, 0.25f, 0.50f),
+		TexUndex(0b100, 0.00f, 0.50f)
 	);
 	temp -> Edit_Face4(
-		TexUndex(0b111, 0.00f, 0.00f),
-		TexUndex(0b101, 0.00f, 1.00f),
-		TexUndex(0b011, 1.00f, 0.00f),
-		TexUndex(0b001, 1.00f, 1.00f)
+		TexUndex(0b111, 0.50f, 1.00f),
+		TexUndex(0b101, 0.25f, 1.00f),
+		TexUndex(0b011, 0.50f, 0.50f),
+		TexUndex(0b001, 0.25f, 0.50f)
 	);
 	temp -> Edit_Face4(
-		TexUndex(0b111, 0.00f, 0.00f),
-		TexUndex(0b011, 0.00f, 1.00f),
-		TexUndex(0b110, 1.00f, 0.00f),
-		TexUndex(0b010, 1.00f, 1.00f)
+		TexUndex(0b111, 0.75f, 1.00f),
+		TexUndex(0b011, 0.50f, 1.00f),
+		TexUndex(0b110, 0.75f, 0.50f),
+		TexUndex(0b010, 0.50f, 0.50f)
 	);
 
 	temp -> Edit_Trim();

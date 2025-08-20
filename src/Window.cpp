@@ -88,6 +88,7 @@ Point3D Window::MoveFromKeys(float speed)
 		if (glfwGetKey(win, GLFW_KEY_W) == GLFW_PRESS) { move.Z += speed; }
 		if (glfwGetKey(win, GLFW_KEY_SPACE) == GLFW_PRESS)      { move.Y += speed; }
 		if (glfwGetKey(win, GLFW_KEY_LEFT_SHIFT) == GLFW_PRESS) { move.Y -= speed; }
+		if (glfwGetKey(win, GLFW_KEY_LEFT_CONTROL) == GLFW_PRESS) { move = move * 10; }
 	}
 
 	return move;
@@ -204,7 +205,7 @@ void Window::Run()
 			if ((frameCount % 64) == 0)
 			{
 				std::cout << "Frame: " << frameCount << " (" << frameMissed << ")" << "\n";
-				std::cout << "FrameTime: " << (1.0 / 64.0) << "\n";
+				std::cout << "FrameTime: " << ((1.0 / 64.0) * 1000) << "ms\n";
 				std::cout << "Func: " << (timeFunc.Average() * 1000) << "ms\n";
 				std::cout << "Swap: " << (timeSwap.Average() * 1000) << "ms\n";
 				std::cout << "Poll: " << (timePoll.Average() * 1000) << "ms\n";

@@ -39,16 +39,10 @@ void MoveFlatX(Transformation3D & trans, Angle3D spin)
 
 Window * win;
 
-PolyHedraShader * PolyShader;
 PolyHedraInstShader * PolyInstShader;
 PolyHedraInstBuffer * PolyInstBuffer;
 PolyHedra * Poly0;
 
-unsigned int tex_arr;
-
-
-
-Transformation3D test_trans;
 Transformation3D view_trans;
 
 Transformation3D * TransArr;
@@ -56,15 +50,50 @@ unsigned int TransNum;
 
 
 
+unsigned int tex_arr;
+void tex_init()
+{
+	glGenTextures(1, &tex_arr);
+	glBindTexture(GL_TEXTURE_2D_ARRAY, tex_arr);
+	
+	int tex_count = 1;
+	int tex_w = 128;
+	int tex_h = 128;
+
+	glTexImage3D(GL_TEXTURE_2D_ARRAY, 0, GL_RGBA8, tex_w, tex_h, tex_count, 0, GL_RGBA, GL_UNSIGNED_INT_8_8_8_8_REV, NULL);
+
+	int i = 0;
+	{
+		PNG_Image * img = PNG_Image::Load(std::string(IMAGE_DIR) + "Orientation.png");
+		PNG_Image * scaled = img -> Scale(tex_w, tex_h);
+		glTexSubImage3D(GL_TEXTURE_2D_ARRAY, 0, 0, 0, i, tex_w, tex_h, 1, GL_RGBA, GL_UNSIGNED_INT_8_8_8_8_REV, scaled -> data);
+	}
+
+	glTexParameteri(GL_TEXTURE_2D_ARRAY, GL_TEXTURE_WRAP_S, GL_REPEAT);
+	glTexParameteri(GL_TEXTURE_2D_ARRAY, GL_TEXTURE_WRAP_T, GL_REPEAT);
+	glTexParameteri(GL_TEXTURE_2D_ARRAY, GL_TEXTURE_MIN_FILTER, GL_NEAREST);
+	glTexParameteri(GL_TEXTURE_2D_ARRAY, GL_TEXTURE_MAG_FILTER, GL_NEAREST);
+
+	glGenerateMipmap(GL_TEXTURE_2D_ARRAY);
+}
+void tex_free()
+{
+	glDeleteTextures(1, &tex_arr);
+}
+
+
+
 void Init()
 {
 	std::cout << "Init 0\n";
+	tex_init();
 	std::cout << "Init 1\n";
 }
 
 void Free()
 {
 	std::cout << "Free 0\n";
+	tex_free();
 	std::cout << "Free 1\n";
 }
 
@@ -73,16 +102,13 @@ void Frame(double timeDelta)
 	MoveFlatX(view_trans, win -> MoveFromKeys(2.0f * timeDelta));
 	MoveFlatX(view_trans, win -> SpinFromCursor(0.2f * timeDelta));
 
+	if (glfwGetKey(win -> win, GLFW_KEY_R)) { tex_free(); tex_init(); }
+
 	//test_trans.Rot.x += 1.0f * timeDelta;
 	//test_trans.Rot.UpdateSinCos();
 
 	glActiveTexture(GL_TEXTURE0);
 	glBindTexture(GL_TEXTURE_2D_ARRAY, tex_arr);
-
-	PolyShader -> Use();
-	PolyShader -> UniTrans.Value(test_trans);
-	PolyShader -> UniViewTrans.Value(view_trans);
-	Poly0 -> Draw();
 
 	PolyInstShader -> Use();
 	PolyInstShader -> UniViewTrans.Value(view_trans);
@@ -91,7 +117,6 @@ void Frame(double timeDelta)
 
 void Resize(int w, int h)
 {
-	PolyShader -> WindowScale.Value(w, h);
 	PolyInstShader -> WindowScale.Value(w, h);
 }
 
@@ -115,13 +140,11 @@ int main()
 		win -> FreeFunc = Free;
 		win -> ResizeFunc = Resize;
 
-		PolyShader = new PolyHedraShader();
 		PolyInstShader = new PolyHedraInstShader();
 	}
 	catch (std::exception & ex)
 	{
 		std::cout << "exception: " << ex.what() << "\n";
-		PolyShader = NULL;
 	}
 	catch (const char * err)
 	{
@@ -138,61 +161,38 @@ int main()
 
 	{
 		float near = 0.1f;
-		float far = 10.0f;
-		PolyShader -> Depth.Value(near, far);
+		float far = 1000.0f;
 		PolyInstShader -> Depth.Value(near, far);
+
+		view_trans = Transformation3D(
+			Point3D(0, 0, 0),
+			Angle3D(0, 0, 0)
+		);
 	}
 
-	Poly0 = PolyHedra::Cube();
-	Poly0 -> ToBuffer();
-	PolyInstBuffer = new PolyHedraInstBuffer();
-	Poly0 -> ToBuffer(*PolyInstBuffer);
-
 	{
-		glGenTextures(1, &tex_arr);
-		glBindTexture(GL_TEXTURE_2D_ARRAY, tex_arr);
-		
-		int tex_count = 1;
-		int tex_w = 128;
-		int tex_h = 128;
-
-		glTexImage3D(GL_TEXTURE_2D_ARRAY, 0, GL_RGBA8, tex_w, tex_h, tex_count, 0, GL_RGBA, GL_UNSIGNED_INT_8_8_8_8_REV, NULL);
-
-		int i = 0;
-		{
-			PNG_Image * img = PNG_Image::Load(std::string(IMAGE_DIR) + "Orientation.png");
-			PNG_Image * scaled = img -> Scale(tex_w, tex_h);
-			glTexSubImage3D(GL_TEXTURE_2D_ARRAY, 0, 0, 0, i, tex_w, tex_h, 1, GL_RGBA, GL_UNSIGNED_INT_8_8_8_8_REV, scaled -> data);
-		}
-
-		glTexParameteri(GL_TEXTURE_2D_ARRAY, GL_TEXTURE_WRAP_S, GL_REPEAT);
-		glTexParameteri(GL_TEXTURE_2D_ARRAY, GL_TEXTURE_WRAP_T, GL_REPEAT);
-		glTexParameteri(GL_TEXTURE_2D_ARRAY, GL_TEXTURE_MIN_FILTER, GL_NEAREST);
-		glTexParameteri(GL_TEXTURE_2D_ARRAY, GL_TEXTURE_MAG_FILTER, GL_NEAREST);
-
-		glGenerateMipmap(GL_TEXTURE_2D_ARRAY);
+		Poly0 = PolyHedra::Cube();
+		PolyInstBuffer = new PolyHedraInstBuffer();
+		Poly0 -> ToBuffer(*PolyInstBuffer);
 	}
 
 
 
-	test_trans = Transformation3D(
-		Point3D(2, 2, 2),
-		Angle3D(0, 0, 0)
-	);
-
-	view_trans = Transformation3D(
-		Point3D(0, 0, 0),
-		Angle3D(0, 0, 0)
-	);
-
-	TransArr = new Transformation3D[4]
+	TransNum = 800000;
+	TransArr = new Transformation3D[TransNum];
+	for (unsigned int i = 0; i < TransNum; i++)
 	{
-		Transformation3D(Point3D(0, 0, 0), Angle3D(0, 0, 0)),
-		Transformation3D(Point3D(2, 3, 4), Angle3D(1, 2, 3)),
-		Transformation3D(Point3D(3, 0, 0), Angle3D(1, 0, 0)),
-		Transformation3D(Point3D(0, 0, 2), Angle3D(0, 0, 1)),
-	};
-	TransNum = 4;
+		TransArr[i].Pos = Point3D(
+			(std::rand() & 0x1FF) - 0xFF,
+			(std::rand() & 0x1FF) - 0xFF,
+			(std::rand() & 0x1FF) - 0xFF
+		);
+	}
+	std::cout << "Count: " << TransNum << "\n";
+	int MemSize = TransNum * sizeof(Transformation3D);
+	std::cout << (MemSize / (1)) << " Bytes\n";
+	std::cout << (MemSize / (1 * 1000)) << "k Bytes\n";
+	std::cout << (MemSize / (1 * 1000 * 1000)) << "M Bytes\n";
 	PolyInstBuffer -> DataTrans(TransNum, TransArr);
 
 
@@ -203,11 +203,7 @@ int main()
 
 
 
-	glDeleteTextures(1, &tex_arr);
-
 	delete Poly0;
-	delete PolyShader;
-
 	delete PolyInstShader;
 	delete PolyInstBuffer;
 	delete [] TransArr;
