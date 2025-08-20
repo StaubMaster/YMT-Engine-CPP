@@ -5,7 +5,8 @@ FILES_CPP = \
 	DebugManager.cpp \
 	uint.cpp \
 	BitStream.cpp \
-	DataStream.cpp
+	DataStream.cpp \
+	FileIO.cpp
 
 FILES_PNG_CPP = \
 	PNG/Chunk.cpp \

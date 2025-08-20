@@ -67,30 +67,6 @@ PNG_Image * PNG_Image::Scale(uint32 new_w, uint32 new_h)
 
 
 
-std::string	PNG_Image::ReadFile(const std::string & file_path)
-{
-	std::ifstream file(file_path, std::ios::binary);
-	if (!file.is_open())
-		throw PNG_Exception_BadFile();
-
-	std::string file_data;
-	char	binary_block[1024];
-
-	file.read(binary_block, 1024);
-	while (!file.eof())
-	{
-		file_data += std::string(binary_block, 1024);
-		file.read(binary_block, 1024);
-	}
-	file_data += std::string(binary_block, file.gcount());
-
-	return (file_data);
-}
-
-
-
-
-
 PNG_Image::IHDR::IHDR()
 {
 	
@@ -131,7 +107,7 @@ PNG_Image * PNG_Image::Load(const std::string & file_path, bool debug)
 	try
 	{
 		os << "loading '" << file_path << "' ...\n";
-		std::string file_str = ReadFile(file_path);
+		std::string file_str = FileIO::Read(file_path);
 
 		os << "file length: " << file_str.size() << "\n";
 		BitStream file(file_str);

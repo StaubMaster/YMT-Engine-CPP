@@ -77,28 +77,6 @@ bool str_ends_with(const std::string & str, const std::string & pattern)
 	}
 	return true;
 }
-std::string FileReadAllText(const std::string & path)
-{
-	std::ifstream file;
-	file.open(path.c_str());
-	std::string text = "";
-
-	if (file.fail())
-	{
-		std::cout << "Error when opening File " + path + "\n";
-		return "";
-	}
-
-	std::string line;
-	while (!file.eof())
-	{
-		std::getline(file, line);
-		text += line + "\n";
-	}
-	
-	file.close();
-	return (text);
-}
 
 ShaderCode ShaderCode::FromFile(const std::string & path)
 {
@@ -108,7 +86,7 @@ ShaderCode ShaderCode::FromFile(const std::string & path)
 	else if (str_ends_with(path, ".geom")) { type = GL_GEOMETRY_SHADER; }
 	else if (str_ends_with(path, ".frag")) { type = GL_FRAGMENT_SHADER; }
 	else { throw EInvalidFileExtention(path); }
-	return ShaderCode(type, FileReadAllText(path), path);
+	return ShaderCode(type, FileIO::Read(path), path);
 }
 
 ShaderCode::EInvalidFileExtention::EInvalidFileExtention(const std::string & path)

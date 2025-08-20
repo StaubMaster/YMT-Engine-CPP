@@ -5,6 +5,7 @@
 # include <fstream>
 # include <sstream>
 
+# include "../FileIO.hpp"
 # include "../DebugManager.hpp"
 # include "../uint.hpp"
 # include "../BitStream.hpp"
