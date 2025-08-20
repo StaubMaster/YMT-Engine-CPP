@@ -1,15 +1,17 @@
 
-NAME = test.exe
 COMPILER = c++
 
 FLAGS = -Wall -Wextra -Werror
 
 
 
-FILES_SRC = \
-	main.cpp
+MAINS = \
+	inst.cpp \
+	basic_openCL.cpp
 
-FILES_OBJ = $(FILES_SRC:.cpp=.o)
+EXES = $(MAINS:.cpp=.exe)
+
+MAINS_DIR = mains/
 
 
 
@@ -22,22 +24,18 @@ ARC = $(addprefix $(ARC_DIR), $(ARC_NAME))
 
 
 
-$(NAME): $(ARC) $(FILES_OBJ)
-	$(COMPILER) $(FLAGS) -o $(NAME) $(FILES_OBJ) $(ARC) -lgdi32
-
 all:
 	$(MAKE) -C $(ARC_DIR) all
-	@$(MAKE) $(FILES_OBJ)
-	@$(MAKE) $(NAME)
+	@$(MAKE) $(EXES)
 
 clean:
 	$(MAKE) -C $(ARC_DIR) fclean
-	rm -f $(FILES_OBJ)
+	rm -f $(EXES)
 
 fclean:
 	$(MAKE) -C $(ARC_DIR) clean
 	@$(MAKE) clean
-	rm -f $(NAME)
+	rm -f $(EXES)
 
 re:
 	@$(MAKE) fclean
@@ -47,8 +45,8 @@ re:
 
 
 
-%.o : %.cpp
-	$(COMPILER) $(FLAGS) -I ../include -I ../other -c $^ -o $@
+%.exe : $(MAINS_DIR)%.cpp
+	$(COMPILER) $(FLAGS) -I ../include -I ../other -o $@ $^ $(ARC) E:/Utility/msys32/ucrt64/lib/libOpenCL.dll.a -lgdi32
 
 $(ARC) :
 	@$(MAKE) -C $(ARC_DIR) all
