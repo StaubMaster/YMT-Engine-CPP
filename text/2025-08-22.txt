@@ -1,0 +1,29 @@
+
+helpfull Ideas
+	FileWrapper
+		checks if file exists
+		get file extention
+		ReadAllText
+		Parse in a certain Format
+			PNG
+	FileArray
+
+Texture Array
+	takes a FileArray
+	load all into GL_Texture with a certain size
+
+
+
+allways forgot one little thing so it took a long time to do
+but setting Trans3D with OpenCL works
+
+but right now I use that data to set the Instance Shader every time which might be slow ?
+
+
+also, spamming data into the terminal and looking through it is kind of annyoing
+so Text might be a good Idea ?
+
+but I should probably put everything into namespaces first
+and also put some more QualityOfLife stuff ?
+
+

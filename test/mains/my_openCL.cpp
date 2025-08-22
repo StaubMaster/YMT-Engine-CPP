@@ -1,7 +1,7 @@
 #define CL_HPP_ENABLE_EXCEPTIONS
 #define CL_HPP_TARGET_OPENCL_VERSION 200
-
 #include <CL/opencl.hpp>
+
 #include <iostream>
 #include <vector>
 #include <array>
@@ -10,7 +10,7 @@
 
 int main(void)
 {
-	std::vector<cl::Platform> platforms;
+	/*std::vector<cl::Platform> platforms;
 	cl::Platform::get(&platforms);
 	cl::Platform platformFound;
 	for (cl::Platform &p : platforms)
@@ -33,7 +33,7 @@ int main(void)
 	{
 		std::cout << "Error setting default platform.\n";
 		return -1;
-	}
+	}*/
 
 	std::string file_text = FileIO::Read("../media/my.cl");
 
@@ -98,6 +98,9 @@ int main(void)
 	>(program, "testFunc", &err);
 	if (err != CL_SUCCESS) { std::cout << "Error: " << err << "\n"; } else { std::cout << "Succ\n"; }
 
+
+	std::cout << "valI: " << ((void *)valI) << "\n";
+	std::cout << "valO: " << ((void *)valO) << "\n";
 
 
 	for (int j = 0; j < 10; j++)
