@@ -43,8 +43,8 @@ int main(void)
 	}
 
 	std::vector<std::string> programStrings;
-	programStrings.push_back(FileIO::Read("../media/basic_1.cl"));
-	programStrings.push_back(FileIO::Read("../media/basic_2.cl"));
+	programStrings.push_back(FileIO::Read("../media/better_1.cl"));
+	programStrings.push_back(FileIO::Read("../media/better_2.cl"));
 
 	cl::Program program(programStrings);
 	try
@@ -86,12 +86,12 @@ int main(void)
 	std::vector<int, cl::SVMAllocator<int, cl::SVMTraitCoarse<>>> inputA(numElements, 1, svmAlloc);
 	cl::coarse_svm_vector<int> inputB(numElements, 2, svmAlloc);
 
-
-
 	/*	Buffer :
 			Video Memory / GPU Memory ?
 	*/
-	cl::Buffer outputBuffer(CL_MEM_READ_ONLY, numElements * sizeof(int));
+	//cl::Buffer outputBuffer(CL_MEM_READ_ONLY, numElements * sizeof(int));
+	std::vector<int> output(numElements, 0xdeadbeef);
+	cl::Buffer outputBuffer(begin(output), end(output), false);
 
 
 
@@ -136,10 +136,13 @@ int main(void)
         );
 
 	const int * oB = (const int *)outputBuffer.get();
+	cl::copy(outputBuffer, begin(output), end(output));
+
 	std::cout << "Output:\n";
 	for (int i = 0; i < numElements; ++i)
 	{
 		std::cout << "[" << i << "]" << "\t" << oB[i] << "\n";
+		std::cout << "[" << i << "]" << "\t" << output[i] << "\n";
 	}
 	std::cout << "\n\n";
 

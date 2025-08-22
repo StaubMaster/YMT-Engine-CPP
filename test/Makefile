@@ -8,7 +8,8 @@ FLAGS = -Wall -Wextra -Werror
 MAINS = \
 	inst.cpp \
 	basic_openCL.cpp \
-	better_openCL.cpp
+	better_openCL.cpp \
+	my_openCL.cpp
 
 EXES = $(MAINS:.cpp=.exe)
 
