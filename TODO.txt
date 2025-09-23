@@ -1,0 +1,92 @@
+
+reorganize Files
+
+
+
+
+
+
+FileManager
+
+class FileContext
+{
+	bool Exists();
+	Image * LoadImage();
+} similar to FileInfo in C#
+
+class Image
+{
+	FromBMP();
+	FromPNG();
+}
+
+put this stuff into its own Repo
+not sure where else I might use this
+but on GitHub it would look better to have a bunch of different things
+instead of one thing that can do a bunch of stuff
+maybe the Sixel thing ?
+
+make ZLIB its own thing ?
+not its own Repo
+but its own sub thing of the FileManager
+implementing the rest would probably suck
+but might look good ?
+
+
+
+
+
+
+
+Shaders take an Array of ShaderCode
+make ShaderCode use FileContext
+use params ShaderCode[]
+
+
+
+there are also aparently a lot of things that openGL / glfw has already implemented
+something about light, maybe projection stuff
+
+but creating things myself gives me more freedom ?
+	like with Depth, I like to use Relative Distance instead of DepthFactors
+	since that means the same Depth when Spining
+	although that might also be doable with Factors
+	or at least outside the Fragment Shader
+
+
+
+implement the new Instance System from C#
+although the one in C# is not really done
+but it will probably have to be a bit different anyway
+
+also the new Generic Shader/Uniform Stuff
+
+
+
+MakeFile
+currenly sucks
+at home the Archives and Librarys are different
+there is a way to make the MakeFile check those ?
+
+
+
+
+
+also maybe start working on the Projects
+loading .obj should be simple compared to the .ymt I've already done
+
+openCL dosent currently work because of the Links
+but besides that I already have ComputeShaders and Instances
+so that that done as well
+
+Voxel I also already have but that Project needs a Partner :(
+
+
+
+
+
+
+
+
+
+also maybe look for a job.

@@ -10,6 +10,7 @@
 #include "PolyHedra.hpp"
 #include "PolyHedra/ShaderInst.hpp"
 #include "PolyHedra/BufferInst.hpp"
+#include "TextureArray.hpp"
 
 #include "Window.hpp"
 
@@ -42,6 +43,9 @@ Window * win;
 YMT::PolyHedra::ShaderInst * PolyInstShader;
 YMT::PolyHedra::BufferInst * PolyInstBuffer;
 YMT::PolyHedra * Poly0;
+TextureArray * Tex0;
+
+
 
 Transformation3D view_trans;
 
@@ -50,50 +54,20 @@ unsigned int TransNum;
 
 
 
-unsigned int tex_arr;
-void tex_init()
-{
-	glGenTextures(1, &tex_arr);
-	glBindTexture(GL_TEXTURE_2D_ARRAY, tex_arr);
-	
-	int tex_count = 1;
-	int tex_w = 128;
-	int tex_h = 128;
-
-	glTexImage3D(GL_TEXTURE_2D_ARRAY, 0, GL_RGBA8, tex_w, tex_h, tex_count, 0, GL_RGBA, GL_UNSIGNED_INT_8_8_8_8_REV, NULL);
-
-	int i = 0;
-	{
-		PNG_Image * img = PNG_Image::Load(std::string(IMAGE_DIR) + "Orientation.png");
-		PNG_Image * scaled = img -> Scale(tex_w, tex_h);
-		glTexSubImage3D(GL_TEXTURE_2D_ARRAY, 0, 0, 0, i, tex_w, tex_h, 1, GL_RGBA, GL_UNSIGNED_INT_8_8_8_8_REV, scaled -> data);
-	}
-
-	glTexParameteri(GL_TEXTURE_2D_ARRAY, GL_TEXTURE_WRAP_S, GL_REPEAT);
-	glTexParameteri(GL_TEXTURE_2D_ARRAY, GL_TEXTURE_WRAP_T, GL_REPEAT);
-	glTexParameteri(GL_TEXTURE_2D_ARRAY, GL_TEXTURE_MIN_FILTER, GL_NEAREST);
-	glTexParameteri(GL_TEXTURE_2D_ARRAY, GL_TEXTURE_MAG_FILTER, GL_NEAREST);
-
-	glGenerateMipmap(GL_TEXTURE_2D_ARRAY);
-}
-void tex_free()
-{
-	glDeleteTextures(1, &tex_arr);
-}
-
-
-
 void Init()
 {
 	std::cout << "Init 0\n";
-	tex_init();
+	Tex0 = new TextureArray(128, 128, 1, (std::string[])
+	{
+		std::string(IMAGE_DIR) + "Orientation.png",
+	});
 	std::cout << "Init 1\n";
 }
 
 void Free()
 {
 	std::cout << "Free 0\n";
-	tex_free();
+	delete Tex0;
 	std::cout << "Free 1\n";
 }
 
@@ -102,13 +76,12 @@ void Frame(double timeDelta)
 	MoveFlatX(view_trans, win -> MoveFromKeys(2.0f * timeDelta));
 	MoveFlatX(view_trans, win -> SpinFromCursor(0.2f * timeDelta));
 
-	if (glfwGetKey(win -> win, GLFW_KEY_R)) { tex_free(); tex_init(); }
+	//if (glfwGetKey(win -> win, GLFW_KEY_R)) { tex_free(); tex_init(); }
 
 	//test_trans.Rot.x += 1.0f * timeDelta;
 	//test_trans.Rot.UpdateSinCos();
 
-	glActiveTexture(GL_TEXTURE0);
-	glBindTexture(GL_TEXTURE_2D_ARRAY, tex_arr);
+	Tex0 -> Bind();
 
 	PolyInstShader -> Use();
 	PolyInstShader -> UniViewTrans.Value(view_trans);
@@ -179,6 +152,7 @@ int main()
 
 
 	TransNum = 800000;
+	//TransNum = 3;
 	TransArr = new Transformation3D[TransNum];
 	for (unsigned int i = 0; i < TransNum; i++)
 	{
@@ -188,6 +162,9 @@ int main()
 			(std::rand() & 0x1FF) - 0xFF
 		);
 	}
+	TransArr[0].Pos = Point3D( 0, 0, +1);
+	TransArr[1].Pos = Point3D(-1, 0, -1);
+	TransArr[2].Pos = Point3D(+1, 0, -1);
 	std::cout << "Count: " << TransNum << "\n";
 	int MemSize = TransNum * sizeof(Transformation3D);
 	std::cout << (MemSize / (1)) << " Bytes\n";

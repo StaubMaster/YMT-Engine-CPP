@@ -1,5 +1,5 @@
 
-COMPILER = c++
+COMPILER = c++ -std=c++11
 
 FLAGS = -Wall -Wextra -Werror
 
@@ -51,6 +51,8 @@ re:
 
 %.exe : $(MAINS_DIR)%.cpp
 	$(COMPILER) $(FLAGS) -I ../include -I ../other -o $@ $^ $(ARC) E:/Utility/msys32/ucrt64/lib/libOpenCL.dll.a -lgdi32
+#	$(COMPILER) $(FLAGS) -I ../include -I ../other -o $@ $^ $(ARC) -lgdi32
+#	$(COMPILER) $(FLAGS) -I ../include -I ../other -o $@ $^ $(ARC) -lglfw
 
 $(ARC) :
 	@$(MAKE) -C $(ARC_DIR) all

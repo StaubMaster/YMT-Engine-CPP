@@ -51,12 +51,11 @@ ShaderCode::ECompileLog::ECompileLog(const std::string log, const std::string pa
 {
 	Log = log;
 	Path = path;
+	Text = "Log returned from compiling File '" + Path + "'.\n\n" + Log;
 }
 const char * ShaderCode::ECompileLog::what() const throw()
 {
-	std::string str = "";
-	str += "Log returned from compiling File '" + Path + "'.\n\n" + Log;
-	return str.c_str();
+	return Text.c_str();
 }
 
 
@@ -92,10 +91,9 @@ ShaderCode ShaderCode::FromFile(const std::string & path)
 ShaderCode::EInvalidFileExtention::EInvalidFileExtention(const std::string & path)
 {
 	Path = path;
+	Text = "File '" + Path + "' has an invalid Extention.";
 }
 const char * ShaderCode::EInvalidFileExtention::what() const throw()
 {
-	std::string str = "";
-	str += "File '" + Path + "' has an invalid Extention.";
-	return str.c_str();
+	return Text.c_str();
 }

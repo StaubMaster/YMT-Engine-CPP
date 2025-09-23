@@ -17,6 +17,7 @@ void UniFloat1::Set(const float * data)
 	if (Program -> Is())
 	{
 		glUniform1fv(Location, Count, data);
+		
 	}
 	else
 	{

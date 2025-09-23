@@ -35,6 +35,7 @@ class BaseShader
 		{
 			private:
 				std::string Log;
+				std::string Text;
 
 			public:
 				ECompileLog(const std::string log);

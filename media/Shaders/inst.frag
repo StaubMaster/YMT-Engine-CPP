@@ -10,6 +10,10 @@ uniform sampler2DArray texture0;
 
 
 in Vert {
+	vec3 Original;
+	vec3 Absolute;
+	vec3 Relative;
+
 	vec3 Tex;
 } fs_inn;
 
@@ -25,17 +29,20 @@ void main()
 
 	float depth_factor;
 
-	depth_factor = gl_FragDepth;
+	//depth_factor = gl_FragDepth;
+	depth_factor = gl_FragCoord.z;
 	depth_factor = depthFactor[4] / (depthFactor[3] - (depth_factor * depthFactor[2]));
+
+	//depth_factor = length(fs_inn.Relative);
 
 	depth_factor = (depth_factor - depthFactor[0]) / depthFactor[1];
 	gl_FragDepth = depth_factor;
 
-	depth_factor = (depth_factor - depthFadeRange[0]) / depthFadeRange[1];
-	depth_factor = min(max(depth_factor, 0), 1);
+	//depth_factor = (depth_factor - depthFadeRange[0]) / depthFadeRange[1];
+	//depth_factor = min(max(depth_factor, 0), 1);
 
-	col = vec3(depth_factor);
-	//col = (col * (1.0 - depth_factor)) + (depth_factor * depthFadeColor);
+	//col = vec3(1.0 - depth_factor);
+	col = (col * (1.0 - depth_factor)) + (depth_factor * depthFadeColor);
 
 
 
