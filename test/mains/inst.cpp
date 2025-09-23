@@ -8,10 +8,8 @@
 #include "Abstract2D/Point2D.hpp"
 
 #include "PolyHedra.hpp"
-#include "PolyHedraBuffer.hpp"
-#include "PolyHedraShader.hpp"
-#include "PolyHedraInstBuffer.hpp"
-#include "PolyHedraInstShader.hpp"
+#include "PolyHedra/ShaderInst.hpp"
+#include "PolyHedra/BufferInst.hpp"
 
 #include "Window.hpp"
 
@@ -41,9 +39,9 @@ void MoveFlatX(Transformation3D & trans, Angle3D spin)
 
 Window * win;
 
-PolyHedraInstShader * PolyInstShader;
-PolyHedraInstBuffer * PolyInstBuffer;
-PolyHedra * Poly0;
+YMT::PolyHedra::ShaderInst * PolyInstShader;
+YMT::PolyHedra::BufferInst * PolyInstBuffer;
+YMT::PolyHedra * Poly0;
 
 Transformation3D view_trans;
 
@@ -142,7 +140,7 @@ int main()
 		win -> FreeFunc = Free;
 		win -> ResizeFunc = Resize;
 
-		PolyInstShader = new PolyHedraInstShader();
+		PolyInstShader = new YMT::PolyHedra::ShaderInst();
 	}
 	catch (std::exception & ex)
 	{
@@ -173,9 +171,9 @@ int main()
 	}
 
 	{
-		Poly0 = PolyHedra::Cube();
-		PolyInstBuffer = new PolyHedraInstBuffer();
-		Poly0 -> ToBuffer(*PolyInstBuffer);
+		Poly0 = YMT::PolyHedra::Cube();
+		PolyInstBuffer = new YMT::PolyHedra::BufferInst();
+		Poly0 -> ToInst(*PolyInstBuffer);
 	}
 
 
