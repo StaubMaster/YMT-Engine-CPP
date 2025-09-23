@@ -1,23 +1,23 @@
-#include "PolyHedraInstBuffer.hpp"
+#include "PolyHedra.hpp"
 
 
 
-PolyHedraInstBuffer::PolyHedraInstBuffer() : BaseBuffer(2),
+YMT::PolyHedra::BufferInst::BufferInst() : BaseBuffer(2),
 	MainID(BufferIDs[0]),
 	InstID(BufferIDs[1])
 {
 	MainCount = 0;
 	InstCount = 0;
-	std::cout << "++++ PolyHedraInstBuffer\n";
+	std::cout << "++++ BufferInst\n";
 }
-PolyHedraInstBuffer::~PolyHedraInstBuffer()
+YMT::PolyHedra::BufferInst::~BufferInst()
 {
-	std::cout << "---- PolyHedraInstBuffer\n";
+	std::cout << "---- BufferInst\n";
 }
 
 
 
-void PolyHedraInstBuffer::DataPolyHedra(int count, const RenderPoint3D * data)
+void YMT::PolyHedra::BufferInst::DataPolyHedra(int count, const RenderPoint3D * data)
 {
 	int size = sizeof(RenderPoint3D);
 	int offset = 0;
@@ -36,7 +36,7 @@ void PolyHedraInstBuffer::DataPolyHedra(int count, const RenderPoint3D * data)
 
 	MainCount = count;
 }
-void PolyHedraInstBuffer::DataTrans(int count, const Transformation3D * data)
+void YMT::PolyHedra::BufferInst::DataTrans(int count, const Transformation3D * data)
 {
 	int size = sizeof(Transformation3D);
 	int offset = 0;
@@ -62,7 +62,7 @@ void PolyHedraInstBuffer::DataTrans(int count, const Transformation3D * data)
 
 	InstCount = count;
 }
-void PolyHedraInstBuffer::Draw()
+void YMT::PolyHedra::BufferInst::Draw()
 {
 	Use();
 	glDrawArraysInstanced(GL_TRIANGLES, 0, MainCount, InstCount);

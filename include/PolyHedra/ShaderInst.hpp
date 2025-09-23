@@ -2,11 +2,14 @@
 # define POLYHEDRA_INST_SHADER_HPP
 
 # include "Graphics/BaseShader.hpp"
+
 # include "Graphics/Uniform/Float/UniTransformation3D.hpp"
 # include "Graphics/Uniform/Float/UniDepth.hpp"
 # include "Graphics/Uniform/Float/UniScale.hpp"
 
-class PolyHedraInstShader : public BaseShader
+# include "PolyHedraData.hpp"
+
+class YMT::PolyHedra::ShaderInst : public BaseShader
 {
 	public:
 		UniScale WindowScale;
@@ -14,8 +17,8 @@ class PolyHedraInstShader : public BaseShader
 		UniTransformation3D UniViewTrans;
 
 	public:
-		PolyHedraInstShader();
-		~PolyHedraInstShader();
+		ShaderInst();
+		~ShaderInst();
 
 	private:
 		void UniformUpdate();

@@ -30,11 +30,13 @@ FILES_SRC = \
 	Graphics/Uniform/Float/UniDepth.cpp \
 	Graphics/Uniform/Float/UniScale.cpp \
 \
-	PolyHedra.cpp \
-	PolyHedraBuffer.cpp \
-	PolyHedraShader.cpp \
-	PolyHedraInstBuffer.cpp \
-	PolyHedraInstShader.cpp \
+	PolyHedra/PolyHedra.cpp \
+	PolyHedra/BufferUni.cpp \
+	PolyHedra/ShaderUni.cpp \
+	PolyHedra/BufferInst.cpp \
+	PolyHedra/ShaderInst.cpp \
+\
+	TextureArray.cpp \
 	Window.cpp
 
 

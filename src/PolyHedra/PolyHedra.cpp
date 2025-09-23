@@ -1,13 +1,15 @@
 #include "PolyHedra.hpp"
 
-PolyHedra::PolyHedra() :
+
+
+YMT::PolyHedra::PolyHedra() :
 	Corners(),
 	FaceIndexes(),
 	FaceTextures()
 {
 	Buffer = NULL;
 }
-PolyHedra::~PolyHedra()
+YMT::PolyHedra::~PolyHedra()
 {
 	if (Buffer != NULL)
 	{
@@ -16,67 +18,16 @@ PolyHedra::~PolyHedra()
 }
 
 
-RenderPoint3D * PolyHedra::ToBufferData(int & count)
-{
-	count = FaceIndexes.Length * 3;
-	RenderPoint3D * data = new RenderPoint3D[count];
-
-	for (unsigned int i = 0; i < FaceIndexes.Length; i++)
-	{
-		Undex3D face = FaceIndexes[i];
-		FaceTex texs = FaceTextures[i];
-
-		int c = i * 3;
-		data[c + 0].Position = Corners[face.X];
-		data[c + 1].Position = Corners[face.Y];
-		data[c + 2].Position = Corners[face.Z];
-
-		data[c + 0].Normal = texs.X;
-		data[c + 1].Normal = texs.Y;
-		data[c + 2].Normal = texs.Z;
-
-		data[c + 0].Texture = Point2D();
-		data[c + 1].Texture = Point2D();
-		data[c + 2].Texture = Point2D();
-	}
-
-	return data;
-}
-void PolyHedra::ToBuffer()
-{
-	Buffer = new PolyHedraBuffer();
-
-	int count;
-	RenderPoint3D * data;
-	data = ToBufferData(count);
-	Buffer -> Data(count, data);
-	delete [] data;
-}
-void PolyHedra::ToBuffer(PolyHedraInstBuffer & Buffer)
-{
-	int count;
-	RenderPoint3D * data;
-	data = ToBufferData(count);
-	Buffer.DataPolyHedra(count, data);
-	delete [] data;
-}
-void PolyHedra::Draw()
-{
-	if (Buffer != NULL)
-	{
-		Buffer -> Draw();
-	}
-}
 
 
 
-void PolyHedra::Edit_Trim()
+void YMT::PolyHedra::Edit_Trim()
 {
 	Corners.Trim();
 	FaceIndexes.Trim();
 	FaceTextures.Trim();
 }
-void PolyHedra::Edit_Face_Color(unsigned int idx0, unsigned int idx1, unsigned int idx2, unsigned int col)
+void YMT::PolyHedra::Edit_Face_Color(unsigned int idx0, unsigned int idx1, unsigned int idx2, unsigned int col)
 {
 	FaceIndexes.Insert(Undex3D(idx0, idx1, idx2));
 
@@ -92,10 +43,10 @@ void PolyHedra::Edit_Face_Color(unsigned int idx0, unsigned int idx1, unsigned i
 	FaceTextures.Insert(texs);
 }
 
-PolyHedra::TexUndex::TexUndex(unsigned int udx, float tex_x, float tex_y) :
+YMT::PolyHedra::TexUndex::TexUndex(unsigned int udx, float tex_x, float tex_y) :
 	Udx(udx), Tex(tex_x, tex_y) { }
 
-void PolyHedra::Edit_Face3(TexUndex corn0, TexUndex corn1, TexUndex corn2)
+void YMT::PolyHedra::Edit_Face3(TexUndex corn0, TexUndex corn1, TexUndex corn2)
 {
 	FaceIndexes.Insert(Undex3D(corn0.Udx, corn1.Udx, corn2.Udx));
 
@@ -105,7 +56,7 @@ void PolyHedra::Edit_Face3(TexUndex corn0, TexUndex corn1, TexUndex corn2)
 	texs.Z = Point3D(corn2.Tex.X, corn2.Tex.Y, 0);
 	FaceTextures.Insert(texs);
 }
-void PolyHedra::Edit_Face4(TexUndex corn0, TexUndex corn1, TexUndex corn2, TexUndex corn3)
+void YMT::PolyHedra::Edit_Face4(TexUndex corn0, TexUndex corn1, TexUndex corn2, TexUndex corn3)
 {
 	Edit_Face3(corn0, corn1, corn2);
 	Edit_Face3(corn2, corn1, corn3);
@@ -113,7 +64,7 @@ void PolyHedra::Edit_Face4(TexUndex corn0, TexUndex corn1, TexUndex corn2, TexUn
 
 
 
-PolyHedra * PolyHedra::Cube(float scale)
+YMT::PolyHedra * YMT::PolyHedra::Cube(float scale)
 {
 	PolyHedra * temp = new PolyHedra();
 
@@ -168,4 +119,68 @@ PolyHedra * PolyHedra::Cube(float scale)
 
 	temp -> Edit_Trim();
 	return temp;
+}
+
+
+
+
+
+
+
+RenderPoint3D * YMT::PolyHedra::ToBufferData(int & count)
+{
+	count = FaceIndexes.Length * 3;
+	RenderPoint3D * data = new RenderPoint3D[count];
+
+	for (unsigned int i = 0; i < FaceIndexes.Length; i++)
+	{
+		Undex3D face = FaceIndexes[i];
+		FaceTex texs = FaceTextures[i];
+
+		int c = i * 3;
+		data[c + 0].Position = Corners[face.X];
+		data[c + 1].Position = Corners[face.Y];
+		data[c + 2].Position = Corners[face.Z];
+
+		data[c + 0].Normal = texs.X;
+		data[c + 1].Normal = texs.Y;
+		data[c + 2].Normal = texs.Z;
+
+		data[c + 0].Texture = Point2D();
+		data[c + 1].Texture = Point2D();
+		data[c + 2].Texture = Point2D();
+	}
+
+	return data;
+}
+
+
+
+void YMT::PolyHedra::ToUni()
+{
+	Buffer = new PolyHedraBuffer();
+
+	int count;
+	RenderPoint3D * data;
+	data = ToBufferData(count);
+	Buffer -> Data(count, data);
+	delete [] data;
+}
+void YMT::PolyHedra::DrawUni()
+{
+	if (Buffer != NULL)
+	{
+		Buffer -> Draw();
+	}
+}
+
+
+
+void YMT::PolyHedra::ToInst(BufferInst & Buffer)
+{
+	int count;
+	RenderPoint3D * data;
+	data = ToBufferData(count);
+	Buffer.DataPolyHedra(count, data);
+	delete [] data;
 }

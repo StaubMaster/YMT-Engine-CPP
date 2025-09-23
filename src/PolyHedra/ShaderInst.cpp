@@ -1,30 +1,28 @@
-#include "PolyHedraShader.hpp"
+#include "PolyHedra.hpp"
 
 
 
-PolyHedraShader::PolyHedraShader()
+YMT::PolyHedra::ShaderInst::ShaderInst()
 	: BaseShader((const ShaderCode []) {
-ShaderCode::FromFile(SHADER_DIR + std::string("test.vert")),
+ShaderCode::FromFile(SHADER_DIR + std::string("inst.vert")),
 ShaderCode::FromFile(SHADER_DIR + std::string("test.frag")),
 }, 2)
 , WindowScale(this, "contentScale")
 , Depth(this, "depthFactor")
-, UniTrans(this, "trans")
 , UniViewTrans(this, "view")
 {
 
 }
-PolyHedraShader::~PolyHedraShader()
+YMT::PolyHedra::ShaderInst::~ShaderInst()
 {
 
 }
 
 
 
-void PolyHedraShader::UniformUpdate()
+void YMT::PolyHedra::ShaderInst::UniformUpdate()
 {
 	WindowScale.Update();
 	Depth.Update();
-	UniTrans.Update();
 	UniViewTrans.Update();
 }

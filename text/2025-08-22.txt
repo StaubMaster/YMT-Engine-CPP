@@ -27,3 +27,42 @@ but I should probably put everything into namespaces first
 and also put some more QualityOfLife stuff ?
 
 
+
+
+have a header for all YMT stuff
+have a header for all Abstract3D stuff
+
+namespace
+
+{
+	YMT::Abstract3D::Point3D
+
+	YMT::Graphics::Uniform::
+	YMT::Graphics::Shader::
+	YMT::Graphics::Buffer::
+}
+
+{
+	"PolyHedra.hpp"
+	YMT::PolyHedra
+	YMT::PolyHedra::ShaderUni
+	YMT::PolyHedra::BufferUni
+	YMT::PolyHedra::ShaderInst
+	YMT::PolyHedra::BufferInst
+}
+
+there arent any shaders that arent in Graphics
+so remove that ?
+
+{
+	YMT::Uniform::
+	YMT::Shader
+	YMT::Buffer
+
+	YMT::Point3D
+}
+
+but in what header should these be ?
+also should the file structure resamble the namespace structure ?
+
+

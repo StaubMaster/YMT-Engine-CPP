@@ -37,17 +37,13 @@ kernel void TransInit(
 	trans.Pos.Y = 0;
 	trans.Pos.Z = 3;
 
-	trans.Rot.X = 0;
+	trans.Rot.X = get_global_id(0) * 0.2;
 	trans.Rot.Y = 0;
 	trans.Rot.Z = 0;
 
-	trans.Rot.SinX = 0;
-	trans.Rot.SinY = 0;
-	trans.Rot.SinZ = 0;
-
-	trans.Rot.CosX = 1;
-	trans.Rot.CosY = 1;
-	trans.Rot.CosZ = 1;
+	trans.Rot.SinX = sincos(trans.Rot.X, &trans.Rot.CosX);
+	trans.Rot.SinY = sincos(trans.Rot.Y, &trans.Rot.CosY);
+	trans.Rot.SinZ = sincos(trans.Rot.Z, &trans.Rot.CosZ);
 
 	bufferO[get_global_id(0)] = trans;
 }

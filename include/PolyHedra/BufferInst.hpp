@@ -9,9 +9,9 @@
 # include "Abstract3D/Undex3D.hpp"
 # include "Abstract3D/Transformation3D.hpp"
 
+# include "PolyHedraData.hpp"
 
-
-class PolyHedraInstBuffer : public BaseBuffer
+class YMT::PolyHedra::BufferInst : public BaseBuffer
 {
 	private:
 		unsigned int & MainID;
@@ -20,13 +20,12 @@ class PolyHedraInstBuffer : public BaseBuffer
 		unsigned int InstCount;
 
 	public:
-		PolyHedraInstBuffer();
-		~PolyHedraInstBuffer();
+		BufferInst();
+		~BufferInst();
 
 	public:
 		void DataPolyHedra(int count, const RenderPoint3D * data);
 		void DataTrans(int count, const Transformation3D * data);
-
 		void Draw();
 };
 
