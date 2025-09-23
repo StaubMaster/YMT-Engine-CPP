@@ -31,4 +31,4 @@ re:
 
 
 %.o : %.c
-	c++ $(FLAGS) -c $^ -o $@
+	cc $(FLAGS) -c $^ -o $@

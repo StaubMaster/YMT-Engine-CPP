@@ -1,6 +1,7 @@
-#version 430
+#version 330
 
-uniform vec3[3] view = { vec3(0, 0, 0), vec3(0, 0, 0), vec3(1, 1, 1) };
+//uniform vec3[3] view = { vec3(0, 0, 0), vec3(0, 0, 0), vec3(1, 1, 1) };
+uniform vec3[3] view;
 
 uniform float[7] depthFactor;
 
@@ -16,6 +17,10 @@ layout(location = 3) in vec3 ISin;
 layout(location = 4) in vec3 ICos;
 
 out Vert {
+	vec3 Original;
+	vec3 Absolute;
+	vec3 Relative;
+
 	vec3 Tex;
 } vs_out;
 
@@ -66,8 +71,8 @@ void main()
 {
 	vs_out.Tex = VTex;
 
-	vec3 pos = VPos;
-	pos = DSA(pos, ISin, ICos) + IPos;
-	pos = ASD(pos - view[0], view[1], view[2]);
-	gl_Position = proj(pos);
+	vs_out.Original = VPos;
+	vs_out.Absolute = DSA(vs_out.Original, ISin, ICos) + IPos;
+	vs_out.Relative = ASD(vs_out.Absolute - view[0], view[1], view[2]);
+	gl_Position = proj(vs_out.Relative);
 }

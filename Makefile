@@ -3,7 +3,7 @@
 
 #NAME = a.exe
 NAME = YMT.a
-COMPILER = c++
+COMPILER = c++ -std=c++11
 FLAGS = -Wall -Wextra -Werror
 
 
@@ -63,8 +63,9 @@ $(NAME) : $(FILES_ABS_OBJ)
 	@mkdir -p $(ARC_X_DIR)
 	cd $(ARC_X_DIR) && ar -x ../../$(ARC_OPENGL)
 	cd $(ARC_X_DIR) && ar -x ../../$(ARC_FILEPARSER)
-	cd $(ARC_X_DIR) && ar -x E:/Utility/glfw-3.4.bin.WIN64/lib-mingw-w64/libglfw3.a
-	ar -rcs $(NAME) $(FILES_ABS_OBJ) $(ARC_X_DIR)* -lgdi32
+#	cd $(ARC_X_DIR) && ar -x E:/Utility/glfw-3.4.bin.WIN64/lib-mingw-w64/libglfw3.a
+#	ar -rcs $(NAME) $(FILES_ABS_OBJ) $(ARC_X_DIR)* -lgdi32
+	ar -rcs $(NAME) $(FILES_ABS_OBJ) $(ARC_X_DIR)*
 
 all:
 	@$(MAKE) $(FILES_ABS_OBJ)

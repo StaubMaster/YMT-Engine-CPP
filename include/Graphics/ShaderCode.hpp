@@ -38,6 +38,7 @@ class ShaderCode
 			private:
 				std::string Log;
 				std::string Path;
+				std::string Text;
 
 			public:
 				ECompileLog(const std::string log, const std::string path);
@@ -56,6 +57,7 @@ class ShaderCode
 		{
 			private:
 				std::string Path;
+				std::string Text;
 
 			public:
 				EInvalidFileExtention(const std::string & path);

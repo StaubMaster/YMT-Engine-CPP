@@ -181,6 +181,7 @@ int main()
 
 
 	TransNum = 800000;
+	//TransNum = 3;
 	TransArr = new Transformation3D[TransNum];
 	for (unsigned int i = 0; i < TransNum; i++)
 	{
@@ -190,6 +191,9 @@ int main()
 			(std::rand() & 0x1FF) - 0xFF
 		);
 	}
+	TransArr[0].Pos = Point3D( 0, 0, +1);
+	TransArr[1].Pos = Point3D(-1, 0, -1);
+	TransArr[2].Pos = Point3D(+1, 0, -1);
 	std::cout << "Count: " << TransNum << "\n";
 	int MemSize = TransNum * sizeof(Transformation3D);
 	std::cout << (MemSize / (1)) << " Bytes\n";

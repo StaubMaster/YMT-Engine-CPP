@@ -73,10 +73,9 @@ void BaseShader::Compile(const ShaderCode * code, int count)
 BaseShader::ECompileLog::ECompileLog(const std::string log)
 {
 	Log = log;
+	Text = "Log returned from compiling File.\n\n" + Log;
 }
 const char * BaseShader::ECompileLog::what() const throw()
 {
-	std::string str = "";
-	str += "Log returned from compiling File.\n\n" + Log;
-	return str.c_str();
+	return Text.c_str();
 }
