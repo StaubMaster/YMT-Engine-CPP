@@ -63,11 +63,11 @@ ARC_FILEPARSER = $(ARC_FILEPARSER_PATH)fileParser.a
 
 $(NAME) : $(FILES_ABS_OBJ)
 	@mkdir -p $(ARC_X_DIR)
-	cd $(ARC_X_DIR) && ar -x ../../$(ARC_OPENGL)
-	cd $(ARC_X_DIR) && ar -x ../../$(ARC_FILEPARSER)
-#	cd $(ARC_X_DIR) && ar -x E:/Utility/glfw-3.4.bin.WIN64/lib-mingw-w64/libglfw3.a
-#	ar -rcs $(NAME) $(FILES_ABS_OBJ) $(ARC_X_DIR)* -lgdi32
-	ar -rcs $(NAME) $(FILES_ABS_OBJ) $(ARC_X_DIR)*
+	ar -x $(ARC_OPENGL) --output ./obj/arc
+	ar -x $(ARC_FILEPARSER) --output ./obj/arc
+	ar -x E:/Utility/glfw-3.4.bin.WIN64/lib-mingw-w64/libglfw3.a --output ./obj/arc
+	ar -rcs $(NAME) $(FILES_ABS_OBJ) $(ARC_X_DIR)* -lgdi32
+#	ar -rcs $(NAME) $(FILES_ABS_OBJ) $(ARC_X_DIR)*
 
 all:
 	@$(MAKE) $(FILES_ABS_OBJ)
