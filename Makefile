@@ -32,11 +32,10 @@ FILES_SRC = \
 \
 	Graphics/Buffer/PolyHedra_3D_InstData.cpp \
 	Graphics/Buffer/PolyHedra_3D_Buffer.cpp \
+	Graphics/Buffer/PolyHedra_3D_Instances.cpp \
 \
 	PolyHedra/PolyHedra.cpp \
-	PolyHedra/BufferUni.cpp \
 	PolyHedra/ShaderUni.cpp \
-	PolyHedra/BufferInst.cpp \
 	PolyHedra/ShaderInst.cpp \
 \
 	TextureArray.cpp \

@@ -5,6 +5,7 @@
 #include "PolyHedra.hpp"
 #include "Window.hpp"
 #include "TextureArray.hpp"
+#include "Graphics/Buffer/PolyHedra_3D_Buffer.hpp"
 
 
 
@@ -37,8 +38,8 @@ void MoveFlatX(Transformation3D & trans, Angle3D spin)
 Window * win;
 
 YMT::PolyHedra::ShaderInst * PolyInstShader;
-YMT::PolyHedra::BufferInst * PolyInstBuffer;
-YMT::PolyHedra * Poly0;
+YMT::PolyHedra * PH;
+PolyHedra_3D_Buffer * PH_Buffer;
 TextureArray * tex_arr;
 
 
@@ -47,7 +48,10 @@ Transformation3D view_trans;
 
 
 
-unsigned int EntityCount = 4;
+unsigned int EntityCountX = 4;
+unsigned int EntityCountY = 4;
+unsigned int EntityCountZ = 4;
+unsigned int EntityCount = EntityCountX * EntityCountY * EntityCountZ;
 
 void CL_PrintError(cl_int err)
 {
@@ -71,7 +75,9 @@ cl::KernelFunctor<
 	Transformation3D *
 > * Kernel_TransInit;
 
-
+cl::KernelFunctor<
+	Transformation3D *
+> * Kernel_TransSpinCenter;
 
 void CL_Init()
 {
@@ -99,6 +105,10 @@ void CL_Init()
 			Transformation3D *
 		>(CL_Program, "TransInit", &err);
 		CL_PrintError(err);
+		Kernel_TransSpinCenter = new cl::KernelFunctor<
+			Transformation3D *
+		>(CL_Program, "TransSpinCenter", &err);
+		CL_PrintError(err);
 	}
 	catch(...)
 	{
@@ -107,17 +117,36 @@ void CL_Init()
 	}
 
 	VMP_O = SVM_Alloc.allocate(BufferSize);
+
+	err = CL_SUCCESS;
+	(*Kernel_TransInit)(
+		cl::EnqueueArgs(
+			cl::NDRange(EntityCountX, EntityCountY, EntityCountZ)
+		),
+		VMP_O,
+		err
+	);
+	CL_PrintError(err);
+	cl::finish();
 }
 void CL_Free()
 {
 	delete Kernel_TransInit;
+	delete Kernel_TransSpinCenter;
 
 	SVM_Alloc.deallocate(VMP_O, BufferSize);
 }
 void CL_Frame()
 {
 	cl_int err = CL_SUCCESS;
-	(*Kernel_TransInit)(
+	/*(*Kernel_TransInit)(
+		cl::EnqueueArgs(
+			cl::NDRange(EntityCount)
+		),
+		VMP_O,
+		err
+	);*/
+	(*Kernel_TransSpinCenter)(
 		cl::EnqueueArgs(
 			cl::NDRange(EntityCount)
 		),
@@ -164,7 +193,8 @@ void Frame(double timeDelta)
 
 	CL_Frame();
 
-	PolyInstBuffer -> DataTrans(EntityCount, VMP_O);
+	//PolyInstBuffer -> DataTrans(EntityCount, VMP_O);
+	PH_Buffer -> BindInst((const PolyHedra_3D_InstData *)VMP_O, EntityCount);
 
 	//glActiveTexture(GL_TEXTURE0);
 	//glBindTexture(GL_TEXTURE_2D_ARRAY, tex_arr);
@@ -172,7 +202,8 @@ void Frame(double timeDelta)
 
 	PolyInstShader -> Use();
 	PolyInstShader -> UniViewTrans.Value(view_trans);
-	PolyInstBuffer -> Draw();
+	//PolyInstBuffer -> Draw();
+	PH_Buffer -> Draw();
 }
 
 void Resize(int w, int h)
@@ -231,9 +262,12 @@ int main()
 	}
 
 	{
-		Poly0 = YMT::PolyHedra::Cube();
-		PolyInstBuffer = new YMT::PolyHedra::BufferInst();
-		Poly0 -> ToInst(*PolyInstBuffer);
+		PH = YMT::PolyHedra::Cube();
+		PH_Buffer = new PolyHedra_3D_Buffer();
+		int count;
+		PolyHedra_MainData * data = PH -> ToMainData(count);
+		PH_Buffer -> BindMain(data, count);
+		delete [] data;
 	}
 
 
@@ -244,9 +278,9 @@ int main()
 
 
 
-	delete Poly0;
+	delete PH;
+	delete PH_Buffer;
 	delete PolyInstShader;
-	delete PolyInstBuffer;
 
 	delete win;
 

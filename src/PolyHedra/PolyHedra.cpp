@@ -134,8 +134,8 @@ PolyHedra_MainData * YMT::PolyHedra::ToMainData(int & count)
 
 	for (unsigned int i = 0; i < FaceIndexes.Length; i++)
 	{
-		Undex3D face = FaceIndexes[i];
-		FaceTex texs = FaceTextures[i];
+		const Undex3D & face = FaceIndexes[i];
+		const FaceTex & texs = FaceTextures[i];
 
 		const Point3D & cornerX = Corners[face.X];
 		const Point3D & cornerY = Corners[face.Y];
@@ -160,7 +160,7 @@ PolyHedra_MainData * YMT::PolyHedra::ToMainData(int & count)
 }
 
 
-
+/*
 void YMT::PolyHedra::ToUni()
 {
 	Buffer = new PolyHedraBuffer();
@@ -189,3 +189,4 @@ void YMT::PolyHedra::ToInst(BufferInst & Buffer)
 	Buffer.DataPolyHedra(count, data);
 	delete [] data;
 }
+*/

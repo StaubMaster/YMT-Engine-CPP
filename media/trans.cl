@@ -33,17 +33,41 @@ kernel void TransInit(
 {
 	Trans3D trans;
 
-	trans.Pos.X = get_global_id(0) * 3;
-	trans.Pos.Y = 0;
-	trans.Pos.Z = 3;
+	trans.Pos.X = (get_global_id(0) - 2.0 + 0.5) * 3;
+	trans.Pos.Y = (get_global_id(1) - 2.0 + 0.5) * 3;
+	trans.Pos.Z = (get_global_id(2) - 2.0 + 0.5) * 3;
 
-	trans.Rot.X = get_global_id(0) * 0.2;
-	trans.Rot.Y = 0;
-	trans.Rot.Z = 0;
+	trans.Rot.X = 0.0;
+	trans.Rot.Y = 0.0;
+	trans.Rot.Z = 0.0;
 
 	trans.Rot.SinX = sincos(trans.Rot.X, &trans.Rot.CosX);
 	trans.Rot.SinY = sincos(trans.Rot.Y, &trans.Rot.CosY);
 	trans.Rot.SinZ = sincos(trans.Rot.Z, &trans.Rot.CosZ);
 
-	bufferO[get_global_id(0)] = trans;
+	bufferO[(4 * (4 * (get_global_id(0)) + get_global_id(1)) + get_global_id(2))] = trans;
+}
+
+
+
+void rot(float * pls, float * mns, float fsin, float fcos)
+{
+	float temp;
+	temp = fcos * (*pls) - fsin * (*mns);
+	*mns = fcos * (*mns) + fsin * (*pls);
+	*pls = temp;
+}
+
+kernel void TransSpinCenter(
+	global Trans3D * buffer
+)
+{
+	Trans3D trans = buffer[get_global_id(0)];
+
+	float angle = 0.01f;
+	float sin0, cos0;
+	sin0 = sincos(angle, &cos0);
+	rot(&trans.Pos.X, &trans.Pos.Z, sin0, cos0);
+
+	buffer[get_global_id(0)] = trans;
 }

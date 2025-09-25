@@ -76,14 +76,6 @@ void PolyHedra_3D_Buffer::BindInst(const PolyHedra_3D_InstData * data, unsigned 
 
 
 
-void PolyHedra_3D_Buffer::Update()
-{
-	if (Instances.Changed)
-	{
-		BindInst(Instances.Data, Instances.Length);
-		Instances.Changed = false;
-	}
-}
 void PolyHedra_3D_Buffer::Draw()
 {
 	glBindVertexArray(BufferArray);

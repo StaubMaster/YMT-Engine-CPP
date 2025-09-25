@@ -11,7 +11,7 @@
 #include "PolyHedra/ShaderInst.hpp"
 #include "TextureArray.hpp"
 
-#include "Graphics/Buffer/PolyHedra_3D_Buffer.hpp"
+#include "Graphics/Buffer/PolyHedra_3D_Instances.hpp"
 
 #include "Window.hpp"
 
@@ -45,7 +45,7 @@ YMT::PolyHedra * Poly0;
 YMT::PolyHedra::ShaderInst * PolyInstShader;
 TextureArray * Tex0;
 
-PolyHedra_3D_Buffer * PH_Buffer;
+PolyHedra_3D_Instances * PH_Instances;
 
 
 Transformation3D view_trans;
@@ -69,7 +69,7 @@ void Free()
 	std::cout << "Free 0\n";
 
 	delete Tex0;
-	delete PH_Buffer;
+	delete PH_Instances;
 
 	std::cout << "Free 1\n";
 }
@@ -88,9 +88,8 @@ void Frame(double timeDelta)
 
 	PolyInstShader -> Use();
 	PolyInstShader -> UniViewTrans.Value(view_trans);
-	//PolyInstBuffer -> Draw();
-	PH_Buffer -> Update();
-	PH_Buffer -> Draw();
+	PH_Instances -> Update();
+	PH_Instances -> Draw();
 }
 
 void Resize(int w, int h)
@@ -152,15 +151,9 @@ int main()
 		Poly0 = YMT::PolyHedra::Cube();
 	}
 
-	PH_Buffer = new PolyHedra_3D_Buffer();
-	{
-		int main_count;
-		PolyHedra_MainData * main_data = Poly0 -> ToMainData(main_count);
-		PH_Buffer -> BindMain(main_data, main_count);
-		delete [] main_data;
-	}
+	PH_Instances = new PolyHedra_3D_Instances(Poly0);
 
-	EntryContainerDynamic<PolyHedra_3D_InstData>::Entry * TestInst = PH_Buffer -> Instances.Alloc(3);
+	EntryContainerDynamic<PolyHedra_3D_InstData>::Entry * TestInst = PH_Instances -> Alloc(3);
 	(*TestInst)[0].Trans.Pos = Point3D( 0, 0, +1);
 	(*TestInst)[1].Trans.Pos = Point3D(-1, 0, -1);
 	(*TestInst)[2].Trans.Pos = Point3D(+1, 0, -1);
@@ -170,7 +163,7 @@ int main()
 	EntryContainerDynamic<PolyHedra_3D_InstData>::Entry ** Entrys = new EntryContainerDynamic<PolyHedra_3D_InstData>::Entry*[j_len];
 	for (int j = 0; j < j_len; j++)
 	{
-		Entrys[j] = PH_Buffer -> Instances.Alloc(i_len);
+		Entrys[j] = PH_Instances -> Alloc(i_len);
 		Point3D center = Point3D(
 			(std::rand() & 0x8F) - 0x7F,
 			(std::rand() & 0x8F) - 0x7F,
@@ -188,8 +181,8 @@ int main()
 	}
 
 	{
-		int MemSize = (PH_Buffer -> Instances.Length) * sizeof(PolyHedra_3D_InstData);
-		std::cout << "Count: " << (PH_Buffer -> Instances.Length) << "\n";
+		int MemSize = (PH_Instances -> Instances.Length) * sizeof(PolyHedra_3D_InstData);
+		std::cout << "Count: " << (PH_Instances -> Instances.Length) << "\n";
 		std::cout << (MemSize / (1)) << " Bytes\n";
 		std::cout << (MemSize / (1 * 1000)) << "k Bytes\n";
 		std::cout << (MemSize / (1 * 1000 * 1000)) << "M Bytes\n";
