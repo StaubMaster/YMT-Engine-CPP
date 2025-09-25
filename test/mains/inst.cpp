@@ -9,8 +9,9 @@
 
 #include "PolyHedra.hpp"
 #include "PolyHedra/ShaderInst.hpp"
-#include "PolyHedra/BufferInst.hpp"
 #include "TextureArray.hpp"
+
+#include "Graphics/Buffer/PolyHedra_3D_Buffer.hpp"
 
 #include "Window.hpp"
 
@@ -40,34 +41,36 @@ void MoveFlatX(Transformation3D & trans, Angle3D spin)
 
 Window * win;
 
-YMT::PolyHedra::ShaderInst * PolyInstShader;
-YMT::PolyHedra::BufferInst * PolyInstBuffer;
 YMT::PolyHedra * Poly0;
+YMT::PolyHedra::ShaderInst * PolyInstShader;
 TextureArray * Tex0;
 
+PolyHedra_3D_Buffer * PH_Buffer;
 
 
 Transformation3D view_trans;
-
-Transformation3D * TransArr;
-unsigned int TransNum;
 
 
 
 void Init()
 {
 	std::cout << "Init 0\n";
+
 	Tex0 = new TextureArray(128, 128, 1, (std::string[])
 	{
 		std::string(IMAGE_DIR) + "Orientation.png",
 	});
+
 	std::cout << "Init 1\n";
 }
 
 void Free()
 {
 	std::cout << "Free 0\n";
+
 	delete Tex0;
+	delete PH_Buffer;
+
 	std::cout << "Free 1\n";
 }
 
@@ -85,7 +88,9 @@ void Frame(double timeDelta)
 
 	PolyInstShader -> Use();
 	PolyInstShader -> UniViewTrans.Value(view_trans);
-	PolyInstBuffer -> Draw();
+	//PolyInstBuffer -> Draw();
+	PH_Buffer -> Update();
+	PH_Buffer -> Draw();
 }
 
 void Resize(int w, int h)
@@ -145,45 +150,67 @@ int main()
 
 	{
 		Poly0 = YMT::PolyHedra::Cube();
-		PolyInstBuffer = new YMT::PolyHedra::BufferInst();
-		Poly0 -> ToInst(*PolyInstBuffer);
 	}
 
-
-
-	TransNum = 800000;
-	//TransNum = 3;
-	TransArr = new Transformation3D[TransNum];
-	for (unsigned int i = 0; i < TransNum; i++)
+	PH_Buffer = new PolyHedra_3D_Buffer();
 	{
-		TransArr[i].Pos = Point3D(
-			(std::rand() & 0x1FF) - 0xFF,
-			(std::rand() & 0x1FF) - 0xFF,
-			(std::rand() & 0x1FF) - 0xFF
-		);
+		int main_count;
+		PolyHedra_MainData * main_data = Poly0 -> ToMainData(main_count);
+		PH_Buffer -> BindMain(main_data, main_count);
+		delete [] main_data;
 	}
-	TransArr[0].Pos = Point3D( 0, 0, +1);
-	TransArr[1].Pos = Point3D(-1, 0, -1);
-	TransArr[2].Pos = Point3D(+1, 0, -1);
-	std::cout << "Count: " << TransNum << "\n";
-	int MemSize = TransNum * sizeof(Transformation3D);
-	std::cout << (MemSize / (1)) << " Bytes\n";
-	std::cout << (MemSize / (1 * 1000)) << "k Bytes\n";
-	std::cout << (MemSize / (1 * 1000 * 1000)) << "M Bytes\n";
-	PolyInstBuffer -> DataTrans(TransNum, TransArr);
 
+	EntryContainerDynamic<PolyHedra_3D_InstData>::Entry * TestInst = PH_Buffer -> Instances.Alloc(3);
+	(*TestInst)[0].Trans.Pos = Point3D( 0, 0, +1);
+	(*TestInst)[1].Trans.Pos = Point3D(-1, 0, -1);
+	(*TestInst)[2].Trans.Pos = Point3D(+1, 0, -1);
 
+	int j_len = 16;
+	int i_len = 16;
+	EntryContainerDynamic<PolyHedra_3D_InstData>::Entry ** Entrys = new EntryContainerDynamic<PolyHedra_3D_InstData>::Entry*[j_len];
+	for (int j = 0; j < j_len; j++)
+	{
+		Entrys[j] = PH_Buffer -> Instances.Alloc(i_len);
+		Point3D center = Point3D(
+			(std::rand() & 0x8F) - 0x7F,
+			(std::rand() & 0x8F) - 0x7F,
+			(std::rand() & 0x8F) - 0x7F
+		);
+		std::cout << "Center: " << center.X << " " << center.Y << " " << center.Z << "\n";
+		for (int i = 0; i < i_len; i++)
+		{
+			(*Entrys[j])[i].Trans.Pos = center + Point3D(
+				(std::rand() & 0x1F) - 0xF,
+				(std::rand() & 0x1F) - 0xF,
+				(std::rand() & 0x1F) - 0xF
+			);
+		}
+	}
+
+	{
+		int MemSize = (PH_Buffer -> Instances.Length) * sizeof(PolyHedra_3D_InstData);
+		std::cout << "Count: " << (PH_Buffer -> Instances.Length) << "\n";
+		std::cout << (MemSize / (1)) << " Bytes\n";
+		std::cout << (MemSize / (1 * 1000)) << "k Bytes\n";
+		std::cout << (MemSize / (1 * 1000 * 1000)) << "M Bytes\n";
+	}
 
 	std::cout << "++++ Run\n";
 	win -> Run();
 	std::cout << "---- Run\n";
 
-
+	std::cout << "Dispose Test\n";
+	//TestInst -> Dispose();
+	std::cout << "Dispose Entrys\n";
+	for (int j = 0; j < j_len; j++)
+	{
+		//Entrys[j] -> Dispose();
+	}
+	std::cout << "Dispose Done\n";
+	delete [] Entrys;
 
 	delete Poly0;
 	delete PolyInstShader;
-	delete PolyInstBuffer;
-	delete [] TransArr;
 
 	delete win;
 

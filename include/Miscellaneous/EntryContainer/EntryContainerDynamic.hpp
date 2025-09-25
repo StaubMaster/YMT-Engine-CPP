@@ -18,15 +18,16 @@ class EntryContainerDynamic : public EntryContainerBase<T>
 {
 	public:
 		int Length;
-	
+
 	public:
 		EntryContainerDynamic() : EntryContainerBase<T>(0)
 		{
 			Length = 0;
+			std::cout << "++++ EntryContainerDynamic\n";
 		}
 		virtual ~EntryContainerDynamic()
 		{
-
+			std::cout << "---- EntryContainerDynamic\n";
 		}
 
 	private:
@@ -34,16 +35,18 @@ class EntryContainerDynamic : public EntryContainerBase<T>
 		{
 			T * data = new T[limit];
 
-			for (int i = 0; i < this -> Size; i++)
+			for (int i = 0; i < Length; i++)
 			{
 				data[i] = this -> Data[i];
 			}
 
 			delete [] (this -> Data);
 			this -> Data = data;
+			this -> Size = limit;
 		}
 		void Grow(int size)
 		{
+			std::cout << "Grow() " << Length << " + " << size << " > " << (this -> Size) << " ?\n";
 			if (Length + size > this -> Size)
 			{
 				CopyNewSize(Length + size);
@@ -58,7 +61,7 @@ class EntryContainerDynamic : public EntryContainerBase<T>
 	protected:
 		void RemapEntrys() override
 		{
-			int offset;
+			int offset = 0;
 			for (int i = 0; i < (int)(this -> EntryRefs.size()); i++)
 			{
 				this -> EntryRefs[i].Offset = offset;
@@ -89,7 +92,7 @@ class EntryContainerDynamic : public EntryContainerBase<T>
 				off0++;
 				off1++;
 			}
-			Length = off0;
+			this -> Size = off0;
 		}
 	public:
 		typename EntryContainerBase<T>::Entry * Alloc(int size) override
@@ -124,7 +127,7 @@ class EntryContainerDynamic : public EntryContainerBase<T>
 	public:
 		static void Test()
 		{
-			std::cout << "EntryContainerDynamic<> Test >>>>";
+			std::cout << "EntryContainerDynamic<> Test >>>>\n";
 
 			EntryContainerDynamic<int> * container = new EntryContainerDynamic<int>();
 
@@ -149,14 +152,22 @@ class EntryContainerDynamic : public EntryContainerBase<T>
 
 			TestShowData(container);
 
+			std::cout << "Dispose 1\n";
 			entry[1] -> Dispose();
 
 			TestShowData(container);
-
 			TestShowIndexe(entry, 5);
 
+			std::cout << "Dispose 2\n";
 			entry[2] -> Dispose();
 
+			TestShowData(container);
+			TestShowIndexe(entry, 5);
+
+			std::cout << "New\n";
+			entry[1] = container -> Alloc(2);
+
+			TestShowData(container);
 			TestShowIndexe(entry, 5);
 
 			for (int i = 0; i < 5; i++)
@@ -165,7 +176,7 @@ class EntryContainerDynamic : public EntryContainerBase<T>
 			}
 			delete [] entry;
 			delete container;
-			std::cout << "EntryContainerDynamic<> Test <<<<";
+			std::cout << "EntryContainerDynamic<> Test <<<<\n";
 		}
 };
 

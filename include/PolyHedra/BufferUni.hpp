@@ -2,7 +2,7 @@
 # define POS_COL_BUFFER
 
 # include "Graphics/BaseBuffer.hpp"
-# include "RenderPoint3D.hpp"
+# include "Graphics/Buffer/PolyHedra_MainData.hpp"
 
 # include "Abstract2D/Point2D.hpp"
 # include "Abstract3D/Point3D.hpp"
@@ -21,7 +21,7 @@ class PolyHedraBuffer : public BaseBuffer
 		~PolyHedraBuffer();
 
 	public:
-		void Data(int count, const RenderPoint3D * data);
+		void Data(int count, const PolyHedra_MainData * data);
 
 		void Draw();
 };

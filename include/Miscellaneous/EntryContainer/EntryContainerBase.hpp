@@ -39,7 +39,7 @@ class EntryContainerBase
 					Offset = 0;
 					Length = 0;
 
-					std::cout << "++++ Entry()\n";
+					//std::cout << "++++ Entry()\n";
 				}
 				Entry(const Entry & other)
 				{
@@ -49,7 +49,7 @@ class EntryContainerBase
 					Offset = other.Offset;
 					Length = other.Length;
 
-					std::cout << "++++ Entry(other)\n";
+					//std::cout << "++++ Entry(other)\n";
 				}
 				Entry(EntryContainerBase<T> * container, int entry_idx, int off, int len)
 				{
@@ -59,11 +59,11 @@ class EntryContainerBase
 					Offset = off;
 					Length = len;
 
-					std::cout << "++++ Entry(container)\n";
+					//std::cout << "++++ Entry(container)\n";
 				}
 				virtual ~Entry()
 				{
-					std::cout << "---- Entry()\n";
+					//std::cout << "---- Entry()\n";
 				};
 
 			public:
@@ -138,7 +138,7 @@ class EntryContainerBase
 		Entry * AllocEntry(int off, int len)
 		{
 			int idx = EntryRefs.size();
-			EntryRefs.push_back(Entry(this, EntryRefs.size(), off, len));
+			EntryRefs.push_back(Entry(this, idx, off, len));
 			Changed = true;
 			return &(EntryRefs[idx]);
 		}

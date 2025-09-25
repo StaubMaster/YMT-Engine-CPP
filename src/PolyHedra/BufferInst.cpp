@@ -17,9 +17,9 @@ YMT::PolyHedra::BufferInst::~BufferInst()
 
 
 
-void YMT::PolyHedra::BufferInst::DataPolyHedra(int count, const RenderPoint3D * data)
+void YMT::PolyHedra::BufferInst::DataPolyHedra(int count, const PolyHedra_MainData * data)
 {
-	int size = sizeof(RenderPoint3D);
+	int size = sizeof(PolyHedra_MainData);
 	int offset = 0;
 
 	Use();

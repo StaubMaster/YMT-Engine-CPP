@@ -8,7 +8,6 @@ FLAGS = -Wall -Wextra -Werror
 MAINS = \
 	test.cpp \
 	inst.cpp \
-	inst_new.cpp \
 	test_inst_CL.cpp
 #	basic_openCL.cpp \
 #	better_openCL.cpp \

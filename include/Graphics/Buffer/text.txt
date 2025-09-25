@@ -1,0 +1,44 @@
+
+how should I implement this ?
+should I do all the abstract Base stuff ?
+probably yes
+
+Base
+{
+	BaseBuffer
+	MainBuffer<MainData>
+	InstBuffer<MainData, InstData>
+}
+
+PH
+{
+	PolyHedra_MainData
+	PolyHedra_Base_Buffer<InstData>
+	PH_3D
+	{
+		PolyHedra_3D_InstData
+		PolyHedra_3D_Buffer
+	}
+}
+
+is the Base stuff needed ?
+or should each Buffer just implement everything itself
+my only real "Problem" here is Textures ?
+you can only hava maximum of 16 to 32 Textures at once
+make a BaseTexture thing
+which Inheris into Texture2D, Texture2DArray and such
+then BaseBuffer can have a number of Those ?
+
+do the same with the Buffers
+so there is a BufferArray
+then there is BaseBuffer
+which inherits into MainBuffer<MainDataType> and InstBuffer<InstDataType>
+
+should I try to do that right now or just slap something together that works ?
+
+but for BufferTypes there is only really Main and Inst
+which need different Draw calls
+and Textures are their own thing anyway
+so have those in PolyHedra_Buffer as a seperate thing anyway
+
+

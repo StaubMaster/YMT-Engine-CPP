@@ -7,6 +7,7 @@
 # include "Abstract3D/Undex3D.hpp"
 
 # include "BufferUni.hpp"
+# include "Graphics/Buffer/PolyHedra_MainData.hpp"
 
 namespace YMT
 {
@@ -15,19 +16,15 @@ class PolyHedra
 	private:
 		struct FaceTex
 		{
-			//	X Y Z has nothing to do with Direction
-			//	it is just to be the same as with Undex3D
-			Point3D	X;
-			Point3D	Y;
-			Point3D	Z;
-			//	3D for Color for Testing
+			Point2D	X;
+			Point2D	Y;
+			Point2D	Z;
 		};
 		struct TexUndex
 		{
 			unsigned int Udx;
 			Point2D Tex;
 
-			public:
 			TexUndex(unsigned int udx, float tex_x, float tex_y);
 		};
 
@@ -48,7 +45,7 @@ class PolyHedra
 
 
 	private:
-		void Edit_Face_Color(unsigned int idx0, unsigned int idx1, unsigned int idx2, unsigned int col);
+		//void Edit_Face_Color(unsigned int idx0, unsigned int idx1, unsigned int idx2, unsigned int col);
 		void Edit_Face3(TexUndex corn0, TexUndex corn1, TexUndex corn2);
 		void Edit_Face4(TexUndex corn0, TexUndex corn1, TexUndex corn2, TexUndex corn3);
 		void Edit_Trim();
@@ -62,10 +59,20 @@ class PolyHedra
 		class ShaderInst;
 		class BufferInst;
 
-	private:
-		RenderPoint3D * ToBufferData(int & count);
-
 	public:
+		/*
+			I dont like the data and the Length being seperate
+			I also dont like worrying about deleting thins
+			but how else would I do that
+			since returning something here creates a new object ?
+			where I then have to eighter
+				copy all the data
+			or
+				copy the pointer over
+				and delete the old one
+		*/
+		PolyHedra_MainData * ToMainData(int & count);
+
 		void ToUni();
 		void ToUni(PolyHedraBuffer & Buffer);
 		void DrawUni();

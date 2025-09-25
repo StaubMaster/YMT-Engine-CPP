@@ -27,7 +27,7 @@ void YMT::PolyHedra::Edit_Trim()
 	FaceIndexes.Trim();
 	FaceTextures.Trim();
 }
-void YMT::PolyHedra::Edit_Face_Color(unsigned int idx0, unsigned int idx1, unsigned int idx2, unsigned int col)
+/*void YMT::PolyHedra::Edit_Face_Color(unsigned int idx0, unsigned int idx1, unsigned int idx2, unsigned int col)
 {
 	FaceIndexes.Insert(Undex3D(idx0, idx1, idx2));
 
@@ -41,7 +41,7 @@ void YMT::PolyHedra::Edit_Face_Color(unsigned int idx0, unsigned int idx1, unsig
 	texs.Y = color;
 	texs.Z = color;
 	FaceTextures.Insert(texs);
-}
+}*/
 
 YMT::PolyHedra::TexUndex::TexUndex(unsigned int udx, float tex_x, float tex_y) :
 	Udx(udx), Tex(tex_x, tex_y) { }
@@ -51,9 +51,9 @@ void YMT::PolyHedra::Edit_Face3(TexUndex corn0, TexUndex corn1, TexUndex corn2)
 	FaceIndexes.Insert(Undex3D(corn0.Udx, corn1.Udx, corn2.Udx));
 
 	FaceTex texs;
-	texs.X = Point3D(corn0.Tex.X, corn0.Tex.Y, 0);
-	texs.Y = Point3D(corn1.Tex.X, corn1.Tex.Y, 0);
-	texs.Z = Point3D(corn2.Tex.X, corn2.Tex.Y, 0);
+	texs.X = Point2D(corn0.Tex.X, corn0.Tex.Y);
+	texs.Y = Point2D(corn1.Tex.X, corn1.Tex.Y);
+	texs.Z = Point2D(corn2.Tex.X, corn2.Tex.Y);
 	FaceTextures.Insert(texs);
 }
 void YMT::PolyHedra::Edit_Face4(TexUndex corn0, TexUndex corn1, TexUndex corn2, TexUndex corn3)
@@ -127,28 +127,33 @@ YMT::PolyHedra * YMT::PolyHedra::Cube(float scale)
 
 
 
-RenderPoint3D * YMT::PolyHedra::ToBufferData(int & count)
+PolyHedra_MainData * YMT::PolyHedra::ToMainData(int & count)
 {
 	count = FaceIndexes.Length * 3;
-	RenderPoint3D * data = new RenderPoint3D[count];
+	PolyHedra_MainData * data = new PolyHedra_MainData[count];
 
 	for (unsigned int i = 0; i < FaceIndexes.Length; i++)
 	{
 		Undex3D face = FaceIndexes[i];
 		FaceTex texs = FaceTextures[i];
 
+		const Point3D & cornerX = Corners[face.X];
+		const Point3D & cornerY = Corners[face.Y];
+		const Point3D & cornerZ = Corners[face.Z];
+		Point3D normal = Point3D::cross(cornerY - cornerX, cornerZ - cornerX);
+
 		int c = i * 3;
-		data[c + 0].Position = Corners[face.X];
-		data[c + 1].Position = Corners[face.Y];
-		data[c + 2].Position = Corners[face.Z];
+		data[c + 0].Position = cornerX;
+		data[c + 1].Position = cornerY;
+		data[c + 2].Position = cornerZ;
 
-		data[c + 0].Normal = texs.X;
-		data[c + 1].Normal = texs.Y;
-		data[c + 2].Normal = texs.Z;
+		data[c + 0].Normal = normal;
+		data[c + 1].Normal = normal;
+		data[c + 2].Normal = normal;
 
-		data[c + 0].Texture = Point2D();
-		data[c + 1].Texture = Point2D();
-		data[c + 2].Texture = Point2D();
+		data[c + 0].Texture = texs.X;
+		data[c + 1].Texture = texs.Y;
+		data[c + 2].Texture = texs.Z;
 	}
 
 	return data;
@@ -161,8 +166,8 @@ void YMT::PolyHedra::ToUni()
 	Buffer = new PolyHedraBuffer();
 
 	int count;
-	RenderPoint3D * data;
-	data = ToBufferData(count);
+	PolyHedra_MainData * data;
+	data = ToMainData(count);
 	Buffer -> Data(count, data);
 	delete [] data;
 }
@@ -179,8 +184,8 @@ void YMT::PolyHedra::DrawUni()
 void YMT::PolyHedra::ToInst(BufferInst & Buffer)
 {
 	int count;
-	RenderPoint3D * data;
-	data = ToBufferData(count);
+	PolyHedra_MainData * data;
+	data = ToMainData(count);
 	Buffer.DataPolyHedra(count, data);
 	delete [] data;
 }
