@@ -13,6 +13,8 @@
 
 #include "Graphics/Buffer/PolyHedra_3D_Instances.hpp"
 #include "Graphics/Uniform/Abstract3D/UniTrans3D.hpp"
+#include "Graphics/Uniform/Abstract1D/UniDepthFactors.hpp"
+#include "Graphics/Uniform/Abstract2D/UniSizeRatio2D.hpp"
 #include "Graphics/Uniform/GenericShaderUniform.hpp"
 #include "Graphics/Uniform/GenericUniformBase.hpp"
 
@@ -49,8 +51,15 @@ TextureArray * Tex0;
 PolyHedra_3D_Instances * PH_Instances;
 
 YMT::PolyHedra::ShaderInst * PolyInstShader;
+
 UniTrans3D * Uni_Inst_View;
-GenericUniformBase<UniTrans3D, Transformation3D> * Uni_View;
+MultiTrans3D * Multi_View;
+
+UniDepthFactors * Uni_Inst_DepthFactors;
+MultiDepthFactors * Multi_DepthFactors;
+
+UniSizeRatio2D * Uni_Inst_ViewPortSizeRatio;
+MultiSizeRatio2D * Multi_ViewPortSizeRatio;
 
 Transformation3D view_trans;
 
@@ -91,15 +100,16 @@ void Frame(double timeDelta)
 	Tex0 -> Bind();
 
 	PolyInstShader -> Use();
-	PolyInstShader -> UniViewTrans.Value(view_trans);
-	Uni_View -> ChangeData(view_trans);
+	//PolyInstShader -> UniViewTrans.Value(view_trans);
+	Multi_View -> ChangeData(view_trans);
 	PH_Instances -> Update();
 	PH_Instances -> Draw();
 }
 
 void Resize(int w, int h)
 {
-	PolyInstShader -> WindowScale.Value(w, h);
+	//PolyInstShader -> WindowScale.Value(w, h);
+	Multi_ViewPortSizeRatio -> ChangeData(SizeRatio2D(w, h));
 }
 
 
@@ -144,7 +154,7 @@ int main()
 	{
 		float near = 0.1f;
 		float far = 1000.0f;
-		PolyInstShader -> Depth.Value(near, far);
+		//PolyInstShader -> Depth.Value(near, far);
 
 		view_trans = Transformation3D(
 			Point3D(0, 0, 0),
@@ -152,11 +162,24 @@ int main()
 		);
 
 		Uni_Inst_View = new UniTrans3D("View", *PolyInstShader);
-		Uni_View = new GenericUniformBase<UniTrans3D, Transformation3D>("View");
+		Multi_View = new MultiTrans3D("View");
 
-		Uni_View -> FindUniforms((BaseShader*[]) {
+		Uni_Inst_DepthFactors = new UniDepthFactors("DepthFactors", *PolyInstShader);
+		Multi_DepthFactors = new MultiDepthFactors("DepthFactors");
+
+		Uni_Inst_ViewPortSizeRatio = new UniSizeRatio2D("ViewPortSizeRatio", *PolyInstShader);
+		Multi_ViewPortSizeRatio = new MultiSizeRatio2D("ViewPortSizeRatio");
+
+		BaseShader * shaders [] = {
 			PolyInstShader
-		}, 1);
+		};
+		int shader_count = 1;
+
+		Multi_View -> FindUniforms(shaders, shader_count);
+		Multi_DepthFactors -> FindUniforms(shaders, shader_count);
+		Multi_ViewPortSizeRatio -> FindUniforms(shaders, shader_count);
+
+		Multi_DepthFactors -> ChangeData(DepthFactors(near, far));
 	}
 
 	{
@@ -207,8 +230,13 @@ int main()
 
 	delete Poly0;
 	delete PolyInstShader;
+
 	delete Uni_Inst_View;
-	delete Uni_View;
+	delete Multi_View;
+	delete Uni_Inst_DepthFactors;
+	delete Multi_DepthFactors;
+	delete Uni_Inst_ViewPortSizeRatio;
+	delete Multi_ViewPortSizeRatio;
 
 	delete win;
 

@@ -14,15 +14,22 @@ struct Trans3D
 	Angle3D Rot;
 };
 
+struct SizeRatio2D
+{
+	vec2 Size;
+	vec2 Ratio;
+};
+
 
 
 uniform Trans3D View;
 uniform vec3[3] view;
 
+uniform float[7] DepthFactors;
 uniform float[7] depthFactor;
 
 uniform vec2[2] contentScale;
-
+uniform SizeRatio2D ViewPortSizeRatio;
 
 
 layout(location = 0) in vec3 VPos;
@@ -78,11 +85,14 @@ vec4 proj(in vec3 p_inn)
 
 	p_out.x = p_inn.x;
 	p_out.y = p_inn.y;
-	p_out.z = p_inn.z * depthFactor[5] - depthFactor[6];
+//	p_out.z = p_inn.z * depthFactor[5] - depthFactor[6];
+	p_out.z = p_inn.z * DepthFactors[5] - DepthFactors[6];
 	p_out.w = p_inn.z;
 
-	p_out.x = p_out.x * contentScale[1].x;
-	p_out.y = p_out.y * contentScale[1].y;
+//	p_out.x = p_out.x * contentScale[1].x;
+//	p_out.y = p_out.y * contentScale[1].y;
+	p_out.x = p_out.x * ViewPortSizeRatio.Ratio.x;
+	p_out.y = p_out.y * ViewPortSizeRatio.Ratio.y;
 
 	return p_out;
 }

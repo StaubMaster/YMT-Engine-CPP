@@ -1,6 +1,21 @@
 
 reorganize Files
 
+rename Abstract to Data ?
+is that less or more vague ?
+
+need to rename the new Uniform stuff to Uniform and Multiform
+remove old Uniform stuff
+should all the Data stuff be put into one Folder ?
+instead of seperate by Dimension ?
+also should the PointN be renamed to FloatN ?
+same with IndexN and UndexN to IntN and UIntN ?
+nah
+
+should I put the Uni and Multi in their respective Class as a nested Class ?
+pretty use Classes in C++ are all the like parial classes in C#
+so if you include a Header that adds more stuff onto a Class, that dosent conflict with anything already there
+then it just adds on
 
 
 
@@ -54,8 +69,6 @@ but creating things myself gives me more freedom ?
 	or at least outside the Fragment Shader
 
 
-
-also the new Generic Shader/Uniform Stuff
 
 
 

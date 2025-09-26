@@ -32,7 +32,7 @@ class BaseShader
 	protected:
 		virtual void UniformUpdate() = 0;
 	public:
-		void UniformsUpdate();	//	not currently implemented
+		void UniformsUpdate();
 		int UniformFind(const std::string & name) const;
 
 	private:

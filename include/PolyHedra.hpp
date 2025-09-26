@@ -3,8 +3,6 @@
 
 # include "PolyHedra/PolyHedraData.hpp"
 
-# include "PolyHedra/ShaderUni.hpp"
-
 # include "PolyHedra/ShaderInst.hpp"
 
 #endif

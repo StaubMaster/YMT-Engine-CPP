@@ -16,6 +16,9 @@ FILES_SRC = \
 	Abstract3D/Undex3D.cpp \
 \
 	Abstract2D/Point2D.cpp \
+	Abstract2D/SizeRatio2D.cpp \
+\
+	Abstract1D/DepthFactors.cpp \
 \
 	Graphics/ShaderCode.cpp \
 	Graphics/BaseShader.cpp \
@@ -27,22 +30,15 @@ FILES_SRC = \
 	Graphics/Uniform/Abstract3D/UniPoint3D.cpp \
 	Graphics/Uniform/Abstract3D/UniAngle3D.cpp \
 	Graphics/Uniform/Abstract3D/UniTrans3D.cpp \
-\
-	Graphics/Uniform/UniBase.cpp \
-	Graphics/Uniform/Float/UniFloatN.cpp \
-	Graphics/Uniform/Float/UniFloat1.cpp \
-	Graphics/Uniform/Float/UniFloat2.cpp \
-	Graphics/Uniform/Float/UniFloat3.cpp \
-	Graphics/Uniform/Float/UniTransformation3D.cpp \
-	Graphics/Uniform/Float/UniDepth.cpp \
-	Graphics/Uniform/Float/UniScale.cpp \
+	Graphics/Uniform/Abstract1D/UniDepthFactors.cpp \
+	Graphics/Uniform/Abstract2D/UniPoint2D.cpp \
+	Graphics/Uniform/Abstract2D/UniSizeRatio2D.cpp \
 \
 	Graphics/Buffer/PolyHedra_3D_InstData.cpp \
 	Graphics/Buffer/PolyHedra_3D_Buffer.cpp \
 	Graphics/Buffer/PolyHedra_3D_Instances.cpp \
 \
 	PolyHedra/PolyHedra.cpp \
-	PolyHedra/ShaderUni.cpp \
 	PolyHedra/ShaderInst.cpp \
 \
 	TextureArray.cpp \

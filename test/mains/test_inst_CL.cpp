@@ -201,20 +201,27 @@ void Frame(double timeDelta)
 	tex_arr -> Bind();
 
 	PolyInstShader -> Use();
-	PolyInstShader -> UniViewTrans.Value(view_trans);
+	//PolyInstShader -> UniViewTrans.Value(view_trans);
 	//PolyInstBuffer -> Draw();
 	PH_Buffer -> Draw();
 }
 
 void Resize(int w, int h)
 {
-	PolyInstShader -> WindowScale.Value(w, h);
+	//PolyInstShader -> WindowScale.Value(w, h);
+	(void)w;
+	(void)h;
 }
 
 
 
 int main()
 {
+	std::cout << "!!!!!!!!!!!!!!!!\n";
+	std::cout << "Old Uniforms have been removed and need to be replaced\n";
+	std::cout << "!!!!!!!!!!!!!!!!\n";
+	return 0;
+
 	if (glfwInit() == 0)
 	{
 		std::cout << "Init Failed\n";
@@ -253,7 +260,9 @@ int main()
 	{
 		float near = 0.1f;
 		float far = 1000.0f;
-		PolyInstShader -> Depth.Value(near, far);
+		//PolyInstShader -> Depth.Value(near, far);
+		(void)near;
+		(void)far;
 
 		view_trans = Transformation3D(
 			Point3D(0, 0, 0),

@@ -18,3 +18,15 @@ void UniTrans3D::PutData(Transformation3D t)
 	Pos.PutData(t.Pos);
 	Rot.PutData(t.Rot);
 }
+
+
+
+
+
+
+
+MultiTrans3D::MultiTrans3D(std::string name) :
+	GenericUniformBase<UniTrans3D, Transformation3D>(name)
+{
+
+}

@@ -7,9 +7,9 @@ YMT::PolyHedra::ShaderInst::ShaderInst()
 ShaderCode::FromFile(SHADER_DIR + std::string("inst.vert")),
 ShaderCode::FromFile(SHADER_DIR + std::string("inst.frag")),
 }, 2)
-, WindowScale(this, "contentScale")
-, Depth(this, "depthFactor")
-, UniViewTrans(this, "view")
+//, WindowScale(this, "contentScale")
+//, Depth(this, "depthFactor")
+//, UniViewTrans(this, "view")
 {
 
 }
@@ -22,7 +22,7 @@ YMT::PolyHedra::ShaderInst::~ShaderInst()
 
 void YMT::PolyHedra::ShaderInst::UniformUpdate()
 {
-	WindowScale.Update();
-	Depth.Update();
-	UniViewTrans.Update();
+	//WindowScale.Update();
+	//Depth.Update();
+	//UniViewTrans.Update();
 }

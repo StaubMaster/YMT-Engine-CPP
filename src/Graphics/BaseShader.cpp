@@ -27,6 +27,7 @@ void BaseShader::Use()
 		glUseProgram(ID);
 		BaseShader::CurrentID = ID;
 		UniformUpdate();
+		UniformsUpdate();
 	}
 }
 bool BaseShader::Is() const
@@ -36,6 +37,16 @@ bool BaseShader::Is() const
 
 
 
+void BaseShader::UniformsUpdate()
+{
+	for (int i = 0; i < (int)Uniforms.size(); i++)
+	{
+		if (Uniforms[i] -> Changed)
+		{
+			Uniforms[i] -> PutData();
+		}
+	}
+}
 int BaseShader::UniformFind(const std::string & name) const
 {
 	int location = glGetUniformLocation(ID, name.c_str());
