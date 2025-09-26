@@ -4,7 +4,7 @@
 #include <iostream>
 
 UniDepthFactors::UniDepthFactors(std::string name, BaseShader & shader) :
-	GenericShaderUniform<DepthFactors>(name, shader)
+	GenericUniformBase<DepthFactors>(name, shader)
 {
 	Location = shader.UniformFind(name);
 	//std::cout << "UniDepthFactors.Location: " << Location << "\n";
@@ -22,7 +22,7 @@ void UniDepthFactors::PutData(DepthFactors df)
 
 
 MultiDepthFactors::MultiDepthFactors(std::string name) :
-	GenericUniformBase<UniDepthFactors, DepthFactors>(name)
+	GenericMultiformBase<UniDepthFactors, DepthFactors>(name)
 {
 	
 }

@@ -3,7 +3,7 @@
 #include "OpenGL/openGL.h"
 
 UniPoint3D::UniPoint3D(std::string name, BaseShader & shader) :
-	GenericShaderUniform<Point3D>(name, shader)
+	GenericUniformBase<Point3D>(name, shader)
 {
 	Location = shader.UniformFind(name);
 	std::cout << "UniPoint3D.Location: " << Location << "\n";

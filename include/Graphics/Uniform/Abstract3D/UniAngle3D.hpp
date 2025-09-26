@@ -1,12 +1,13 @@
 
-#ifndef  UNI_NEW_Angle_3D_HPP
-# define UNI_NEW_Angle_3D_HPP
+#ifndef  UNI_Angle_3D_HPP
+# define UNI_Angle_3D_HPP
+
+# include "Graphics/BaseShader.hpp"
+# include "Graphics/Uniform/Base/GenericUniformBase.hpp"
 
 # include "Abstract.hpp"
-# include "Graphics/BaseShader.hpp"
-# include "Graphics/Uniform/GenericShaderUniform.hpp"
 
-class UniAngle3D : public GenericShaderUniform<Angle3D>
+class UniAngle3D : public GenericUniformBase<Angle3D>
 {
 	private:
 		int LocationSin;

@@ -4,7 +4,7 @@
 #include <iostream>
 
 UniTrans3D::UniTrans3D(std::string name, BaseShader & shader) :
-	GenericShaderUniform<Transformation3D>(name, shader),
+	GenericUniformBase<Transformation3D>(name, shader),
 	Pos(name + ".Pos", shader),
 	Rot(name + ".Rot", shader)
 {
@@ -26,7 +26,7 @@ void UniTrans3D::PutData(Transformation3D t)
 
 
 MultiTrans3D::MultiTrans3D(std::string name) :
-	GenericUniformBase<UniTrans3D, Transformation3D>(name)
+	GenericMultiformBase<UniTrans3D, Transformation3D>(name)
 {
 
 }

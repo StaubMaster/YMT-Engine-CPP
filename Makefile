@@ -24,8 +24,8 @@ FILES_SRC = \
 	Graphics/BaseShader.cpp \
 	Graphics/BaseBuffer.cpp \
 \
-	Graphics/Uniform/ShaderUniform.cpp \
-	Graphics/Uniform/UniformBase.cpp \
+	Graphics/Uniform/Base/UniformBase.cpp \
+	Graphics/Uniform/Base/MultiformBase.cpp \
 \
 	Graphics/Uniform/Abstract3D/UniPoint3D.cpp \
 	Graphics/Uniform/Abstract3D/UniAngle3D.cpp \

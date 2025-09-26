@@ -4,7 +4,7 @@
 #include <iostream>
 
 UniSizeRatio2D::UniSizeRatio2D(std::string name, BaseShader & shader) :
-	GenericShaderUniform<SizeRatio2D>(name, shader),
+	GenericUniformBase<SizeRatio2D>(name, shader),
 	Size(name + ".Size", shader),
 	Ratio(name + ".Ratio", shader)
 {
@@ -24,7 +24,7 @@ void UniSizeRatio2D::PutData(SizeRatio2D sr)
 
 
 MultiSizeRatio2D::MultiSizeRatio2D(std::string name) :
-	GenericUniformBase<UniSizeRatio2D, SizeRatio2D>(name)
+	GenericMultiformBase<UniSizeRatio2D, SizeRatio2D>(name)
 {
 	
 }

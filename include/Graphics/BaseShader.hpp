@@ -6,9 +6,9 @@
 # include <vector>
 # include "OpenGL/openGL.h"
 # include "ShaderCode.hpp"
-# include "Graphics/Uniform/ShaderUniform.hpp"
+# include "Graphics/Uniform/Base/UniformBase.hpp"
 
-class ShaderUniform;
+class UniformBase;
 
 class BaseShader
 {
@@ -18,7 +18,7 @@ class BaseShader
 	private:
 		int ID;
 	public:
-		std::vector<ShaderUniform *> Uniforms;
+		std::vector<UniformBase *> Uniforms;
 
 	protected:
 		BaseShader(const ShaderCode * code, int count);

@@ -3,7 +3,7 @@
 #include "OpenGL/openGL.h"
 
 UniAngle3D::UniAngle3D(std::string name, BaseShader & shader) :
-	GenericShaderUniform<Angle3D>(name, shader)
+	GenericUniformBase<Angle3D>(name, shader)
 {
 	LocationSin = shader.UniformFind(name + ".Sin");
 	LocationCos = shader.UniformFind(name + ".Cos");

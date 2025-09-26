@@ -1,12 +1,13 @@
 
-#ifndef  UNI_NEW_POINT_3D_HPP
-# define UNI_NEW_POINT_3D_HPP
+#ifndef  UNI_POINT_3D_HPP
+# define UNI_POINT_3D_HPP
+
+# include "Graphics/BaseShader.hpp"
+# include "Graphics/Uniform/Base/GenericUniformBase.hpp"
 
 # include "Abstract.hpp"
-# include "Graphics/BaseShader.hpp"
-# include "Graphics/Uniform/GenericShaderUniform.hpp"
 
-class UniPoint3D : public GenericShaderUniform<Point3D>
+class UniPoint3D : public GenericUniformBase<Point3D>
 {
 	private:
 		int Location;

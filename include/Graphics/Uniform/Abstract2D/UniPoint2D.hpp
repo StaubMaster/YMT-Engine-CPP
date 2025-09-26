@@ -1,13 +1,14 @@
 
-#ifndef  UNI_NEW_POINT_2D_HPP
-# define UNI_NEW_POINT_2D_HPP
+#ifndef  UNI_POINT_2D_HPP
+# define UNI_POINT_2D_HPP
+
+# include "Graphics/BaseShader.hpp"
+# include "Graphics/Uniform/Base/GenericUniformBase.hpp"
+# include "Graphics/Uniform/Base/GenericMultiformBase.hpp"
 
 # include "Abstract.hpp"
-# include "Graphics/BaseShader.hpp"
-# include "Graphics/Uniform/GenericShaderUniform.hpp"
-# include "Graphics/Uniform/GenericUniformBase.hpp"
 
-class UniPoint2D : public GenericShaderUniform<Point2D>
+class UniPoint2D : public GenericUniformBase<Point2D>
 {
 	private:
 		int Location;

@@ -1,7 +1,0 @@
-
-Uniform and Multiform
-
-Uniform in in one Shader
-Multiform is the same Uniform in multiple Shaders
-
-

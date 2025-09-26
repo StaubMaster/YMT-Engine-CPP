@@ -1,22 +1,14 @@
 #include <iostream>
 #include "OpenGL/openGL.h"
 
-#include "Abstract3D/Point3D.hpp"
-#include "Abstract3D/Angle3D.hpp"
-#include "Abstract3D/Transformation3D.hpp"
-
-#include "Abstract2D/Point2D.hpp"
+#include "Abstract.hpp"
+#include "Uniforms.hpp"
 
 #include "PolyHedra.hpp"
 #include "PolyHedra/ShaderInst.hpp"
 #include "TextureArray.hpp"
 
 #include "Graphics/Buffer/PolyHedra_3D_Instances.hpp"
-#include "Graphics/Uniform/Abstract3D/UniTrans3D.hpp"
-#include "Graphics/Uniform/Abstract1D/UniDepthFactors.hpp"
-#include "Graphics/Uniform/Abstract2D/UniSizeRatio2D.hpp"
-#include "Graphics/Uniform/GenericShaderUniform.hpp"
-#include "Graphics/Uniform/GenericUniformBase.hpp"
 
 #include "Window.hpp"
 

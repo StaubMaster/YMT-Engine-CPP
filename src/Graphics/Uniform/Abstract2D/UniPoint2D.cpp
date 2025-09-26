@@ -4,7 +4,7 @@
 #include <iostream>
 
 UniPoint2D::UniPoint2D(std::string name, BaseShader & shader) :
-	GenericShaderUniform<Point2D>(name, shader)
+	GenericUniformBase<Point2D>(name, shader)
 {
 	Location = shader.UniformFind(name);
 }

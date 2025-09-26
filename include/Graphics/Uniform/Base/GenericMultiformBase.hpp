@@ -1,18 +1,18 @@
 
-#ifndef GENERIC_UNIFORM_BASE_HPP
-# define GENERIC_UNIFORM_BASE_HPP
+#ifndef  GENERIC_MULTIFORM_BASE_HPP
+# define GENERIC_MULTIFORM_BASE_HPP
 
 # include <iostream>
 # include "OpenGL/openGL.h"
 # include "Graphics/BaseShader.hpp"
-# include "Graphics/Uniform/ShaderUniform.hpp"
-# include "Graphics/Uniform/UniformBase.hpp"
+# include "Graphics/Uniform/Base/UniformBase.hpp"
+# include "Graphics/Uniform/Base/MultiformBase.hpp"
 
 class BaseShader;
-class ShaderUniform;
+class UniformBase;
 
 template <typename UniformType, typename DataType>
-class GenericUniformBase : public UniformBase
+class GenericMultiformBase : public MultiformBase
 {
 	public:
 		UniformType ** Uniforms;
@@ -20,13 +20,13 @@ class GenericUniformBase : public UniformBase
 		DataType Data;
 
 	public:
-		GenericUniformBase(std::string name) :
-			UniformBase(name)
+		GenericMultiformBase(std::string name) :
+			MultiformBase(name)
 		{
 			Uniforms = NULL;
 			UniformsCount = 0;
 		}
-		virtual ~GenericUniformBase()
+		virtual ~GenericMultiformBase()
 		{
 			if (Uniforms != NULL)
 			{
@@ -40,25 +40,25 @@ class GenericUniformBase : public UniformBase
 			UniformType ** uniforms = new UniformType*[count];
 			int c = 0;
 
-			std::cout << "Shader.Count " << count << "\n";
+			//std::cout << "Shader.Count " << count << "\n";
 			for (int s = 0; s < count; s++)
 			{
-				std::cout << "Shader[" << s << "]\n";
-				std::cout << "Uniform.Count " << ((int)shaders[s] -> Uniforms.size()) << "\n";
+				//std::cout << "Shader[" << s << "]\n";
+				//std::cout << "Uniform.Count " << ((int)shaders[s] -> Uniforms.size()) << "\n";
 				for (int u = 0; u < (int)shaders[s] -> Uniforms.size(); u++)
 				{
-					std::cout << "Uniform[" << u << "]\n";
-					ShaderUniform * uni = shaders[s] -> Uniforms[u];
-					std::cout << "Uniform '" << (this -> Name) << "'\n";
-					std::cout << "Uniform '" << (uni -> Name) << "'\n";
-					std::cout << "Type: " << typeid(UniformType).name() << "\n";
-					std::cout << "Type: " << typeid(*uni).name() << "\n";
+					//std::cout << "Uniform[" << u << "]\n";
+					UniformBase * uni = shaders[s] -> Uniforms[u];
+					//std::cout << "Uniform '" << (this -> Name) << "'\n";
+					//std::cout << "Uniform '" << (uni -> Name) << "'\n";
+					//std::cout << "Type: " << typeid(UniformType).name() << "\n";
+					//std::cout << "Type: " << typeid(*uni).name() << "\n";
 					if (uni -> Name == this -> Name)
 					{
-						std::cout << "Uniform Name matches\n";
+						//std::cout << "Uniform Name matches\n";
 						if (typeid(*uni) == typeid(UniformType))
 						{
-							std::cout << "Uniform Type matches\n";
+							//std::cout << "Uniform Type matches\n";
 							uni -> Uniform = this;
 							uniforms[c] = (UniformType*)(uni);
 							c++;
@@ -80,7 +80,7 @@ class GenericUniformBase : public UniformBase
 			delete [] uniforms;
 		}
 
-		void Data_PutUniform(ShaderUniform * uni_base)
+		void Data_PutUniform(UniformBase * uni_base)
 		{
 			UniformType * uni = (UniformType*)uni_base;
 			uni -> PutData(Data);
