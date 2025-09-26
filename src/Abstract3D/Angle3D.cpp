@@ -112,3 +112,15 @@ void	Angle3D::rotate(float & pls, float & mns, float cos, float sin)
 	mns = mns * cos + pls * sin;
 	pls = tmp;
 }
+
+
+
+
+
+std::ostream & operator <<(std::ostream & o, const Angle3D & a)
+{
+	o << "( " << a.x << " | " << a.y << " | " << a.z << " )";
+	o << "#( " << a.sin_x << " | " << a.sin_y << " | " << a.sin_z << " )";
+	o << "#( " << a.cos_x << " | " << a.cos_y << " | " << a.cos_z << " )";
+	return o;
+}

@@ -4,9 +4,7 @@
 # include "PolyHedra/PolyHedraData.hpp"
 
 # include "PolyHedra/ShaderUni.hpp"
-# include "PolyHedra/BufferUni.hpp"
 
 # include "PolyHedra/ShaderInst.hpp"
-# include "PolyHedra/BufferInst.hpp"
 
 #endif

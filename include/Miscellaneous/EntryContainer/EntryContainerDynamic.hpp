@@ -46,7 +46,7 @@ class EntryContainerDynamic : public EntryContainerBase<T>
 		}
 		void Grow(int size)
 		{
-			std::cout << "Grow() " << Length << " + " << size << " > " << (this -> Size) << " ?\n";
+			//std::cout << "Grow() " << Length << " + " << size << " > " << (this -> Size) << " ?\n";
 			if (Length + size > this -> Size)
 			{
 				CopyNewSize(Length + size);

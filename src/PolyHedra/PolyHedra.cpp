@@ -7,14 +7,11 @@ YMT::PolyHedra::PolyHedra() :
 	FaceIndexes(),
 	FaceTextures()
 {
-	Buffer = NULL;
+
 }
 YMT::PolyHedra::~PolyHedra()
 {
-	if (Buffer != NULL)
-	{
-		delete Buffer;
-	}
+
 }
 
 
@@ -158,35 +155,3 @@ PolyHedra_MainData * YMT::PolyHedra::ToMainData(int & count)
 
 	return data;
 }
-
-
-/*
-void YMT::PolyHedra::ToUni()
-{
-	Buffer = new PolyHedraBuffer();
-
-	int count;
-	PolyHedra_MainData * data;
-	data = ToMainData(count);
-	Buffer -> Data(count, data);
-	delete [] data;
-}
-void YMT::PolyHedra::DrawUni()
-{
-	if (Buffer != NULL)
-	{
-		Buffer -> Draw();
-	}
-}
-
-
-
-void YMT::PolyHedra::ToInst(BufferInst & Buffer)
-{
-	int count;
-	PolyHedra_MainData * data;
-	data = ToMainData(count);
-	Buffer.DataPolyHedra(count, data);
-	delete [] data;
-}
-*/

@@ -179,7 +179,10 @@ Point3D Point3D::operator ^(const Point3D & other) const
 
 
 
-/*std::ostream & operator <<(std::ostream & o, const Point3D & idx)
-{
 
-}*/
+
+std::ostream & operator <<(std::ostream & o, const Point3D & p)
+{
+	o << "( " << p.X << " | " << p.Y << " | " << p.Z << " )";
+	return o;
+}

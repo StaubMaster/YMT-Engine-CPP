@@ -3,8 +3,12 @@
 # define BASE_SHADER
 
 # include <iostream>
+# include <vector>
 # include "OpenGL/openGL.h"
 # include "ShaderCode.hpp"
+# include "Graphics/Uniform/ShaderUniform.hpp"
+
+class ShaderUniform;
 
 class BaseShader
 {
@@ -13,6 +17,8 @@ class BaseShader
 
 	private:
 		int ID;
+	public:
+		std::vector<ShaderUniform *> Uniforms;
 
 	protected:
 		BaseShader(const ShaderCode * code, int count);
@@ -26,6 +32,7 @@ class BaseShader
 	protected:
 		virtual void UniformUpdate() = 0;
 	public:
+		void UniformsUpdate();	//	not currently implemented
 		int UniformFind(const std::string & name) const;
 
 	private:

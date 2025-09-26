@@ -55,10 +55,6 @@ but creating things myself gives me more freedom ?
 
 
 
-implement the new Instance System from C#
-although the one in C# is not really done
-but it will probably have to be a bit different anyway
-
 also the new Generic Shader/Uniform Stuff
 
 
@@ -75,7 +71,7 @@ there is a way to make the MakeFile check those ?
 also maybe start working on the Projects
 loading .obj should be simple compared to the .ymt I've already done
 
-openCL dosent currently work because of the Links
+openCL dosent currently work because of the Links (on Mac)
 but besides that I already have ComputeShaders and Instances
 so that that done as well
 

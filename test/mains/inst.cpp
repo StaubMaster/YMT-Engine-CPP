@@ -12,6 +12,9 @@
 #include "TextureArray.hpp"
 
 #include "Graphics/Buffer/PolyHedra_3D_Instances.hpp"
+#include "Graphics/Uniform/Abstract3D/UniTrans3D.hpp"
+#include "Graphics/Uniform/GenericShaderUniform.hpp"
+#include "Graphics/Uniform/GenericUniformBase.hpp"
 
 #include "Window.hpp"
 
@@ -42,11 +45,12 @@ void MoveFlatX(Transformation3D & trans, Angle3D spin)
 Window * win;
 
 YMT::PolyHedra * Poly0;
-YMT::PolyHedra::ShaderInst * PolyInstShader;
 TextureArray * Tex0;
-
 PolyHedra_3D_Instances * PH_Instances;
 
+YMT::PolyHedra::ShaderInst * PolyInstShader;
+UniTrans3D * Uni_Inst_View;
+GenericUniformBase<UniTrans3D, Transformation3D> * Uni_View;
 
 Transformation3D view_trans;
 
@@ -88,6 +92,7 @@ void Frame(double timeDelta)
 
 	PolyInstShader -> Use();
 	PolyInstShader -> UniViewTrans.Value(view_trans);
+	Uni_View -> ChangeData(view_trans);
 	PH_Instances -> Update();
 	PH_Instances -> Draw();
 }
@@ -145,6 +150,13 @@ int main()
 			Point3D(0, 0, 0),
 			Angle3D(0, 0, 0)
 		);
+
+		Uni_Inst_View = new UniTrans3D("View", *PolyInstShader);
+		Uni_View = new GenericUniformBase<UniTrans3D, Transformation3D>("View");
+
+		Uni_View -> FindUniforms((BaseShader*[]) {
+			PolyInstShader
+		}, 1);
 	}
 
 	{
@@ -165,11 +177,10 @@ int main()
 	{
 		Entrys[j] = PH_Instances -> Alloc(i_len);
 		Point3D center = Point3D(
-			(std::rand() & 0x8F) - 0x7F,
-			(std::rand() & 0x8F) - 0x7F,
-			(std::rand() & 0x8F) - 0x7F
+			(std::rand() & 0x1F) - 0xF,
+			(std::rand() & 0x1F) - 0xF,
+			(std::rand() & 0x1F) - 0xF
 		);
-		std::cout << "Center: " << center.X << " " << center.Y << " " << center.Z << "\n";
 		for (int i = 0; i < i_len; i++)
 		{
 			(*Entrys[j])[i].Trans.Pos = center + Point3D(
@@ -192,18 +203,12 @@ int main()
 	win -> Run();
 	std::cout << "---- Run\n";
 
-	std::cout << "Dispose Test\n";
-	//TestInst -> Dispose();
-	std::cout << "Dispose Entrys\n";
-	for (int j = 0; j < j_len; j++)
-	{
-		//Entrys[j] -> Dispose();
-	}
-	std::cout << "Dispose Done\n";
 	delete [] Entrys;
 
 	delete Poly0;
 	delete PolyInstShader;
+	delete Uni_Inst_View;
+	delete Uni_View;
 
 	delete win;
 

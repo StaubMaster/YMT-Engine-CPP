@@ -1,3 +1,4 @@
+
 #ifndef POINT_3D_HPP
 # define POINT_3D_HPP
 # include <math.h>

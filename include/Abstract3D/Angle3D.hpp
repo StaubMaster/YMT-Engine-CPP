@@ -38,4 +38,6 @@ class Angle3D
 		static void	rotate(float & pls, float & mns, float cos, float sin);
 };
 
+std::ostream & operator <<(std::ostream & o, const Angle3D & idx);
+
 #endif

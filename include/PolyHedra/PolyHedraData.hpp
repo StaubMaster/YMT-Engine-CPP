@@ -6,7 +6,6 @@
 # include "Abstract3D/Point3D.hpp"
 # include "Abstract3D/Undex3D.hpp"
 
-# include "BufferUni.hpp"
 # include "Graphics/Buffer/PolyHedra_MainData.hpp"
 
 namespace YMT
@@ -33,8 +32,6 @@ class PolyHedra
 		EditableArray<Undex3D>	FaceIndexes;
 		EditableArray<FaceTex>	FaceTextures;
 
-		PolyHedraBuffer * Buffer;
-
 
 
 	private:
@@ -57,7 +54,6 @@ class PolyHedra
 
 	public:
 		class ShaderInst;
-		class BufferInst;
 
 	public:
 		/*
@@ -72,14 +68,6 @@ class PolyHedra
 				and delete the old one
 		*/
 		PolyHedra_MainData * ToMainData(int & count);
-
-		void ToUni();
-		void ToUni(PolyHedraBuffer & Buffer);
-		void DrawUni();
-
-		void ToInst();
-		void ToInst(BufferInst & Buffer);
-		void DrawInst();
 };
 };
 

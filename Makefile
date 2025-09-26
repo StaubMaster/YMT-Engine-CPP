@@ -21,6 +21,13 @@ FILES_SRC = \
 	Graphics/BaseShader.cpp \
 	Graphics/BaseBuffer.cpp \
 \
+	Graphics/Uniform/ShaderUniform.cpp \
+	Graphics/Uniform/UniformBase.cpp \
+\
+	Graphics/Uniform/Abstract3D/UniPoint3D.cpp \
+	Graphics/Uniform/Abstract3D/UniAngle3D.cpp \
+	Graphics/Uniform/Abstract3D/UniTrans3D.cpp \
+\
 	Graphics/Uniform/UniBase.cpp \
 	Graphics/Uniform/Float/UniFloatN.cpp \
 	Graphics/Uniform/Float/UniFloat1.cpp \
