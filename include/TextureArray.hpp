@@ -3,6 +3,7 @@
 
 # include "OpenGL/openGL.h"
 # include <iostream>
+# include "FileManager/FileContext.hpp"
 # include "FileParse/PNG/PNG_Image.hpp"
 
 class TextureArray
@@ -11,7 +12,7 @@ class TextureArray
 		unsigned int GL_TextureArray;
 
 	public:
-		TextureArray(unsigned int w, unsigned int h, unsigned int count, const std::string paths []);
+		TextureArray(unsigned int w, unsigned int h, unsigned int count, const FileContext files []);
 		~TextureArray();
 
 	public:

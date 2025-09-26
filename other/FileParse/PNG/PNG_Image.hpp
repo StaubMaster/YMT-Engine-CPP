@@ -5,29 +5,14 @@
 # include <fstream>
 # include <sstream>
 
-# include "../FileIO.hpp"
+# include "../../FileManager/FileContext.hpp"
+# include "../../FileManager/Image.hpp"
 # include "../DebugManager.hpp"
 # include "../uint.hpp"
 # include "../BitStream.hpp"
 
 class PNG_Image
 {
-	public:
-		const uint32	w;
-		const uint32	h;
-		uint8	*data;
-
-	public:
-		PNG_Image(uint32 w, uint32 h);
-		~PNG_Image();
-
-	public:
-		uint32	DataIndex(uint32 x, uint32 y);
-
-		void	setPixelRGBA(uint32 x, uint32 y, uint32 pxl);
-
-		PNG_Image * Scale(uint32 new_w, uint32 new_h);
-
 	private:
 		struct IHDR
 		{
@@ -47,14 +32,8 @@ class PNG_Image
 			void	ToString(std::ostream & os) const;
 		};
 
-	private:
-		static std::string	ReadFile(const std::string & file_path);
 	public:
-		static PNG_Image * Load(const std::string & file_path, bool debug = false);
-		static PNG_Image * Load(const char * file_path, bool debug = false);
-
-		static PNG_Image * Missing();
-
+		static Image * Load(const FileContext & file, bool debug = false);
 
 		class PNG_Exception_NotImplemented : public std::exception { public: const char * what() const throw(); };
 		class PNG_Exception_InvalidData : public std::exception { public: const char * what() const throw(); };

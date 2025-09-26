@@ -10,7 +10,7 @@
 # include <string>
 # include <fstream>
 # include "OpenGL/openGL.h"
-# include "FileParse/FileIO.hpp"
+# include "FileManager/FileContext.hpp"
 
 class ShaderCode
 {
@@ -50,7 +50,7 @@ class ShaderCode
 
 
 	public:
-		static ShaderCode FromFile(const std::string & path);
+		static ShaderCode FromFile(const FileContext & file);
 
 	private:
 		class EInvalidFileExtention : std::exception

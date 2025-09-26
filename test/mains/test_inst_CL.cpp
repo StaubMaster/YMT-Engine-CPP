@@ -9,7 +9,8 @@
 
 
 
-#define IMAGE_DIR "../media/Images/"
+#include "FileManager/FileContext.hpp"
+#include "FileManager/DirectoryContext.hpp"
 
 
 
@@ -17,7 +18,7 @@
 #define CL_HPP_TARGET_OPENCL_VERSION 200
 #include <CL/opencl.hpp>
 
-
+DirectoryContext ImageDir("../media/Images");
 
 void MoveFlatX(Transformation3D & trans, Point3D move)
 {
@@ -83,7 +84,8 @@ void CL_Init()
 {
 	cl_int err = CL_SUCCESS;
 
-	std::string file_text = FileIO::Read("../media/trans.cl");
+	FileContext file("../media/trans.cl");
+	std::string file_text = file.LoadText();
 	CL_Program = cl::Program(file_text);
 	try
 	{
@@ -162,8 +164,9 @@ void CL_Frame()
 void Init()
 {
 	std::cout << "Init 0\n";
-	tex_arr = new TextureArray(128, 128, 1, (std::string []) {
-		std::string(IMAGE_DIR) + "Orientation.png"
+	tex_arr = new TextureArray(128, 128, 1, (FileContext[])
+	{
+		ImageDir.File("Orientation.png"),
 	});
 	CL_Init();
 	std::cout << "Init 1\n";
@@ -183,8 +186,9 @@ void Frame(double timeDelta)
 	if (glfwGetKey(win -> win, GLFW_KEY_R))
 	{
 		delete tex_arr;
-		tex_arr = new TextureArray(128, 128, 1, (std::string []) {
-			std::string(IMAGE_DIR) + "Orientation.png"
+		tex_arr = new TextureArray(128, 128, 1, (FileContext[])
+		{
+			ImageDir.File("Orientation.png"),
 		});
 	}
 

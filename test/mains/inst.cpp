@@ -13,10 +13,12 @@
 #include "Window.hpp"
 
 #include "FileParse/PNG/PNG_Image.hpp"
+#include "FileManager/FileContext.hpp"
+#include "FileManager/DirectoryContext.hpp"
 
 
 
-#define IMAGE_DIR "../media/Images/"
+DirectoryContext ImageDir("../media/Images");
 
 
 
@@ -42,6 +44,8 @@ YMT::PolyHedra * Poly0;
 TextureArray * Tex0;
 PolyHedra_3D_Instances * PH_Instances;
 
+
+
 YMT::PolyHedra::ShaderInst * PolyInstShader;
 
 UniTrans3D * Uni_Inst_View;
@@ -53,6 +57,8 @@ MultiDepthFactors * Multi_DepthFactors;
 UniSizeRatio2D * Uni_Inst_ViewPortSizeRatio;
 MultiSizeRatio2D * Multi_ViewPortSizeRatio;
 
+
+
 Transformation3D view_trans;
 
 
@@ -61,9 +67,9 @@ void Init()
 {
 	std::cout << "Init 0\n";
 
-	Tex0 = new TextureArray(128, 128, 1, (std::string[])
+	Tex0 = new TextureArray(128, 128, 1, (FileContext[])
 	{
-		std::string(IMAGE_DIR) + "Orientation.png",
+		ImageDir.File("Orientation.png"),
 	});
 
 	std::cout << "Init 1\n";

@@ -2,11 +2,14 @@
 NAME = fileParser.a
 
 FILES_CPP = \
+	../FileManager/FileContext.cpp \
+	../FileManager/DirectoryContext.cpp \
+	../FileManager/Image.cpp \
+	\
 	DebugManager.cpp \
 	uint.cpp \
 	BitStream.cpp \
-	DataStream.cpp \
-	FileIO.cpp
+	DataStream.cpp 
 
 FILES_PNG_CPP = \
 	PNG/Chunk.cpp \

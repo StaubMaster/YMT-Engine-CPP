@@ -77,15 +77,15 @@ bool str_ends_with(const std::string & str, const std::string & pattern)
 	return true;
 }
 
-ShaderCode ShaderCode::FromFile(const std::string & path)
+ShaderCode ShaderCode::FromFile(const FileContext & file)
 {
 	GLenum type;
-	if (str_ends_with(path, ".glsg")) { throw EInvalidFileExtention(path); }
-	else if (str_ends_with(path, ".vert")) { type = GL_VERTEX_SHADER; }
-	else if (str_ends_with(path, ".geom")) { type = GL_GEOMETRY_SHADER; }
-	else if (str_ends_with(path, ".frag")) { type = GL_FRAGMENT_SHADER; }
-	else { throw EInvalidFileExtention(path); }
-	return ShaderCode(type, FileIO::Read(path), path);
+	if (str_ends_with(file.FilePath, ".glsg")) { throw EInvalidFileExtention(file.FilePath); }
+	else if (str_ends_with(file.FilePath, ".vert")) { type = GL_VERTEX_SHADER; }
+	else if (str_ends_with(file.FilePath, ".geom")) { type = GL_GEOMETRY_SHADER; }
+	else if (str_ends_with(file.FilePath, ".frag")) { type = GL_FRAGMENT_SHADER; }
+	else { throw EInvalidFileExtention(file.FilePath); }
+	return ShaderCode(type, file.LoadText(), file.FilePath);
 }
 
 ShaderCode::EInvalidFileExtention::EInvalidFileExtention(const std::string & path)

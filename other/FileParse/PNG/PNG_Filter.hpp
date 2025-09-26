@@ -5,7 +5,7 @@
 
 # include "PNG_Image.hpp"
 
-class	PNG_Image;
+class	Image;
 
 class PNG_Filter
 {
@@ -20,9 +20,9 @@ class PNG_Filter
 			uint32		x;
 			uint32		y;
 			uint8		col;
-			PNG_Image &	img;
+			Image &	img;
 
-			PixelData(PNG_Image & img);
+			PixelData(Image & img);
 		};
 
 		static uint32	PixelIndex(PixelData pxl);
@@ -36,7 +36,7 @@ class PNG_Filter
 		static void		filter_Paeth(PixelData pxl, uint8 byte);
 
 	public:
-		static void		filter(DataStream & data, PNG_Image & img);
+		static void		filter(DataStream & data, Image & img);
 };
 
 #endif

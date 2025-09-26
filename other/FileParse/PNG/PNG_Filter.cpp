@@ -1,7 +1,7 @@
 
 #include "PNG_Filter.hpp"
 
-PNG_Filter::PixelData::PixelData(PNG_Image & img) :
+PNG_Filter::PixelData::PixelData(Image & img) :
 	img(img)
 {
 	
@@ -9,7 +9,7 @@ PNG_Filter::PixelData::PixelData(PNG_Image & img) :
 
 uint32	PNG_Filter::PixelIndex(PixelData pxl)
 {
-	return (((pxl.img.w * pxl.y + pxl.x) * 4) + pxl.col);
+	return (((pxl.img.W * pxl.y + pxl.x) * 4) + pxl.col);
 }
 
 uint8	PNG_Filter::getPixel(PixelData pxl, uint8 rel)
@@ -28,28 +28,28 @@ uint8	PNG_Filter::getPixel(PixelData pxl, uint8 rel)
 		pxl.y--;
 	}
 
-	return (pxl.img.data[PixelIndex(pxl)]);
+	return (pxl.img.Data8[PixelIndex(pxl)]);
 }
 
 void	PNG_Filter::filter_None(PixelData pxl, uint8 byte)
 {
-	pxl.img.data[PixelIndex(pxl)] = byte;
+	pxl.img.Data8[PixelIndex(pxl)] = byte;
 }
 void	PNG_Filter::filter_Sub(PixelData pxl, uint8 byte)
 {
 	uint8	a = getPixel(pxl, rel_X);
-	pxl.img.data[PixelIndex(pxl)] = byte + a;
+	pxl.img.Data8[PixelIndex(pxl)] = byte + a;
 }
 void	PNG_Filter::filter_Up(PixelData pxl, uint8 byte)
 {
 	uint8	b = getPixel(pxl, rel_Y);
-	pxl.img.data[PixelIndex(pxl)] = byte + b;
+	pxl.img.Data8[PixelIndex(pxl)] = byte + b;
 }
 void	PNG_Filter::filter_Avg(PixelData pxl, uint8 byte)
 {
 	uint8	a = getPixel(pxl, rel_X);
 	uint8	b = getPixel(pxl, rel_Y);
-	pxl.img.data[PixelIndex(pxl)] = byte + ((a + b) >> 1);
+	pxl.img.Data8[PixelIndex(pxl)] = byte + ((a + b) >> 1);
 }
 void	PNG_Filter::filter_Paeth(PixelData pxl, uint8 byte)
 {
@@ -63,14 +63,14 @@ void	PNG_Filter::filter_Paeth(PixelData pxl, uint8 byte)
 	int diff_c = abs(p - c);
 
 	if (diff_a <= diff_b && diff_a <= diff_c)
-		pxl.img.data[PixelIndex(pxl)] = byte + a;
+		pxl.img.Data8[PixelIndex(pxl)] = byte + a;
 	else if (diff_b <= diff_c)
-		pxl.img.data[PixelIndex(pxl)] = byte + b;
+		pxl.img.Data8[PixelIndex(pxl)] = byte + b;
 	else
-		pxl.img.data[PixelIndex(pxl)] = byte + c;
+		pxl.img.Data8[PixelIndex(pxl)] = byte + c;
 }
 
-void	PNG_Filter::filter(DataStream & data, PNG_Image & img)
+void	PNG_Filter::filter(DataStream & data, Image & img)
 {
 	PixelData pxl(img);
 	void (*filter)(PixelData, uint8);
@@ -78,7 +78,7 @@ void	PNG_Filter::filter(DataStream & data, PNG_Image & img)
 	data.Index = 0;
 
 	uint8	data_byte;
-	for (pxl.y = 0; pxl.y < img.h; pxl.y++)
+	for (pxl.y = 0; pxl.y < img.H; pxl.y++)
 	{
 		data_byte = data.Exsert();
 		if (data_byte == 0)
@@ -92,7 +92,7 @@ void	PNG_Filter::filter(DataStream & data, PNG_Image & img)
 		else if (data_byte == 4)
 			filter = &filter_Paeth;
 
-		for (pxl.x = 0; pxl.x < img.w; pxl.x++)
+		for (pxl.x = 0; pxl.x < img.W; pxl.x++)
 		{
 			pxl.col = 0;
 			data_byte = data.Exsert();
