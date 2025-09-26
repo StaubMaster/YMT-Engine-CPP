@@ -79,12 +79,15 @@ bool str_ends_with(const std::string & str, const std::string & pattern)
 
 ShaderCode ShaderCode::FromFile(const FileContext & file)
 {
+	std::string ext = file.Extension();
+
 	GLenum type;
-	if (str_ends_with(file.FilePath, ".glsg")) { throw EInvalidFileExtention(file.FilePath); }
-	else if (str_ends_with(file.FilePath, ".vert")) { type = GL_VERTEX_SHADER; }
-	else if (str_ends_with(file.FilePath, ".geom")) { type = GL_GEOMETRY_SHADER; }
-	else if (str_ends_with(file.FilePath, ".frag")) { type = GL_FRAGMENT_SHADER; }
+	if      (ext == ".glsg") { throw EInvalidFileExtention(file.FilePath); }
+	else if (ext == ".vert") { type = GL_VERTEX_SHADER; }
+	else if (ext == ".geom") { type = GL_GEOMETRY_SHADER; }
+	else if (ext == ".frag") { type = GL_FRAGMENT_SHADER; }
 	else { throw EInvalidFileExtention(file.FilePath); }
+
 	return ShaderCode(type, file.LoadText(), file.FilePath);
 }
 

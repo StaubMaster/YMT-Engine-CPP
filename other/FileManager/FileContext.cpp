@@ -32,8 +32,11 @@ std::string FileContext::Name() const
 }
 std::string FileContext::Extension() const
 {
-	//	everything after last .
-	//	or nothing if non is found
+	size_t idx = FilePath.find_last_of('.');
+	if (idx != std::string::npos)
+	{
+		return FilePath.substr(idx);
+	}
 	return "";
 }
 

@@ -25,6 +25,8 @@ class Window
 	public:
 		GLFWwindow * win;
 
+	public:
+		bool ShowFrameData;
 	private:
 		double FrameTimeLast;
 		double FrameTimeDelta;

@@ -33,6 +33,8 @@ Window::Window(float w, float h)
 	glfwSetFramebufferSizeCallback(win, Callback_Resize);
 	glfwSetKeyCallback(win, Callback_Key);
 
+	ShowFrameData = false;
+
 	InitFunc = NULL;
 	FrameFunc = NULL;
 	FreeFunc = NULL;
@@ -206,17 +208,20 @@ void Window::Run()
 			glfwPollEvents();
 			timePoll.T1();
 
-			if ((frameCount % 64) == 0)
+			if (ShowFrameData)
 			{
-				std::cout << "Frame: " << frameCount << " (" << frameMissed << ")" << "\n";
-				std::cout << "FrameTime: " << ((1.0 / 64.0) * 1000) << "ms\n";
-				std::cout << "Func: " << (timeFunc.Average() * 1000) << "ms\n";
-				std::cout << "Swap: " << (timeSwap.Average() * 1000) << "ms\n";
-				std::cout << "Poll: " << (timePoll.Average() * 1000) << "ms\n";
+				if ((frameCount % 64) == 0)
+				{
+					std::cout << "Frame: " << frameCount << " (" << frameMissed << ")" << "\n";
+					std::cout << "FrameTime: " << ((1.0 / 64.0) * 1000) << "ms\n";
+					std::cout << "Func: " << (timeFunc.Average() * 1000) << "ms\n";
+					std::cout << "Swap: " << (timeSwap.Average() * 1000) << "ms\n";
+					std::cout << "Poll: " << (timePoll.Average() * 1000) << "ms\n";
+				}
+				frameCount++;
+				frameMissed = 0;
 			}
 			FrameTimeLast = FrameTimeCurr;
-			frameCount++;
-			frameMissed = 0;
 		}
 		else
 		{

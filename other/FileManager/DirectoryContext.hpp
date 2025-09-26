@@ -19,7 +19,7 @@ class DirectoryContext
 		bool Exists() const;
 
 	public:
-		FileContext File(std::string name);
+		FileContext File(std::string name) const;
 
 	private:
 		class Exception_DirectoryProblem : public std::exception

@@ -7,6 +7,9 @@
 //# include "Graphics/Uniform/Float/UniDepth.hpp"
 //# include "Graphics/Uniform/Float/UniScale.hpp"
 
+# include "FileManager/DirectoryContext.hpp"
+# include "FileManager/FileContext.hpp"
+
 # include "PolyHedraData.hpp"
 
 class YMT::PolyHedra::ShaderInst : public BaseShader
@@ -17,7 +20,7 @@ class YMT::PolyHedra::ShaderInst : public BaseShader
 		//UniTransformation3D UniViewTrans;
 
 	public:
-		ShaderInst();
+		ShaderInst(const DirectoryContext & dir);
 		~ShaderInst();
 
 	private:

@@ -1,8 +1,4 @@
 
-#ifndef SHADER_DIR
-# define SHADER_DIR "../media/Shaders/"
-#endif
-
 #ifndef SHADER_CODE
 # define SHADER_CODE
 

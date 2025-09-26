@@ -18,7 +18,12 @@
 #define CL_HPP_TARGET_OPENCL_VERSION 200
 #include <CL/opencl.hpp>
 
+
+
 DirectoryContext ImageDir("../media/Images");
+DirectoryContext ShaderDir("../media/Shaders");
+
+
 
 void MoveFlatX(Transformation3D & trans, Point3D move)
 {
@@ -242,7 +247,7 @@ int main()
 		win -> FreeFunc = Free;
 		win -> ResizeFunc = Resize;
 
-		PolyInstShader = new YMT::PolyHedra::ShaderInst();
+		PolyInstShader = new YMT::PolyHedra::ShaderInst(ShaderDir);
 	}
 	catch (std::exception & ex)
 	{

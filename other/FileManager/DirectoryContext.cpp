@@ -16,7 +16,7 @@ bool DirectoryContext::Exists() const
 
 
 
-FileContext DirectoryContext::File(std::string name)
+FileContext DirectoryContext::File(std::string name) const
 {
 	return FileContext(DirPath + "/" + name);
 }

@@ -19,6 +19,7 @@
 
 
 DirectoryContext ImageDir("../media/Images");
+DirectoryContext ShaderDir("../media/Shaders");
 
 
 
@@ -130,7 +131,7 @@ int main()
 		win -> FreeFunc = Free;
 		win -> ResizeFunc = Resize;
 
-		PolyInstShader = new YMT::PolyHedra::ShaderInst();
+		PolyInstShader = new YMT::PolyHedra::ShaderInst(ShaderDir);
 	}
 	catch (std::exception & ex)
 	{
