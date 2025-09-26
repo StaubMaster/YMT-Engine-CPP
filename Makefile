@@ -42,6 +42,7 @@ FILES_SRC = \
 	PolyHedra/ShaderInst.cpp \
 \
 	TextureArray.cpp \
+	TimeMeasure.cpp \
 	Window.cpp
 
 

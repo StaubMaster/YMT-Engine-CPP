@@ -1,4 +1,5 @@
 #include "Window.hpp"
+#include "TimeMeasure.hpp"
 
 
 
@@ -114,52 +115,10 @@ Angle3D Window::SpinFromCursor(float speed)
 	return spin;
 }
 
-
-class TimeMeasure
-{
-	const int Limit = 1024;
-
-	double * Memory;
-	int Count;
-	int Index;
-
-	double TimeStamp;
-
-	public:
-	TimeMeasure()
-	{
-		Count = 0;
-		Index = 0;
-		Memory = new double[Limit];
-	}
-	~TimeMeasure()
-	{
-		delete [] Memory;
-	}
-
-	void T0()
-	{
-		TimeStamp = glfwGetTime();
-	}
-	void T1()
-	{
-		Memory[Index] = glfwGetTime() - TimeStamp;
-		if (Index < Limit - 1) { Index++; } else { Index = 0; }
-		if (Count < Limit - 1) { Count++; }
-	}
-	double Average()
-	{
-		double sum = 0;
-		for (int i = 0; i < Count; i++)
-		{
-			sum += Memory[i];
-		}
-		return sum / Count;
-	}
-};
-
 void Window::Run()
 {
+	try
+	{
 	if (InitFunc != NULL) { InitFunc(); }
 
 	glEnable(GL_CULL_FACE);
@@ -194,7 +153,7 @@ void Window::Run()
 			timeFunc.T0();
 			FrameFunc(FrameTimeDelta);
 			timeFunc.T1();
-			
+
 			timeSwap.T0();
 			glfwSwapBuffers(win);
 			timeSwap.T1();
@@ -207,7 +166,7 @@ void Window::Run()
 			timePoll.T0();
 			glfwPollEvents();
 			timePoll.T1();
-
+			
 			if (ShowFrameData)
 			{
 				if ((frameCount % 64) == 0)
@@ -227,6 +186,19 @@ void Window::Run()
 		{
 			frameMissed++;
 		}
+	}
+	}
+	catch (std::exception & ex)
+	{
+		std::cout << "Exception: " << ex.what() << "\n";
+	}
+	catch (const char * err)
+	{
+		std::cerr << "String Error: "<< err << "\n";
+	}
+	catch (...)
+	{
+		std::cerr << "Unknown Error\n";
 	}
 
 	if (FreeFunc != NULL) { FreeFunc(); }
