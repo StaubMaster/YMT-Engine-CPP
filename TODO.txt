@@ -21,6 +21,9 @@ there is a way to make the MakeFile check those ?
 
 
 
+FileContext
+Load OBJ
+
 
 
 there are also aparently a lot of things that openGL / glfw has already implemented

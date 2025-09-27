@@ -1,0 +1,19 @@
+
+Right now there is no Simulation
+just spining using CL
+
+split the PH Instance Shaders into a Base
+
+then create a Struct for Particle data and use that for the Instance_Buffer
+
+PolyHedra Base for the Shader ?
+
+DepthFactors is only really needed for 3D (instead of UI)
+View is also only for 3D
+and ViewPortSizeRatio is for everything ?
+
+
+
+make Wrappers for CL stuff ?
+
+

@@ -12,7 +12,7 @@
 
 #include "Window.hpp"
 
-#include "FileParse/PNG/PNG_Image.hpp"
+#include "FileManager/Image.hpp"
 #include "FileManager/FileContext.hpp"
 #include "FileManager/DirectoryContext.hpp"
 
@@ -20,22 +20,6 @@
 
 DirectoryContext ImageDir("../media/Images");
 DirectoryContext ShaderDir("../media/Shaders");
-
-
-
-void MoveFlatX(Transformation3D & trans, Point3D move)
-{
-	//trans.Pos = trans.Pos + trans.Rot.rotate_back(move);
-	trans.Pos = trans.Pos + (Angle3D(trans.Rot.x, 0, 0).rotate_back(move));
-}
-void MoveFlatX(Transformation3D & trans, Angle3D spin)
-{
-	//trans.Rot = trans.Rot.rotate_fore(spin);
-	trans.Rot.x = trans.Rot.x + spin.x;
-	trans.Rot.y = trans.Rot.y + spin.y;
-	trans.Rot.z = 0;
-	trans.Rot.UpdateSinCos();
-}
 
 
 
@@ -52,9 +36,8 @@ MultiTrans3D * Multi_View;
 MultiDepthFactors * Multi_DepthFactors;
 MultiSizeRatio2D * Multi_ViewPortSizeRatio;
 
-
-
 Transformation3D view_trans;
+
 
 
 void InitShaders()
@@ -84,7 +67,6 @@ void FreeShaders()
 	delete Multi_DepthFactors;
 	delete Multi_ViewPortSizeRatio;
 }
-
 
 void AddInstances()
 {
@@ -125,6 +107,7 @@ void AddInstances()
 }
 
 
+
 void Init()
 {
 	std::cout << "Init 0\n";
@@ -146,7 +129,6 @@ void Init()
 
 	std::cout << "Init 1\n";
 }
-
 void Free()
 {
 	std::cout << "Free 0\n";
@@ -163,8 +145,7 @@ void Free()
 
 void Frame(double timeDelta)
 {
-	MoveFlatX(view_trans, win -> MoveFromKeys(2.0f * timeDelta));
-	MoveFlatX(view_trans, win -> SpinFromCursor(0.2f * timeDelta));
+	view_trans.TransformFlatX(win -> MoveFromKeys(2.0f * timeDelta), win -> SpinFromCursor(0.2f * timeDelta));
 	Multi_View -> ChangeData(view_trans);
 
 	PH_Shader -> Use();

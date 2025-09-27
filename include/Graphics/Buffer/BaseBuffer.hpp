@@ -5,7 +5,7 @@
 # include <iostream>
 # include "OpenGL/openGL.h"
 
-class BaseBuffer
+/*class BaseBuffer
 {
 	private:
 		unsigned int ArrayID;
@@ -22,6 +22,6 @@ class BaseBuffer
 		void Use();
 
 		virtual void Draw() = 0;
-};
+};*/
 
 #endif

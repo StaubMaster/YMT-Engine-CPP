@@ -33,9 +33,9 @@ kernel void TransInit(
 {
 	Trans3D trans;
 
-	trans.Pos.X = (get_global_id(0) - 2.0 + 0.5) * 3;
-	trans.Pos.Y = (get_global_id(1) - 2.0 + 0.5) * 3;
-	trans.Pos.Z = (get_global_id(2) - 2.0 + 0.5) * 3;
+	trans.Pos.X = (get_global_id(0) - 8.0 + 0.5) * 3;
+	trans.Pos.Y = (get_global_id(1) - 8.0 + 0.5) * 3;
+	trans.Pos.Z = (get_global_id(2) - 8.0 + 0.5) * 3;
 
 	trans.Rot.X = 0.0;
 	trans.Rot.Y = 0.0;
@@ -45,7 +45,7 @@ kernel void TransInit(
 	trans.Rot.SinY = sincos(trans.Rot.Y, &trans.Rot.CosY);
 	trans.Rot.SinZ = sincos(trans.Rot.Z, &trans.Rot.CosZ);
 
-	bufferO[(4 * (4 * (get_global_id(0)) + get_global_id(1)) + get_global_id(2))] = trans;
+	bufferO[(16 * (16 * (get_global_id(0)) + get_global_id(1)) + get_global_id(2))] = trans;
 }
 
 

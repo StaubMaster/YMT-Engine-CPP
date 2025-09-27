@@ -27,22 +27,6 @@ DirectoryContext ShaderDir("../media/Shaders");
 
 
 
-void MoveFlatX(Transformation3D & trans, Point3D move)
-{
-	//trans.Pos = trans.Pos + trans.Rot.rotate_back(move);
-	trans.Pos = trans.Pos + (Angle3D(trans.Rot.x, 0, 0).rotate_back(move));
-}
-void MoveFlatX(Transformation3D & trans, Angle3D spin)
-{
-	//trans.Rot = trans.Rot.rotate_fore(spin);
-	trans.Rot.x = trans.Rot.x + spin.x;
-	trans.Rot.y = trans.Rot.y + spin.y;
-	trans.Rot.z = 0;
-	trans.Rot.UpdateSinCos();
-}
-
-
-
 Window * win;
 
 YMT::PolyHedra * PH;
@@ -50,24 +34,22 @@ TextureArray * tex_arr;
 PolyHedra_3D_Buffer * PH_Buffer;
 PolyHedra_3D_Shader * PH_Shader;
 
-
-
 Transformation3D view_trans;
 
 
 
-unsigned int EntityCountX = 4;
-unsigned int EntityCountY = 4;
-unsigned int EntityCountZ = 4;
+unsigned int EntityCountX = 16;
+unsigned int EntityCountY = 16;
+unsigned int EntityCountZ = 16;
 unsigned int EntityCount = EntityCountX * EntityCountY * EntityCountZ;
 
-void CL_PrintError(cl_int err)
+void CL_PrintError(cl_int err, bool printSuccess = false)
 {
 	if (err != CL_SUCCESS)
 	{
 		std::cout << "Error: " << err << "\n";
 	}
-	else
+	else if (printSuccess)
 	{
 		std::cout << "Succ\n";
 	}
@@ -86,6 +68,33 @@ cl::KernelFunctor<
 cl::KernelFunctor<
 	Transformation3D *
 > * Kernel_TransSpinCenter;
+
+void CL_Run_Init()
+{
+	cl_int err = CL_SUCCESS;
+	(*Kernel_TransInit)(
+		cl::EnqueueArgs(
+			cl::NDRange(EntityCountX, EntityCountY, EntityCountZ)
+		),
+		VMP_O,
+		err
+	);
+	CL_PrintError(err);
+	cl::finish();
+}
+void CL_Run_SpinCenter()
+{
+	cl_int err = CL_SUCCESS;
+	(*Kernel_TransSpinCenter)(
+		cl::EnqueueArgs(
+			cl::NDRange(EntityCount)
+		),
+		VMP_O,
+		err
+	);
+	CL_PrintError(err);
+	cl::finish();
+}
 
 void CL_Init()
 {
@@ -127,16 +136,7 @@ void CL_Init()
 
 	VMP_O = SVM_Alloc.allocate(BufferSize);
 
-	err = CL_SUCCESS;
-	(*Kernel_TransInit)(
-		cl::EnqueueArgs(
-			cl::NDRange(EntityCountX, EntityCountY, EntityCountZ)
-		),
-		VMP_O,
-		err
-	);
-	CL_PrintError(err);
-	cl::finish();
+	CL_Run_Init();
 }
 void CL_Free()
 {
@@ -144,26 +144,6 @@ void CL_Free()
 	delete Kernel_TransSpinCenter;
 
 	SVM_Alloc.deallocate(VMP_O, BufferSize);
-}
-void CL_Frame()
-{
-	cl_int err = CL_SUCCESS;
-	/*(*Kernel_TransInit)(
-		cl::EnqueueArgs(
-			cl::NDRange(EntityCount)
-		),
-		VMP_O,
-		err
-	);*/
-	(*Kernel_TransSpinCenter)(
-		cl::EnqueueArgs(
-			cl::NDRange(EntityCount)
-		),
-		VMP_O,
-		err
-	);
-	//CL_PrintError(err);
-	cl::finish();
 }
 
 
@@ -206,8 +186,9 @@ void Free()
 }
 void Frame(double timeDelta)
 {
-	MoveFlatX(view_trans, win -> MoveFromKeys(2.0f * timeDelta));
-	MoveFlatX(view_trans, win -> SpinFromCursor(0.2f * timeDelta));
+	view_trans.TransformFlatX(win -> MoveFromKeys(2.0f * timeDelta), win -> SpinFromCursor(0.2f * timeDelta));
+	PH_Shader -> View.PutData(view_trans);
+	tex_arr -> Bind();
 
 	if (glfwGetKey(win -> win, GLFW_KEY_R))
 	{
@@ -218,13 +199,9 @@ void Frame(double timeDelta)
 		});
 	}
 
-	CL_Frame();
+	CL_Run_SpinCenter();
 
 	PH_Buffer -> BindInst((const PolyHedra_3D_InstData *)VMP_O, EntityCount);
-	
-	PH_Shader -> Use();
-	PH_Shader -> View.PutData(view_trans);
-	tex_arr -> Bind();
 	PH_Buffer -> Draw();
 }
 void Resize(int w, int h)
