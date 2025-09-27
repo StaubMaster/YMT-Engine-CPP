@@ -12,7 +12,7 @@ class BaseBuffer
 
 	protected:
 	public:
-		BaseBuffer(unsigned int count);
+		BaseBuffer(unsigned int buffer_count);
 		virtual ~BaseBuffer();
 
 	public:

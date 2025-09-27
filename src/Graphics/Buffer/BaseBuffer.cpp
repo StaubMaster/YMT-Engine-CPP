@@ -4,10 +4,10 @@
 
 
 
-BaseBuffer::BaseBuffer(unsigned int count) :
-	BufferCount(count)
+BaseBuffer::BaseBuffer(unsigned int buffer_count) :
+	BufferCount(buffer_count)
 {
-	BufferIDs = new unsigned int[count];
+	BufferIDs = new unsigned int[BufferCount];
 	glGenBuffers(BufferCount, BufferIDs);
 	std::cout << "++++ BaseBuffer\n";
 	Count = 0;
