@@ -48,7 +48,9 @@ class PolyHedra
 		void Edit_Trim();
 
 	public:
+		static PolyHedra * FullTexture(float scale = 1.0f);
 		static PolyHedra * Cube(float scale = 1.0f);
+		static PolyHedra * ConeC(int segments, float width = 1.0f, float height = 1.0f);
 
 
 

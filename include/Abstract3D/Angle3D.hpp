@@ -27,6 +27,9 @@ class Angle3D
 
 	public:
 		void UpdateSinCos();
+		void ChangeX(float x);
+		void ChangeY(float y);
+		void ChangeZ(float z);
 
 		Point3D	rotate_fore(Point3D p) const;
 		Point3D	rotate_back(Point3D p) const;

@@ -1,4 +1,4 @@
-#include "Graphics/BaseBuffer.hpp"
+#include "Graphics/Buffer/BaseBuffer.hpp"
 
 BaseBuffer::BaseBuffer(int count)
 {

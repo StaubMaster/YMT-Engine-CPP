@@ -4,7 +4,7 @@
 
 # include <iostream>
 # include "OpenGL/openGL.h"
-# include "Graphics/BaseShader.hpp"
+# include "Graphics/Shader/BaseShader.hpp"
 # include "Graphics/Uniform/Base/MultiformBase.hpp"
 # include "Graphics/Uniform/Base/UniformBase.hpp"
 

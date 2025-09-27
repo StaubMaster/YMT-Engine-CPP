@@ -21,8 +21,8 @@ FILES_SRC = \
 	Abstract1D/DepthFactors.cpp \
 \
 	Graphics/ShaderCode.cpp \
-	Graphics/BaseShader.cpp \
-	Graphics/BaseBuffer.cpp \
+	Graphics/Shader/BaseShader.cpp \
+	Graphics/Buffer/BaseBuffer.cpp \
 \
 	Graphics/Uniform/Base/UniformBase.cpp \
 	Graphics/Uniform/Base/MultiformBase.cpp \
@@ -37,9 +37,9 @@ FILES_SRC = \
 	Graphics/Buffer/PolyHedra_3D_InstData.cpp \
 	Graphics/Buffer/PolyHedra_3D_Buffer.cpp \
 	Graphics/Buffer/PolyHedra_3D_Instances.cpp \
+	Graphics/Shader/PolyHedra_3D_Shader.cpp \
 \
 	PolyHedra/PolyHedra.cpp \
-	PolyHedra/ShaderInst.cpp \
 \
 	TextureArray.cpp \
 	TimeMeasure.cpp \

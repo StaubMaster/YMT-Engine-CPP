@@ -1,4 +1,4 @@
-#include "Graphics/BaseShader.hpp"
+#include "Graphics/Shader/BaseShader.hpp"
 
 
 
@@ -26,7 +26,6 @@ void BaseShader::Use()
 	{
 		glUseProgram(ID);
 		BaseShader::CurrentID = ID;
-		UniformUpdate();
 		UniformsUpdate();
 	}
 }

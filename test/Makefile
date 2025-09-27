@@ -50,7 +50,7 @@ re:
 
 
 
-%.exe : $(MAINS_DIR)%.cpp
+%.exe : $(MAINS_DIR)%.cpp $(ARC)
 	$(COMPILER) $(FLAGS) -I ../include -I ../other -o $@ $^ $(ARC) E:/Utility/msys32/ucrt64/lib/libOpenCL.dll.a -lgdi32
 #	$(COMPILER) $(FLAGS) -I ../include -I ../other -o $@ $^ $(ARC) -lgdi32
 #	$(COMPILER) $(FLAGS) -I ../include -I ../other -o $@ $^ $(ARC) -lglfw

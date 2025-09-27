@@ -1,4 +1,5 @@
 #include "PolyHedra.hpp"
+#define TAU 6.28318530717958647692528676655900576839433879875021164194988918461563281257241799725606965068423413
 
 
 
@@ -61,6 +62,25 @@ void YMT::PolyHedra::Edit_Face4(TexUndex corn0, TexUndex corn1, TexUndex corn2, 
 
 
 
+YMT::PolyHedra * YMT::PolyHedra::FullTexture(float scale)
+{
+	PolyHedra * temp = new PolyHedra();
+
+	temp -> Corners.Insert(Point3D(-scale, -scale, 0));
+	temp -> Corners.Insert(Point3D(-scale, +scale, 0));
+	temp -> Corners.Insert(Point3D(+scale, -scale, 0));
+	temp -> Corners.Insert(Point3D(+scale, +scale, 0));
+
+	temp -> Edit_Face4(
+		TexUndex(0, 0.0f, 1.0f),
+		TexUndex(1, 0.0f, 0.0f),
+		TexUndex(2, 1.0f, 1.0f),
+		TexUndex(3, 1.0f, 0.0f)
+	);
+
+	temp -> Edit_Trim();
+	return temp;
+}
 YMT::PolyHedra * YMT::PolyHedra::Cube(float scale)
 {
 	PolyHedra * temp = new PolyHedra();
@@ -113,6 +133,46 @@ YMT::PolyHedra * YMT::PolyHedra::Cube(float scale)
 		TexUndex(0b110, 0.75f, 0.50f),
 		TexUndex(0b010, 0.50f, 0.50f)
 	);
+
+	temp -> Edit_Trim();
+	return temp;
+}
+YMT::PolyHedra * YMT::PolyHedra::ConeC(int segments, float width, float height)
+{
+	PolyHedra * temp = new PolyHedra();
+
+	Angle3D angle;
+
+	int idx_frst = temp -> Corners.Length;
+	temp -> Corners.Insert(Point3D(0, 0, +height));
+	for (int i = 0; i < segments; i++)
+	{
+		angle.ChangeZ((TAU * i) / segments);
+		temp -> Corners.Insert(angle.rotate_fore(Point3D(0, +width, -height)));
+	}
+	int idx_last = temp -> Corners.Length;
+	temp -> Corners.Insert(Point3D(0, 0, -height));
+
+	for (int i = 0; i < segments; i++)
+	{
+		float tex0 = (0.0f + i) / segments;
+		float tex1 = (1.0f + i) / segments;
+		float texM = (0.5f + i) / segments;
+
+		int idx_curr = ((i + 0) % segments) + 1;
+		int idx_next = ((i + 1) % segments) + 1;
+
+		temp -> Edit_Face4(
+			TexUndex(idx_frst, texM, 0.0f),
+			TexUndex(idx_next, tex1, 1.0f),
+			TexUndex(idx_curr, tex0, 1.0f),
+			TexUndex(idx_last, texM, 0.0f)
+		);
+
+		(void)tex0;
+		(void)tex1;
+		(void)texM;
+	}
 
 	temp -> Edit_Trim();
 	return temp;

@@ -5,7 +5,9 @@
 #include "PolyHedra.hpp"
 #include "Window.hpp"
 #include "TextureArray.hpp"
+
 #include "Graphics/Buffer/PolyHedra_3D_Buffer.hpp"
+#include "Graphics/Shader/PolyHedra_3D_Shader.hpp"
 
 
 
@@ -43,10 +45,10 @@ void MoveFlatX(Transformation3D & trans, Angle3D spin)
 
 Window * win;
 
-YMT::PolyHedra::ShaderInst * PolyInstShader;
 YMT::PolyHedra * PH;
-PolyHedra_3D_Buffer * PH_Buffer;
 TextureArray * tex_arr;
+PolyHedra_3D_Buffer * PH_Buffer;
+PolyHedra_3D_Shader * PH_Shader;
 
 
 
@@ -169,18 +171,37 @@ void CL_Frame()
 void Init()
 {
 	std::cout << "Init 0\n";
+
 	tex_arr = new TextureArray(128, 128, 1, (FileContext[])
 	{
-		ImageDir.File("Orientation.png"),
+		ImageDir.File("GrayDeant.png"),
 	});
+
+	PH = YMT::PolyHedra::ConeC(12, 0.5f);
+	PH_Buffer = new PolyHedra_3D_Buffer();
+	{
+		int count;
+		PolyHedra_MainData * data = PH -> ToMainData(count);
+		PH_Buffer -> BindMain(data, count);
+		delete [] data;
+	}
+	PH_Shader -> DepthFactors.PutData(DepthFactors(0.1f, 1000.0f));
+
 	CL_Init();
+
 	std::cout << "Init 1\n";
 }
 void Free()
 {
 	std::cout << "Free 0\n";
+
 	delete tex_arr;
+	delete PH;
+	delete PH_Buffer;
+	delete PH_Shader;
+
 	CL_Free();
+
 	std::cout << "Free 1\n";
 }
 void Frame(double timeDelta)
@@ -197,40 +218,24 @@ void Frame(double timeDelta)
 		});
 	}
 
-	//test_trans.Rot.x += 1.0f * timeDelta;
-	//test_trans.Rot.UpdateSinCos();
-
 	CL_Frame();
 
-	//PolyInstBuffer -> DataTrans(EntityCount, VMP_O);
 	PH_Buffer -> BindInst((const PolyHedra_3D_InstData *)VMP_O, EntityCount);
-
-	//glActiveTexture(GL_TEXTURE0);
-	//glBindTexture(GL_TEXTURE_2D_ARRAY, tex_arr);
+	
+	PH_Shader -> Use();
+	PH_Shader -> View.PutData(view_trans);
 	tex_arr -> Bind();
-
-	PolyInstShader -> Use();
-	//PolyInstShader -> UniViewTrans.Value(view_trans);
-	//PolyInstBuffer -> Draw();
 	PH_Buffer -> Draw();
 }
-
 void Resize(int w, int h)
 {
-	//PolyInstShader -> WindowScale.Value(w, h);
-	(void)w;
-	(void)h;
+	PH_Shader -> ViewPortSizeRatio.PutData(SizeRatio2D(w, h));
 }
 
 
 
 int main()
 {
-	std::cout << "!!!!!!!!!!!!!!!!\n";
-	std::cout << "Old Uniforms have been removed and need to be replaced\n";
-	std::cout << "!!!!!!!!!!!!!!!!\n";
-	return 0;
-
 	if (glfwInit() == 0)
 	{
 		std::cout << "Init Failed\n";
@@ -247,7 +252,8 @@ int main()
 		win -> FreeFunc = Free;
 		win -> ResizeFunc = Resize;
 
-		PolyInstShader = new YMT::PolyHedra::ShaderInst(ShaderDir);
+		PH_Shader = new PolyHedra_3D_Shader(ShaderDir);
+		PH_Shader -> Use();
 	}
 	catch (std::exception & ex)
 	{
@@ -267,25 +273,10 @@ int main()
 	}
 
 	{
-		float near = 0.1f;
-		float far = 1000.0f;
-		//PolyInstShader -> Depth.Value(near, far);
-		(void)near;
-		(void)far;
-
 		view_trans = Transformation3D(
 			Point3D(0, 0, 0),
 			Angle3D(0, 0, 0)
 		);
-	}
-
-	{
-		PH = YMT::PolyHedra::Cube();
-		PH_Buffer = new PolyHedra_3D_Buffer();
-		int count;
-		PolyHedra_MainData * data = PH -> ToMainData(count);
-		PH_Buffer -> BindMain(data, count);
-		delete [] data;
 	}
 
 
@@ -295,10 +286,6 @@ int main()
 	std::cout << "---- Run\n";
 
 
-
-	delete PH;
-	delete PH_Buffer;
-	delete PolyInstShader;
 
 	delete win;
 

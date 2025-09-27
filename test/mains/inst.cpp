@@ -5,10 +5,10 @@
 #include "Uniforms.hpp"
 
 #include "PolyHedra.hpp"
-#include "PolyHedra/ShaderInst.hpp"
 #include "TextureArray.hpp"
 
 #include "Graphics/Buffer/PolyHedra_3D_Instances.hpp"
+#include "Graphics/Shader/PolyHedra_3D_Shader.hpp"
 
 #include "Window.hpp"
 
@@ -46,16 +46,10 @@ TextureArray * Tex0;
 
 PolyHedra_3D_Instances * PH_Instances;
 EntryContainerDynamic<PolyHedra_3D_InstData>::Entry ** Entrys;
+PolyHedra_3D_Shader * PH_Shader;
 
-YMT::PolyHedra::ShaderInst * PolyInstShader;
-
-UniTrans3D * Uni_Inst_View;
 MultiTrans3D * Multi_View;
-
-UniDepthFactors * Uni_Inst_DepthFactors;
 MultiDepthFactors * Multi_DepthFactors;
-
-UniSizeRatio2D * Uni_Inst_ViewPortSizeRatio;
 MultiSizeRatio2D * Multi_ViewPortSizeRatio;
 
 
@@ -65,19 +59,14 @@ Transformation3D view_trans;
 
 void InitShaders()
 {
-	PolyInstShader = new YMT::PolyHedra::ShaderInst(ShaderDir);
+	PH_Shader = new PolyHedra_3D_Shader(ShaderDir);
 
-	Uni_Inst_View = new UniTrans3D("View", *PolyInstShader);
 	Multi_View = new MultiTrans3D("View");
-
-	Uni_Inst_DepthFactors = new UniDepthFactors("DepthFactors", *PolyInstShader);
 	Multi_DepthFactors = new MultiDepthFactors("DepthFactors");
-
-	Uni_Inst_ViewPortSizeRatio = new UniSizeRatio2D("ViewPortSizeRatio", *PolyInstShader);
 	Multi_ViewPortSizeRatio = new MultiSizeRatio2D("ViewPortSizeRatio");
 
 	BaseShader * shaders [] = {
-		PolyInstShader
+		PH_Shader,
 	};
 	int shader_count = 1;
 
@@ -89,15 +78,10 @@ void InitShaders()
 }
 void FreeShaders()
 {
-	delete PolyInstShader;
+	delete PH_Shader;
 
-	delete Uni_Inst_View;
 	delete Multi_View;
-
-	delete Uni_Inst_DepthFactors;
 	delete Multi_DepthFactors;
-
-	delete Uni_Inst_ViewPortSizeRatio;
 	delete Multi_ViewPortSizeRatio;
 }
 
@@ -110,7 +94,12 @@ void AddInstances()
 	for (int j = 0; j < j_len; j++)
 	{
 		Entrys[j] = PH_Instances -> Alloc(i_len);
-		Point3D center = Point3D(
+		Point3D center(
+			(std::rand() & 0x1F) - 0xF,
+			(std::rand() & 0x1F) - 0xF,
+			(std::rand() & 0x1F) - 0xF
+		);
+		Angle3D rot(
 			(std::rand() & 0x1F) - 0xF,
 			(std::rand() & 0x1F) - 0xF,
 			(std::rand() & 0x1F) - 0xF
@@ -122,6 +111,7 @@ void AddInstances()
 				(std::rand() & 0x1F) - 0xF,
 				(std::rand() & 0x1F) - 0xF
 			);
+			(*Entrys[j])[i].Trans.Rot = rot;
 		}
 	}
 
@@ -141,10 +131,15 @@ void Init()
 
 	InitShaders();
 
+	//Poly0 = YMT::PolyHedra::FullTexture();
 	Poly0 = YMT::PolyHedra::Cube();
+	//Poly0 = YMT::PolyHedra::ConeC(12, 0.5f);
+
 	Tex0 = new TextureArray(128, 128, 1, (FileContext[])
 	{
-		ImageDir.File("Orientation.png"),
+		//ImageDir.File("Orientation.png"),
+		//ImageDir.File("Checker.png"),
+		ImageDir.File("GrayDeant.png"),
 	});
 	PH_Instances = new PolyHedra_3D_Instances(Poly0);
 	AddInstances();
@@ -170,24 +165,16 @@ void Frame(double timeDelta)
 {
 	MoveFlatX(view_trans, win -> MoveFromKeys(2.0f * timeDelta));
 	MoveFlatX(view_trans, win -> SpinFromCursor(0.2f * timeDelta));
-
-	//if (glfwGetKey(win -> win, GLFW_KEY_R)) { tex_free(); tex_init(); }
-
-	//test_trans.Rot.x += 1.0f * timeDelta;
-	//test_trans.Rot.UpdateSinCos();
-
-	Tex0 -> Bind();
-
-	PolyInstShader -> Use();
-	//PolyInstShader -> UniViewTrans.Value(view_trans);
 	Multi_View -> ChangeData(view_trans);
+
+	PH_Shader -> Use();
+	Tex0 -> Bind();
 	PH_Instances -> Update();
 	PH_Instances -> Draw();
 }
 
 void Resize(int w, int h)
 {
-	//PolyInstShader -> WindowScale.Value(w, h);
 	Multi_ViewPortSizeRatio -> ChangeData(SizeRatio2D(w, h));
 }
 

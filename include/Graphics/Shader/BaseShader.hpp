@@ -5,7 +5,7 @@
 # include <iostream>
 # include <vector>
 # include "OpenGL/openGL.h"
-# include "ShaderCode.hpp"
+# include "Graphics/ShaderCode.hpp"
 # include "Graphics/Uniform/Base/UniformBase.hpp"
 
 class UniformBase;
@@ -29,8 +29,6 @@ class BaseShader
 		void Use();
 		bool Is() const;
 
-	protected:
-		virtual void UniformUpdate() = 0;
 	public:
 		void UniformsUpdate();
 		int UniformFind(const std::string & name) const;

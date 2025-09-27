@@ -148,7 +148,8 @@ void Window::Run()
 		if (FrameTimeDelta >= (1.0 / 64.0))
 		{
 			glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT);
-			glClearColor(0.5f, 0.5f, 0.5f, 1.0f);
+			//glClearColor(0.5f, 0.5f, 0.5f, 1.0f);
+			glClearColor(0.125f, 0.0f, 0.0f, 1.0f);
 
 			timeFunc.T0();
 			FrameFunc(FrameTimeDelta);

@@ -2,7 +2,7 @@
 #ifndef  UNI_DEPTH_FACTORS_3D_HPP
 # define UNI_DEPTH_FACTORS_3D_HPP
 
-# include "Graphics/BaseShader.hpp"
+# include "Graphics/Shader/BaseShader.hpp"
 # include "Graphics/Uniform/Base/GenericUniformBase.hpp"
 # include "Graphics/Uniform/Base/GenericMultiformBase.hpp"
 

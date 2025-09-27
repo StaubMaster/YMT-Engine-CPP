@@ -59,6 +59,24 @@ void Angle3D::UpdateSinCos()
 	cos_y = cos(y);
 	cos_z = cos(z);
 }
+void Angle3D::ChangeX(float x)
+{
+	this -> x = x;
+	sin_x = sin(x);
+	cos_x = cos(x);
+}
+void Angle3D::ChangeY(float y)
+{
+	this -> y = y;
+	sin_y = sin(y);
+	cos_y = cos(y);
+}
+void Angle3D::ChangeZ(float z)
+{
+	this -> z = z;
+	sin_z = sin(z);
+	cos_z = cos(z);
+}
 
 
 
