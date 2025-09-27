@@ -44,9 +44,11 @@ FILES_SRC = \
 \
 	Graphics/Buffer/PolyHedra_MainData.cpp \
 	Graphics/Buffer/PolyHedra_MainAttrib.cpp \
+	Graphics/Buffer/PolyHedra_MainBuffer.cpp \
 	Graphics/Buffer/PolyHedra_3D_InstData.cpp \
 	Graphics/Buffer/PolyHedra_3D_InstAttrib.cpp \
-	Graphics/Buffer/PolyHedra_3D_Buffer.cpp \
+	Graphics/Buffer/PolyHedra_3D_InstBuffer.cpp \
+	Graphics/Buffer/PolyHedra_3D_BufferArray.cpp \
 	Graphics/Buffer/PolyHedra_3D_Instances.cpp \
 	Graphics/Shader/PolyHedra_3D_Shader.cpp \
 \

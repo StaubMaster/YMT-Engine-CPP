@@ -6,7 +6,7 @@
 #include "Window.hpp"
 #include "TextureArray.hpp"
 
-#include "Graphics/Buffer/PolyHedra_3D_Buffer.hpp"
+#include "Graphics/Buffer/PolyHedra_3D_BufferArray.hpp"
 #include "Graphics/Shader/PolyHedra_3D_Shader.hpp"
 
 
@@ -31,7 +31,7 @@ Window * win;
 
 YMT::PolyHedra * PH;
 TextureArray * tex_arr;
-PolyHedra_3D_Buffer * PH_Buffer;
+PolyHedra_3D_BufferArray * PH_Buffer;
 PolyHedra_3D_Shader * PH_Shader;
 
 Transformation3D view_trans;
@@ -158,7 +158,7 @@ void Init()
 	});
 
 	PH = YMT::PolyHedra::ConeC(12, 0.5f);
-	PH_Buffer = new PolyHedra_3D_Buffer();
+	PH_Buffer = new PolyHedra_3D_BufferArray();
 	{
 		int count;
 		PolyHedra_MainData * data = PH -> ToMainData(count);

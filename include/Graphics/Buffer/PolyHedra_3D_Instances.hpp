@@ -6,14 +6,14 @@
 # include "OpenGL/openGL.h"
 # include "Miscellaneous/EntryContainer/EntryContainerDynamic.hpp"
 
-# include "PolyHedra_3D_Buffer.hpp"
+# include "PolyHedra_3D_BufferArray.hpp"
 
 # include "PolyHedra.hpp"
 
 class PolyHedra_3D_Instances
 {
 	public:
-		PolyHedra_3D_Buffer Buffer;
+		PolyHedra_3D_BufferArray Buffer;
 		//YMT::PolyHedra * Main;
 		EntryContainerDynamic<PolyHedra_3D_InstData> Instances;
 
