@@ -10,16 +10,14 @@
 
 # include "Abstract.hpp"
 
-class PolyHedra_3D_Buffer
+# include "BufferArray.hpp"
+# include "BaseBuffer.hpp"
+
+class PolyHedra_3D_Buffer : public BufferArray
 {
 	private:
-		unsigned int BufferArray;
-
-		unsigned int MainBuffer;
-		unsigned int MainCount;
-
-		unsigned int InstBuffer;
-		unsigned int InstCount;
+		BaseBuffer Main;
+		BaseBuffer Inst;
 
 		unsigned int TextureArray;
 
@@ -33,7 +31,7 @@ class PolyHedra_3D_Buffer
 		//void BindTex(const  * data, unsigned int count);
 
 	public:
-		void Draw();
+		void Draw() override;
 };
 
 #endif

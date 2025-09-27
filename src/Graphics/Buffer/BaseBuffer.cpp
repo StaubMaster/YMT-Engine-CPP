@@ -1,28 +1,28 @@
 #include "Graphics/Buffer/BaseBuffer.hpp"
+#include "OpenGL/openGL.h"
+#include <iostream>
 
-BaseBuffer::BaseBuffer(int count)
+
+
+BaseBuffer::BaseBuffer(unsigned int count) :
+	BufferCount(count)
 {
-	BufferCount = count;
 	BufferIDs = new unsigned int[count];
-	glGenVertexArrays(1, &ArrayID);
-	glBindVertexArray(ArrayID);
 	glGenBuffers(BufferCount, BufferIDs);
 	std::cout << "++++ BaseBuffer\n";
+	Count = 0;
 }
 BaseBuffer::~BaseBuffer()
 {
 	std::cout << "---- BaseBuffer\n";
-	glBindVertexArray(ArrayID);
 	glDeleteBuffers(BufferCount, BufferIDs);
-	glDeleteVertexArrays(1, &ArrayID);
 	delete [] BufferIDs;
 }
 
 
 
-void BaseBuffer::Use()
+void BaseBuffer::BindData(unsigned int target, unsigned int index, unsigned int size, const void * data, unsigned int usage)
 {
-	glBindVertexArray(ArrayID);
+	glBindBuffer(target, BufferIDs[index]);
+	glBufferData(target, size, data, usage);
 }
-
-

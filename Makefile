@@ -22,6 +22,15 @@ FILES_SRC = \
 \
 	Graphics/ShaderCode.cpp \
 	Graphics/Shader/BaseShader.cpp \
+	Graphics/Buffer/BufferArray.cpp \
+	Graphics/Buffer/BaseBuffer.cpp \
+\
+	Graphics/Attribute/AttributeLocation.cpp \
+	Graphics/Attribute/AttributeBase.cpp \
+	Graphics/Attribute/AttribPoint3D.cpp \
+	Graphics/Attribute/AttribAngle3D.cpp \
+	Graphics/Attribute/AttribTrans3D.cpp \
+	Graphics/Attribute/AttribPoint2D.cpp \
 \
 	Graphics/Uniform/Base/UniformBase.cpp \
 	Graphics/Uniform/Base/MultiformBase.cpp \

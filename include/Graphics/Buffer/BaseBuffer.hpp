@@ -1,27 +1,25 @@
 
-#ifndef BASE_BUFFER
+#ifndef  BASE_BUFFER
 # define BASE_BUFFER
 
-# include <iostream>
-# include "OpenGL/openGL.h"
-
-/*class BaseBuffer
+class BaseBuffer
 {
 	private:
-		unsigned int ArrayID;
-
-	protected:
-		int BufferCount;
+		const unsigned int BufferCount;
+	public:
 		unsigned int * BufferIDs;
+		unsigned int Count;
 
 	protected:
-		BaseBuffer(int count);
+	public:
+		BaseBuffer(unsigned int count);
 		virtual ~BaseBuffer();
 
 	public:
-		void Use();
+		void BindData(unsigned int target, unsigned int index, unsigned int size, const void * data, unsigned int usage);
 
-		virtual void Draw() = 0;
-};*/
+	//	Bindings
+	//	do Binding in Data ?
+};
 
 #endif
