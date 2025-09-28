@@ -1,6 +1,6 @@
 
-#ifndef POLYHEDRA_3D_INSTDATA
-# define POLYHEDRA_3D_INSTDATA
+#ifndef  POLYHEDRA_3D_INST_DATA
+# define POLYHEDRA_3D_INST_DATA
 
 # include "Abstract.hpp"
 

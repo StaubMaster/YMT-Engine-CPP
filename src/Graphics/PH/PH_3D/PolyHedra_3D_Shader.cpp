@@ -1,5 +1,6 @@
+#include "Graphics/PH/PH_3D/PolyHedra_3D_Shader.hpp"
 
-#include "Graphics/Shader/PolyHedra_3D_Shader.hpp"
+
 
 PolyHedra_3D_Shader::PolyHedra_3D_Shader(const DirectoryContext & dir)
 	: BaseShader((const ShaderCode []) {

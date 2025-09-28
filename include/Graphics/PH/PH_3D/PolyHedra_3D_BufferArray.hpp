@@ -2,20 +2,13 @@
 #ifndef  POLYHEDRA_3D_BUFFER_ARRAY
 # define POLYHEDRA_3D_BUFFER_ARRAY
 
-# include "Instance_Base_BufferArray.hpp"
+# include "Graphics/Buffer/Instance_Base_BufferArray.hpp"
 
-# include "PolyHedra_MainData.hpp"
-# include "PolyHedra_MainAttrib.hpp"
-# include "PolyHedra_MainBuffer.hpp"
+# include "Graphics/PH/PolyHedra_MainData.hpp"
+# include "Graphics/PH/PolyHedra_MainBuffer.hpp"
 
 # include "PolyHedra_3D_InstData.hpp"
-# include "PolyHedra_3D_InstAttrib.hpp"
 # include "PolyHedra_3D_InstBuffer.hpp"
-
-# include "Abstract.hpp"
-
-# include "BufferArray.hpp"
-# include "BaseBuffer.hpp"
 
 
 

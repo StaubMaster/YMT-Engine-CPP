@@ -2,7 +2,7 @@
 #ifndef  POLYHEDRA_3D_INST_BUFFER
 # define POLYHEDRA_3D_INST_BUFFER
 
-# include "BaseBuffer.hpp"
+# include "Graphics/Buffer/BaseBuffer.hpp"
 
 class PolyHedra_3D_InstBuffer : public BaseBuffer
 {

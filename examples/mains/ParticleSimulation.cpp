@@ -6,8 +6,8 @@
 #include "Window.hpp"
 #include "TextureArray.hpp"
 
-#include "Graphics/Buffer/PolyHedra_3D_BufferArray.hpp"
-#include "Graphics/Shader/PolyHedra_3D_Shader.hpp"
+#include "Graphics/PH/PH_3D/PolyHedra_3D_BufferArray.hpp"
+#include "Graphics/PH/PH_3D/PolyHedra_3D_Shader.hpp"
 
 
 

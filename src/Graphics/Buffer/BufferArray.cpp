@@ -1,21 +1,21 @@
-#include "Graphics/Buffer/BufferArray.hpp"
+#include "Graphics/Buffer/BaseBufferArray.hpp"
 #include "OpenGL/openGL.h"
 #include <iostream>
 
 
 
-BufferArray::BufferArray()
+BaseBufferArray::BaseBufferArray()
 {
 	glGenVertexArrays(1, &ArrayID);
 }
-BufferArray::~BufferArray()
+BaseBufferArray::~BaseBufferArray()
 {
 	glDeleteVertexArrays(1, &ArrayID);
 }
 
 
 
-void BufferArray::Use()
+void BaseBufferArray::Use()
 {
 	glBindVertexArray(ArrayID);
 }

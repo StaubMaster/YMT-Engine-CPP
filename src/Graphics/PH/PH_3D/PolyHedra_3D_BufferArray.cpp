@@ -1,4 +1,4 @@
-#include "Graphics/Buffer/PolyHedra_3D_BufferArray.hpp"
+#include "Graphics/PH/PH_3D/PolyHedra_3D_BufferArray.hpp"
 
 #include "Graphics/Attribute/AttributeLocation.hpp"
 #include "Graphics/Attribute/AttributeBase.hpp"

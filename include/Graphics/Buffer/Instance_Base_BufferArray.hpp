@@ -1,22 +1,12 @@
 
-#ifndef  INSTANCE_BASE_BUFFER
-# define INSTANCE_BASE_BUFFER
+#ifndef  INSTANCE_BASE_BUFFER_ARRAY
+# define INSTANCE_BASE_BUFFER_ARRAY
 
-# include <iostream>
-# include "OpenGL/openGL.h"
-
-# include "BufferArray.hpp"
-# include "BaseBuffer.hpp"
-
+# include "Graphics/Buffer/BaseBufferArray.hpp"
 # include "Graphics/Attribute/AttributeBase.hpp"
 
-# include "PolyHedra_MainData.hpp"
-# include "PolyHedra_MainAttrib.hpp"
-
-# include "PolyHedra_3D_InstData.hpp"
-# include "PolyHedra_3D_InstAttrib.hpp"
-
-# include "Abstract.hpp"
+# include "OpenGL/openGL.h"
+# include <iostream>
 
 template<
 	typename MainDataType,
@@ -24,7 +14,7 @@ template<
 	typename MainBufferType,
 	typename InstBufferType
 >
-class Instance_Base_BufferArray : public BufferArray
+class Instance_Base_BufferArray : public BaseBufferArray
 {
 	protected:
 	private:
@@ -37,7 +27,7 @@ class Instance_Base_BufferArray : public BufferArray
 	protected:
 		Instance_Base_BufferArray(
 			unsigned int draw_mode
-		) : BufferArray(),
+		) : BaseBufferArray(),
 			MainBuffer(),
 			InstBuffer(),
 			DrawMode(draw_mode) { }

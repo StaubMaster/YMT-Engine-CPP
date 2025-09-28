@@ -6,7 +6,7 @@
 # include "Abstract3D/Point3D.hpp"
 # include "Abstract3D/Undex3D.hpp"
 
-# include "Graphics/Buffer/PolyHedra_MainData.hpp"
+# include "Graphics/PH/PolyHedra_MainData.hpp"
 
 namespace YMT
 {

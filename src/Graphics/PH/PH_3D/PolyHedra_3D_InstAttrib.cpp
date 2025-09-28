@@ -1,4 +1,5 @@
-#include "Graphics/Buffer/PolyHedra_3D_InstAttrib.hpp"
+#include "Graphics/PH/PH_3D/PolyHedra_3D_InstAttrib.hpp"
+
 #include "OpenGL/openGL.h"
 #include "Abstract.hpp"
 

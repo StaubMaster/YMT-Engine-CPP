@@ -1,6 +1,6 @@
-#include "Graphics/Buffer/PolyHedra_MainBuffer.hpp"
-#include "Graphics/Buffer/PolyHedra_MainAttrib.hpp"
-#include "Graphics/Buffer/PolyHedra_MainData.hpp"
+#include "Graphics/PH/PolyHedra_MainBuffer.hpp"
+#include "Graphics/PH/PolyHedra_MainAttrib.hpp"
+#include "Graphics/PH/PolyHedra_MainData.hpp"
 
 
 

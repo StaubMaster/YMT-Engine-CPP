@@ -1,6 +1,6 @@
 
-#ifndef POLYHEDRA_MAINDATA
-# define POLYHEDRA_MAINDATA
+#ifndef  POLYHEDRA_MAIN_DATA
+# define POLYHEDRA_MAIN_DATA
 
 # include "Abstract.hpp"
 

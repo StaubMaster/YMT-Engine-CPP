@@ -1,4 +1,5 @@
-# ifndef POLYHEDRA_3D_SHADER_HPP
+
+#ifndef  POLYHEDRA_3D_SHADER_HPP
 # define POLYHEDRA_3D_SHADER_HPP
 
 # include "Graphics/Shader/BaseShader.hpp"
@@ -9,6 +10,8 @@
 
 # include "FileManager/DirectoryContext.hpp"
 # include "FileManager/FileContext.hpp"
+
+
 
 class PolyHedra_3D_Shader : public BaseShader
 {

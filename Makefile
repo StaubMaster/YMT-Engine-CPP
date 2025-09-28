@@ -42,15 +42,15 @@ FILES_SRC = \
 	Graphics/Uniform/Abstract2D/UniPoint2D.cpp \
 	Graphics/Uniform/Abstract2D/UniSizeRatio2D.cpp \
 \
-	Graphics/Buffer/PolyHedra_MainData.cpp \
-	Graphics/Buffer/PolyHedra_MainAttrib.cpp \
-	Graphics/Buffer/PolyHedra_MainBuffer.cpp \
-	Graphics/Buffer/PolyHedra_3D_InstData.cpp \
-	Graphics/Buffer/PolyHedra_3D_InstAttrib.cpp \
-	Graphics/Buffer/PolyHedra_3D_InstBuffer.cpp \
-	Graphics/Buffer/PolyHedra_3D_BufferArray.cpp \
-	Graphics/Buffer/PolyHedra_3D_Instances.cpp \
-	Graphics/Shader/PolyHedra_3D_Shader.cpp \
+	Graphics/PH/PolyHedra_MainData.cpp \
+	Graphics/PH/PolyHedra_MainAttrib.cpp \
+	Graphics/PH/PolyHedra_MainBuffer.cpp \
+	Graphics/PH/PH_3D/PolyHedra_3D_InstData.cpp \
+	Graphics/PH/PH_3D/PolyHedra_3D_InstAttrib.cpp \
+	Graphics/PH/PH_3D/PolyHedra_3D_InstBuffer.cpp \
+	Graphics/PH/PH_3D/PolyHedra_3D_BufferArray.cpp \
+	Graphics/PH/PH_3D/PolyHedra_3D_Instances.cpp \
+	Graphics/PH/PH_3D/PolyHedra_3D_Shader.cpp \
 \
 	PolyHedra.cpp \
 	TextureArray.cpp \

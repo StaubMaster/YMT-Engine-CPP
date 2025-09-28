@@ -2,13 +2,13 @@
 #ifndef POLYHEDRA_3D_Instances
 # define POLYHEDRA_3D_Instances
 
-# include <iostream>
-# include "OpenGL/openGL.h"
+# include "PolyHedra.hpp"
 # include "Miscellaneous/EntryContainer/EntryContainerDynamic.hpp"
 
 # include "PolyHedra_3D_BufferArray.hpp"
 
-# include "PolyHedra.hpp"
+# include "OpenGL/openGL.h"
+# include <iostream>
 
 class PolyHedra_3D_Instances
 {
