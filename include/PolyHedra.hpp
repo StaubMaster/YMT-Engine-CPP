@@ -47,6 +47,9 @@ class PolyHedra
 		ContainerDynamic<Corner>	Corners;
 		ContainerDynamic<Face>		Faces;
 
+	public:
+		bool UseCornerNormals;
+
 	private:
 		PolyHedra();
 	public:

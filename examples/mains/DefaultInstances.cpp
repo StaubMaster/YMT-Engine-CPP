@@ -122,7 +122,8 @@ void Init()
 	//Poly0 = YMT::PolyHedra::FullTexture();
 	Poly0 = YMT::PolyHedra::Cube();
 	//Poly0 = YMT::PolyHedra::ConeC(12, 0.5f);
-
+	
+	Poly0 -> UseCornerNormals = false;
 	Tex0 = new TextureArray(128, 128, 1, (FileContext[])
 	{
 		ImageDir.File("Orientation.png"),

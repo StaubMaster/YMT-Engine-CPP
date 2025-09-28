@@ -113,6 +113,6 @@ void main()
 	vs_out.Relative = ASD(vs_out.Absolute - View.Pos, View.Rot.Sin, View.Rot.Cos);
 	gl_Position = proj(vs_out.Relative);
 
-	vs_out.Normal = VNorm;
+	vs_out.Normal = DSA(VNorm, ISin, ICos);
 	vs_out.Tex = VTex;
 }

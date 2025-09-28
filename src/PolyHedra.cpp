@@ -6,7 +6,7 @@
 YMT::PolyHedra::PolyHedra() :
 	Corners(), Faces()
 {
-
+	UseCornerNormals = false;
 }
 YMT::PolyHedra::~PolyHedra()
 {
@@ -213,9 +213,18 @@ PolyHedra_MainData * YMT::PolyHedra::ToMainData(int & count)
 		data[c + 1].Position = cornerY.Position;
 		data[c + 2].Position = cornerZ.Position;
 
-		data[c + 0].Normal = face.Normal;
-		data[c + 1].Normal = face.Normal;
-		data[c + 2].Normal = face.Normal;
+		if (!UseCornerNormals)
+		{
+			data[c + 0].Normal = face.Normal;
+			data[c + 1].Normal = face.Normal;
+			data[c + 2].Normal = face.Normal;
+		}
+		else
+		{
+			data[c + 0].Normal = cornerX.Normal;
+			data[c + 1].Normal = cornerY.Normal;
+			data[c + 2].Normal = cornerZ.Normal;
+		}
 
 		data[c + 0].Texture = face.Corner0.Tex;
 		data[c + 1].Texture = face.Corner1.Tex;
