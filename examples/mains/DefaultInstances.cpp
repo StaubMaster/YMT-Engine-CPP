@@ -31,9 +31,9 @@ PolyHedra_3D_Instances * PH_Instances;
 EntryContainerDynamic<PolyHedra_3D_InstData>::Entry ** Entrys;
 PolyHedra_3D_Shader * PH_Shader;
 
-MultiTrans3D * Multi_View;
-MultiDepthFactors * Multi_DepthFactors;
 MultiSizeRatio2D * Multi_ViewPortSizeRatio;
+MultiTrans3D * Multi_View;
+MultiDepth * Multi_Depth;
 
 Transformation3D view_trans;
 
@@ -42,29 +42,35 @@ Transformation3D view_trans;
 void InitShaders()
 {
 	PH_Shader = new PolyHedra_3D_Shader(ShaderDir);
+	win -> DefaultColor = Color(0.25f, 0.0f, 0.0f);
 
-	Multi_View = new MultiTrans3D("View");
-	Multi_DepthFactors = new MultiDepthFactors("DepthFactors");
+	Depth Depth;
+	Depth.Factors = DepthFactors(0.1f, 100.0f);
+	Depth.Range = Range(0.8f, 1.0f);
+	Depth.Color = win -> DefaultColor;
+
 	Multi_ViewPortSizeRatio = new MultiSizeRatio2D("ViewPortSizeRatio");
+	Multi_View = new MultiTrans3D("View");
+	Multi_Depth = new MultiDepth("Depth");
 
 	BaseShader * shaders [] = {
 		PH_Shader,
 	};
 	int shader_count = 1;
 
-	Multi_View -> FindUniforms(shaders, shader_count);
-	Multi_DepthFactors -> FindUniforms(shaders, shader_count);
 	Multi_ViewPortSizeRatio -> FindUniforms(shaders, shader_count);
+	Multi_View -> FindUniforms(shaders, shader_count);
+	Multi_Depth -> FindUniforms(shaders, shader_count);
 
-	Multi_DepthFactors -> ChangeData(DepthFactors(0.1f, 100.0f));
+	Multi_Depth -> ChangeData(Depth);
 }
 void FreeShaders()
 {
 	delete PH_Shader;
 
-	delete Multi_View;
-	delete Multi_DepthFactors;
 	delete Multi_ViewPortSizeRatio;
+	delete Multi_View;
+	delete Multi_Depth;
 }
 
 void AddInstances()

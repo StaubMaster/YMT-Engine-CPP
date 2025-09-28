@@ -6,6 +6,7 @@
 # include "Data/3D/Point3D.hpp"
 # include "Data/3D/Angle3D.hpp"
 # include "Data/2D/Point2D.hpp"
+# include "Data/Color.hpp"
 
 class Window
 {
@@ -24,6 +25,9 @@ class Window
 		void (*FrameFunc)(double);
 		void (*FreeFunc)();
 		void (*ResizeFunc)(int, int);
+
+	public:
+		Color DefaultColor;
 
 	public:
 		Window(float w, float h);

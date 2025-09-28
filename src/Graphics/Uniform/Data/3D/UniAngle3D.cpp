@@ -10,9 +10,6 @@ UniAngle3D::UniAngle3D(std::string name, BaseShader & shader) :
 {
 	LocationSin = shader.UniformFind(name + ".Sin");
 	LocationCos = shader.UniformFind(name + ".Cos");
-	std::cout << "UniAngle3D.LocationSin: " << LocationSin << "\n";
-	std::cout << "UniAngle3D.LocationCos: " << LocationCos << "\n";
-	//shader.Uniforms.push_back(this);
 }
 
 void UniAngle3D::PutData(Angle3D a)

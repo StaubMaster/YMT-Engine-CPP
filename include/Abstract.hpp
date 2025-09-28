@@ -10,8 +10,10 @@
 #include "Data/2D/SizeRatio2D.hpp"
 
 #include "Data/1D/DepthFactors.hpp"
+#include "Data/1D/Range.hpp"
+#include "Data/1D/LInter.hpp"
 
-//#include "Data/Color.hpp"
-//#include "Data/Depth.hpp"
+#include "Data/Color.hpp"
+#include "Data/Depth.hpp"
 
 #endif

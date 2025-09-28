@@ -20,13 +20,27 @@ struct SizeRatio2D
 	vec2 Ratio;
 };
 
+struct RangeData
+{
+	float Min;
+	float Len;
+	float Max;
+};
 
+struct DepthData
+{
+	float[7]	Factors;
+	RangeData	Range;
+	vec3		Color;
+};
+
+
+
+uniform SizeRatio2D ViewPortSizeRatio;
 
 uniform Trans3D View;
 
-uniform float[7] DepthFactors;
-
-uniform SizeRatio2D ViewPortSizeRatio;
+uniform DepthData Depth;
 
 
 
@@ -83,7 +97,7 @@ vec4 proj(in vec3 p_inn)
 
 	p_out.x = p_inn.x;
 	p_out.y = p_inn.y;
-	p_out.z = p_inn.z * DepthFactors[5] - DepthFactors[6];
+	p_out.z = p_inn.z * Depth.Factors[5] - Depth.Factors[6];
 	p_out.w = p_inn.z;
 
 	p_out.x = p_out.x * ViewPortSizeRatio.Ratio.x;

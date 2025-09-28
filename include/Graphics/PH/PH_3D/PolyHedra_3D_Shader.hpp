@@ -15,7 +15,7 @@ class PolyHedra_3D_Shader : public BaseShader
 	public:
 		UniSizeRatio2D	ViewPortSizeRatio;
 		UniTrans3D		View;
-		UniDepthFactors	DepthFactors;
+		UniDepth		Depth;
 
 	public:
 		PolyHedra_3D_Shader(const DirectoryContext & dir);

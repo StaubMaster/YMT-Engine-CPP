@@ -166,7 +166,14 @@ void Init()
 		PH_Buffer -> BindMain(data, count);
 		delete [] data;
 	}
-	PH_Shader -> DepthFactors.PutData(DepthFactors(0.1f, 1000.0f));
+
+	win -> DefaultColor = Color(0.125f, 0.0f, 0.0f);
+
+	Depth Depth;
+	Depth.Factors = DepthFactors(0.1f, 100.0f);
+	Depth.Range = Range(0.8f, 1.0f);
+	Depth.Color = win -> DefaultColor;
+	PH_Shader -> Depth.PutData(Depth);
 
 	CL_Init();
 

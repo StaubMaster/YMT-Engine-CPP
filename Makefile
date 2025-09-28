@@ -16,7 +16,11 @@ FILES_SRC = \
 	Data/3D/Undex3D.cpp \
 	Data/2D/Point2D.cpp \
 	Data/2D/SizeRatio2D.cpp \
+	Data/1D/Range.cpp \
+	Data/1D/LInter.cpp \
 	Data/1D/DepthFactors.cpp \
+	Data/Color.cpp \
+	Data/Depth.cpp \
 \
 	Graphics/ShaderCode.cpp \
 	Graphics/Shader/BaseShader.cpp \
@@ -37,9 +41,12 @@ FILES_SRC = \
 	Graphics/Uniform/Data/3D/UniPoint3D.cpp \
 	Graphics/Uniform/Data/3D/UniAngle3D.cpp \
 	Graphics/Uniform/Data/3D/UniTrans3D.cpp \
-	Graphics/Uniform/Data/1D/UniDepthFactors.cpp \
 	Graphics/Uniform/Data/2D/UniPoint2D.cpp \
 	Graphics/Uniform/Data/2D/UniSizeRatio2D.cpp \
+	Graphics/Uniform/Data/1D/UniDepthFactors.cpp \
+	Graphics/Uniform/Data/1D/UniRange.cpp \
+	Graphics/Uniform/Data/UniDepth.cpp \
+	Graphics/Uniform/Data/UniColor.cpp \
 \
 	Graphics/PH/PolyHedra_MainData.cpp \
 	Graphics/PH/PolyHedra_MainAttrib.cpp \

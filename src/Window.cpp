@@ -40,6 +40,8 @@ Window::Window(float w, float h)
 	FrameFunc = NULL;
 	FreeFunc = NULL;
 	ResizeFunc = NULL;
+
+	DefaultColor = Color(0.5f, 0.5f, 0.5f);
 }
 Window::~Window()
 {
@@ -149,7 +151,7 @@ void Window::Run()
 		{
 			glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT);
 			//glClearColor(0.5f, 0.5f, 0.5f, 1.0f);
-			glClearColor(0.125f, 0.0f, 0.0f, 1.0f);
+			glClearColor(DefaultColor.R, DefaultColor.G, DefaultColor.B, 1.0f);
 
 			timeFunc.T0();
 			FrameFunc(FrameTimeDelta);
