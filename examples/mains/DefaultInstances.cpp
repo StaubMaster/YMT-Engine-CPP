@@ -2,14 +2,13 @@
 #include "OpenGL/openGL.h"
 
 #include "Abstract.hpp"
-#include "Uniforms.hpp"
-
-#include "PolyHedra.hpp"
-#include "TextureArray.hpp"
 
 #include "Graphics/PH/PH_3D/PolyHedra_3D_Instances.hpp"
 #include "Graphics/PH/PH_3D/PolyHedra_3D_Shader.hpp"
+#include "Graphics/Uniform/Uniforms.hpp"
 
+#include "TextureArray.hpp"
+#include "PolyHedra.hpp"
 #include "Window.hpp"
 
 #include "FileManager/DirectoryContext.hpp"

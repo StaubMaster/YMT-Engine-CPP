@@ -1,10 +1,9 @@
 #ifndef POLYHEDRA_HPP
 # define POLYHEDRA_HPP
 
-//# include "EditableArray.hpp"
-# include "Abstract2D/Point2D.hpp"
-# include "Abstract3D/Point3D.hpp"
-# include "Abstract3D/Undex3D.hpp"
+# include "Data/2D/Point2D.hpp"
+# include "Data/3D/Point3D.hpp"
+# include "Data/3D/Undex3D.hpp"
 
 # include "Graphics/PH/PolyHedra_MainData.hpp"
 

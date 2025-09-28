@@ -3,21 +3,9 @@
 
 # include "OpenGL/openGL.h"
 
-# include "Abstract3D/Point3D.hpp"
-# include "Abstract3D/Angle3D.hpp"
-
-# include "Abstract2D/Point2D.hpp"
-
-/*
-	FrameTimeDelta
-	FrameFunc
-
-	InitFunc
-	FreeFunc
-
-	Cursor Center	lock/diff
-	KeyChecks
-*/
+# include "Data/3D/Point3D.hpp"
+# include "Data/3D/Angle3D.hpp"
+# include "Data/2D/Point2D.hpp"
 
 class Window
 {

@@ -10,15 +10,13 @@ FLAGS = -Wall -Wextra -Werror
 
 FILES_SRC = \
 \
-	Abstract3D/Point3D.cpp \
-	Abstract3D/Angle3D.cpp \
-	Abstract3D/Transformation3D.cpp \
-	Abstract3D/Undex3D.cpp \
-\
-	Abstract2D/Point2D.cpp \
-	Abstract2D/SizeRatio2D.cpp \
-\
-	Abstract1D/DepthFactors.cpp \
+	Data/3D/Point3D.cpp \
+	Data/3D/Angle3D.cpp \
+	Data/3D/Transformation3D.cpp \
+	Data/3D/Undex3D.cpp \
+	Data/2D/Point2D.cpp \
+	Data/2D/SizeRatio2D.cpp \
+	Data/1D/DepthFactors.cpp \
 \
 	Graphics/ShaderCode.cpp \
 	Graphics/Shader/BaseShader.cpp \
@@ -27,6 +25,7 @@ FILES_SRC = \
 \
 	Graphics/Attribute/AttributeLocation.cpp \
 	Graphics/Attribute/AttributeBase.cpp \
+\
 	Graphics/Attribute/AttribPoint3D.cpp \
 	Graphics/Attribute/AttribAngle3D.cpp \
 	Graphics/Attribute/AttribTrans3D.cpp \
@@ -35,16 +34,17 @@ FILES_SRC = \
 	Graphics/Uniform/Base/UniformBase.cpp \
 	Graphics/Uniform/Base/MultiformBase.cpp \
 \
-	Graphics/Uniform/Abstract3D/UniPoint3D.cpp \
-	Graphics/Uniform/Abstract3D/UniAngle3D.cpp \
-	Graphics/Uniform/Abstract3D/UniTrans3D.cpp \
-	Graphics/Uniform/Abstract1D/UniDepthFactors.cpp \
-	Graphics/Uniform/Abstract2D/UniPoint2D.cpp \
-	Graphics/Uniform/Abstract2D/UniSizeRatio2D.cpp \
+	Graphics/Uniform/Data/3D/UniPoint3D.cpp \
+	Graphics/Uniform/Data/3D/UniAngle3D.cpp \
+	Graphics/Uniform/Data/3D/UniTrans3D.cpp \
+	Graphics/Uniform/Data/1D/UniDepthFactors.cpp \
+	Graphics/Uniform/Data/2D/UniPoint2D.cpp \
+	Graphics/Uniform/Data/2D/UniSizeRatio2D.cpp \
 \
 	Graphics/PH/PolyHedra_MainData.cpp \
 	Graphics/PH/PolyHedra_MainAttrib.cpp \
 	Graphics/PH/PolyHedra_MainBuffer.cpp \
+\
 	Graphics/PH/PH_3D/PolyHedra_3D_InstData.cpp \
 	Graphics/PH/PH_3D/PolyHedra_3D_InstAttrib.cpp \
 	Graphics/PH/PH_3D/PolyHedra_3D_InstBuffer.cpp \
@@ -52,8 +52,8 @@ FILES_SRC = \
 	Graphics/PH/PH_3D/PolyHedra_3D_Instances.cpp \
 	Graphics/PH/PH_3D/PolyHedra_3D_Shader.cpp \
 \
-	PolyHedra.cpp \
 	TextureArray.cpp \
+	PolyHedra.cpp \
 	TimeMeasure.cpp \
 	Window.cpp
 

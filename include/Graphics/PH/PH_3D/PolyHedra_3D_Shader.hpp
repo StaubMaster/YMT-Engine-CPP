@@ -3,10 +3,7 @@
 # define POLYHEDRA_3D_SHADER_HPP
 
 # include "Graphics/Shader/BaseShader.hpp"
-
-# include "Graphics/Uniform/Abstract2D/UniSizeRatio2D.hpp"
-# include "Graphics/Uniform/Abstract1D/UniDepthFactors.hpp"
-# include "Graphics/Uniform/Abstract3D/UniTrans3D.hpp"
+# include "Graphics/Uniform/Uniforms.hpp"
 
 # include "FileManager/DirectoryContext.hpp"
 # include "FileManager/FileContext.hpp"
