@@ -4,9 +4,7 @@
 
 
 YMT::PolyHedra::PolyHedra() :
-	Corners(),
-	FaceIndexes(),
-	FaceTextures()
+	Corners(), Faces()
 {
 
 }
@@ -19,45 +17,63 @@ YMT::PolyHedra::~PolyHedra()
 
 
 
-void YMT::PolyHedra::Edit_Trim()
+YMT::PolyHedra::Corner::Corner() { }
+YMT::PolyHedra::Corner::Corner(Point3D pos) : Position(pos) { }
+
+YMT::PolyHedra::FaceCorner::FaceCorner() { }
+YMT::PolyHedra::FaceCorner::FaceCorner(unsigned int udx, float tex_x, float tex_y) : Udx(udx), Tex(tex_x, tex_y) { }
+
+YMT::PolyHedra::Face::Face() { }
+YMT::PolyHedra::Face::Face(FaceCorner c0, FaceCorner c1, FaceCorner c2) : Corner0(c0), Corner1(c1), Corner2(c2) { }
+
+void YMT::PolyHedra::Done()
 {
 	Corners.Trim();
-	FaceIndexes.Trim();
-	FaceTextures.Trim();
+	Faces.Trim();
+
+	Calc_Face_Normals();
+	Calc_Corn_Normals();
 }
-/*void YMT::PolyHedra::Edit_Face_Color(unsigned int idx0, unsigned int idx1, unsigned int idx2, unsigned int col)
+void YMT::PolyHedra::Calc_Face_Normals()
 {
-	FaceIndexes.Insert(Undex3D(idx0, idx1, idx2));
-
-	Point3D color;
-	color.X = ((col >> 16) & 0xFF) / 255.0f;
-	color.Y = ((col >> 8) & 0xFF) / 255.0f;
-	color.Z = ((col >> 0) & 0xFF) / 255.0f;
-
-	FaceTex texs;
-	texs.X = color;
-	texs.Y = color;
-	texs.Z = color;
-	FaceTextures.Insert(texs);
-}*/
-
-YMT::PolyHedra::TexUndex::TexUndex(unsigned int udx, float tex_x, float tex_y) :
-	Udx(udx), Tex(tex_x, tex_y) { }
-
-void YMT::PolyHedra::Edit_Face3(TexUndex corn0, TexUndex corn1, TexUndex corn2)
-{
-	FaceIndexes.Insert(Undex3D(corn0.Udx, corn1.Udx, corn2.Udx));
-
-	FaceTex texs;
-	texs.X = Point2D(corn0.Tex.X, corn0.Tex.Y);
-	texs.Y = Point2D(corn1.Tex.X, corn1.Tex.Y);
-	texs.Z = Point2D(corn2.Tex.X, corn2.Tex.Y);
-	FaceTextures.Insert(texs);
+	for (unsigned int i = 0; i < Faces.Count(); i++)
+	{
+		Face & face = Faces[i];
+		const Point3D & cornerX = Corners[face.Corner0.Udx].Position;
+		const Point3D & cornerY = Corners[face.Corner1.Udx].Position;
+		const Point3D & cornerZ = Corners[face.Corner2.Udx].Position;
+		face.Normal = Point3D::cross(cornerY - cornerX, cornerZ - cornerX);
+	}
 }
-void YMT::PolyHedra::Edit_Face4(TexUndex corn0, TexUndex corn1, TexUndex corn2, TexUndex corn3)
+void YMT::PolyHedra::Calc_Corn_Normals()
 {
-	Edit_Face3(corn0, corn1, corn2);
-	Edit_Face3(corn2, corn1, corn3);
+	for (unsigned int i = 0; i < Corners.Count(); i++)
+	{
+		Point3D normal_sum(0, 0, 0);
+		for (unsigned int j = 0; j < Faces.Count(); j++)
+		{
+			const Face & face = Faces[j];
+			if (
+				face.Corner0.Udx == i ||
+				face.Corner1.Udx == i ||
+				face.Corner2.Udx == i
+			)
+			{
+				normal_sum = normal_sum + face.Normal;
+			}
+		}
+		Corners[i].Normal = normal_sum.normalize();
+	}
+}
+
+void YMT::PolyHedra::Insert_Face3(FaceCorner corn0, FaceCorner corn1, FaceCorner corn2)
+{
+	Faces.Insert(Face(corn0, corn1, corn2));
+}
+void YMT::PolyHedra::Insert_Face4(FaceCorner corn0, FaceCorner corn1, FaceCorner corn2, FaceCorner corn3)
+{
+	Insert_Face3(corn0, corn1, corn2);
+	Insert_Face3(corn2, corn1, corn3);
 }
 
 
@@ -71,14 +87,14 @@ YMT::PolyHedra * YMT::PolyHedra::FullTexture(float scale)
 	temp -> Corners.Insert(Point3D(+scale, -scale, 0));
 	temp -> Corners.Insert(Point3D(+scale, +scale, 0));
 
-	temp -> Edit_Face4(
-		TexUndex(0, 0.0f, 1.0f),
-		TexUndex(1, 0.0f, 0.0f),
-		TexUndex(2, 1.0f, 1.0f),
-		TexUndex(3, 1.0f, 0.0f)
+	temp -> Insert_Face4(
+		FaceCorner(0, 0.0f, 1.0f),
+		FaceCorner(1, 0.0f, 0.0f),
+		FaceCorner(2, 1.0f, 1.0f),
+		FaceCorner(3, 1.0f, 0.0f)
 	);
 
-	temp -> Edit_Trim();
+	temp -> Done();
 	return temp;
 }
 YMT::PolyHedra * YMT::PolyHedra::Cube(float scale)
@@ -94,47 +110,47 @@ YMT::PolyHedra * YMT::PolyHedra::Cube(float scale)
 	temp -> Corners.Insert(Point3D(-scale, +scale, +scale));
 	temp -> Corners.Insert(Point3D(+scale, +scale, +scale));
 
-	temp -> Edit_Face4(
-		TexUndex(0b000, 0.00f, 0.00f),
-		TexUndex(0b010, 0.00f, 0.50f),
-		TexUndex(0b001, 0.25f, 0.00f),
-		TexUndex(0b011, 0.25f, 0.50f)
+	temp -> Insert_Face4(
+		FaceCorner(0b000, 0.00f, 0.00f),
+		FaceCorner(0b010, 0.00f, 0.50f),
+		FaceCorner(0b001, 0.25f, 0.00f),
+		FaceCorner(0b011, 0.25f, 0.50f)
 	);
-	temp -> Edit_Face4(
-		TexUndex(0b000, 0.25f, 0.00f),
-		TexUndex(0b100, 0.25f, 0.50f),
-		TexUndex(0b010, 0.50f, 0.00f),
-		TexUndex(0b110, 0.50f, 0.50f)
+	temp -> Insert_Face4(
+		FaceCorner(0b000, 0.25f, 0.00f),
+		FaceCorner(0b100, 0.25f, 0.50f),
+		FaceCorner(0b010, 0.50f, 0.00f),
+		FaceCorner(0b110, 0.50f, 0.50f)
 	);
-	temp -> Edit_Face4(
-		TexUndex(0b000, 0.50f, 0.00f),
-		TexUndex(0b001, 0.50f, 0.50f),
-		TexUndex(0b100, 0.75f, 0.00f),
-		TexUndex(0b101, 0.75f, 0.50f)
-	);
-
-
-
-	temp -> Edit_Face4(
-		TexUndex(0b111, 0.25f, 1.00f),
-		TexUndex(0b110, 0.00f, 1.00f),
-		TexUndex(0b101, 0.25f, 0.50f),
-		TexUndex(0b100, 0.00f, 0.50f)
-	);
-	temp -> Edit_Face4(
-		TexUndex(0b111, 0.50f, 1.00f),
-		TexUndex(0b101, 0.25f, 1.00f),
-		TexUndex(0b011, 0.50f, 0.50f),
-		TexUndex(0b001, 0.25f, 0.50f)
-	);
-	temp -> Edit_Face4(
-		TexUndex(0b111, 0.75f, 1.00f),
-		TexUndex(0b011, 0.50f, 1.00f),
-		TexUndex(0b110, 0.75f, 0.50f),
-		TexUndex(0b010, 0.50f, 0.50f)
+	temp -> Insert_Face4(
+		FaceCorner(0b000, 0.50f, 0.00f),
+		FaceCorner(0b001, 0.50f, 0.50f),
+		FaceCorner(0b100, 0.75f, 0.00f),
+		FaceCorner(0b101, 0.75f, 0.50f)
 	);
 
-	temp -> Edit_Trim();
+
+
+	temp -> Insert_Face4(
+		FaceCorner(0b111, 0.25f, 1.00f),
+		FaceCorner(0b110, 0.00f, 1.00f),
+		FaceCorner(0b101, 0.25f, 0.50f),
+		FaceCorner(0b100, 0.00f, 0.50f)
+	);
+	temp -> Insert_Face4(
+		FaceCorner(0b111, 0.50f, 1.00f),
+		FaceCorner(0b101, 0.25f, 1.00f),
+		FaceCorner(0b011, 0.50f, 0.50f),
+		FaceCorner(0b001, 0.25f, 0.50f)
+	);
+	temp -> Insert_Face4(
+		FaceCorner(0b111, 0.75f, 1.00f),
+		FaceCorner(0b011, 0.50f, 1.00f),
+		FaceCorner(0b110, 0.75f, 0.50f),
+		FaceCorner(0b010, 0.50f, 0.50f)
+	);
+
+	temp -> Done();
 	return temp;
 }
 YMT::PolyHedra * YMT::PolyHedra::ConeC(int segments, float width, float height)
@@ -143,14 +159,14 @@ YMT::PolyHedra * YMT::PolyHedra::ConeC(int segments, float width, float height)
 
 	Angle3D angle;
 
-	int idx_frst = temp -> Corners.Length;
+	int idx_frst = temp -> Corners.Count();
 	temp -> Corners.Insert(Point3D(0, 0, +height));
 	for (int i = 0; i < segments; i++)
 	{
 		angle.ChangeZ((TAU * i) / segments);
 		temp -> Corners.Insert(angle.rotate_fore(Point3D(0, +width, -height)));
 	}
-	int idx_last = temp -> Corners.Length;
+	int idx_last = temp -> Corners.Count();
 	temp -> Corners.Insert(Point3D(0, 0, -height));
 
 	for (int i = 0; i < segments; i++)
@@ -162,19 +178,15 @@ YMT::PolyHedra * YMT::PolyHedra::ConeC(int segments, float width, float height)
 		int idx_curr = ((i + 0) % segments) + 1;
 		int idx_next = ((i + 1) % segments) + 1;
 
-		temp -> Edit_Face4(
-			TexUndex(idx_frst, texM, 0.0f),
-			TexUndex(idx_next, tex1, 1.0f),
-			TexUndex(idx_curr, tex0, 1.0f),
-			TexUndex(idx_last, texM, 0.0f)
+		temp -> Insert_Face4(
+			FaceCorner(idx_frst, texM, 0.0f),
+			FaceCorner(idx_next, tex1, 1.0f),
+			FaceCorner(idx_curr, tex0, 1.0f),
+			FaceCorner(idx_last, texM, 0.0f)
 		);
-
-		(void)tex0;
-		(void)tex1;
-		(void)texM;
 	}
 
-	temp -> Edit_Trim();
+	temp -> Done();
 	return temp;
 }
 
@@ -186,31 +198,28 @@ YMT::PolyHedra * YMT::PolyHedra::ConeC(int segments, float width, float height)
 
 PolyHedra_MainData * YMT::PolyHedra::ToMainData(int & count)
 {
-	count = FaceIndexes.Length * 3;
+	count = Faces.Count() * 3;
 	PolyHedra_MainData * data = new PolyHedra_MainData[count];
 
-	for (unsigned int i = 0; i < FaceIndexes.Length; i++)
+	for (unsigned int f = 0; f < Faces.Count(); f++)
 	{
-		const Undex3D & face = FaceIndexes[i];
-		const FaceTex & texs = FaceTextures[i];
+		const Face & face = Faces[f];
+		const Corner & cornerX = Corners[face.Corner0.Udx];
+		const Corner & cornerY = Corners[face.Corner1.Udx];
+		const Corner & cornerZ = Corners[face.Corner2.Udx];
 
-		const Point3D & cornerX = Corners[face.X];
-		const Point3D & cornerY = Corners[face.Y];
-		const Point3D & cornerZ = Corners[face.Z];
-		Point3D normal = Point3D::cross(cornerY - cornerX, cornerZ - cornerX);
+		int c = f * 3;
+		data[c + 0].Position = cornerX.Position;
+		data[c + 1].Position = cornerY.Position;
+		data[c + 2].Position = cornerZ.Position;
 
-		int c = i * 3;
-		data[c + 0].Position = cornerX;
-		data[c + 1].Position = cornerY;
-		data[c + 2].Position = cornerZ;
+		data[c + 0].Normal = face.Normal;
+		data[c + 1].Normal = face.Normal;
+		data[c + 2].Normal = face.Normal;
 
-		data[c + 0].Normal = normal;
-		data[c + 1].Normal = normal;
-		data[c + 2].Normal = normal;
-
-		data[c + 0].Texture = texs.X;
-		data[c + 1].Texture = texs.Y;
-		data[c + 2].Texture = texs.Z;
+		data[c + 0].Texture = face.Corner0.Tex;
+		data[c + 1].Texture = face.Corner1.Tex;
+		data[c + 2].Texture = face.Corner2.Tex;
 	}
 
 	return data;

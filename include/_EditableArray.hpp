@@ -48,7 +48,7 @@ template <typename ItemType> class EditableArray
 				Memory = mem;
 				Limit = limit;
 			}
-		
+
 			int idx = Length;
 			Memory[Length] = item;
 			Length++;
@@ -61,6 +61,7 @@ template <typename ItemType> class EditableArray
 			{
 				Memory[idx - 1] = Memory[idx];
 			}
+			Length--;
 			return item;
 		}
 

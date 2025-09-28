@@ -24,6 +24,7 @@
 
 DirectoryContext ImageDir("../media/Images");
 DirectoryContext ShaderDir("../media/Shaders");
+DirectoryContext KernelDir("../media/Kernel");
 
 
 
@@ -100,7 +101,7 @@ void CL_Init()
 {
 	cl_int err = CL_SUCCESS;
 
-	FileContext file("../media/trans.cl");
+	FileContext file = KernelDir.File("trans.cl");
 	std::string file_text = file.LoadText();
 	CL_Program = cl::Program(file_text);
 	try

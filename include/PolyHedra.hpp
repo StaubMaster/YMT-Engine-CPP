@@ -1,74 +1,73 @@
 #ifndef POLYHEDRA_HPP
 # define POLYHEDRA_HPP
 
-# include "EditableArray.hpp"
+//# include "EditableArray.hpp"
 # include "Abstract2D/Point2D.hpp"
 # include "Abstract3D/Point3D.hpp"
 # include "Abstract3D/Undex3D.hpp"
 
 # include "Graphics/PH/PolyHedra_MainData.hpp"
 
+# include "Miscellaneous/ContainerDynamic.hpp"
+
+# include <vector>
+
 namespace YMT
 {
 class PolyHedra
 {
 	private:
-		struct FaceTex
+		struct Corner
 		{
-			Point2D	X;
-			Point2D	Y;
-			Point2D	Z;
+			Point3D	Position;
+			Point3D	Normal;
+
+			Corner();
+			Corner(Point3D pos);
 		};
-		struct TexUndex
+		struct FaceCorner
 		{
 			unsigned int Udx;
 			Point2D Tex;
 
-			TexUndex(unsigned int udx, float tex_x, float tex_y);
+			FaceCorner();
+			FaceCorner(unsigned int udx, float tex_x, float tex_y);
+		};
+		struct Face
+		{
+			FaceCorner Corner0;
+			FaceCorner Corner1;
+			FaceCorner Corner2;
+			Point3D Normal;
+
+			Face();
+			Face(FaceCorner c0, FaceCorner c1, FaceCorner c2);
 		};
 
 	private:
-		EditableArray<Point3D>	Corners;
-		EditableArray<Undex3D>	FaceIndexes;
-		EditableArray<FaceTex>	FaceTextures;
-
-
+		ContainerDynamic<Corner>	Corners;
+		ContainerDynamic<Face>		Faces;
 
 	private:
 		PolyHedra();
 	public:
 		~PolyHedra();
 
-
-
-	private:
-		//void Edit_Face_Color(unsigned int idx0, unsigned int idx1, unsigned int idx2, unsigned int col);
-		void Edit_Face3(TexUndex corn0, TexUndex corn1, TexUndex corn2);
-		void Edit_Face4(TexUndex corn0, TexUndex corn1, TexUndex corn2, TexUndex corn3);
-		void Edit_Trim();
-
 	public:
 		static PolyHedra * FullTexture(float scale = 1.0f);
 		static PolyHedra * Cube(float scale = 1.0f);
 		static PolyHedra * ConeC(int segments, float width = 1.0f, float height = 1.0f);
 
+	private:
+		void Done();
+		void Calc_Face_Normals();
+		void Calc_Corn_Normals();
 
+		void Insert_Corn(Corner corn);
+		void Insert_Face3(FaceCorner corn0, FaceCorner corn1, FaceCorner corn2);
+		void Insert_Face4(FaceCorner corn0, FaceCorner corn1, FaceCorner corn2, FaceCorner corn3);
 
 	public:
-		class ShaderInst;
-
-	public:
-		/*
-			I dont like the data and the Length being seperate
-			I also dont like worrying about deleting thins
-			but how else would I do that
-			since returning something here creates a new object ?
-			where I then have to eighter
-				copy all the data
-			or
-				copy the pointer over
-				and delete the old one
-		*/
 		PolyHedra_MainData * ToMainData(int & count);
 };
 };

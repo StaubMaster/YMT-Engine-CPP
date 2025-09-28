@@ -16,6 +16,8 @@
 #include "FileManager/FileContext.hpp"
 #include "FileManager/DirectoryContext.hpp"
 
+#include "Miscellaneous/ContainerDynamic.hpp"
+
 
 
 DirectoryContext ImageDir("../media/Images");
@@ -120,9 +122,8 @@ void Init()
 
 	Tex0 = new TextureArray(128, 128, 1, (FileContext[])
 	{
-		//ImageDir.File("Orientation.png"),
-		//ImageDir.File("Checker.png"),
-		ImageDir.File("GrayDeant.png"),
+		ImageDir.File("Orientation.png"),
+		//ImageDir.File("GrayDeant.png"),
 	});
 	PH_Instances = new PolyHedra_3D_Instances(Poly0);
 	AddInstances();
@@ -168,8 +169,6 @@ int main()
 		std::cout << "GLFW Init Failed\n";
 		return -1;
 	}
-
-
 
 	try
 	{
