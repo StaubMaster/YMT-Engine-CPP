@@ -64,6 +64,7 @@
 		"sstream": "cpp",
 		"stop_token": "cpp",
 		"thread": "cpp",
-		"buffer": "cpp"
+		"buffer": "cpp",
+		"netfwd": "cpp"
 	}
 }

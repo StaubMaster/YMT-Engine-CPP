@@ -57,6 +57,8 @@ static uint32 dist_base_extra_bits[] = {
             0 , 0     //30-31 error, they shouldn't occur
 };
 
+
+
 void	DEFLATE::decode_Huffman(BitStream & bits, HuffmanTree & literal, HuffmanTree & distance, DataStream & data)
 {
 	std::ostream & os = DebugManager::GetOut();
@@ -102,15 +104,13 @@ void	DEFLATE::decode_Huffman(BitStream & bits, HuffmanTree & literal, HuffmanTre
 		}
 		else
 		{
-			throw PNG_Image::PNG_Exception_InvalidData();
 			os << "\e[31mError: Invalid Huffman Decode\e[m\n";
+			throw Exception_InvalidData("Huffman Decode: " + decode_value);
 		}
 	}
 
 	os << "\e[34mHuffman decode done \e[m\n";
 }
-
-
 
 uint8 *	DEFLATE::dynamic_Huffman(BitStream & bits, uint32 H_LIT, uint32 H_DIST, uint32 H_CLEN)
 {
@@ -156,7 +156,7 @@ uint8 *	DEFLATE::dynamic_Huffman(BitStream & bits, uint32 H_LIT, uint32 H_DIST, 
 			else
 			{
 				os << "\e[31mError: Invalid Huffman Decode\e[m\n";
-				throw PNG_Image::PNG_Exception_InvalidData();
+				throw Exception_InvalidData("Huffman Decode: " + decode_value);
 			}
 
 			for (uint32 r = 0; r < repeat_count; r++)
@@ -178,7 +178,7 @@ void	DEFLATE::Block_direct(BitStream & bits, DataStream & data)
 	std::ostream & os = DebugManager::GetOut();
 	os << "\e[34mdirect Data ...\e[m\n";
 
-	throw PNG_Image::PNG_Exception_NotImplemented();
+	throw Exception_NotImplemented("direct Data Block");
 
 	os << "\e[34mdirect Data done\e[m\n";
 	(void)bits;
@@ -189,7 +189,7 @@ void	DEFLATE::Block_static(BitStream & bits, DataStream & data)
 	std::ostream & os = DebugManager::GetOut();
 	os << "\e[34mstatic Huffman ...\e[m\n";
 
-	throw PNG_Image::PNG_Exception_NotImplemented();
+	throw Exception_NotImplemented("static Huffman Block");
 
 	os << "\e[34mstatic Huffman done\e[m\n";
 	(void)bits;
@@ -249,7 +249,7 @@ void	DEFLATE::Blocks(BitStream & bits, DataStream & data)
 		}
 		else
 		{
-			throw PNG_Image::PNG_Exception_InvalidData();
+			throw Exception_InvalidBlockType(BTYPE);
 			os << "\e[31mError: Invalid Block Type\e[m\n";
 		}
 		os << "\n";
@@ -257,3 +257,43 @@ void	DEFLATE::Blocks(BitStream & bits, DataStream & data)
 	while (BFINAL == 0);
 	os << "decoding done " << bits.get_ByteIndex() << "/" << bits.Len << "\n";
 }
+
+
+
+
+
+
+
+DEFLATE::Exception_NotImplemented::Exception_NotImplemented(std::string name)
+{
+	Text = "DEFLATE: not implemented: " + name;
+}
+const char * DEFLATE::Exception_NotImplemented::what() const noexcept
+{
+	return Text.c_str();
+}
+
+
+
+DEFLATE::Exception_InvalidBlockType::Exception_InvalidBlockType(uint32 type)
+{
+	Text = "DEFLATE: invalid Block Type: " + type;
+}
+const char * DEFLATE::Exception_InvalidBlockType::what() const noexcept
+{
+	return Text.c_str();
+}
+
+
+
+DEFLATE::Exception_InvalidData::Exception_InvalidData(std::string text)
+{
+	Text = "DEFLATE: invalid Data: " + text;
+}
+const char * DEFLATE::Exception_InvalidData::what() const noexcept
+{
+	return Text.c_str();
+}
+
+
+

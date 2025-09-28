@@ -1,5 +1,10 @@
 #include "TextureArray.hpp"
 
+#include "FileManager/Format/Image.hpp"
+
+#include "OpenGL/openGL.h"
+#include <iostream>
+
 
 
 TextureArray::TextureArray(unsigned int w, unsigned int h, unsigned int count, const FileContext files [])

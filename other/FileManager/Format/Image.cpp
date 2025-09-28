@@ -1,5 +1,7 @@
 #include "Image.hpp"
 
+
+
 Image::Image(uint32 w, uint32 h) :
 	W(w), H(h)
 {

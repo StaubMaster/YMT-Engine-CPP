@@ -74,8 +74,8 @@ ARC_X_DIR = obj/arc/
 ARC_OPENGL_PATH = other/OpenGL/
 ARC_OPENGL = $(ARC_OPENGL_PATH)openGL.a
 
-ARC_FILEPARSER_PATH = other/FileParse/
-ARC_FILEPARSER = $(ARC_FILEPARSER_PATH)fileParser.a
+ARC_FILEPARSER_PATH = other/FileManager/
+ARC_FILEPARSER = $(ARC_FILEPARSER_PATH)fileManager.a
 
 
 

@@ -1,5 +1,6 @@
-
 #include "Huffman.hpp"
+
+
 
 uint8	HuffmanTree::get_max_BitLen(uint8 * codeBitLen, uint32 len)
 {

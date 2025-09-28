@@ -1,8 +1,9 @@
 
 #ifndef HUFFMAN_HPP
 # define HUFFMAN_HPP
-# include "../uint.hpp"
-# include "../BitStream.hpp"
+
+# include "../../Parsing/uint.hpp"
+# include "../../Parsing/BitStream.hpp"
 
 class HuffmanTree
 {

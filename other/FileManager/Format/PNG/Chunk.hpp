@@ -1,8 +1,9 @@
 
 #ifndef PNG_CHUNKS_HPP
 # define PNG_CHUNKS_HPP
-# include "../uint.hpp"
-# include "../BitStream.hpp"
+
+# include "../../Parsing/uint.hpp"
+# include "../../Parsing/BitStream.hpp"
 
 class Chunk
 {

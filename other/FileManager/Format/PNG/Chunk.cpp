@@ -1,5 +1,6 @@
-
 #include "Chunk.hpp"
+
+
 
 const char * knownChunkTypes[] = {
 	"IHDR",

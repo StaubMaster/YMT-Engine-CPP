@@ -1,5 +1,10 @@
 
 #include "ZLIB.hpp"
+#include "DEFLATE.hpp"
+
+#include "../../Parsing/DebugManager.hpp"
+
+
 
 ZLIB::ZLIB(BitStream & bits)
 {

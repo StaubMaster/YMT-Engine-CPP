@@ -1,5 +1,6 @@
-
 #include "PNG_Filter.hpp"
+
+
 
 PNG_Filter::PixelData::PixelData(Image & img) :
 	img(img)

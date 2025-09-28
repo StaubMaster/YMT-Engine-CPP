@@ -1,0 +1,21 @@
+PolyHedra:
+Load OBJ File
+	go line by line
+	ignore empty lines
+	#	Comment
+	v	Position
+	vt	Texture
+	vn	Normal
+		these are not per Corner, they are stored seperatly
+	f
+		v1			v2 			v3
+		v1/vt1		v2/vt2		v3/vt3
+		v1/vt1/vn1	v2/vt2/vn2	v3/vt3/vn3
+		v1//vn1		v2//vn2		v3//vn3
+		here the prev things are combined
+		these are Index Based, Indexes start at 1 not 0
+	ignore everything else for now
+	should these be converted to PolyHedra
+	or store as its own thing
+	in FileManager
+	then convert to PolyHedra ? or directly to _MainData ?

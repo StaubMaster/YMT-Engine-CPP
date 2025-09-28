@@ -12,11 +12,9 @@
 
 #include "Window.hpp"
 
-#include "FileManager/Image.hpp"
-#include "FileManager/FileContext.hpp"
 #include "FileManager/DirectoryContext.hpp"
-
-#include "Miscellaneous/ContainerDynamic.hpp"
+#include "FileManager/FileContext.hpp"
+#include "FileManager/Format/Image.hpp"
 
 
 
@@ -59,7 +57,7 @@ void InitShaders()
 	Multi_DepthFactors -> FindUniforms(shaders, shader_count);
 	Multi_ViewPortSizeRatio -> FindUniforms(shaders, shader_count);
 
-	Multi_DepthFactors -> ChangeData(DepthFactors(0.1f, 1000.0f));
+	Multi_DepthFactors -> ChangeData(DepthFactors(0.1f, 100.0f));
 }
 void FreeShaders()
 {

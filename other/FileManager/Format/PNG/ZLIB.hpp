@@ -1,12 +1,11 @@
 
 #ifndef ZLIB_HPP
 # define ZLIB_HPP
-# include "../DebugManager.hpp"
-# include "../uint.hpp"
-# include "../BitStream.hpp"
-# include "../DataStream.hpp"
 
-# include "DEFLATE.hpp"
+# include "../../Parsing/uint.hpp"
+# include "../../Parsing/BitStream.hpp"
+# include "../../Parsing/DataStream.hpp"
+
 
 class ZLIB
 {

@@ -1,6 +1,63 @@
 
 reorganize Files
 
+
+
+Shaders:
+Uniform Depth
+{
+	Color
+	Range
+}
+Light
+{
+	Range ?
+	LightBase
+	{
+		Color ?
+		Intensity ?
+	}
+
+	Ambient
+	{
+		LightBase Base
+	}
+
+	Soler
+	{
+		LightBase Base
+		Point3D Direction
+	}
+	Point
+	{
+		LightBase Base
+		Point3D Position
+		float falloff ?
+	}
+	Spot
+	{
+		LightBase Base
+		Point3D Position
+		Point3D Direction
+		float angle
+		float falloff ?
+	}
+}
+
+
+
+Particle:
+Physics Instance
+{
+	Point3D Position
+	Point3D MoveVel
+
+	Angle3D Rotation
+	Angle3D SpinVel
+}
+
+
+
 rename Abstract to Data ?
 is that less or more vague ?
 
@@ -20,9 +77,6 @@ at home the Archives and Librarys are different
 there is a way to make the MakeFile check those ?
 
 
-
-FileContext
-Load OBJ
 
 
 

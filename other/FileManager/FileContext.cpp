@@ -1,9 +1,13 @@
 
 #include "FileContext.hpp"
-#include "Image.hpp"
-#include "../FileParse/PNG/PNG_Image.hpp"
+
+#include "Format/Image.hpp"
+#include "Format/PNG/PNG.hpp"
+
 #include <sys/stat.h>
 #include <fstream>
+
+
 
 FileContext::FileContext(std::string file_path) :
 	FilePath(file_path) { }
@@ -72,7 +76,7 @@ void FileContext::SaveText(std::string text) const
 
 Image * FileContext::LoadImagePNG() const
 {
-	return PNG_Image::Load(*this);
+	return PNG::Load(*this);
 }
 
 

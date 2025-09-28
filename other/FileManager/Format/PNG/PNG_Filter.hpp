@@ -1,9 +1,10 @@
 
 #ifndef PNG_FILTER_HPP
 # define PNG_FILTER_HPP
-# include "../DataStream.hpp"
 
-# include "PNG_Image.hpp"
+# include "../../Parsing/DataStream.hpp"
+
+# include "PNG.hpp"
 
 class	Image;
 
