@@ -209,7 +209,7 @@ void Frame(double timeDelta)
 
 	CL_Run_SpinCenter();
 
-	PH_Buffer -> BindInst((const PolyHedra_3D_InstData *)VMP_O, EntityCount);
+	PH_Buffer -> BindInst((const Simple3D_InstData *)VMP_O, EntityCount);
 	PH_Buffer -> Draw();
 }
 void Resize(int w, int h)

@@ -16,7 +16,7 @@ PolyHedra_3D_Instances::~PolyHedra_3D_Instances()
 
 
 
-EntryContainerDynamic<PolyHedra_3D_InstData>::Entry * PolyHedra_3D_Instances::Alloc(int size)
+EntryContainerDynamic<Simple3D_InstData>::Entry * PolyHedra_3D_Instances::Alloc(int size)
 {
 	return Instances.Alloc(size);
 }

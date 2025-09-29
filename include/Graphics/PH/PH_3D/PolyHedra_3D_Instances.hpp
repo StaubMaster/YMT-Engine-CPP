@@ -15,14 +15,14 @@ class PolyHedra_3D_Instances
 	public:
 		PolyHedra_3D_BufferArray Buffer;
 		//YMT::PolyHedra * Main;
-		EntryContainerDynamic<PolyHedra_3D_InstData> Instances;
+		EntryContainerDynamic<Simple3D_InstData> Instances;
 
 	public:
 		PolyHedra_3D_Instances(YMT::PolyHedra * polyhedra);
 		~PolyHedra_3D_Instances();
 
 	public:
-		EntryContainerDynamic<PolyHedra_3D_InstData>::Entry * Alloc(int size);
+		EntryContainerDynamic<Simple3D_InstData>::Entry * Alloc(int size);
 		/*
 			make a Wrapper for these Entrys ?
 			I'm already planing on making an Array of these

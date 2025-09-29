@@ -6,10 +6,11 @@ FILES_CPP = \
 	DirectoryContext.cpp \
 	Format/Image.cpp \
 	\
-	Parsing/DebugManager.cpp \
 	Parsing/uint.cpp \
 	Parsing/BitStream.cpp \
-	Parsing/DataStream.cpp
+	Parsing/DataStream.cpp \
+	Parsing/LineCommand.cpp \
+	Parsing/DebugManager.cpp
 
 FILES_PNG_CPP = \
 	Format/PNG/Chunk.cpp \

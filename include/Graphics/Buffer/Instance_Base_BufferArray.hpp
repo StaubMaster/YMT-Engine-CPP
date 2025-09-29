@@ -10,48 +10,53 @@
 
 template<
 	typename MainDataType,
-	typename InstDataType,
 	typename MainBufferType,
+	typename InstDataType,
 	typename InstBufferType
 >
 class Instance_Base_BufferArray : public BaseBufferArray
 {
 	protected:
 	private:
-		MainBufferType MainBuffer;
-		InstBufferType InstBuffer;
-
+		MainBufferType * MainBuffer;
+		InstBufferType * InstBuffer;
 		unsigned int DrawMode;
 
 	public:
 	protected:
 		Instance_Base_BufferArray(
+			MainBufferType * main_buffer,
+			InstBufferType * inst_buffer,
 			unsigned int draw_mode
 		) : BaseBufferArray(),
-			MainBuffer(),
-			InstBuffer(),
+			MainBuffer(main_buffer),
+			InstBuffer(inst_buffer),
 			DrawMode(draw_mode) { }
-		~Instance_Base_BufferArray() { }
+		~Instance_Base_BufferArray()
+		{
+			delete MainBuffer;
+			delete InstBuffer;
+		}
 
 	public:
 		void BindMain(const MainDataType * data, unsigned int count, unsigned int buffer_index = 0)
 		{
 			Use();
-			MainBuffer.BindData(GL_ARRAY_BUFFER, buffer_index, sizeof(MainDataType) * count, data, GL_STATIC_DRAW);
-			MainBuffer.Count = count;
+			MainBuffer -> BindData(GL_ARRAY_BUFFER, buffer_index, sizeof(MainDataType) * count, data, GL_STATIC_DRAW);
+			MainBuffer -> Count = count;
 		}
 		void BindInst(const InstDataType * data, unsigned int count, unsigned int buffer_index = 0)
 		{
 			Use();
-			InstBuffer.BindData(GL_ARRAY_BUFFER, buffer_index, sizeof(InstDataType) * count, data, GL_STREAM_DRAW);
-			InstBuffer.Count = count;
+			InstBuffer -> BindData(GL_ARRAY_BUFFER, buffer_index, sizeof(InstDataType) * count, data, GL_STREAM_DRAW);
+			InstBuffer -> Count = count;
 		}
 
 	public:
 		void Draw() override
 		{
 			Use();
-			glDrawArraysInstanced(DrawMode, 0, MainBuffer.Count, InstBuffer.Count);
+			glDrawArraysInstanced(DrawMode, 0, MainBuffer -> Count, InstBuffer -> Count);
 		}
 };
 

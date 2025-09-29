@@ -21,26 +21,26 @@ bool FileContext::Exists() const
 }
 std::string FileContext::Path() const
 {
-	//	everything before last /
-	//	or everything if non is found
-	//	including /
+	size_t idx;
+	idx = FilePath.find_last_of('/');
+	if (idx != std::string::npos) { return FilePath.substr(0, idx); }
+	idx = FilePath.find_last_of('\\');
+	if (idx != std::string::npos) { return FilePath.substr(0, idx); }
 	return "";
 }
 std::string FileContext::Name() const
 {
-	//	everything after last /
-	//	or everything if non is found
-	//	including /
-	//	shouldn't happen
+	size_t idx;
+	idx = FilePath.find_last_of('/');
+	if (idx != std::string::npos) { return FilePath.substr(idx); }
+	idx = FilePath.find_last_of('\\');
+	if (idx != std::string::npos) { return FilePath.substr(idx); }
 	return "";
 }
 std::string FileContext::Extension() const
 {
 	size_t idx = FilePath.find_last_of('.');
-	if (idx != std::string::npos)
-	{
-		return FilePath.substr(idx);
-	}
+	if (idx != std::string::npos) { return FilePath.substr(idx); }
 	return "";
 }
 

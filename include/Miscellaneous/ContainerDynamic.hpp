@@ -40,7 +40,7 @@ class ContainerDynamic
 		ContainerDynamic()
 		{
 			Limit = 0;
-			Memory = new ItemType[0];
+			Memory = NULL;
 			_Count = 0;
 		}
 		~ContainerDynamic()

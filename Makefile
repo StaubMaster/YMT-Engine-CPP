@@ -19,6 +19,7 @@ FILES_SRC = \
 	Data/1D/Range.cpp \
 	Data/1D/LInter.cpp \
 	Data/1D/DepthFactors.cpp \
+	Data/4D/Point4D.cpp \
 	Data/Color.cpp \
 	Data/Depth.cpp \
 \
@@ -52,12 +53,18 @@ FILES_SRC = \
 	Graphics/PH/PolyHedra_MainAttrib.cpp \
 	Graphics/PH/PolyHedra_MainBuffer.cpp \
 \
-	Graphics/PH/PH_3D/PolyHedra_3D_InstData.cpp \
-	Graphics/PH/PH_3D/PolyHedra_3D_InstAttrib.cpp \
-	Graphics/PH/PH_3D/PolyHedra_3D_InstBuffer.cpp \
+	Graphics/PH/PH_3D/Simple3D_InstData.cpp \
+	Graphics/PH/PH_3D/Simple3D_InstAttrib.cpp \
+	Graphics/PH/PH_3D/Simple3D_InstBuffer.cpp \
 	Graphics/PH/PH_3D/PolyHedra_3D_BufferArray.cpp \
 	Graphics/PH/PH_3D/PolyHedra_3D_Instances.cpp \
 	Graphics/PH/PH_3D/PolyHedra_3D_Shader.cpp \
+\
+	OBJ/OBJ.cpp \
+	OBJ/OBJ_Main.cpp \
+	OBJ/OBJ_3D_BufferArray.cpp \
+	OBJ/OBJ_3D_Shader.cpp \
+	OBJ/MTL.cpp \
 \
 	TextureArray.cpp \
 	PolyHedra.cpp \
