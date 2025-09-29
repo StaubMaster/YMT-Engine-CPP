@@ -110,7 +110,6 @@ class ContainerDynamic
 			{
 				NewSize(BinarySize(_Count + 1));
 			}
-
 			unsigned int udx = _Count;
 			Memory[_Count] = item;
 			_Count++;
@@ -125,6 +124,21 @@ class ContainerDynamic
 			}
 			_Count--;
 			return item;
+		}
+
+		unsigned int	Insert(ItemType * item, unsigned int count)
+		{
+			if (_Count + count >= Limit)
+			{
+				NewSize(BinarySize(_Count + count));
+			}
+			unsigned int udx = _Count;
+			for (unsigned int i = 0; i < count; i++)
+			{
+				Memory[_Count + i] = item[i];
+			}
+			_Count += count;
+			return udx;
 		}
 };
 

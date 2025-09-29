@@ -11,7 +11,9 @@
 class LineCommand
 {
 	public:
+		std::string Name;
 		std::vector<std::string> Args;
+		unsigned int Count;
 	public:
 		LineCommand(std::string text);
 

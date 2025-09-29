@@ -12,9 +12,9 @@
 
 OBJ::FaceCorner::FaceCorner()
 {
-	Position = Point4D();
-	Texture = Point3D();
-	Normal = Point3D();
+	Position = 0xFFFFFFFF;
+	Texture = 0xFFFFFFFF;
+	Normal = 0xFFFFFFFF;
 }
 OBJ::Face::Face()
 {
@@ -31,22 +31,41 @@ OBJ::OBJ()
 }
 OBJ::~OBJ()
 {
-	for (unsigned int i = 0; i < Materials.Count(); i++)
+
+}
+
+
+
+Point3D OBJ::Position_MainData(unsigned int idx)
+{
+	Point4D val = Positions[idx];
+	return Point3D(val.X, val.Y, val.Z);
+}
+Point2D OBJ::Texture_MainData(unsigned int idx)
+{
+	if (idx != 0xFFFFFFFF)
 	{
-		delete Materials[i];
+		Point3D val = Textures[idx];
+		return Point2D(val.X, val.Y);
+	}
+	else
+	{
+		return Point2D();
+	}
+}
+Point3D OBJ::Normal_MainData(unsigned int idx, Point3D normal)
+{
+	if (idx != 0xFFFFFFFF)
+	{
+		return Normals[idx];
+	}
+	else
+	{
+		return normal;
 	}
 }
 
 
-
-Point3D Convert_4D_To_3D(Point4D p)
-{
-	return Point3D(p.X, p.Y, p.Z);
-}
-Point2D Convert_3D_To_2D(Point3D p)
-{
-	return Point2D(p.X, p.Y);
-}
 
 OBJ_MainData * OBJ::ToMainData(int & count)
 {
@@ -56,19 +75,24 @@ OBJ_MainData * OBJ::ToMainData(int & count)
 	for (unsigned int f = 0; f < Faces.Count(); f++)
 	{
 		const Face & face = Faces[f];
-
 		int c = f * 3;
-		data[c + 0].Position = Convert_4D_To_3D(face.Corner1.Position);
-		data[c + 1].Position = Convert_4D_To_3D(face.Corner2.Position);
-		data[c + 2].Position = Convert_4D_To_3D(face.Corner3.Position);
+		OBJ_MainData & c0 = data[c + 0];
+		OBJ_MainData & c1 = data[c + 1];
+		OBJ_MainData & c2 = data[c + 2];
 
-		data[c + 0].Texture = Convert_3D_To_2D(face.Corner1.Texture);
-		data[c + 1].Texture = Convert_3D_To_2D(face.Corner2.Texture);
-		data[c + 2].Texture = Convert_3D_To_2D(face.Corner3.Texture);
+		c0.Position = Position_MainData(face.Corner1.Position);
+		c1.Position = Position_MainData(face.Corner2.Position);
+		c2.Position = Position_MainData(face.Corner3.Position);
 
-		data[c + 0].Normal = face.Corner1.Normal;
-		data[c + 1].Normal = face.Corner2.Normal;
-		data[c + 2].Normal = face.Corner3.Normal;
+		c0.Texture = Texture_MainData(face.Corner1.Texture);
+		c1.Texture = Texture_MainData(face.Corner2.Texture);
+		c2.Texture = Texture_MainData(face.Corner3.Texture);
+
+		Point3D normal = Point3D::cross(c1.Position - c0.Position, c2.Position - c0.Position).normalize();
+
+		c0.Normal = Normal_MainData(face.Corner1.Normal, normal);
+		c1.Normal = Normal_MainData(face.Corner2.Normal, normal);
+		c2.Normal = Normal_MainData(face.Corner3.Normal, normal);
 	}
 
 	return data;
@@ -79,11 +103,11 @@ OBJ_MainData * OBJ::ToMainData(int & count)
 void OBJ::Parse_v(const LineCommand & cmd)
 {
 	Point4D p;
-	if (cmd.Args.size() == 4)
+	if (cmd.Args.size() == 3)
 	{
-		p.X = std::stof(cmd.Args[1]);
-		p.Y = std::stof(cmd.Args[2]);
-		p.Z = std::stof(cmd.Args[3]);
+		p.X = std::stof(cmd.Args[0]);
+		p.Y = std::stof(cmd.Args[1]);
+		p.Z = std::stof(cmd.Args[2]);
 		p.W = 1.0f;
 	}
 	else { std::cout << "Bad Num of Args\n"; }
@@ -93,10 +117,10 @@ void OBJ::Parse_v(const LineCommand & cmd)
 void OBJ::Parse_vt(const LineCommand & cmd)
 {
 	Point3D p;
-	if (cmd.Args.size() == 3)
+	if (cmd.Args.size() == 2)
 	{
-		p.X = std::stof(cmd.Args[1]);
-		p.Y = std::stof(cmd.Args[2]);
+		p.X = std::stof(cmd.Args[0]);
+		p.Y = std::stof(cmd.Args[1]);
 		p.Z = 0.0f;
 	}
 	else { std::cout << "Bad Num of Args\n"; }
@@ -106,11 +130,11 @@ void OBJ::Parse_vt(const LineCommand & cmd)
 void OBJ::Parse_vn(const LineCommand & cmd)
 {
 	Point3D p;
-	if (cmd.Args.size() == 4)
+	if (cmd.Args.size() == 3)
 	{
-		p.X = std::stof(cmd.Args[1]);
-		p.Y = std::stof(cmd.Args[2]);
-		p.Z = std::stof(cmd.Args[3]);
+		p.X = std::stof(cmd.Args[0]);
+		p.Y = std::stof(cmd.Args[1]);
+		p.Z = std::stof(cmd.Args[2]);
 	}
 	else { std::cout << "Bad Num of Args\n"; }
 	//std::cout << "vn" << p << "\n";
@@ -132,26 +156,24 @@ OBJ::FaceCorner OBJ::Parse_f_element(std::string text)
 	FaceCorner corn;
 	if (index_strings.size() >= 1)
 	{
-		int idx = std::stoi(index_strings[0]) - 1;
-		corn.Position = Positions[idx];
+		corn.Position = std::stoi(index_strings[0]) - 1;
 	}
 	if (index_strings.size() >= 2 && index_strings[1].empty())
 	{
-		int idx = std::stoi(index_strings[0]) - 1;
-		corn.Texture = Textures[idx];
+		corn.Texture = std::stoi(index_strings[0]) - 1;
 	}
 	if (index_strings.size() >= 3 && index_strings[2].empty())
 	{
-		int idx = std::stoi(index_strings[0]) - 1;
-		corn.Normal = Normals[idx];
+		corn.Normal = std::stoi(index_strings[0]) - 1;
 	}
 	return corn;
 }
 void OBJ::Parse_f(const LineCommand & cmd)
 {
-	if (cmd.Args.size() < 4) { std::cout << "Bad Num of Args\n"; }
+	if (cmd.Args.size() < 3) { std::cout << "Bad Num of Args\n"; }
+
 	std::vector<FaceCorner> corns;
-	for (unsigned int i = 1; i < cmd.Args.size(); i++)
+	for (unsigned int i = 0; i < cmd.Args.size(); i++)
 	{
 		corns.push_back(Parse_f_element(cmd.Args[i]));
 	}
@@ -184,28 +206,29 @@ void OBJ::Parse_f(const LineCommand & cmd)
 
 void OBJ::Parse_mtllib(const LineCommand & cmd)
 {
-	if (cmd.Args.size() < 2) { std::cout << "Bad Num of Args\n"; }
-	MTL * mtl = MTL::Load(FileContext(Path + "/" + cmd.Args[1]));
-	Materials.Insert(mtl);
+	if (cmd.Args.size() < 1) { std::cout << "Bad Num of Args\n"; }
+	MTL * mtl = MTL::Load(FileContext(Path + "/" + cmd.Args[0]));
+	Materials.Insert(*mtl);
+	delete mtl;
+}
+void OBJ::Parse_usemtl(const LineCommand & cmd)
+{
+	if (cmd.Args.size() < 1) { std::cout << "Bad Num of Args\n"; }
+	Materials.Select(cmd.Args[0]);
 }
 
 void OBJ::Parse(const LineCommand & cmd)
 {
-	if (cmd.Args.size() == 0)
-	{
-		return;
-	}
-
-	const std::string & name = cmd.Args[0];
-	if (name == "#")			{ }
-	else if (name == "v")		{ Parse_v(cmd); }
-	else if (name == "vt")		{ Parse_vt(cmd); }
-	else if (name == "vn")		{ Parse_vn(cmd); }
-	else if (name == "f")		{ Parse_f(cmd); }
-	else if (name == "mtllib")	{ Parse_mtllib(cmd); }
+	if (cmd.Name == "#")			{ }
+	else if (cmd.Name == "v")		{ Parse_v(cmd); }
+	else if (cmd.Name == "vt")		{ Parse_vt(cmd); }
+	else if (cmd.Name == "vn")		{ Parse_vn(cmd); }
+	else if (cmd.Name == "f")		{ Parse_f(cmd); }
+	else if (cmd.Name == "mtllib")	{ Parse_mtllib(cmd); }
+	else if (cmd.Name == "usemtl")	{ Parse_usemtl(cmd); }
 	else
 	{
-		std::cout << "Unknown LineCommand: " << name << "\n";
+		std::cout << "Unknown OBJ LineCommand: '" << cmd.Name << "'\n";
 	}
 }
 
@@ -218,6 +241,11 @@ OBJ * OBJ::Load(const FileContext & file)
 		OBJ * obj = new OBJ();
 		obj -> Path = file.Path();
 		LineCommand::Split(file, *obj, &OBJ::Parse);
+		std::cout << "Materials:\n";
+		for (unsigned int i = 0; i < obj -> Materials.Materials.Count(); i++)
+		{
+			std::cout << obj -> Materials.Materials[i].ToString() << "\n";
+		}
 		return obj;
 	}
 	return NULL;

@@ -2,6 +2,8 @@
 #ifndef  OBJ_HPP
 # define OBJ_HPP
 
+# include "MTL.hpp"
+
 # include "Abstract.hpp"
 
 # include "Miscellaneous/ContainerDynamic.hpp"
@@ -15,7 +17,7 @@ struct OBJ_MainData;
 class LineCommand;
 class FileContext;
 
-class MTL;
+//class MTL;
 
 class OBJ
 {
@@ -23,9 +25,9 @@ class OBJ
 		class FaceCorner
 		{
 			public:
-				Point4D Position;
-				Point3D Texture;
-				Point3D Normal;
+				unsigned int Position;
+				unsigned int Texture;
+				unsigned int Normal;
 			public:
 				FaceCorner();
 		};
@@ -48,7 +50,7 @@ class OBJ
 		ContainerDynamic<Point3D> Normals;
 		ContainerDynamic<Face> Faces;
 
-		ContainerDynamic<MTL*> Materials;
+		MTL Materials;
 
 	private:
 		OBJ();
@@ -56,6 +58,9 @@ class OBJ
 		~OBJ();
 
 	public:
+		Point3D Position_MainData(unsigned int idx);
+		Point2D Texture_MainData(unsigned int idx);
+		Point3D Normal_MainData(unsigned int idx, Point3D normal);
 		OBJ_MainData * ToMainData(int & count);
 
 	private:

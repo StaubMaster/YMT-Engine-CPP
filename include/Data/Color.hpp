@@ -2,6 +2,8 @@
 #ifndef  COLOR_HPP
 # define COLOR_HPP
 
+#include <sstream>
+
 class Color
 {
 	public:
@@ -17,5 +19,7 @@ class Color
 	public:
 		unsigned int ToUInt32() const;
 };
+
+std::ostream & operator <<(std::ostream & o, const Color & val);
 
 #endif

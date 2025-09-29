@@ -30,3 +30,13 @@ unsigned int Color::ToUInt32() const
 	unsigned char b = B * 255.0f;
 	return ((r << 0x10) | (g << 0x08) | (b << 0x00));
 }
+
+
+
+
+
+std::ostream & operator <<(std::ostream & o, const Color & val)
+{
+	o << "(" << " R:" << val.R << " G:" << val.G << " B:" << val.B << " )";
+	return o;
+}
