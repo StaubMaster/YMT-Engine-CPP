@@ -19,3 +19,28 @@ Load OBJ File
 	or store as its own thing
 	in FileManager
 	then convert to PolyHedra ? or directly to _MainData ?
+
+
+
+how to parse
+I dont feel like doing a signle string parser
+also this is a "one command per line" format
+so instead
+
+extract lines
+remove comments
+check if just whitespace
+
+split into command and arguments
+
+
+
+
+
+dont ignore everything else
+the material stuff is also supposed to be done
+so make a function to convert to PolyHedra
+or change PolyHedra to be more complex
+and/or make a new MainData and Buffer and Shader for OBJ
+
+

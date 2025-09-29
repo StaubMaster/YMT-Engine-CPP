@@ -16,4 +16,6 @@
 #include "Data/Color.hpp"
 #include "Data/Depth.hpp"
 
+#include "Data/4D/Point4D.hpp"
+
 #endif
