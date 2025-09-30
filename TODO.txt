@@ -4,11 +4,6 @@ reorganize Files
 
 
 Shaders:
-Uniform Depth
-{
-	Color
-	Range
-}
 Light
 {
 	Range ?
@@ -55,6 +50,23 @@ Physics Instance
 	Angle3D Rotation
 	Angle3D SpinVel
 }
+
+
+
+
+
+Angle
+right now Angle is just 3 Angles along with sin and cos
+what to do with those values (foreward/backward) is decided by what uses it
+the sin cos is stored because I think recalculating those thenever the Angle is used would be inefficient
+so my Idea is
+have a AngleBase class that stores the 3 Angles and a rotation matrix
+it dosent calculate the matrix
+then inherit AngleFore and AngleBack
+these automatically calculate their appropriate matrix
+no Idea how easy it is to rotate angles / invert angles is with this
+
+
 
 
 

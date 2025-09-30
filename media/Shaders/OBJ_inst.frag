@@ -35,7 +35,7 @@ in Vert {
 	vec3 Relative;
 
 	vec3 Normal;
-	vec2 Tex;
+	vec3 Tex;
 } fs_inn;
 
 
@@ -78,9 +78,9 @@ void main()
 	float depth_factor = CalcDepthFactor();
 	float light_factor = CalcLightFactor();
 
-	//vec3 col = texture(texture0, vec3(fs_inn.Tex, 0)).rgb;
-	vec3 col = vec3(1.0, 1.0, 1.0);
-	col = col * light_factor;
+	vec3 col = texture(texture0, fs_inn.Tex).rgb;
+	//vec3 col = vec3(1.0, 1.0, 1.0);
+	//col = col * light_factor;
 	col = (col * (1.0 - depth_factor)) + (depth_factor * Depth.Color);
 
 	//col = vec3(1.0 - depth_factor);		//	Depth

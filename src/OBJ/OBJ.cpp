@@ -64,9 +64,6 @@ Point3D OBJ::Normal_MainData(unsigned int idx, Point3D normal)
 		return normal;
 	}
 }
-
-
-
 OBJ_MainData * OBJ::ToMainData(int & count)
 {
 	count = Faces.Count() * 3;
@@ -158,14 +155,15 @@ OBJ::FaceCorner OBJ::Parse_f_element(std::string text)
 	{
 		corn.Position = std::stoi(index_strings[0]) - 1;
 	}
-	if (index_strings.size() >= 2 && index_strings[1].empty())
+	if (index_strings.size() >= 2 && !index_strings[1].empty())
 	{
-		corn.Texture = std::stoi(index_strings[0]) - 1;
+		corn.Texture = std::stoi(index_strings[1]) - 1;
 	}
-	if (index_strings.size() >= 3 && index_strings[2].empty())
+	if (index_strings.size() >= 3 && !index_strings[2].empty())
 	{
-		corn.Normal = std::stoi(index_strings[0]) - 1;
+		corn.Normal = std::stoi(index_strings[2]) - 1;
 	}
+
 	return corn;
 }
 void OBJ::Parse_f(const LineCommand & cmd)
@@ -219,7 +217,8 @@ void OBJ::Parse_usemtl(const LineCommand & cmd)
 
 void OBJ::Parse(const LineCommand & cmd)
 {
-	if (cmd.Name == "#")			{ }
+	if (cmd.Name.empty())			{ }
+	else if (cmd.Name == "#")		{ }
 	else if (cmd.Name == "v")		{ Parse_v(cmd); }
 	else if (cmd.Name == "vt")		{ Parse_vt(cmd); }
 	else if (cmd.Name == "vn")		{ Parse_vn(cmd); }

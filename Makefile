@@ -35,6 +35,7 @@ FILES_SRC = \
 	Graphics/Attribute/AttribAngle3D.cpp \
 	Graphics/Attribute/AttribTrans3D.cpp \
 	Graphics/Attribute/AttribPoint2D.cpp \
+	Graphics/Attribute/AttribPoint4D.cpp \
 \
 	Graphics/Uniform/Base/UniformBase.cpp \
 	Graphics/Uniform/Base/MultiformBase.cpp \

@@ -44,13 +44,13 @@ uniform DepthData Depth;
 
 
 
-layout(location = 0) in vec3 VPos;
-layout(location = 1) in vec2 VTex;
+layout(location = 0) in vec4 VPos;
+layout(location = 1) in vec3 VTex;
 layout(location = 2) in vec3 VNorm;
 
-layout(location = 3) in vec3 IPos;
-layout(location = 4) in vec3 ISin;
-layout(location = 5) in vec3 ICos;
+layout(location = 20) in vec3 IPos;
+layout(location = 21) in vec3 ISin;
+layout(location = 22) in vec3 ICos;
 
 
 
@@ -60,7 +60,7 @@ out Vert {
 	vec3 Relative;
 
 	vec3 Normal;
-	vec2 Tex;
+	vec3 Tex;
 } vs_out;
 
 
@@ -108,7 +108,7 @@ vec4 proj(in vec3 p_inn)
 
 void main()
 {
-	vs_out.Original = VPos;
+	vs_out.Original = VPos.xyz;
 	vs_out.Absolute = DSA(vs_out.Original, ISin, ICos) + IPos;
 	vs_out.Relative = ASD(vs_out.Absolute - View.Pos, View.Rot.Sin, View.Rot.Cos);
 	gl_Position = proj(vs_out.Relative);

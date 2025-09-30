@@ -119,7 +119,8 @@ void MTL::Parse_illum(const LineCommand & cmd)
 
 void MTL::Parse(const LineCommand & cmd)
 {
-	if (cmd.Name == "#")			{ }
+	if (cmd.Name.empty())			{ }
+	else if (cmd.Name == "#")		{ }
 	else if (cmd.Name == "newmtl")	{ Parse_newmtl(cmd); }
 	else if (cmd.Name == "Ka")		{ Parse_Ka(cmd); }
 	else if (cmd.Name == "Kd")		{ Parse_Kd(cmd); }

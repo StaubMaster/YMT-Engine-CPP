@@ -11,8 +11,8 @@
 # include "Graphics/Attribute/AttributeLocation.hpp"
 # include "Graphics/Attribute/AttributeBase.hpp"
 
+# include "Graphics/Attribute/AttribPoint4D.hpp"
 # include "Graphics/Attribute/AttribPoint3D.hpp"
-# include "Graphics/Attribute/AttribPoint2D.hpp"
 
 
 
@@ -22,8 +22,8 @@
 
 struct OBJ_MainData
 {
-	Point3D	Position;
-	Point2D	Texture;
+	Point4D	Position;
+	Point3D	Texture;
 	Point3D	Normal;
 };
 
@@ -32,8 +32,8 @@ struct OBJ_MainData
 class OBJ_MainAttrib : public AttributeBase
 {
 	private:
-		AttribPoint3D	Position;
-		AttribPoint2D	Texture;
+		AttribPoint4D	Position;
+		AttribPoint3D	Texture;
 		AttribPoint3D	Normal;
 
 	public:
