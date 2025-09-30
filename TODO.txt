@@ -1,5 +1,7 @@
 
-reorganize Files
+optimize compilation
+	foreward declaration
+		<iosfwd> in header instead of <iostream>
 
 
 

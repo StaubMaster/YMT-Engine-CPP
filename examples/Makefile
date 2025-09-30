@@ -16,27 +16,55 @@ MAINS_DIR = mains/
 
 
 
-ARC_NAME = \
-	YMT.a
+ARC = \
+	../YMT.a \
+	../other/OpenGL/openGL.a \
+	../other/FileManager/fileManager.a
 
-ARC_DIR = ../
+WIN_ARGS = \
+	E:/Utility/glfw-3.4.bin.WIN64/lib-mingw-w64/libglfw3.a \
+	E:/Utility/msys32/ucrt64/lib/libOpenCL.dll.a \
+	libOpenCL.dll.a \
+	-lgdi32
 
-ARC = $(addprefix $(ARC_DIR), $(ARC_NAME))
+MAC_ARGS = \
+	-lglfw
+
+#	pretty sure I can add these directories to some environment PATH variable
+#	but I cant really find which path ?
+#	not sure if the documentation sucks, if google sucks, or if I'm just stupid
 
 
+
+#	all		check everything to see if something needs to be recompiled
+#	clean	remove everything except final output
+#			so only the final .exe or also all the .a ?
+#	fclean	remove everything
+#			including included Libraries ?
+#	re		fclean and all ?
 
 all:
-	$(MAKE) -C $(ARC_DIR) all
+	$(foreach arc, $(ARC), \
+		@echo '[' 'all' $(arc) ']' ; \
+		$(MAKE) -C $(dir $(arc)) all ; \
+	)
+	@echo '[ all Done ]'
 	@$(MAKE) $(EXES)
 
 clean:
-	$(MAKE) -C $(ARC_DIR) fclean
-	rm -f $(EXES)
+	$(foreach arc, $(ARC), \
+		@echo '[' 'clean' $(arc) ']' ; \
+		$(MAKE) -C $(dir $(arc)) clean ; \
+	)
+	@echo '[ clean Done ]'
 
 fclean:
-	$(MAKE) -C $(ARC_DIR) clean
+	$(foreach arc, $(ARC), \
+		@echo '[' 'fclean' $(arc) ']' ; \
+		$(MAKE) -C $(dir $(arc)) fclean ; \
+	)
+	@echo '[ fclean Done ]'
 	@$(MAKE) clean
-	rm -f $(EXES)
 
 re:
 	@$(MAKE) fclean
@@ -47,9 +75,8 @@ re:
 
 
 %.exe : $(MAINS_DIR)%.cpp $(ARC)
-	$(COMPILER) $(FLAGS) -I ../include -I ../other -o $@ $^ $(ARC) E:/Utility/msys32/ucrt64/lib/libOpenCL.dll.a -lgdi32
-#	$(COMPILER) $(FLAGS) -I ../include -I ../other -o $@ $^ $(ARC) -lgdi32
-#	$(COMPILER) $(FLAGS) -I ../include -I ../other -o $@ $^ $(ARC) -lglfw
+	$(COMPILER) $(FLAGS) -I ../include -I ../other -o $@ $^ $(WIN_ARGS)
+	$(COMPILER) $(FLAGS) -I ../include -I ../other -o $@ $^ $(MAC_ARGS)
 
 $(ARC) :
 	@$(MAKE) -C $(ARC_DIR) all

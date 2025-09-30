@@ -1,7 +1,6 @@
 
 
 
-#NAME = a.exe
 NAME = YMT.a
 COMPILER = c++ -std=c++11
 FLAGS = -Wall -Wextra -Werror
@@ -72,8 +71,6 @@ FILES_SRC = \
 	TimeMeasure.cpp \
 	Window.cpp
 
-
-
 FILES_OBJ = $(FILES_SRC:.cpp=.o)
 
 DIR_SRC = src/
@@ -83,24 +80,18 @@ FILES_ABS_OBJ = $(addprefix $(DIR_OBJ), $(FILES_OBJ))
 
 
 
-ARC_X = 
 ARC_X_DIR = obj/arc/
-
-ARC_OPENGL_PATH = other/OpenGL/
-ARC_OPENGL = $(ARC_OPENGL_PATH)openGL.a
-
-ARC_FILEPARSER_PATH = other/FileManager/
-ARC_FILEPARSER = $(ARC_FILEPARSER_PATH)fileManager.a
 
 
 
 $(NAME) : $(FILES_ABS_OBJ)
 	@mkdir -p $(ARC_X_DIR)
-	ar -x $(ARC_OPENGL) --output ./obj/arc
-	ar -x $(ARC_FILEPARSER) --output ./obj/arc
-	ar -x E:/Utility/glfw-3.4.bin.WIN64/lib-mingw-w64/libglfw3.a --output ./obj/arc
-	ar -rcs $(NAME) $(FILES_ABS_OBJ) $(ARC_X_DIR)* -lgdi32
+#	ar -x $(ARC_OPENGL) --output ./obj/arc
+#	ar -x $(ARC_FILEPARSER) --output ./obj/arc
+#	ar -x E:/Utility/glfw-3.4.bin.WIN64/lib-mingw-w64/libglfw3.a --output ./obj/arc
 #	ar -rcs $(NAME) $(FILES_ABS_OBJ) $(ARC_X_DIR)*
+#	ar -rcs $(NAME) $(FILES_ABS_OBJ) -lgdi32
+	ar -rcs $(NAME) $(FILES_ABS_OBJ)
 
 all:
 	@$(MAKE) $(FILES_ABS_OBJ)
