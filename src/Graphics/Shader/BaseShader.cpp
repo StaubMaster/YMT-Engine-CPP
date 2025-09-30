@@ -9,12 +9,12 @@ int BaseShader::CurrentID = -1;
 BaseShader::BaseShader(const ShaderCode * code, int count)
 {
 	ID = glCreateProgram();
-	std::cout << "++++ BaseShader " << ID << "\n";
+	//std::cout << "++++ BaseShader " << ID << "\n";
 	Compile(code, count);
 }
 BaseShader::~BaseShader()
 {
-	std::cout << "---- BaseShader " << ID << "\n";
+	//std::cout << "---- BaseShader " << ID << "\n";
 	glDeleteProgram(ID);
 }
 
@@ -64,7 +64,7 @@ int BaseShader::UniformFind(const std::string & name) const
 
 void BaseShader::Compile(const ShaderCode * code, int count)
 {
-	std::cout << "Compiling BaseShader " << ID << " ...\n";
+	//std::cout << "Compiling BaseShader " << ID << " ...\n";
 	for (int i = 0; i < count; i++) { code[i].Attach(ID); }
 	glLinkProgram(ID);
 	for (int i = 0; i < count; i++) { code[i].Detach(ID); }
@@ -77,7 +77,7 @@ void BaseShader::Compile(const ShaderCode * code, int count)
 		std::string log = std::string(log_arr, log_len);
 		throw ECompileLog(log);
 	}
-	std::cout << "Compiling BaseShader " << ID << " done\n";
+	//std::cout << "Compiling BaseShader " << ID << " done\n";
 }
 
 BaseShader::ECompileLog::ECompileLog(const std::string log)

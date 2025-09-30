@@ -36,21 +36,24 @@ OBJ::~OBJ()
 
 
 
-Point3D OBJ::Position_MainData(unsigned int idx)
+Point4D OBJ::Position_MainData(unsigned int idx)
 {
-	Point4D val = Positions[idx];
-	return Point3D(val.X, val.Y, val.Z);
+	return Positions[idx];
 }
-Point2D OBJ::Texture_MainData(unsigned int idx)
+Point3D OBJ::Texture_MainData(unsigned int idx, Point3D min, Point3D max, Point4D pos)
 {
 	if (idx != 0xFFFFFFFF)
 	{
-		Point3D val = Textures[idx];
-		return Point2D(val.X, val.Y);
+		return Textures[idx];
 	}
 	else
 	{
-		return Point2D();
+		Point3D tex(
+			(pos.X - min.X) / (max.X - min.X),
+			(pos.Y - min.Y) / (max.Y - min.Y),
+			0
+		);
+		return tex;
 	}
 }
 Point3D OBJ::Normal_MainData(unsigned int idx, Point3D normal)
@@ -69,6 +72,22 @@ OBJ_MainData * OBJ::ToMainData(int & count)
 	count = Faces.Count() * 3;
 	OBJ_MainData * data = new OBJ_MainData[count];
 
+	Point3D TexMin(+INFINITY, +INFINITY, +INFINITY);
+	Point3D TexMax(-INFINITY, -INFINITY, -INFINITY);
+	for (unsigned int i = 0; i < Positions.Count(); i++)
+	{
+		const Point4D & p = Positions[i];
+		if (p.X < TexMin.X) { TexMin.X = p.X; }
+		if (p.Y < TexMin.Y) { TexMin.Y = p.Y; }
+		if (p.Z < TexMin.Z) { TexMin.Z = p.Z; }
+		if (p.X > TexMax.X) { TexMax.X = p.X; }
+		if (p.Y > TexMax.Y) { TexMax.Y = p.Y; }
+		if (p.Y > TexMax.Z) { TexMax.Z = p.Z; }
+	}
+
+	//std::cout << "TexMin: " << TexMin.X << " | " << TexMin.Y << " | " << TexMin.Z << "\n";
+	//std::cout << "TexMax: " << TexMax.X << " | " << TexMax.Y << " | " << TexMax.Z << "\n";
+
 	for (unsigned int f = 0; f < Faces.Count(); f++)
 	{
 		const Face & face = Faces[f];
@@ -81,11 +100,14 @@ OBJ_MainData * OBJ::ToMainData(int & count)
 		c1.Position = Position_MainData(face.Corner2.Position);
 		c2.Position = Position_MainData(face.Corner3.Position);
 
-		c0.Texture = Texture_MainData(face.Corner1.Texture);
-		c1.Texture = Texture_MainData(face.Corner2.Texture);
-		c2.Texture = Texture_MainData(face.Corner3.Texture);
+		c0.Texture = Texture_MainData(face.Corner1.Texture, TexMin, TexMax, c0.Position);
+		c1.Texture = Texture_MainData(face.Corner2.Texture, TexMin, TexMax, c1.Position);
+		c2.Texture = Texture_MainData(face.Corner3.Texture, TexMin, TexMax, c2.Position);
 
-		Point3D normal = Point3D::cross(c1.Position - c0.Position, c2.Position - c0.Position).normalize();
+		Point3D n0(c0.Position.X, c0.Position.Y, c0.Position.Z);
+		Point3D n1(c1.Position.X, c1.Position.Y, c1.Position.Z);
+		Point3D n2(c2.Position.X, c2.Position.Y, c2.Position.Z);
+		Point3D normal = Point3D::cross(n1 - n0, n2 - n0).normalize();
 
 		c0.Normal = Normal_MainData(face.Corner1.Normal, normal);
 		c1.Normal = Normal_MainData(face.Corner2.Normal, normal);

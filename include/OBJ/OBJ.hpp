@@ -58,8 +58,8 @@ class OBJ
 		~OBJ();
 
 	public:
-		Point3D Position_MainData(unsigned int idx);
-		Point2D Texture_MainData(unsigned int idx);
+		Point4D Position_MainData(unsigned int idx);
+		Point3D Texture_MainData(unsigned int idx, Point3D min, Point3D max, Point4D pos);
 		Point3D Normal_MainData(unsigned int idx, Point3D normal);
 		OBJ_MainData * ToMainData(int & count);
 

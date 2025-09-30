@@ -10,7 +10,7 @@ AttribPoint4D::AttribPoint4D(
 	unsigned int stride,
 	unsigned int indexPos
 ) :
-	Pos(GL_FLOAT, sizeof(Point3D), 3, divisor, stride, indexPos)
+	Pos(GL_FLOAT, sizeof(Point4D), 4, divisor, stride, indexPos)
 { }
 
 

@@ -83,7 +83,8 @@ void main()
 	//col = col * light_factor;
 	col = (col * (1.0 - depth_factor)) + (depth_factor * Depth.Color);
 
-	//col = vec3(1.0 - depth_factor);		//	Depth
+	//col = vec3(1.0 - depth_factor);	//	Depth
 	//col = abs(normalize(fs_inn.Normal));	//	Normals
+	//col = vec3(fs_inn.Tex.x, 0.0, fs_inn.Tex.y);	//	Texture
 	Color = vec4(col, 1);
 }

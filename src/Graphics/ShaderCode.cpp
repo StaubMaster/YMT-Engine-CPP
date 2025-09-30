@@ -7,12 +7,12 @@ ShaderCode::ShaderCode(GLenum type, const std::string code, const std::string pa
 {
 	Path = path;
 	ID = glCreateShader(type);
-	std::cout << "++++ Shader " << ID << "\n";
+	//std::cout << "++++ Shader " << ID << "\n";
 	Compile(code);
 }
 ShaderCode::~ShaderCode()
 {
-	std::cout << "---- Shader " << ID << "\n";
+	//std::cout << "---- Shader " << ID << "\n";
 	glDeleteShader(ID);
 }
 
@@ -29,7 +29,7 @@ void ShaderCode::Detach(int ProgramID) const
 
 void ShaderCode::Compile(const std::string code)
 {
-	std::cout << "Compiling Shader " << ID << " ...\n";
+	//std::cout << "Compiling Shader " << ID << " ...\n";
 	const char * arr[1] = {
 		code.c_str(),
 	};
@@ -44,7 +44,7 @@ void ShaderCode::Compile(const std::string code)
 		std::string log = std::string(log_arr, log_len);
 		throw ECompileLog(log, Path);
 	}
-	std::cout << "Compiling Shader " << ID << " done\n";
+	//std::cout << "Compiling Shader " << ID << " done\n";
 }
 
 ShaderCode::ECompileLog::ECompileLog(const std::string log, const std::string path)

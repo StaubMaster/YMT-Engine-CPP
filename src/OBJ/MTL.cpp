@@ -15,13 +15,13 @@ std::string MTL::Material::ToString()
 {
 	std::ostringstream os;
 	os << "Name: " << Name;
-	os << "\nKa: " << Ka;
-	os << "\nKd: " << Kd;
-	os << "\nKs: " << Ks;
-	os << "\nNs: " << Ns;
-	os << "\nNi: " << Ni;
-	os << "\nd: " << d;
-	os << "\nillum: " << illum;
+	os << "\n  Ka: " << Ka;
+	os << "\n  Kd: " << Kd;
+	os << "\n  Ks: " << Ks;
+	os << "\n  Ns: " << Ns;
+	os << "\n  Ni: " << Ni;
+	os << "\n  d: " << d;
+	os << "\n  illum: " << illum;
 	return os.str();
 }
 
