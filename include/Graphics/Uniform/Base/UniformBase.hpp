@@ -7,6 +7,8 @@
 class BaseShader;
 class MultiformBase;
 
+namespace Uniform
+{
 class UniformBase
 {
 	public:
@@ -21,6 +23,7 @@ class UniformBase
 
 	public:
 		void PutData();
+};
 };
 
 #endif

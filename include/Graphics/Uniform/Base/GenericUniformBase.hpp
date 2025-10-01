@@ -7,6 +7,8 @@
 class BaseShader;
 class MultiformBase;
 
+namespace Uniform
+{
 template <typename DataType>
 class GenericUniformBase : public UniformBase
 {
@@ -17,6 +19,7 @@ class GenericUniformBase : public UniformBase
 
 	public:
 		virtual void PutData(DataType data) = 0;
+};
 };
 
 #endif

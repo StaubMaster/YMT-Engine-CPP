@@ -1,11 +1,12 @@
 #include "Graphics/Uniform/Data/UniDepth.hpp"
+#include "DataStruct/Depth.hpp"
 
 #include "OpenGL/openGL.h"
 #include <iostream>
 
 
 
-UniDepth::UniDepth(std::string name, BaseShader & shader) : GenericUniformBase(name, shader),
+Uniform::Depth::Depth(std::string name, BaseShader & shader) : GenericUniformBase(name, shader),
 	Factors(name + ".Factors", shader),
 	Range(name + ".Range", shader),
 	Color(name + ".Color", shader)
@@ -13,20 +14,9 @@ UniDepth::UniDepth(std::string name, BaseShader & shader) : GenericUniformBase(n
 	
 }
 
-void UniDepth::PutData(Depth val)
+void Uniform::Depth::PutData(::Depth val)
 {
 	Factors.PutData(val.Factors);
 	Range.PutData(val.Range);
 	Color.PutData(val.Color);
-}
-
-
-
-
-
-
-
-MultiDepth::MultiDepth(std::string name) : GenericMultiformBase(name)
-{
-
 }

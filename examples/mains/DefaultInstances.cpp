@@ -4,6 +4,9 @@
 #include "Graphics/PH/PH_3D/PolyHedra_3D_Instances.hpp"
 #include "Graphics/PH/PH_3D/PolyHedra_3D_Shader.hpp"
 #include "Graphics/Uniform/Uniforms.hpp"
+#include "Graphics/Multiform/Data/2D/UniSizeRatio2D.hpp"
+#include "Graphics/Multiform/Data/3D/UniTrans3D.hpp"
+#include "Graphics/Multiform/Data/UniDepth.hpp"
 
 #include "TextureArray.hpp"
 #include "PolyHedra.hpp"

@@ -7,17 +7,20 @@
 
 class BaseShader;
 
-class UniAngle3D : public GenericUniformBase<Angle3D>
+namespace Uniform
+{
+class Angle3D : public Uniform::GenericUniformBase<::Angle3D>
 {
 	private:
 		int LocationSin;
 		int LocationCos;
 
 	public:
-		UniAngle3D(std::string name, BaseShader & shader);
+		Angle3D(std::string name, BaseShader & shader);
 
 	public:
-		void PutData(Angle3D p) override;
+		void PutData(::Angle3D p) override;
+};
 };
 
 #endif

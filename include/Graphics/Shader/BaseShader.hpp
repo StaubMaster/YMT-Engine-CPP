@@ -10,7 +10,10 @@
 # include <string>
 
 class ShaderCode;
-class UniformBase;
+namespace Uniform
+{
+	class UniformBase;
+};
 
 class BaseShader
 {
@@ -20,7 +23,7 @@ class BaseShader
 	private:
 		int ID;
 	public:
-		std::vector<UniformBase *> Uniforms;
+		std::vector<Uniform::UniformBase *> Uniforms;
 
 	protected:
 		BaseShader(const ShaderCode * code, int count);

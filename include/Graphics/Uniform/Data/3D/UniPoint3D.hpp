@@ -8,16 +8,19 @@
 
 class BaseShader;
 
-class UniPoint3D : public GenericUniformBase<Point3D>
+namespace Uniform
+{
+class Point3D : public Uniform::GenericUniformBase<::Point3D>
 {
 	private:
 		int Location;
 
 	public:
-		UniPoint3D(std::string name, BaseShader & shader);
+		Point3D(std::string name, BaseShader & shader);
 
 	public:
-		void PutData(Point3D p) override;
+		void PutData(::Point3D p) override;
+};
 };
 
 #endif

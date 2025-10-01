@@ -1,10 +1,10 @@
 #include "Graphics/Uniform/Base/UniformBase.hpp"
-#include "Graphics/Uniform/Base/MultiformBase.hpp"
+#include "Graphics/Multiform/Base/MultiformBase.hpp"
 #include "Graphics/Shader/BaseShader.hpp"
 
 
 
-UniformBase::UniformBase(std::string name, BaseShader & shader) :
+Uniform::UniformBase::UniformBase(std::string name, BaseShader & shader) :
 	Shader(shader)
 {
 	Name = name;
@@ -12,14 +12,14 @@ UniformBase::UniformBase(std::string name, BaseShader & shader) :
 	Changed = false;
 	shader.Uniforms.push_back(this);
 }
-UniformBase::~UniformBase()
+Uniform::UniformBase::~UniformBase()
 {
 	
 }
 
 
 
-void UniformBase::PutData()
+void Uniform::UniformBase::PutData()
 {
 	Uniform -> Data_PutUniform(this);
 }

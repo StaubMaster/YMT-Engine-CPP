@@ -5,7 +5,10 @@
 #include <string>
 
 class BaseShader;
-class UniformBase;
+namespace Uniform
+{
+	class UniformBase;
+};
 
 class MultiformBase
 {
@@ -18,7 +21,7 @@ class MultiformBase
 
 	public:
 		virtual void FindUniforms(BaseShader ** shaders, int len) = 0;
-		virtual void Data_PutUniform(UniformBase * uni_base) = 0;
+		virtual void Data_PutUniform(Uniform::UniformBase * uni_base) = 0;
 };
 
 #endif

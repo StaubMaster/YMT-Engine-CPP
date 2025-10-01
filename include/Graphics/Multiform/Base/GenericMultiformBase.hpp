@@ -3,12 +3,14 @@
 # define GENERIC_MULTIFORM_BASE_HPP
 
 # include "Graphics/Shader/BaseShader.hpp"
-# include "Graphics/Uniform/Base/MultiformBase.hpp"
+# include "Graphics/Multiform/Base/MultiformBase.hpp"
 
 # include <typeinfo>
 
-//class BaseShader;
-class UniformBase;
+namespace Uniform
+{
+	class UniformBase;
+};
 
 template <typename UniformType, typename DataType>
 class GenericMultiformBase : public MultiformBase
@@ -47,7 +49,7 @@ class GenericMultiformBase : public MultiformBase
 				for (int u = 0; u < (int)shaders[s] -> Uniforms.size(); u++)
 				{
 					//std::cout << "Uniform[" << u << "]\n";
-					UniformBase * uni = shaders[s] -> Uniforms[u];
+					Uniform::UniformBase * uni = shaders[s] -> Uniforms[u];
 					//std::cout << "Uniform '" << (this -> Name) << "'\n";
 					//std::cout << "Uniform '" << (uni -> Name) << "'\n";
 					//std::cout << "Type: " << typeid(UniformType).name() << "\n";
@@ -79,7 +81,7 @@ class GenericMultiformBase : public MultiformBase
 			delete [] uniforms;
 		}
 
-		void Data_PutUniform(UniformBase * uni_base)
+		void Data_PutUniform(Uniform::UniformBase * uni_base)
 		{
 			UniformType * uni = (UniformType*)uni_base;
 			uni -> PutData(Data);

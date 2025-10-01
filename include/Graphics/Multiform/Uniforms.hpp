@@ -2,9 +2,9 @@
 # define UNIFORM_HPP
 
 # include "Base/UniformBase.hpp"
-//# include "Base/MultiformBase.hpp"
+# include "Base/MultiformBase.hpp"
 # include "Base/GenericUniformBase.hpp"
-//# include "Base/GenericMultiformBase.hpp"
+# include "Base/GenericMultiformBase.hpp"
 
 # include "Data/1D/UniDepthFactors.hpp"
 # include "Data/1D/UniRange.hpp"

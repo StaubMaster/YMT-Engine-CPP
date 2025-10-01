@@ -4,28 +4,23 @@
 
 # include "Graphics/Shader/BaseShader.hpp"
 # include "Graphics/Uniform/Base/GenericUniformBase.hpp"
-# include "Graphics/Uniform/Base/GenericMultiformBase.hpp"
+# include "Graphics/Multiform/Base/GenericMultiformBase.hpp"
 
 # include "DataDec.hpp"
 
-class UniColor : public GenericUniformBase<Color>
+namespace Uniform
+{
+class Color : public Uniform::GenericUniformBase<::Color>
 {
 	private:
 		int Location;
 
 	public:
-		UniColor(std::string name, BaseShader & shader);
+		Color(std::string name, BaseShader & shader);
 
 	public:
-		void PutData(Color val) override;
+		void PutData(::Color val) override;
 };
-
-# include "DataStruct/Color.hpp"
-
-class MultiColor : public GenericMultiformBase<UniColor, Color>
-{
-	public:
-		MultiColor(std::string name);
 };
 
 #endif

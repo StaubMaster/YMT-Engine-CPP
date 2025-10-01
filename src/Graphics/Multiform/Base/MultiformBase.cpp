@@ -1,4 +1,4 @@
-#include "Graphics/Uniform/Base/MultiformBase.hpp"
+#include "Graphics/Multiform/Base/MultiformBase.hpp"
 //# include "OpenGL/openGL.h"
 //# include <iostream>
 

@@ -3,22 +3,25 @@
 # define UNI_POINT_2D_HPP
 
 # include "Graphics/Uniform/Base/GenericUniformBase.hpp"
-# include "Graphics/Uniform/Base/GenericMultiformBase.hpp"
+# include "Graphics/Multiform/Base/GenericMultiformBase.hpp"
 
 # include "DataDec.hpp"
 
 class BaseShader;
 
-class UniPoint2D : public GenericUniformBase<Point2D>
+namespace Uniform
+{
+class Point2D : public Uniform::GenericUniformBase<::Point2D>
 {
 	private:
 		int Location;
 
 	public:
-		UniPoint2D(std::string name, BaseShader & shader);
+		Point2D(std::string name, BaseShader & shader);
 
 	public:
-		void PutData(Point2D p) override;
+		void PutData(::Point2D p) override;
+};
 };
 
 #endif

@@ -3,7 +3,7 @@
 # define UNI_TRANS_3D_HPP
 
 # include "Graphics/Uniform/Base/GenericUniformBase.hpp"
-# include "Graphics/Uniform/Base/GenericMultiformBase.hpp"
+# include "Graphics/Multiform/Base/GenericMultiformBase.hpp"
 
 # include "DataDec.hpp"
 # include "Graphics/Uniform/Data/3D/UniPoint3D.hpp"
@@ -11,25 +11,20 @@
 
 class BaseShader;
 
-class UniTrans3D : public GenericUniformBase<Trans3D>
+namespace Uniform
+{
+class Trans3D : public Uniform::GenericUniformBase<::Trans3D>
 {
 	private:
-		UniPoint3D Pos;
-		UniAngle3D Rot;
+		Uniform::Point3D Pos;
+		Uniform::Angle3D Rot;
 
 	public:
-		UniTrans3D(std::string name, BaseShader & shader);
+		Trans3D(std::string name, BaseShader & shader);
 
 	public:
-		void PutData(Trans3D t) override;
+		void PutData(::Trans3D t) override;
 };
-
-# include "DataStruct/Trans3D.hpp"
-
-class MultiTrans3D : public GenericMultiformBase<UniTrans3D, Trans3D>
-{
-	public:
-		MultiTrans3D(std::string name);
 };
 
 #endif

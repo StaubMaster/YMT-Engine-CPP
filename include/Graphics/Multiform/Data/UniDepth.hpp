@@ -1,6 +1,6 @@
 
-#ifndef  UNI_DEPTH_HPP
-# define UNI_DEPTH_HPP
+#ifndef  MULTI_DEPTH_HPP
+# define MULTI_DEPTH_HPP
 
 # include "Graphics/Shader/BaseShader.hpp"
 # include "Graphics/Uniform/Base/GenericUniformBase.hpp"
@@ -10,22 +10,14 @@
 # include "Graphics/Uniform/Data/1D/UniDepthFactors.hpp"
 # include "Graphics/Uniform/Data/1D/UniRange.hpp"
 # include "Graphics/Uniform/Data/UniColor.hpp"
+# include "Graphics/Uniform/Data/UniDepth.hpp"
 
-namespace Uniform
+# include "DataStruct/Depth.hpp"
+
+class MultiDepth : public GenericMultiformBase<Uniform::Depth, Depth>
 {
-class Depth : public Uniform::GenericUniformBase<::Depth>
-{
-	private:
-		Uniform::DepthFactors Factors;
-		Uniform::Range Range;
-		Uniform::Color Color;
-
 	public:
-		Depth(std::string name, BaseShader & shader);
-
-	public:
-		void PutData(::Depth val) override;
-};
+		MultiDepth(std::string name);
 };
 
 #endif

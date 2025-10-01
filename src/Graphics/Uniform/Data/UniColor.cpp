@@ -1,27 +1,17 @@
 #include "Graphics/Uniform/Data/UniColor.hpp"
+#include "DataStruct/Color.hpp"
 
 #include "OpenGL/openGL.h"
 #include <iostream>
 
 
 
-UniColor::UniColor(std::string name, BaseShader & shader) : GenericUniformBase(name, shader)
+Uniform::Color::Color(std::string name, BaseShader & shader) : GenericUniformBase(name, shader)
 {
 	Location = shader.UniformFind(name);
 }
 
-void UniColor::PutData(Color val)
+void Uniform::Color::PutData(::Color val)
 {
 	glUniform3fv(Location, 1, (float*)(&val));
-}
-
-
-
-
-
-
-
-MultiColor::MultiColor(std::string name) : GenericMultiformBase(name)
-{
-
 }
