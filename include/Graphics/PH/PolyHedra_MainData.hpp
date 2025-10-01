@@ -2,8 +2,8 @@
 #ifndef  POLYHEDRA_MAIN_DATA_HPP
 # define POLYHEDRA_MAIN_DATA_HPP
 
-# include "Data/3D/Point3D.hpp"
-# include "Data/2D/Point2D.hpp"
+# include "DataStruct/Point3D.hpp"
+# include "DataStruct/Point2D.hpp"
 
 struct PolyHedra_MainData
 {

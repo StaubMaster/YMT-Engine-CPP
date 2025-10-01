@@ -6,10 +6,10 @@
 
 # include "Graphics/Attribute/AttribTrans3D.hpp"
 
-class Simple3D_InstAttrib : public AttributeBase
+class Simple3D_InstAttrib : public Attribute::Base
 {
 	private:
-		AttribTrans3D	Trans;
+		Attribute::Trans3D	Trans;
 
 	public:
 		Simple3D_InstAttrib(

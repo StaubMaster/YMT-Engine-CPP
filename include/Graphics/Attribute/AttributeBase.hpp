@@ -2,14 +2,17 @@
 #ifndef  ATTRIBUTE_BASE_HPP
 # define ATTRIBUTE_BASE_HPP
 
-class AttributeBase
+namespace Attribute
+{
+class Base
 {
 	public:
-		AttributeBase();
-		virtual ~AttributeBase();
+		Base();
+		virtual ~Base();
 
 	public:
 		virtual void Bind(const unsigned char * & offset) const = 0;
+};
 };
 
 #endif

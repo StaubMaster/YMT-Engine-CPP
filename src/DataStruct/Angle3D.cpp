@@ -1,5 +1,5 @@
-#include "Data/3D/Angle3D.hpp"
-#include "Data/3D/Point3D.hpp"
+#include "DataStruct/Angle3D.hpp"
+#include "DataStruct/Point3D.hpp"
 
 #include <math.h>
 

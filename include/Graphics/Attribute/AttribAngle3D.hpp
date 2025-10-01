@@ -5,14 +5,16 @@
 # include "AttributeLocation.hpp"
 # include "AttributeBase.hpp"
 
-class AttribAngle3D : public AttributeBase
+namespace Attribute
+{
+class Angle3D : public Attribute::Base
 {
 	private:
-		AttributeLocation Sin;
-		AttributeLocation Cos;
+		Attribute::Location Sin;
+		Attribute::Location Cos;
 
 	public:
-		AttribAngle3D(
+		Angle3D(
 			unsigned int divisor,
 			unsigned int stride,
 			unsigned int indexSin,
@@ -21,6 +23,7 @@ class AttribAngle3D : public AttributeBase
 
 	public:
 		void Bind(const unsigned char * & offset) const override;
+};
 };
 
 #endif

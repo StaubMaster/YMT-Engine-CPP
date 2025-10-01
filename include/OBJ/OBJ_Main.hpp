@@ -4,8 +4,8 @@
 
 
 
-# include "Data/3D/Point3D.hpp"
-# include "Data/4D/Point4D.hpp"
+# include "DataStruct/Point3D.hpp"
+# include "DataStruct/Point4D.hpp"
 
 
 
@@ -30,12 +30,12 @@ struct OBJ_MainData
 
 
 
-class OBJ_MainAttrib : public AttributeBase
+class OBJ_MainAttrib : public Attribute::Base
 {
 	private:
-		AttribPoint4D	Position;
-		AttribPoint3D	Texture;
-		AttribPoint3D	Normal;
+		Attribute::Point4D	Position;
+		Attribute::Point3D	Texture;
+		Attribute::Point3D	Normal;
 
 	public:
 		OBJ_MainAttrib(

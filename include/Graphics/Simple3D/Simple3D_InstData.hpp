@@ -2,7 +2,7 @@
 #ifndef  SIMPLE_3D_INST_DATA_HPP
 # define SIMPLE_3D_INST_DATA_HPP
 
-# include "Data/3D/Trans3D.hpp"
+# include "DataStruct/Trans3D.hpp"
 
 struct Simple3D_InstData
 {

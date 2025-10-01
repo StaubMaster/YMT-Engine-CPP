@@ -1,7 +1,7 @@
 #include "PolyHedra.hpp"
 #include "PolyHedraData.hpp"
 
-#include "Data/3D/Angle3D.hpp"
+#include "DataStruct/Angle3D.hpp"
 
 #define TAU 6.28318530717958647692528676655900576839433879875021164194988918461563281257241799725606965068423413
 

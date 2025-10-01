@@ -1,6 +1,6 @@
 
-#ifndef  DATA_FORE_HPP
-# define DATA_FORE_HPP
+#ifndef  DATA_DEC_HPP
+# define DATA_DEC_HPP
 
 struct DepthFactors;
 struct Range;

@@ -9,7 +9,7 @@ Simple3D_InstBuffer::Simple3D_InstBuffer(
 	unsigned int indexTransRotSin,
 	unsigned int indexTransRotCos
 ) :
-	BaseBuffer(1, (AttributeBase * []) {
+	BaseBuffer(1, (Attribute::Base * []) {
 		new Simple3D_InstAttrib(1, sizeof(Simple3D_InstData), indexTransPos, indexTransRotSin, indexTransRotCos)
 	}) { }
 Simple3D_InstBuffer::~Simple3D_InstBuffer() {}

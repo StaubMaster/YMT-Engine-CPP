@@ -1,9 +1,9 @@
 #include "Window.hpp"
 #include "TimeMeasure.hpp"
 
-#include "Data/3D/Point3D.hpp"
-#include "Data/3D/Angle3D.hpp"
-#include "Data/2D/Point2D.hpp"
+#include "DataStruct/Point3D.hpp"
+#include "DataStruct/Angle3D.hpp"
+#include "DataStruct/Point2D.hpp"
 
 #include "OpenGL/openGL.h"
 #include <iostream>

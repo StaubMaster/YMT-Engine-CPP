@@ -3,7 +3,7 @@
 
 
 
-AttribTrans3D::AttribTrans3D(
+Attribute::Trans3D::Trans3D(
 	unsigned int divisor,
 	unsigned int stride,
 	unsigned int indexPos,
@@ -16,7 +16,7 @@ AttribTrans3D::AttribTrans3D(
 
 
 
-void AttribTrans3D::Bind(const unsigned char * & offset) const
+void Attribute::Trans3D::Bind(const unsigned char * & offset) const
 {
 	Pos.Bind(offset);
 	Rot.Bind(offset);

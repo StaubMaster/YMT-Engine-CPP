@@ -2,11 +2,6 @@
 #ifndef  UNIFORM_BASE_HPP
 # define UNIFORM_BASE_HPP
 
-//# include "Graphics/Shader/BaseShader.hpp"
-//# include "Graphics/Uniform/Base/MultiformBase.hpp"
-//# include "OpenGL/openGL.h"
-//# include <iostream>
-
 # include <string>
 
 class BaseShader;

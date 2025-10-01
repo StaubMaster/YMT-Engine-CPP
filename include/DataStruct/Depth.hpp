@@ -2,8 +2,8 @@
 #ifndef  DEPTH_HPP
 # define DEPTH_HPP
 
-# include "1D/DepthFactors.hpp"
-# include "1D/Range.hpp"
+# include "DepthFactors.hpp"
+# include "Range.hpp"
 # include "Color.hpp"
 
 struct Depth

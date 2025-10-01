@@ -3,8 +3,8 @@
 
 # include "PolyHedra.hpp"
 
-# include "Data/2D/Point2D.hpp"
-# include "Data/3D/Point3D.hpp"
+# include "DataStruct/Point2D.hpp"
+# include "DataStruct/Point3D.hpp"
 
 namespace YMT
 {

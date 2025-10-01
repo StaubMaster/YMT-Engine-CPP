@@ -1,7 +1,7 @@
 #include "Graphics/Uniform/Data/3D/UniAngle3D.hpp"
 #include "Graphics/Shader/BaseShader.hpp"
 
-#include "Data/3D/Angle3D.hpp"
+#include "DataStruct/Angle3D.hpp"
 
 #include "OpenGL/openGL.h"
 

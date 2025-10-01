@@ -1,4 +1,31 @@
 
+organize
+	Instance stuff
+		Simple3D is currently in Graphics/PH
+		but does it even count as Graphics ?
+		yes, it is used for Graphics,
+		but if I make a slightly differnet
+		for Physics, is it still for graphics or its own Category ?
+	Data Attribute Uniform Multiform
+		these are all related to Data types
+		Attribute are not in the Folder structure as Data
+		also Uniform and Multiform shadre files
+		should probably split those
+		so how should Data be organized ?
+		they all have different names so putting them all in one Folder should be fine
+		should the Uniforms start with Uni or just be put in a NameSpace called Uniform
+		same with Multiform and Attribute
+		same with Data but call the namespace DataStruct
+	should UniformBase be in Shader ?
+	and AttributeBase in Buffer ?
+	it would mean that UniformBase would not be in the middle of implemenentations
+	put the Base stuff in a seperate NameSpace ?
+	so Uniform::Base:: or just a global Base::
+
+
+
+
+
 optimize compilation
 	foreward declaration
 		<iosfwd> in header instead of <iostream>

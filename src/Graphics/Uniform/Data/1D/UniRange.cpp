@@ -1,5 +1,5 @@
 #include "Graphics/Uniform/Data/1D/UniRange.hpp"
-#include "Data/1D/Range.hpp"
+#include "DataStruct/Range.hpp"
 
 #include "OpenGL/openGL.h"
 

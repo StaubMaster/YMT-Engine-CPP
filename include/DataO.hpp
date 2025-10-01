@@ -1,8 +1,9 @@
+//	put this into the Base folder ?
 
 #ifndef  DATA_O_HPP
 # define DATA_O_HPP
 
-# include "DataFore.hpp"
+# include "DataDec.hpp"
 
 # include <iosfwd>
 

@@ -2,7 +2,9 @@
 #ifndef  ATTRIBUTE_LOCATION_HPP
 # define ATTRIBUTE_LOCATION_HPP
 
-class AttributeLocation
+namespace Attribute
+{
+class Location
 {
 	private:
 		//	set from Child
@@ -16,7 +18,7 @@ class AttributeLocation
 		const unsigned int Index;
 
 	public:
-		AttributeLocation(
+		Location(
 			unsigned int type,
 			unsigned int size,
 			unsigned int count,
@@ -26,6 +28,7 @@ class AttributeLocation
 
 	public:
 		void Bind(const unsigned char * & offset) const;
+};
 };
 
 #endif

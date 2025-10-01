@@ -1,7 +1,7 @@
 #ifndef WINDOW_HPP
 # define WINDOW_HPP
 
-# include "Data/Color.hpp"
+# include "DataStruct/Color.hpp"
 
 struct GLFWwindow;
 

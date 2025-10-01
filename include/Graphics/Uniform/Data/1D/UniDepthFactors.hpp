@@ -2,11 +2,12 @@
 #ifndef  UNI_DEPTH_FACTORS_3D_HPP
 # define UNI_DEPTH_FACTORS_3D_HPP
 
-# include "Graphics/Shader/BaseShader.hpp"
 # include "Graphics/Uniform/Base/GenericUniformBase.hpp"
 # include "Graphics/Uniform/Base/GenericMultiformBase.hpp"
 
-# include "Data/DataFore.hpp"
+# include "DataDec.hpp"
+
+class BaseShader;
 
 class UniDepthFactors : public GenericUniformBase<DepthFactors>
 {
@@ -20,7 +21,7 @@ class UniDepthFactors : public GenericUniformBase<DepthFactors>
 		void PutData(DepthFactors df) override;
 };
 
-# include "Data/1D/DepthFactors.hpp"
+# include "DataStruct/DepthFactors.hpp"
 
 class MultiDepthFactors : public GenericMultiformBase<UniDepthFactors, DepthFactors>
 {

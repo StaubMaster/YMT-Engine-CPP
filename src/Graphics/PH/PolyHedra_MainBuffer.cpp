@@ -9,7 +9,7 @@ PolyHedra_MainBuffer::PolyHedra_MainBuffer(
 	unsigned int indexNormal,
 	unsigned int indexTexture
 ) :
-	BaseBuffer(1, (AttributeBase * []) {
+	BaseBuffer(1, (Attribute::Base * []) {
 		new PolyHedra_MainAttrib(0, sizeof(PolyHedra_MainData), indexPosition, indexNormal, indexTexture)
 	}) { }
 PolyHedra_MainBuffer::~PolyHedra_MainBuffer() {}

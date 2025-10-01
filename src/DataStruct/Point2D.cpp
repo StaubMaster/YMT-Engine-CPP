@@ -1,4 +1,4 @@
-#include "Data/2D/Point2D.hpp"
+#include "DataStruct/Point2D.hpp"
 
 #include <math.h>
 

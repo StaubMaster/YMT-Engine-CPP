@@ -30,7 +30,7 @@ OBJ_MainBuffer::OBJ_MainBuffer(
 	unsigned int indexTexture,
 	unsigned int indexNormal
 ) :
-	BaseBuffer(1, (AttributeBase * []) {
+	BaseBuffer(1, (Attribute::Base * []) {
 		new OBJ_MainAttrib(0, sizeof(OBJ_MainData), indexPosition, indexTexture, indexNormal)
 	}) { }
 OBJ_MainBuffer::~OBJ_MainBuffer() {}

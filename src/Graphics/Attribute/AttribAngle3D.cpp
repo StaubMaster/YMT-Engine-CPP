@@ -3,7 +3,7 @@
 
 
 
-AttribAngle3D::AttribAngle3D(
+Attribute::Angle3D::Angle3D(
 	unsigned int divisor,
 	unsigned int stride,
 	unsigned int indexSin,
@@ -15,7 +15,7 @@ AttribAngle3D::AttribAngle3D(
 
 
 
-void AttribAngle3D::Bind(const unsigned char * & offset) const
+void Attribute::Angle3D::Bind(const unsigned char * & offset) const
 {
 	Sin.Bind(offset);
 	Cos.Bind(offset);

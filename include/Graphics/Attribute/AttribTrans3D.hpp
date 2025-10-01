@@ -8,14 +8,16 @@
 # include "AttribPoint3D.hpp"
 # include "AttribAngle3D.hpp"
 
-class AttribTrans3D : public AttributeBase
+namespace Attribute
+{
+class Trans3D : public Attribute::Base
 {
 	private:
-		AttribPoint3D Pos;
-		AttribAngle3D Rot;
+		Attribute::Point3D Pos;
+		Attribute::Angle3D Rot;
 
 	public:
-		AttribTrans3D(
+		Trans3D(
 			unsigned int divisor,
 			unsigned int stride,
 			unsigned int indexPos,
@@ -25,6 +27,7 @@ class AttribTrans3D : public AttributeBase
 
 	public:
 		void Bind(const unsigned char * & offset) const override;
+};
 };
 
 #endif

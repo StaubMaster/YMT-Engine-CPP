@@ -1,5 +1,5 @@
 #include "Graphics/Uniform/Data/1D/UniDepthFactors.hpp"
-#include "Data/1D/DepthFactors.hpp"
+#include "DataStruct/DepthFactors.hpp"
 
 #include "OpenGL/openGL.h"
 

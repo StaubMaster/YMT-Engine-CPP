@@ -2,11 +2,10 @@
 #ifndef  UNI_POINT_2D_HPP
 # define UNI_POINT_2D_HPP
 
-//# include "Graphics/Shader/BaseShader.hpp"
 # include "Graphics/Uniform/Base/GenericUniformBase.hpp"
 # include "Graphics/Uniform/Base/GenericMultiformBase.hpp"
 
-# include "Data/DataFore.hpp"
+# include "DataDec.hpp"
 
 class BaseShader;
 

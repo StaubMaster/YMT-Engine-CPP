@@ -2,13 +2,12 @@
 #ifndef  GENERIC_MULTIFORM_BASE_HPP
 # define GENERIC_MULTIFORM_BASE_HPP
 
-# include <iostream>
-# include "OpenGL/openGL.h"
 # include "Graphics/Shader/BaseShader.hpp"
-# include "Graphics/Uniform/Base/UniformBase.hpp"
 # include "Graphics/Uniform/Base/MultiformBase.hpp"
 
-class BaseShader;
+# include <typeinfo>
+
+//class BaseShader;
 class UniformBase;
 
 template <typename UniformType, typename DataType>
@@ -65,7 +64,7 @@ class GenericMultiformBase : public MultiformBase
 						}
 						else
 						{
-							std::cout << "GenericUniformBase: Uniform Type does not match\n";
+							//std::cout << "GenericUniformBase: Uniform Type does not match\n";
 						}
 					}
 				}

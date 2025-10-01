@@ -2,11 +2,12 @@
 #ifndef  UNI_RANGE_HPP
 # define UNI_RANGE_HPP
 
-# include "Graphics/Shader/BaseShader.hpp"
 # include "Graphics/Uniform/Base/GenericUniformBase.hpp"
 # include "Graphics/Uniform/Base/GenericMultiformBase.hpp"
 
-# include "Data/DataFore.hpp"
+# include "DataDec.hpp"
+
+class BaseShader;
 
 class UniRange : public GenericUniformBase<Range>
 {
@@ -22,7 +23,7 @@ class UniRange : public GenericUniformBase<Range>
 		void PutData(Range val) override;
 };
 
-# include "Data/1D/Range.hpp"
+# include "DataStruct/Range.hpp"
 
 class MultiRange : public GenericMultiformBase<UniRange, Range>
 {

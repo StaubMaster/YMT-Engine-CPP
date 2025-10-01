@@ -5,13 +5,15 @@
 # include "AttributeLocation.hpp"
 # include "AttributeBase.hpp"
 
-class AttribPoint2D : public AttributeBase
+namespace Attribute
+{
+class Point2D : public Attribute::Base
 {
 	private:
-		AttributeLocation Pos;
+		Attribute::Location Pos;
 
 	public:
-		AttribPoint2D(
+		Point2D(
 			unsigned int divisor,
 			unsigned int stride,
 			unsigned int indexPos
@@ -19,6 +21,7 @@ class AttribPoint2D : public AttributeBase
 
 	public:
 		void Bind(const unsigned char * & offset) const override;
+};
 };
 
 #endif

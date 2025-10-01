@@ -6,13 +6,13 @@
 
 
 
-BaseBuffer::BaseBuffer(unsigned int buffer_count, AttributeBase * attributes []) :
+BaseBuffer::BaseBuffer(unsigned int buffer_count, Attribute::Base * attributes []) :
 	BufferCount(buffer_count)
 {
 	BufferIDs = new unsigned int[BufferCount];
 	glGenBuffers(BufferCount, BufferIDs);
 
-	Attributes = new AttributeBase * [BufferCount];
+	Attributes = new Attribute::Base * [BufferCount];
 	for (unsigned int i = 0; i < BufferCount; i++) { Attributes[i] = attributes[i]; }
 
 	std::cout << "++++ BaseBuffer\n";

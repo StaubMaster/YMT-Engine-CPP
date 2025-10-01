@@ -4,20 +4,23 @@
 
 //# include "Graphics/Attribute/AttributeBase.hpp"
 
-class AttributeBase;
+namespace Attribute
+{
+	class Base;
+};
 
 class BaseBuffer
 {
 	private:
 		const unsigned int BufferCount;
-		AttributeBase ** Attributes;
+		Attribute::Base ** Attributes;
 		unsigned int * BufferIDs;
 	public:
 		unsigned int Count;
 
 	protected:
 	public:
-		BaseBuffer(unsigned int buffer_count, AttributeBase * attributes []);
+		BaseBuffer(unsigned int buffer_count, Attribute::Base * attributes []);
 		virtual ~BaseBuffer();
 
 	public:

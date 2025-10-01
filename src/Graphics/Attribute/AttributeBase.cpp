@@ -3,5 +3,5 @@
 
 
 
-AttributeBase::AttributeBase() { }
-AttributeBase::~AttributeBase() { }
+Attribute::Base::Base() { }
+Attribute::Base::~Base() { }

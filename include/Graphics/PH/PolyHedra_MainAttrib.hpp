@@ -8,12 +8,12 @@
 # include "Graphics/Attribute/AttribPoint3D.hpp"
 # include "Graphics/Attribute/AttribPoint2D.hpp"
 
-class PolyHedra_MainAttrib : public AttributeBase
+class PolyHedra_MainAttrib : public Attribute::Base
 {
 	private:
-		AttribPoint3D	Position;
-		AttribPoint3D	Normal;
-		AttribPoint2D	Texture;
+		Attribute::Point3D	Position;
+		Attribute::Point3D	Normal;
+		Attribute::Point2D	Texture;
 
 	public:
 		PolyHedra_MainAttrib(

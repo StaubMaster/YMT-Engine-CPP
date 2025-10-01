@@ -1,4 +1,4 @@
-#include "Data/1D/LInter.hpp"
+#include "DataStruct/LInter.hpp"
 
 
 
