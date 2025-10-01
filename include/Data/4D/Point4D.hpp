@@ -2,9 +2,7 @@
 #ifndef  POINT_4D_HPP
 # define POINT_4D_HPP
 
-# include <fstream>
-
-class Point4D
+struct Point4D
 {
 	public:
 		float X;
@@ -12,7 +10,5 @@ class Point4D
 		float Z;
 		float W;
 };
-
-std::ostream & operator <<(std::ostream & o, const Point4D & idx);
 
 #endif

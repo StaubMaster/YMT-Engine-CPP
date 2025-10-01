@@ -6,7 +6,7 @@
 # include "Graphics/Uniform/Base/GenericUniformBase.hpp"
 # include "Graphics/Uniform/Base/GenericMultiformBase.hpp"
 
-# include "Abstract.hpp"
+# include "Data/DataFore.hpp"
 
 class UniRange : public GenericUniformBase<Range>
 {
@@ -21,6 +21,8 @@ class UniRange : public GenericUniformBase<Range>
 	public:
 		void PutData(Range val) override;
 };
+
+# include "Data/1D/Range.hpp"
 
 class MultiRange : public GenericMultiformBase<UniRange, Range>
 {

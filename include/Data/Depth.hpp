@@ -6,7 +6,7 @@
 # include "1D/Range.hpp"
 # include "Color.hpp"
 
-class Depth
+struct Depth
 {
 	public:
 		DepthFactors	Factors;

@@ -1,7 +1,9 @@
 #include "Graphics/Uniform/Data/2D/UniPoint2D.hpp"
+#include "Graphics/Shader/BaseShader.hpp"
+
+#include "Data/2D/Point2D.hpp"
 
 #include "OpenGL/openGL.h"
-#include <iostream>
 
 
 

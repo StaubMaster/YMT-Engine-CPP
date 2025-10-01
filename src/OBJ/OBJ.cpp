@@ -7,6 +7,7 @@
 #include "FileManager/Parsing/LineCommand.hpp"
 
 #include <string>
+#include <math.h>
 
 
 

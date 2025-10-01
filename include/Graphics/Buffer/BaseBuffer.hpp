@@ -2,7 +2,9 @@
 #ifndef  BASE_BUFFER
 # define BASE_BUFFER
 
-# include "Graphics/Attribute/AttributeBase.hpp"
+//# include "Graphics/Attribute/AttributeBase.hpp"
+
+class AttributeBase;
 
 class BaseBuffer
 {

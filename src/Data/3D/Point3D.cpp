@@ -1,5 +1,7 @@
 #include "Data/3D/Point3D.hpp"
 
+#include <math.h>
+
 
 
 Point3D::Point3D()
@@ -183,8 +185,8 @@ Point3D Point3D::operator ^(const Point3D & other) const
 
 
 
-std::ostream & operator <<(std::ostream & o, const Point3D & p)
+/*std::ostream & operator <<(std::ostream & o, const Point3D & p)
 {
 	o << "( " << p.X << " | " << p.Y << " | " << p.Z << " )";
 	return o;
-}
+}*/

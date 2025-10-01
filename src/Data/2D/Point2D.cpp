@@ -1,5 +1,7 @@
 #include "Data/2D/Point2D.hpp"
 
+#include <math.h>
+
 
 
 Point2D::Point2D()

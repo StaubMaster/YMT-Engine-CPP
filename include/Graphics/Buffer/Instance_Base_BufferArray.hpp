@@ -3,10 +3,9 @@
 # define INSTANCE_BASE_BUFFER_ARRAY
 
 # include "Graphics/Buffer/BaseBufferArray.hpp"
-# include "Graphics/Attribute/AttributeBase.hpp"
 
 # include "OpenGL/openGL.h"
-# include <iostream>
+//# include <iostream>
 
 template<
 	typename MainDataType,

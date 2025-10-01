@@ -1,10 +1,10 @@
 
 #ifndef ANGLE_3D_HPP
 # define ANGLE_3D_HPP
-# include <math.h>
-# include "Point3D.hpp"
 
-class Angle3D
+struct Point3D;
+
+struct Angle3D
 {
 	public:
 		float	sin_x;
@@ -40,7 +40,5 @@ class Angle3D
 	public:
 		static void	rotate(float & pls, float & mns, float cos, float sin);
 };
-
-std::ostream & operator <<(std::ostream & o, const Angle3D & idx);
 
 #endif

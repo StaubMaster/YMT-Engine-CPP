@@ -1,7 +1,5 @@
 #include "Graphics/PH/PolyHedra_MainAttrib.hpp"
 
-#include "Abstract.hpp"
-
 #include "OpenGL/openGL.h"
 
 

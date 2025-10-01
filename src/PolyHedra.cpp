@@ -1,4 +1,8 @@
 #include "PolyHedra.hpp"
+#include "PolyHedraData.hpp"
+
+#include "Data/3D/Angle3D.hpp"
+
 #define TAU 6.28318530717958647692528676655900576839433879875021164194988918461563281257241799725606965068423413
 
 
@@ -16,15 +20,6 @@ YMT::PolyHedra::~PolyHedra()
 
 
 
-
-YMT::PolyHedra::Corner::Corner() { }
-YMT::PolyHedra::Corner::Corner(Point3D pos) : Position(pos) { }
-
-YMT::PolyHedra::FaceCorner::FaceCorner() { }
-YMT::PolyHedra::FaceCorner::FaceCorner(unsigned int udx, float tex_x, float tex_y) : Udx(udx), Tex(tex_x, tex_y) { }
-
-YMT::PolyHedra::Face::Face() { }
-YMT::PolyHedra::Face::Face(FaceCorner c0, FaceCorner c1, FaceCorner c2) : Corner0(c0), Corner1(c1), Corner2(c2) { }
 
 void YMT::PolyHedra::Done()
 {

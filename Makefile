@@ -11,7 +11,7 @@ FILES_SRC = \
 \
 	Data/3D/Point3D.cpp \
 	Data/3D/Angle3D.cpp \
-	Data/3D/Transformation3D.cpp \
+	Data/3D/Trans3D.cpp \
 	Data/3D/Undex3D.cpp \
 	Data/2D/Point2D.cpp \
 	Data/2D/SizeRatio2D.cpp \
@@ -21,10 +21,11 @@ FILES_SRC = \
 	Data/4D/Point4D.cpp \
 	Data/Color.cpp \
 	Data/Depth.cpp \
+	Data/DataO.cpp \
 \
-	Graphics/ShaderCode.cpp \
+	Graphics/Shader/ShaderCode.cpp \
 	Graphics/Shader/BaseShader.cpp \
-	Graphics/Buffer/BufferArray.cpp \
+	Graphics/Buffer/BaseBufferArray.cpp \
 	Graphics/Buffer/BaseBuffer.cpp \
 \
 	Graphics/Attribute/AttributeLocation.cpp \
@@ -52,13 +53,13 @@ FILES_SRC = \
 	Graphics/PH/PolyHedra_MainData.cpp \
 	Graphics/PH/PolyHedra_MainAttrib.cpp \
 	Graphics/PH/PolyHedra_MainBuffer.cpp \
-\
-	Graphics/PH/PH_3D/Simple3D_InstData.cpp \
-	Graphics/PH/PH_3D/Simple3D_InstAttrib.cpp \
-	Graphics/PH/PH_3D/Simple3D_InstBuffer.cpp \
 	Graphics/PH/PH_3D/PolyHedra_3D_BufferArray.cpp \
 	Graphics/PH/PH_3D/PolyHedra_3D_Instances.cpp \
 	Graphics/PH/PH_3D/PolyHedra_3D_Shader.cpp \
+\
+	Graphics/Simple3D/Simple3D_InstData.cpp \
+	Graphics/Simple3D/Simple3D_InstAttrib.cpp \
+	Graphics/Simple3D/Simple3D_InstBuffer.cpp \
 \
 	OBJ/OBJ.cpp \
 	OBJ/OBJ_Main.cpp \
@@ -68,6 +69,7 @@ FILES_SRC = \
 \
 	TextureArray.cpp \
 	PolyHedra.cpp \
+	PolyHedraData.cpp \
 	TimeMeasure.cpp \
 	Window.cpp
 

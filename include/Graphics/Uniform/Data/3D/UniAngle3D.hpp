@@ -2,10 +2,11 @@
 #ifndef  UNI_Angle_3D_HPP
 # define UNI_Angle_3D_HPP
 
-# include "Graphics/Shader/BaseShader.hpp"
+//# include "Graphics/Shader/BaseShader.hpp"
 # include "Graphics/Uniform/Base/GenericUniformBase.hpp"
+# include "Data/DataFore.hpp"
 
-# include "Abstract.hpp"
+class BaseShader;
 
 class UniAngle3D : public GenericUniformBase<Angle3D>
 {

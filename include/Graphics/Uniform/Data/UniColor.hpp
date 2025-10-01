@@ -6,7 +6,7 @@
 # include "Graphics/Uniform/Base/GenericUniformBase.hpp"
 # include "Graphics/Uniform/Base/GenericMultiformBase.hpp"
 
-# include "Abstract.hpp"
+# include "Data/DataFore.hpp"
 
 class UniColor : public GenericUniformBase<Color>
 {
@@ -19,6 +19,8 @@ class UniColor : public GenericUniformBase<Color>
 	public:
 		void PutData(Color val) override;
 };
+
+# include "Data/Color.hpp"
 
 class MultiColor : public GenericMultiformBase<UniColor, Color>
 {

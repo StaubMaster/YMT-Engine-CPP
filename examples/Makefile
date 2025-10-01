@@ -24,7 +24,6 @@ ARC = \
 WIN_ARGS = \
 	E:/Utility/glfw-3.4.bin.WIN64/lib-mingw-w64/libglfw3.a \
 	E:/Utility/msys32/ucrt64/lib/libOpenCL.dll.a \
-	libOpenCL.dll.a \
 	-lgdi32
 
 MAC_ARGS = \
@@ -45,26 +44,27 @@ MAC_ARGS = \
 
 all:
 	$(foreach arc, $(ARC), \
-		@echo '[' 'all' $(arc) ']' ; \
-		$(MAKE) -C $(dir $(arc)) all ; \
+		echo '[' 'all' $(arc) ']' ; \
+		$(MAKE) -C $(dir $(arc)) all || exit 1 ; \
 	)
 	@echo '[ all Done ]'
 	@$(MAKE) $(EXES)
 
 clean:
 	$(foreach arc, $(ARC), \
-		@echo '[' 'clean' $(arc) ']' ; \
-		$(MAKE) -C $(dir $(arc)) clean ; \
+		echo '[' 'clean' $(arc) ']' ; \
+		$(MAKE) -C $(dir $(arc)) clean || exit 1 ; \
 	)
 	@echo '[ clean Done ]'
 
 fclean:
 	$(foreach arc, $(ARC), \
-		@echo '[' 'fclean' $(arc) ']' ; \
-		$(MAKE) -C $(dir $(arc)) fclean ; \
+		echo '[' 'fclean' $(arc) ']' ; \
+		$(MAKE) -C $(dir $(arc)) fclean || exit 1 ; \
 	)
 	@echo '[ fclean Done ]'
 	@$(MAKE) clean
+	rm -f $(EXES)
 
 re:
 	@$(MAKE) fclean
@@ -76,7 +76,7 @@ re:
 
 %.exe : $(MAINS_DIR)%.cpp $(ARC)
 	$(COMPILER) $(FLAGS) -I ../include -I ../other -o $@ $^ $(WIN_ARGS)
-	$(COMPILER) $(FLAGS) -I ../include -I ../other -o $@ $^ $(MAC_ARGS)
+#	$(COMPILER) $(FLAGS) -I ../include -I ../other -o $@ $^ $(MAC_ARGS)
 
 $(ARC) :
 	@$(MAKE) -C $(ARC_DIR) all

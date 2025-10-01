@@ -1,12 +1,13 @@
 #ifndef WINDOW_HPP
 # define WINDOW_HPP
 
-# include "OpenGL/openGL.h"
-
-# include "Data/3D/Point3D.hpp"
-# include "Data/3D/Angle3D.hpp"
-# include "Data/2D/Point2D.hpp"
 # include "Data/Color.hpp"
+
+struct GLFWwindow;
+
+class Point3D;
+class Angle3D;
+class Point2D;
 
 class Window
 {

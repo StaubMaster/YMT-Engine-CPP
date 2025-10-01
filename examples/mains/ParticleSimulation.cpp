@@ -1,7 +1,6 @@
 #include <iostream>
 #include "OpenGL/openGL.h"
 
-#include "Abstract.hpp"
 #include "PolyHedra.hpp"
 #include "Window.hpp"
 #include "TextureArray.hpp"
@@ -35,7 +34,7 @@ TextureArray * tex_arr;
 PolyHedra_3D_BufferArray * PH_Buffer;
 PolyHedra_3D_Shader * PH_Shader;
 
-Transformation3D view_trans;
+Trans3D view_trans;
 
 
 
@@ -58,16 +57,16 @@ void CL_PrintError(cl_int err, bool printSuccess = false)
 
 cl::Program CL_Program;
 
-cl::SVMAllocator<Transformation3D, cl::SVMTraitFine<>> SVM_Alloc;
-unsigned int BufferSize = EntityCount * sizeof(Transformation3D);
-Transformation3D * VMP_O;
+cl::SVMAllocator<Trans3D, cl::SVMTraitFine<>> SVM_Alloc;
+unsigned int BufferSize = EntityCount * sizeof(Trans3D);
+Trans3D * VMP_O;
 
 cl::KernelFunctor<
-	Transformation3D *
+	Trans3D *
 > * Kernel_TransInit;
 
 cl::KernelFunctor<
-	Transformation3D *
+	Trans3D *
 > * Kernel_TransSpinCenter;
 
 void CL_Run_Init()
@@ -121,11 +120,11 @@ void CL_Init()
 	try
 	{
 		Kernel_TransInit = new cl::KernelFunctor<
-			Transformation3D *
+			Trans3D *
 		>(CL_Program, "TransInit", &err);
 		CL_PrintError(err);
 		Kernel_TransSpinCenter = new cl::KernelFunctor<
-			Transformation3D *
+			Trans3D *
 		>(CL_Program, "TransSpinCenter", &err);
 		CL_PrintError(err);
 	}
@@ -258,7 +257,7 @@ int main()
 	}
 
 	{
-		view_trans = Transformation3D(
+		view_trans = Trans3D(
 			Point3D(0, 0, 0),
 			Angle3D(0, 0, 0)
 		);

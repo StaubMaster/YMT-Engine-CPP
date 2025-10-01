@@ -2,12 +2,14 @@
 #ifndef  UNI_SIZE_RATIO_2D_HPP
 # define UNI_SIZE_RATIO_2D_HPP
 
-# include "Graphics/Shader/BaseShader.hpp"
+//# include "Graphics/Shader/BaseShader.hpp"
 # include "Graphics/Uniform/Base/GenericUniformBase.hpp"
 # include "Graphics/Uniform/Base/GenericMultiformBase.hpp"
 
-# include "Abstract.hpp"
+# include "Data/DataFore.hpp"
 # include "Graphics/Uniform/Data/2D/UniPoint2D.hpp"
+
+class BaseShader;
 
 class UniSizeRatio2D : public GenericUniformBase<SizeRatio2D>
 {
@@ -21,6 +23,8 @@ class UniSizeRatio2D : public GenericUniformBase<SizeRatio2D>
 	public:
 		void PutData(SizeRatio2D sr) override;
 };
+
+# include "Data/2D/SizeRatio2D.hpp"
 
 class MultiSizeRatio2D : public GenericMultiformBase<UniSizeRatio2D, SizeRatio2D>
 {

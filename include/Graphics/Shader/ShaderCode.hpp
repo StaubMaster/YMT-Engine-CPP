@@ -2,11 +2,15 @@
 #ifndef SHADER_CODE
 # define SHADER_CODE
 
-# include <exception>
+//# include <exception>
+//# include <string>
+//# include <fstream>
+//# include "FileManager/FileContext.hpp"
+//# include "OpenGL/openGL.h"
 # include <string>
-# include <fstream>
-# include "OpenGL/openGL.h"
-# include "FileManager/FileContext.hpp"
+
+typedef unsigned int GLenum;
+class FileContext;
 
 class ShaderCode
 {

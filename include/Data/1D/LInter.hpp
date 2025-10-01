@@ -2,7 +2,7 @@
 #ifndef  L_INTER_HPP
 # define L_INTER_HPP
 
-class LInter
+struct LInter
 {
 	private:
 		float _T0;

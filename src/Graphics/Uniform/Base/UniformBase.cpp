@@ -1,5 +1,8 @@
-
 #include "Graphics/Uniform/Base/UniformBase.hpp"
+#include "Graphics/Uniform/Base/MultiformBase.hpp"
+#include "Graphics/Shader/BaseShader.hpp"
+
+
 
 UniformBase::UniformBase(std::string name, BaseShader & shader) :
 	Shader(shader)

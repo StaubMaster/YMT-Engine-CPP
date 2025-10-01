@@ -6,7 +6,7 @@
 # include "Graphics/Uniform/Base/GenericUniformBase.hpp"
 # include "Graphics/Uniform/Base/GenericMultiformBase.hpp"
 
-# include "Abstract.hpp"
+# include "Data/DataFore.hpp"
 
 class UniDepthFactors : public GenericUniformBase<DepthFactors>
 {
@@ -19,6 +19,8 @@ class UniDepthFactors : public GenericUniformBase<DepthFactors>
 	public:
 		void PutData(DepthFactors df) override;
 };
+
+# include "Data/1D/DepthFactors.hpp"
 
 class MultiDepthFactors : public GenericMultiformBase<UniDepthFactors, DepthFactors>
 {

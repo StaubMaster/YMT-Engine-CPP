@@ -1,4 +1,7 @@
 #include "Graphics/Uniform/Data/3D/UniPoint3D.hpp"
+#include "Graphics/Shader/BaseShader.hpp"
+
+#include "Data/3D/Point3D.hpp"
 
 #include "OpenGL/openGL.h"
 

@@ -6,7 +6,7 @@
 # include "Graphics/Uniform/Base/GenericUniformBase.hpp"
 # include "Graphics/Uniform/Base/GenericMultiformBase.hpp"
 
-# include "Abstract.hpp"
+# include "Data/DataFore.hpp"
 # include "Graphics/Uniform/Data/1D/UniDepthFactors.hpp"
 # include "Graphics/Uniform/Data/1D/UniRange.hpp"
 # include "Graphics/Uniform/Data/UniColor.hpp"
@@ -24,6 +24,8 @@ class UniDepth : public GenericUniformBase<Depth>
 	public:
 		void PutData(Depth val) override;
 };
+
+# include "Data/Depth.hpp"
 
 class MultiDepth : public GenericMultiformBase<UniDepth, Depth>
 {

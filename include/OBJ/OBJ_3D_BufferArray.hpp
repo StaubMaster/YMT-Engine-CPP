@@ -6,8 +6,8 @@
 
 # include "OBJ_Main.hpp"
 
-# include "Graphics/PH/PH_3D/Simple3D_InstData.hpp"
-# include "Graphics/PH/PH_3D/Simple3D_InstBuffer.hpp"
+# include "Graphics/Simple3D//Simple3D_InstData.hpp"
+# include "Graphics/Simple3D//Simple3D_InstBuffer.hpp"
 
 
 

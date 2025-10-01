@@ -168,8 +168,8 @@ bool Undex3D::loop_exclusive(Undex3D & idx, unsigned int min, unsigned int max)
 
 
 
-std::ostream & operator <<(std::ostream & o, const Undex3D & u)
+/*std::ostream & operator <<(std::ostream & o, const Undex3D & u)
 {
 	o << "[" << u.X << ":" << u.Y << ":" << u.Z << "]";
 	return o;
-}
+}*/

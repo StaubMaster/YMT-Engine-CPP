@@ -4,9 +4,9 @@
 
 # include "Point3D.hpp"
 
-class Ray3D
+struct Ray3D
 {
-	private:
+	public:
 		Point3D Pos;
 		Point3D Dir;
 
@@ -23,7 +23,7 @@ class Ray3D
 				const float Inter;
 				const int Index;
 			public:
-				Interval(const Ray3D & ray, float inter = NAN, int index = -1);
+				Interval(const Ray3D & ray, float inter, int index);
 			public:
 				Point3D	ToPoint() const;
 		};

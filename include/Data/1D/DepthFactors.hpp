@@ -1,8 +1,8 @@
 
-#ifndef DEPTH_FACTORS_HPP
+#ifndef  DEPTH_FACTORS_HPP
 # define DEPTH_FACTORS_HPP
 
-class DepthFactors
+struct DepthFactors
 {
 	private:
 		float Near;

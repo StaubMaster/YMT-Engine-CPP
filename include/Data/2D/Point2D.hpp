@@ -1,9 +1,7 @@
-#ifndef POINT_2D_HPP
+#ifndef  POINT_2D_HPP
 # define POINT_2D_HPP
 
-#include <math.h>
-
-class Point2D
+struct Point2D
 {
 	public:
 		float	X;

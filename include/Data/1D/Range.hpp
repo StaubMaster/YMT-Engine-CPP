@@ -2,7 +2,7 @@
 #ifndef  RANGE_HPP
 # define RANGE_HPP
 
-class Range
+struct Range
 {
 	public:
 		float Min;

@@ -2,13 +2,14 @@
 #ifndef  GENERIC_UNIFORM_BASE_HPP
 # define GENERIC_UNIFORM_BASE_HPP
 
-# include <iostream>
-# include "OpenGL/openGL.h"
-# include "Graphics/Shader/BaseShader.hpp"
-# include "Graphics/Uniform/Base/MultiformBase.hpp"
+//# include "Graphics/Shader/BaseShader.hpp"
+//# include "Graphics/Uniform/Base/MultiformBase.hpp"
 # include "Graphics/Uniform/Base/UniformBase.hpp"
+//# include "OpenGL/openGL.h"
+//# include <iostream>
 
 class BaseShader;
+//class UniformBase;
 class MultiformBase;
 
 template <typename DataType>

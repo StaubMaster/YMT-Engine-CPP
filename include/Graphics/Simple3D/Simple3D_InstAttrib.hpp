@@ -2,7 +2,6 @@
 #ifndef  SIMPLE_3D_INST_ATTRIB_HPP
 # define SIMPLE_3D_INST_ATTRIB_HPP
 
-# include "Graphics/Attribute/AttributeLocation.hpp"
 # include "Graphics/Attribute/AttributeBase.hpp"
 
 # include "Graphics/Attribute/AttribTrans3D.hpp"

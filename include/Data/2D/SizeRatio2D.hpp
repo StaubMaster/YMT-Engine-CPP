@@ -2,7 +2,7 @@
 #ifndef  SIZE_RATIO_2D_HPP
 # define SIZE_RATIO_2D_HPP
 
-class SizeRatio2D
+struct SizeRatio2D
 {
 	public:
 		float W;

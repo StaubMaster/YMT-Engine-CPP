@@ -1,8 +1,6 @@
 #include <iostream>
 #include "OpenGL/openGL.h"
 
-#include "Abstract.hpp"
-
 #include "Graphics/PH/PH_3D/PolyHedra_3D_Instances.hpp"
 #include "Graphics/PH/PH_3D/PolyHedra_3D_Shader.hpp"
 #include "Graphics/Uniform/Uniforms.hpp"
@@ -35,7 +33,7 @@ MultiSizeRatio2D * Multi_ViewPortSizeRatio;
 MultiTrans3D * Multi_View;
 MultiDepth * Multi_Depth;
 
-Transformation3D view_trans;
+Trans3D view_trans;
 
 
 
@@ -199,7 +197,7 @@ int main()
 		return -1;
 	}
 
-	view_trans = Transformation3D(
+	view_trans = Trans3D(
 		Point3D(0, 0, 0),
 		Angle3D(0, 0, 0)
 	);

@@ -7,7 +7,6 @@
 #include "OBJ/OBJ_3D_Shader.hpp"
 
 #include "Graphics/Uniform/Uniforms.hpp"
-#include "Abstract.hpp"
 
 #include "TextureArray.hpp"
 #include "PolyHedra.hpp"
@@ -36,7 +35,7 @@ MultiSizeRatio2D * Multi_ViewPortSizeRatio;
 MultiTrans3D * Multi_View;
 MultiDepth * Multi_Depth;
 
-Transformation3D view_trans;
+Trans3D view_trans;
 
 
 
@@ -100,7 +99,7 @@ void Init()
 	{
 		Simple3D_InstData data []
 		{
-			(Simple3D_InstData)Transformation3D(Point3D(), Angle3D()),
+			(Simple3D_InstData)Trans3D(Point3D(), Angle3D()),
 		};
 		int count = 1;
 		OBJ_BufferArray -> BindInst(data, count);
@@ -170,7 +169,7 @@ int main(int argc, char * argv [])
 		return -1;
 	}
 
-	view_trans = Transformation3D(
+	view_trans = Trans3D(
 		Point3D(0, 0, 0),
 		Angle3D(0, 0, 0)
 	);

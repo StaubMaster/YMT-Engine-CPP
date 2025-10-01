@@ -1,7 +1,5 @@
 #include "OBJ/OBJ_Main.hpp"
 
-#include "Abstract.hpp"
-
 #include "OpenGL/openGL.h"
 
 

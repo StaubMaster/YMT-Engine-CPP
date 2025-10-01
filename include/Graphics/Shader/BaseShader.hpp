@@ -2,12 +2,14 @@
 #ifndef BASE_SHADER
 # define BASE_SHADER
 
-# include <iostream>
+//# include <iostream>
 # include <vector>
-# include "OpenGL/openGL.h"
-# include "Graphics/ShaderCode.hpp"
-# include "Graphics/Uniform/Base/UniformBase.hpp"
+//# include "OpenGL/openGL.h"
+//# include "Graphics/ShaderCode.hpp"
+//# include "Graphics/Uniform/Base/UniformBase.hpp"
+# include <string>
 
+class ShaderCode;
 class UniformBase;
 
 class BaseShader

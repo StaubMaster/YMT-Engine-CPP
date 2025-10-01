@@ -1,4 +1,6 @@
 #include "Data/3D/Ray3D.hpp"
+#include "Data/3D/Point3D.hpp"
+
 #include <math.h>
 
 

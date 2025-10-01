@@ -2,10 +2,7 @@
 #ifndef POINT_3D_HPP
 # define POINT_3D_HPP
 
-# include <math.h>
-# include <iostream>
-
-class Point3D
+struct Point3D
 {
 	public:
 		float	X;
@@ -45,7 +42,5 @@ class Point3D
 		Point3D static cross(const Point3D & p0, const Point3D & p1);
 		Point3D operator ^(const Point3D & other) const;
 };
-
-std::ostream & operator <<(std::ostream & o, const Point3D & idx);
 
 #endif

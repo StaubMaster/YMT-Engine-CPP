@@ -1,7 +1,4 @@
-#include "Graphics/PH/PH_3D/Simple3D_InstAttrib.hpp"
-
-#include "OpenGL/openGL.h"
-#include "Abstract.hpp"
+#include "Graphics/Simple3D/Simple3D_InstAttrib.hpp"
 
 
 

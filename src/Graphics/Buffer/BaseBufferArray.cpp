@@ -1,7 +1,7 @@
 #include "Graphics/Buffer/BaseBufferArray.hpp"
-#include "OpenGL/openGL.h"
-#include <iostream>
 
+#include "OpenGL/openGL.h"
+//#include <iostream>
 
 
 BaseBufferArray::BaseBufferArray()
