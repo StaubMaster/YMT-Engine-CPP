@@ -4,9 +4,9 @@
 #include "Graphics/PH/PH_3D/PolyHedra_3D_Instances.hpp"
 #include "Graphics/PH/PH_3D/PolyHedra_3D_Shader.hpp"
 
-#include "Graphics/Multiform/Data/UniSizeRatio2D.hpp"
-#include "Graphics/Multiform/Data/UniTrans3D.hpp"
-#include "Graphics/Multiform/Data/UniDepth.hpp"
+#include "Graphics/Multiform/Data/SizeRatio2D.hpp"
+#include "Graphics/Multiform/Data/Trans3D.hpp"
+#include "Graphics/Multiform/Data/Depth.hpp"
 
 #include "TextureArray.hpp"
 #include "PolyHedra.hpp"
@@ -32,9 +32,9 @@ PolyHedra_3D_Instances * PH_Instances;
 EntryContainerDynamic<Simple3D_InstData>::Entry ** Entrys;
 PolyHedra_3D_Shader * PH_Shader;
 
-Multiform::MultiSizeRatio2D * Multi_ViewPortSizeRatio;
-Multiform::MultiTrans3D * Multi_View;
-Multiform::MultiDepth * Multi_Depth;
+Multiform::SizeRatio2D * Multi_ViewPortSizeRatio;
+Multiform::Trans3D * Multi_View;
+Multiform::Depth * Multi_Depth;
 
 Trans3D view_trans;
 
@@ -50,9 +50,9 @@ void InitShaders()
 	Depth.Range = Range(0.8f, 1.0f);
 	Depth.Color = win -> DefaultColor;
 
-	Multi_ViewPortSizeRatio = new Multiform::MultiSizeRatio2D("ViewPortSizeRatio");
-	Multi_View = new Multiform::MultiTrans3D("View");
-	Multi_Depth = new Multiform::MultiDepth("Depth");
+	Multi_ViewPortSizeRatio = new Multiform::SizeRatio2D("ViewPortSizeRatio");
+	Multi_View = new Multiform::Trans3D("View");
+	Multi_Depth = new Multiform::Depth("Depth");
 
 	BaseShader * shaders [] = {
 		PH_Shader,

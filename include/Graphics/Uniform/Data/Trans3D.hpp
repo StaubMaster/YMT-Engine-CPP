@@ -5,8 +5,8 @@
 # include "Graphics/Uniform/Base/GenericUniformBase.hpp"
 # include "DataDec.hpp"
 
-# include "Graphics/Uniform/Data/UniPoint3D.hpp"
-# include "Graphics/Uniform/Data/UniAngle3D.hpp"
+# include "Graphics/Uniform/Data/Point3D.hpp"
+# include "Graphics/Uniform/Data/Angle3D.hpp"
 
 class BaseShader;
 

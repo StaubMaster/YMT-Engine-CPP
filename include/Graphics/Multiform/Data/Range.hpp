@@ -3,15 +3,15 @@
 # define MULTI_RANGE_HPP
 
 # include "Graphics/Multiform/Base/GenericMultiformBase.hpp"
-# include "Graphics/Uniform/Data/UniRange.hpp"
+# include "Graphics/Uniform/Data/Range.hpp"
 # include "DataStruct/Range.hpp"
 
 namespace Multiform
 {
-class MultiRange : public GenericMultiformBase<Uniform::Range, Range>
+class Range : public GenericMultiformBase<Uniform::Range, ::Range>
 {
 	public:
-		MultiRange(std::string name);
+		Range(std::string name);
 };
 };
 

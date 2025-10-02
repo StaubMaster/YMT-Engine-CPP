@@ -5,7 +5,7 @@
 # include "Graphics/Uniform/Base/GenericUniformBase.hpp"
 # include "DataDec.hpp"
 
-# include "Graphics/Uniform/Data/UniPoint2D.hpp"
+# include "Graphics/Uniform/Data/Point2D.hpp"
 
 class BaseShader;
 

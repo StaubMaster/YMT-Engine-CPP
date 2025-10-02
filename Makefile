@@ -25,24 +25,25 @@ FILES_SRC = \
 \
 	Graphics/Shader/ShaderCode.cpp \
 	Graphics/Shader/BaseShader.cpp \
+\
 	Graphics/Uniform/Base/UniformBase.cpp \
-	Graphics/Uniform/Data/UniPoint3D.cpp \
-	Graphics/Uniform/Data/UniAngle3D.cpp \
-	Graphics/Uniform/Data/UniTrans3D.cpp \
-	Graphics/Uniform/Data/UniPoint2D.cpp \
-	Graphics/Uniform/Data/UniSizeRatio2D.cpp \
-	Graphics/Uniform/Data/UniDepthFactors.cpp \
-	Graphics/Uniform/Data/UniRange.cpp \
-	Graphics/Uniform/Data/UniDepth.cpp \
-	Graphics/Uniform/Data/UniColor.cpp \
+	Graphics/Uniform/Data/Point3D.cpp \
+	Graphics/Uniform/Data/Angle3D.cpp \
+	Graphics/Uniform/Data/Trans3D.cpp \
+	Graphics/Uniform/Data/Point2D.cpp \
+	Graphics/Uniform/Data/SizeRatio2D.cpp \
+	Graphics/Uniform/Data/DepthFactors.cpp \
+	Graphics/Uniform/Data/Range.cpp \
+	Graphics/Uniform/Data/Depth.cpp \
+	Graphics/Uniform/Data/Color.cpp \
 \
 	Graphics/Multiform/Base/MultiformBase.cpp \
-	Graphics/Multiform/Data/UniTrans3D.cpp \
-	Graphics/Multiform/Data/UniSizeRatio2D.cpp \
-	Graphics/Multiform/Data/UniDepthFactors.cpp \
-	Graphics/Multiform/Data/UniRange.cpp \
-	Graphics/Multiform/Data/UniDepth.cpp \
-	Graphics/Multiform/Data/UniColor.cpp \
+	Graphics/Multiform/Data/Trans3D.cpp \
+	Graphics/Multiform/Data/SizeRatio2D.cpp \
+	Graphics/Multiform/Data/DepthFactors.cpp \
+	Graphics/Multiform/Data/Range.cpp \
+	Graphics/Multiform/Data/Depth.cpp \
+	Graphics/Multiform/Data/Color.cpp \
 \
 	Graphics/Buffer/BaseBufferArray.cpp \
 	Graphics/Buffer/BaseBuffer.cpp \

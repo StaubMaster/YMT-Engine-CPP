@@ -1,4 +1,4 @@
-#include "Graphics/Uniform/Data/UniSizeRatio2D.hpp"
+#include "Graphics/Uniform/Data/SizeRatio2D.hpp"
 #include "Graphics/Shader/BaseShader.hpp"
 #include "DataStruct/SizeRatio2D.hpp"
 #include "DataStruct/Point2D.hpp"

@@ -1,4 +1,4 @@
-#include "Graphics/Uniform/Data/UniColor.hpp"
+#include "Graphics/Uniform/Data/Color.hpp"
 #include "Graphics/Shader/BaseShader.hpp"
 #include "DataStruct/Color.hpp"
 #include "OpenGL/openGL.h"

@@ -5,9 +5,9 @@
 # include "Graphics/Uniform/Base/GenericUniformBase.hpp"
 # include "DataDec.hpp"
 
-# include "Graphics/Uniform/Data/UniDepthFactors.hpp"
-# include "Graphics/Uniform/Data/UniRange.hpp"
-# include "Graphics/Uniform/Data/UniColor.hpp"
+# include "Graphics/Uniform/Data/DepthFactors.hpp"
+# include "Graphics/Uniform/Data/Range.hpp"
+# include "Graphics/Uniform/Data/Color.hpp"
 
 class BaseShader;
 

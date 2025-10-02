@@ -1,4 +1,4 @@
-#include "Graphics/Uniform/Data/UniDepthFactors.hpp"
+#include "Graphics/Uniform/Data/DepthFactors.hpp"
 #include "Graphics/Shader/BaseShader.hpp"
 #include "DataStruct/DepthFactors.hpp"
 #include "OpenGL/openGL.h"
@@ -8,7 +8,6 @@
 Uniform::DepthFactors::DepthFactors(std::string name, BaseShader & shader) : GenericUniformBase(name, shader)
 {
 	Location = shader.UniformFind(name);
-	//std::cout << "UniDepthFactors.Location: " << Location << "\n";
 }
 
 void Uniform::DepthFactors::PutData(::DepthFactors df)

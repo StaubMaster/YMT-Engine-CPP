@@ -5,17 +5,17 @@
 # include "Base/UniformBase.hpp"
 # include "Base/GenericUniformBase.hpp"
 
-# include "Data/UniDepthFactors.hpp"
-# include "Data/UniRange.hpp"
+# include "Data/DepthFactors.hpp"
+# include "Data/Range.hpp"
 
-# include "Data/UniPoint2D.hpp"
-# include "Data/UniSizeRatio2D.hpp"
+# include "Data/Point2D.hpp"
+# include "Data/SizeRatio2D.hpp"
 
-# include "Data/UniPoint3D.hpp"
-# include "Data/UniAngle3D.hpp"
-# include "Data/UniTrans3D.hpp"
+# include "Data/Point3D.hpp"
+# include "Data/Angle3D.hpp"
+# include "Data/Trans3D.hpp"
 
-# include "Data/UniColor.hpp"
-# include "Data/UniDepth.hpp"
+# include "Data/Color.hpp"
+# include "Data/Depth.hpp"
 
 #endif

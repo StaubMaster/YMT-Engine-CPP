@@ -3,15 +3,15 @@
 # define MULTI_DEPTH_HPP
 
 # include "Graphics/Multiform/Base/GenericMultiformBase.hpp"
-# include "Graphics/Uniform/Data/UniDepth.hpp"
+# include "Graphics/Uniform/Data/Depth.hpp"
 # include "DataStruct/Depth.hpp"
 
 namespace Multiform
 {
-class MultiDepth : public GenericMultiformBase<Uniform::Depth, Depth>
+class Depth : public GenericMultiformBase<Uniform::Depth, ::Depth>
 {
 	public:
-		MultiDepth(std::string name);
+		Depth(std::string name);
 };
 };
 

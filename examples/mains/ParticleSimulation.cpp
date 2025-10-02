@@ -8,9 +8,10 @@
 #include "Graphics/PH/PH_3D/PolyHedra_3D_BufferArray.hpp"
 #include "Graphics/PH/PH_3D/PolyHedra_3D_Shader.hpp"
 
-#include "Graphics/Multiform/Data/UniSizeRatio2D.hpp"
-#include "Graphics/Multiform/Data/UniTrans3D.hpp"
-#include "Graphics/Multiform/Data/UniDepth.hpp"
+#include "DataStruct/Depth.hpp"
+#include "DataStruct/Range.hpp"
+#include "DataStruct/SizeRatio2D.hpp"
+
 
 
 #include "FileManager/FileContext.hpp"

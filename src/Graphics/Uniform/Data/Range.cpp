@@ -1,4 +1,4 @@
-#include "Graphics/Uniform/Data/UniRange.hpp"
+#include "Graphics/Uniform/Data/Range.hpp"
 #include "Graphics/Shader/BaseShader.hpp"
 #include "DataStruct/Range.hpp"
 #include "OpenGL/openGL.h"

@@ -1,4 +1,4 @@
-#include "Graphics/Uniform/Data/UniDepth.hpp"
+#include "Graphics/Uniform/Data/Depth.hpp"
 #include "DataStruct/Depth.hpp"
 #include "OpenGL/openGL.h"
 #include <iostream>
