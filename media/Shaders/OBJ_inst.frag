@@ -16,9 +16,17 @@ struct DepthData
 	vec3		Color;
 };
 
+struct LInterData
+{
+	float T0;
+	float T1;
+};
+
 
 
 uniform DepthData Depth;
+
+uniform LInterData ColorToTex;
 
 uniform sampler2DArray texture0;
 
@@ -36,6 +44,7 @@ in Vert {
 
 	vec3 Normal;
 	vec3 Tex;
+	vec3 Col;
 } fs_inn;
 
 
@@ -78,7 +87,8 @@ void main()
 	float depth_factor = CalcDepthFactor();
 	float light_factor = CalcLightFactor();
 
-	vec3 col = texture(texture0, fs_inn.Tex).rgb;
+	vec3 col = (fs_inn.Col * ColorToTex.T0) + (texture(texture0, fs_inn.Tex).rgb * ColorToTex.T1);
+
 	//vec3 col = vec3(1.0, 1.0, 1.0);
 	//col = col * light_factor;
 	col = (col * (1.0 - depth_factor)) + (depth_factor * Depth.Color);

@@ -9,6 +9,9 @@
 #include "Graphics/Multiform/Data/SizeRatio2D.hpp"
 #include "Graphics/Multiform/Data/Trans3D.hpp"
 #include "Graphics/Multiform/Data/Depth.hpp"
+#include "Graphics/Multiform/Data/LInter.hpp"
+
+#include "DataStruct/LInter.hpp"
 
 #include "TextureArray.hpp"
 #include "PolyHedra.hpp"
@@ -36,8 +39,14 @@ OBJ_3D_Shader * OBJ_Shader;
 Multiform::SizeRatio2D * Multi_ViewPortSizeRatio;
 Multiform::Trans3D * Multi_View;
 Multiform::Depth * Multi_Depth;
+Multiform::LInter * Multi_ColorToTex;
 
 Trans3D view_trans;
+
+LInter ColorToTex;
+float ColorToTex_Speed = 0.01f;
+bool ColorToTex_Direction = false;
+bool ColorToTex_Direction_last = false;
 
 
 
@@ -51,9 +60,13 @@ void InitShaders()
 	Depth.Range = Range(0.8f, 1.0f);
 	Depth.Color = win -> DefaultColor;
 
+	ColorToTex = LInter::T0();
+	ColorToTex_Direction = false;
+
 	Multi_ViewPortSizeRatio = new Multiform::SizeRatio2D("ViewPortSizeRatio");
 	Multi_View = new Multiform::Trans3D("View");
 	Multi_Depth = new Multiform::Depth("Depth");
+	Multi_ColorToTex = new Multiform::LInter("ColorToTex");
 
 	BaseShader * shaders [] = {
 		OBJ_Shader,
@@ -63,8 +76,10 @@ void InitShaders()
 	Multi_ViewPortSizeRatio -> FindUniforms(shaders, shader_count);
 	Multi_View -> FindUniforms(shaders, shader_count);
 	Multi_Depth -> FindUniforms(shaders, shader_count);
+	Multi_ColorToTex -> FindUniforms(shaders, shader_count);
 
 	Multi_Depth -> ChangeData(Depth);
+	Multi_ColorToTex -> ChangeData(ColorToTex);
 }
 void FreeShaders()
 {
@@ -73,6 +88,7 @@ void FreeShaders()
 	delete Multi_ViewPortSizeRatio;
 	delete Multi_View;
 	delete Multi_Depth;
+	delete Multi_ColorToTex;
 }
 
 
@@ -83,17 +99,18 @@ void Init()
 
 	InitShaders();
 
-	Tex0 = new TextureArray(128, 128, 1, (FileContext[])
+	/*Tex0 = new TextureArray(128, 64, 1, (FileContext[])
 	{
 		ImageDir.File("Orientation.png"),
 		//ImageDir.File("GrayDeant.png"),
-	});
+	});*/
+	Tex0 = new TextureArray(ImageDir.File("Orientation.png"));
 	OBJ_BufferArray = new OBJ_3D_BufferArray();
 
 	{
 		int count;
 		OBJ_MainData * data;
-		data = obj -> ToMainData(count);
+		data = obj -> ToMainData(count, Tex0 -> SizeRatio);
 		OBJ_BufferArray -> BindMain(data, count);
 		delete [] data;
 	}
@@ -125,6 +142,27 @@ void Frame(double timeDelta)
 {
 	view_trans.TransformFlatX(win -> MoveFromKeys(2.0f * timeDelta), win -> SpinFromCursor(0.2f * timeDelta));
 	Multi_View -> ChangeData(view_trans);
+
+	if (glfwGetKey(win -> win, GLFW_KEY_P))
+	{
+		if (ColorToTex_Direction_last == false)
+		{
+			ColorToTex_Direction = !ColorToTex_Direction;
+			ColorToTex_Direction_last = true;
+		}
+	} else { ColorToTex_Direction_last = false; }
+
+	if (!ColorToTex_Direction)
+	{
+		if (ColorToTex.GetT1() > ColorToTex_Speed) { ColorToTex.SetT0(ColorToTex.GetT0() + ColorToTex_Speed); }
+		else { ColorToTex.SetT0(1.0); }
+	}
+	else
+	{
+		if (ColorToTex.GetT0() > ColorToTex_Speed) { ColorToTex.SetT1(ColorToTex.GetT1() + ColorToTex_Speed); }
+		else { ColorToTex.SetT1(1.0); }
+	}
+	Multi_ColorToTex -> ChangeData(ColorToTex);
 
 	OBJ_Shader -> Use();
 	Tex0 -> Bind();

@@ -7,7 +7,7 @@
 
 OBJ_3D_BufferArray::OBJ_3D_BufferArray() :
 	Instance_Base_BufferArray(
-		new OBJ_MainBuffer(0, 1, 2),
+		new OBJ_MainBuffer(0, 1, 2, 3),
 		new Simple3D_InstBuffer(20, 21, 22),
 		GL_TRIANGLES)
 {

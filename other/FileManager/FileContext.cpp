@@ -32,9 +32,9 @@ std::string FileContext::Name() const
 {
 	size_t idx;
 	idx = FilePath.find_last_of('/');
-	if (idx != std::string::npos) { return FilePath.substr(idx); }
+	if (idx != std::string::npos) { return FilePath.substr(idx + 1); }
 	idx = FilePath.find_last_of('\\');
-	if (idx != std::string::npos) { return FilePath.substr(idx); }
+	if (idx != std::string::npos) { return FilePath.substr(idx + 1); }
 	return "";
 }
 std::string FileContext::Extension() const

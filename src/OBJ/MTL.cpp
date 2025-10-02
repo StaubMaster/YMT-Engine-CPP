@@ -144,6 +144,10 @@ MTL * MTL::Load(const FileContext & file)
 	std::cout << "'" << file.FilePath << "'" << " exists ? " << file.Exists() << "\n";
 	if (file.Exists())
 	{
+		if (file.Extension() != ".mtl")
+		{
+			std::cout << "\e[38;2;255;000;000m" << "Warnign: " << file.FilePath << " is being loaded as MTL but does not have .mtl extension.\n" << "\e[m";
+		}
 		MTL * mtl = new MTL();
 		LineCommand::Split(file, *mtl, &MTL::Parse);
 		return mtl;

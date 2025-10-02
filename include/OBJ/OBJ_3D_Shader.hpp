@@ -16,6 +16,7 @@ class OBJ_3D_Shader : public BaseShader
 		Uniform::SizeRatio2D	ViewPortSizeRatio;
 		Uniform::Trans3D		View;
 		Uniform::Depth			Depth;
+		Uniform::LInter			ColorToTex;
 
 	public:
 		OBJ_3D_Shader(const DirectoryContext & dir);

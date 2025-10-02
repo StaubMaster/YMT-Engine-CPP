@@ -6,6 +6,7 @@
 
 # include "DataStruct/Point3D.hpp"
 # include "DataStruct/Point4D.hpp"
+# include "DataStruct/Color.hpp"
 
 
 
@@ -14,6 +15,7 @@
 
 # include "Graphics/Attribute/AttribPoint4D.hpp"
 # include "Graphics/Attribute/AttribPoint3D.hpp"
+# include "Graphics/Attribute/AttribColor.hpp"
 
 
 
@@ -26,6 +28,7 @@ struct OBJ_MainData
 	Point4D	Position;
 	Point3D	Texture;
 	Point3D	Normal;
+	Color	Color;
 };
 
 
@@ -36,6 +39,7 @@ class OBJ_MainAttrib : public Attribute::Base
 		Attribute::Point4D	Position;
 		Attribute::Point3D	Texture;
 		Attribute::Point3D	Normal;
+		Attribute::Color	Color;
 
 	public:
 		OBJ_MainAttrib(
@@ -43,7 +47,8 @@ class OBJ_MainAttrib : public Attribute::Base
 			unsigned int stride,
 			unsigned int indexPosition,
 			unsigned int indexTexture,
-			unsigned int indexNormal
+			unsigned int indexNormal,
+			unsigned int indexColor
 		);
 
 	public:
@@ -58,7 +63,8 @@ class OBJ_MainBuffer : public BaseBuffer
 		OBJ_MainBuffer(
 			unsigned int indexPosition,
 			unsigned int indexTexture,
-			unsigned int indexNormal
+			unsigned int indexNormal,
+			unsigned int indexColor
 		);
 		~OBJ_MainBuffer();
 };

@@ -16,6 +16,7 @@
 # include "Data/Trans3D.hpp"
 
 # include "Data/Color.hpp"
+# include "Data/LInter.hpp"
 # include "Data/Depth.hpp"
 
 #endif

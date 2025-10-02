@@ -30,3 +30,11 @@ float LInter::Calc(float val0, float val1)
 {
 	return (val0 * _T0) + (val1 * _T1);
 }
+
+
+
+void LInter::SetT0(float val) { _T0 = val; _T1 = 1.0 - val; }
+void LInter::SetT1(float val) { _T1 = val; _T0 = 1.0 - val; }
+
+float LInter::GetT0() { return _T0; }
+float LInter::GetT1() { return _T1; }

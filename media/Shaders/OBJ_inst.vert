@@ -47,6 +47,7 @@ uniform DepthData Depth;
 layout(location = 0) in vec4 VPos;
 layout(location = 1) in vec3 VTex;
 layout(location = 2) in vec3 VNorm;
+layout(location = 3) in vec3 VCol;
 
 layout(location = 20) in vec3 IPos;
 layout(location = 21) in vec3 ISin;
@@ -61,6 +62,7 @@ out Vert {
 
 	vec3 Normal;
 	vec3 Tex;
+	vec3 Col;
 } vs_out;
 
 
@@ -115,4 +117,5 @@ void main()
 
 	vs_out.Normal = DSA(VNorm, ISin, ICos);
 	vs_out.Tex = VTex;
+	vs_out.Col = VCol;
 }

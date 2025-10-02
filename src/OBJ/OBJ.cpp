@@ -6,6 +6,11 @@
 #include "FileManager/FileContext.hpp"
 #include "FileManager/Parsing/LineCommand.hpp"
 
+#include "DataStruct/Point2D.hpp"
+#include "DataStruct/SizeRatio2D.hpp"
+
+#include "DataO.hpp"
+
 #include <string>
 #include <math.h>
 
@@ -37,11 +42,35 @@ OBJ::~OBJ()
 
 
 
+/*static char SizeMin(Point3D val)
+{
+	if (val.X < val.Y && val.X < val.Z) { return 0b001; }
+	if (val.Z < val.Z && val.Y < val.X) { return 0b010; }
+	if (val.Z < val.X && val.Z < val.Y) { return 0b100; }
+	return 0;
+}*/
+static char SizeMax(Point3D val)
+{
+	if (val.X > val.Y && val.X > val.Z) { std::cout << "Max: X\n"; return 0b001; }
+	if (val.Y > val.Z && val.Y > val.X) { std::cout << "Max: Y\n"; return 0b010; }
+	if (val.Z > val.X && val.Z > val.Y) { std::cout << "Max: Z\n"; return 0b100; }
+	std::cout << "Max: #\n";
+	return 0;
+}
+static char SizeMid(Point3D val)
+{
+	if ((val.X > val.Y && val.X < val.Z) || (val.X < val.Y && val.X > val.Z)) { std::cout << "Mid: X\n"; return 0b001; }
+	if ((val.Y > val.X && val.Y < val.Z) || (val.Y < val.X && val.Y > val.Z)) { std::cout << "Mid: Y\n"; return 0b010; }
+	if ((val.Z > val.X && val.Z < val.Y) || (val.Z < val.X && val.Z > val.Y)) { std::cout << "Mid: Z\n"; return 0b100; }
+	std::cout << "Max: #\n";
+	return 0;
+}
+
 Point4D OBJ::Position_MainData(unsigned int idx)
 {
 	return Positions[idx];
 }
-Point3D OBJ::Texture_MainData(unsigned int idx, Point3D min, Point3D max, Point4D pos)
+Point3D OBJ::Texture_MainData(unsigned int idx, Point4D pos, SizeRatio2D scale, char sides)
 {
 	if (idx != 0xFFFFFFFF)
 	{
@@ -49,12 +78,11 @@ Point3D OBJ::Texture_MainData(unsigned int idx, Point3D min, Point3D max, Point4
 	}
 	else
 	{
-		Point3D tex(
-			(pos.X - min.X) / (max.X - min.X),
-			(pos.Y - min.Y) / (max.Y - min.Y),
-			0
-		);
-		return tex;
+		Point2D tex;
+		if (sides == 0b011) { tex = Point2D(pos.X, -pos.Y); }
+		if (sides == 0b101) { tex = Point2D(pos.X, -pos.Z); }
+		if (sides == 0b110) { tex = Point2D(pos.Z, -pos.Y); }
+		return Point3D(tex.X * scale.RatioW, tex.Y * scale.RatioH, 0);
 	}
 }
 Point3D OBJ::Normal_MainData(unsigned int idx, Point3D normal)
@@ -68,7 +96,7 @@ Point3D OBJ::Normal_MainData(unsigned int idx, Point3D normal)
 		return normal;
 	}
 }
-OBJ_MainData * OBJ::ToMainData(int & count)
+OBJ_MainData * OBJ::ToMainData(int & count, SizeRatio2D texScale)
 {
 	count = Faces.Count() * 3;
 	OBJ_MainData * data = new OBJ_MainData[count];
@@ -85,9 +113,20 @@ OBJ_MainData * OBJ::ToMainData(int & count)
 		if (p.Y > TexMax.Y) { TexMax.Y = p.Y; }
 		if (p.Y > TexMax.Z) { TexMax.Z = p.Z; }
 	}
+	Point3D TexLen = TexMax - TexMin;
+	char sides = SizeMax(TexLen) | SizeMid(TexLen);
 
-	//std::cout << "TexMin: " << TexMin.X << " | " << TexMin.Y << " | " << TexMin.Z << "\n";
-	//std::cout << "TexMax: " << TexMax.X << " | " << TexMax.Y << " | " << TexMax.Z << "\n";
+	Color colors [] = {
+		Color(0.0f, 0.0f, 0.0f),
+		Color(1.0f, 0.0f, 0.0f),
+		Color(0.0f, 1.0f, 0.0f),
+		Color(0.0f, 0.0f, 1.0f),
+		Color(0.0f, 1.0f, 1.0f),
+		Color(1.0f, 0.0f, 1.0f),
+		Color(1.0f, 1.0f, 0.0f),
+		Color(1.0f, 1.0f, 1.0f),
+	};
+	int color_count = 8;
 
 	for (unsigned int f = 0; f < Faces.Count(); f++)
 	{
@@ -101,9 +140,9 @@ OBJ_MainData * OBJ::ToMainData(int & count)
 		c1.Position = Position_MainData(face.Corner2.Position);
 		c2.Position = Position_MainData(face.Corner3.Position);
 
-		c0.Texture = Texture_MainData(face.Corner1.Texture, TexMin, TexMax, c0.Position);
-		c1.Texture = Texture_MainData(face.Corner2.Texture, TexMin, TexMax, c1.Position);
-		c2.Texture = Texture_MainData(face.Corner3.Texture, TexMin, TexMax, c2.Position);
+		c0.Texture = Texture_MainData(face.Corner1.Texture, c0.Position, texScale, sides);
+		c1.Texture = Texture_MainData(face.Corner2.Texture, c1.Position, texScale, sides);
+		c2.Texture = Texture_MainData(face.Corner3.Texture, c2.Position, texScale, sides);
 
 		Point3D n0(c0.Position.X, c0.Position.Y, c0.Position.Z);
 		Point3D n1(c1.Position.X, c1.Position.Y, c1.Position.Z);
@@ -113,6 +152,11 @@ OBJ_MainData * OBJ::ToMainData(int & count)
 		c0.Normal = Normal_MainData(face.Corner1.Normal, normal);
 		c1.Normal = Normal_MainData(face.Corner2.Normal, normal);
 		c2.Normal = Normal_MainData(face.Corner3.Normal, normal);
+
+		Color col = colors[(f % color_count)];
+		c0.Color = col;
+		c1.Color = col;
+		c2.Color = col;
 	}
 
 	return data;
@@ -260,6 +304,11 @@ OBJ * OBJ::Load(const FileContext & file)
 {
 	if (file.Exists())
 	{
+		if (file.Extension() != ".obj")
+		{
+			std::cout << "\e[38;2;255;000;000m" << "Warnign: " << file.FilePath << " is being loaded as OBJ but does not have .obj extension.\n" << "\e[m";
+		}
+
 		OBJ * obj = new OBJ();
 		obj -> Path = file.Path();
 		LineCommand::Split(file, *obj, &OBJ::Parse);

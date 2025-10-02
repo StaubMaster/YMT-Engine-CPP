@@ -10,7 +10,8 @@ OBJ_3D_Shader::OBJ_3D_Shader(const DirectoryContext & dir)
 	}, 2),
 	ViewPortSizeRatio("ViewPortSizeRatio", *this),
 	View("View", *this),
-	Depth("Depth", *this)
+	Depth("Depth", *this),
+	ColorToTex("ColorToTex", *this)
 	{ }
 OBJ_3D_Shader::~OBJ_3D_Shader()
 {

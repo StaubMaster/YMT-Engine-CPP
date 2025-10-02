@@ -35,6 +35,7 @@ FILES_SRC = \
 	Graphics/Uniform/Data/DepthFactors.cpp \
 	Graphics/Uniform/Data/Range.cpp \
 	Graphics/Uniform/Data/Depth.cpp \
+	Graphics/Uniform/Data/LInter.cpp \
 	Graphics/Uniform/Data/Color.cpp \
 \
 	Graphics/Multiform/Base/MultiformBase.cpp \
@@ -43,6 +44,7 @@ FILES_SRC = \
 	Graphics/Multiform/Data/DepthFactors.cpp \
 	Graphics/Multiform/Data/Range.cpp \
 	Graphics/Multiform/Data/Depth.cpp \
+	Graphics/Multiform/Data/LInter.cpp \
 	Graphics/Multiform/Data/Color.cpp \
 \
 	Graphics/Buffer/BaseBufferArray.cpp \
@@ -55,6 +57,7 @@ FILES_SRC = \
 	Graphics/Attribute/AttribTrans3D.cpp \
 	Graphics/Attribute/AttribPoint2D.cpp \
 	Graphics/Attribute/AttribPoint4D.cpp \
+	Graphics/Attribute/AttribColor.cpp \
 \
 	Graphics/PH/PolyHedra_MainData.cpp \
 	Graphics/PH/PolyHedra_MainAttrib.cpp \

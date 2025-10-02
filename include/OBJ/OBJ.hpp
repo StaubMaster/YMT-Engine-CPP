@@ -59,9 +59,9 @@ class OBJ
 
 	public:
 		Point4D Position_MainData(unsigned int idx);
-		Point3D Texture_MainData(unsigned int idx, Point3D min, Point3D max, Point4D pos);
+		Point3D Texture_MainData(unsigned int idx, Point4D pos, SizeRatio2D scale, char sides);
 		Point3D Normal_MainData(unsigned int idx, Point3D normal);
-		OBJ_MainData * ToMainData(int & count);
+		OBJ_MainData * ToMainData(int & count, SizeRatio2D texScale);
 
 	private:
 		void Parse_v(const LineCommand & cmd);

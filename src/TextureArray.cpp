@@ -7,8 +7,27 @@
 
 
 
+TextureArray::TextureArray(const FileContext & file)
+{
+	glGenTextures(1, &GL_TextureArray);
+	glBindTexture(GL_TEXTURE_2D_ARRAY, GL_TextureArray);
+
+	Image * img = file.LoadImagePNG();
+	SizeRatio = SizeRatio2D(img -> W, img -> H);
+	glTexImage3D(GL_TEXTURE_2D_ARRAY, 0, GL_RGBA8, img -> W, img -> H, 1, 0, GL_RGBA, GL_UNSIGNED_INT_8_8_8_8_REV, img -> Data32);
+	delete img;
+
+	glTexParameteri(GL_TEXTURE_2D_ARRAY, GL_TEXTURE_WRAP_S, GL_REPEAT);
+	glTexParameteri(GL_TEXTURE_2D_ARRAY, GL_TEXTURE_WRAP_T, GL_REPEAT);
+	glTexParameteri(GL_TEXTURE_2D_ARRAY, GL_TEXTURE_MIN_FILTER, GL_NEAREST);
+	glTexParameteri(GL_TEXTURE_2D_ARRAY, GL_TEXTURE_MAG_FILTER, GL_NEAREST);
+
+	glGenerateMipmap(GL_TEXTURE_2D_ARRAY);
+}
 TextureArray::TextureArray(unsigned int w, unsigned int h, unsigned int count, const FileContext files [])
 {
+	SizeRatio = SizeRatio2D(w, h);
+
 	glGenTextures(1, &GL_TextureArray);
 	glBindTexture(GL_TEXTURE_2D_ARRAY, GL_TextureArray);
 
