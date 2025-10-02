@@ -49,15 +49,15 @@ FILES_SRC = \
 \
 	Graphics/Buffer/BaseBufferArray.cpp \
 	Graphics/Buffer/BaseBuffer.cpp \
-	Graphics/Attribute/AttributeLocation.cpp \
-	Graphics/Attribute/AttributeBase.cpp \
 \
-	Graphics/Attribute/AttribPoint3D.cpp \
-	Graphics/Attribute/AttribAngle3D.cpp \
-	Graphics/Attribute/AttribTrans3D.cpp \
-	Graphics/Attribute/AttribPoint2D.cpp \
-	Graphics/Attribute/AttribPoint4D.cpp \
-	Graphics/Attribute/AttribColor.cpp \
+	Graphics/Attribute/Base/AttributeLocation.cpp \
+	Graphics/Attribute/Base/AttributeBase.cpp \
+	Graphics/Attribute/Data/Point3D.cpp \
+	Graphics/Attribute/Data/Angle3D.cpp \
+	Graphics/Attribute/Data/Trans3D.cpp \
+	Graphics/Attribute/Data/Point2D.cpp \
+	Graphics/Attribute/Data/Point4D.cpp \
+	Graphics/Attribute/Data/Color.cpp \
 \
 	Graphics/PH/PolyHedra_MainData.cpp \
 	Graphics/PH/PolyHedra_MainAttrib.cpp \

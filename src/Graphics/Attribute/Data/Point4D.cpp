@@ -1,4 +1,4 @@
-#include "Graphics/Attribute/AttribPoint4D.hpp"
+#include "Graphics/Attribute/Data/Point4D.hpp"
 #include "DataStruct/Point4D.hpp"
 #include "OpenGL/openGL.h"
 

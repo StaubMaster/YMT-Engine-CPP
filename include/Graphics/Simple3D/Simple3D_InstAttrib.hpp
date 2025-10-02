@@ -2,9 +2,9 @@
 #ifndef  SIMPLE_3D_INST_ATTRIB_HPP
 # define SIMPLE_3D_INST_ATTRIB_HPP
 
-# include "Graphics/Attribute/AttributeBase.hpp"
+# include "Graphics/Attribute/Base/AttributeBase.hpp"
 
-# include "Graphics/Attribute/AttribTrans3D.hpp"
+# include "Graphics/Attribute/Data/Trans3D.hpp"
 
 class Simple3D_InstAttrib : public Attribute::Base
 {

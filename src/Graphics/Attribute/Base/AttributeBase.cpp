@@ -1,4 +1,4 @@
-#include "Graphics/Attribute/AttributeBase.hpp"
+#include "Graphics/Attribute/Base/AttributeBase.hpp"
 #include "OpenGL/openGL.h"
 
 

@@ -2,11 +2,11 @@
 #ifndef  POLYHEDRA_MAIN_ATTRIB_HPP
 # define POLYHEDRA_MAIN_ATTRIB_HPP
 
-# include "Graphics/Attribute/AttributeLocation.hpp"
-# include "Graphics/Attribute/AttributeBase.hpp"
+# include "Graphics/Attribute/Base/AttributeLocation.hpp"
+# include "Graphics/Attribute/Base/AttributeBase.hpp"
 
-# include "Graphics/Attribute/AttribPoint3D.hpp"
-# include "Graphics/Attribute/AttribPoint2D.hpp"
+# include "Graphics/Attribute/Data/Point3D.hpp"
+# include "Graphics/Attribute/Data/Point2D.hpp"
 
 class PolyHedra_MainAttrib : public Attribute::Base
 {

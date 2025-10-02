@@ -2,11 +2,11 @@
 #ifndef  ATTRIB_TRANS_3D_HPP
 # define ATTRIB_TRANS_3D_HPP
 
-# include "AttributeLocation.hpp"
-# include "AttributeBase.hpp"
+# include "Graphics/Attribute/Base/AttributeLocation.hpp"
+# include "Graphics/Attribute/Base/AttributeBase.hpp"
 
-# include "AttribPoint3D.hpp"
-# include "AttribAngle3D.hpp"
+# include "Point3D.hpp"
+# include "Angle3D.hpp"
 
 namespace Attribute
 {

@@ -1,4 +1,4 @@
-#include "Graphics/Attribute/AttribAngle3D.hpp"
+#include "Graphics/Attribute/Data/Angle3D.hpp"
 #include "OpenGL/openGL.h"
 
 

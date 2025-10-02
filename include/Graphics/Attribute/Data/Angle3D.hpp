@@ -2,8 +2,8 @@
 #ifndef  ATTRIB_ANGLE_3D_HPP
 # define ATTRIB_ANGLE_3D_HPP
 
-# include "AttributeLocation.hpp"
-# include "AttributeBase.hpp"
+# include "Graphics/Attribute/Base/AttributeLocation.hpp"
+# include "Graphics/Attribute/Base/AttributeBase.hpp"
 
 namespace Attribute
 {

@@ -1,4 +1,4 @@
-#include "Graphics/Attribute/AttribColor.hpp"
+#include "Graphics/Attribute/Data/Color.hpp"
 #include "DataStruct/Color.hpp"
 #include "OpenGL/openGL.h"
 

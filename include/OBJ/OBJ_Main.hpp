@@ -10,12 +10,12 @@
 
 
 
-# include "Graphics/Attribute/AttributeLocation.hpp"
-# include "Graphics/Attribute/AttributeBase.hpp"
+# include "Graphics/Attribute/Base/AttributeLocation.hpp"
+# include "Graphics/Attribute/Base/AttributeBase.hpp"
 
-# include "Graphics/Attribute/AttribPoint4D.hpp"
-# include "Graphics/Attribute/AttribPoint3D.hpp"
-# include "Graphics/Attribute/AttribColor.hpp"
+# include "Graphics/Attribute/Data/Point4D.hpp"
+# include "Graphics/Attribute/Data/Point3D.hpp"
+# include "Graphics/Attribute/Data/Color.hpp"
 
 
 

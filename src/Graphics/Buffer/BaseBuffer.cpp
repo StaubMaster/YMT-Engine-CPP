@@ -1,5 +1,5 @@
 #include "Graphics/Buffer/BaseBuffer.hpp"
-#include "Graphics/Attribute/AttributeBase.hpp"
+#include "Graphics/Attribute/Base/AttributeBase.hpp"
 
 #include "OpenGL/openGL.h"
 #include <iostream>
