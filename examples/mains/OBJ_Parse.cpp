@@ -6,9 +6,8 @@
 #include "OBJ/OBJ_3D_BufferArray.hpp"
 #include "OBJ/OBJ_3D_Shader.hpp"
 
-#include "Graphics/Uniform/Uniforms.hpp"
-#include "Graphics/Multiform/Data/2D/UniSizeRatio2D.hpp"
-#include "Graphics/Multiform/Data/3D/UniTrans3D.hpp"
+#include "Graphics/Multiform/Data/UniSizeRatio2D.hpp"
+#include "Graphics/Multiform/Data/UniTrans3D.hpp"
 #include "Graphics/Multiform/Data/UniDepth.hpp"
 
 #include "TextureArray.hpp"
@@ -34,9 +33,9 @@ TextureArray * Tex0;
 OBJ_3D_BufferArray * OBJ_BufferArray;
 OBJ_3D_Shader * OBJ_Shader;
 
-MultiSizeRatio2D * Multi_ViewPortSizeRatio;
-MultiTrans3D * Multi_View;
-MultiDepth * Multi_Depth;
+Multiform::MultiSizeRatio2D * Multi_ViewPortSizeRatio;
+Multiform::MultiTrans3D * Multi_View;
+Multiform::MultiDepth * Multi_Depth;
 
 Trans3D view_trans;
 
@@ -52,9 +51,9 @@ void InitShaders()
 	Depth.Range = Range(0.8f, 1.0f);
 	Depth.Color = win -> DefaultColor;
 
-	Multi_ViewPortSizeRatio = new MultiSizeRatio2D("ViewPortSizeRatio");
-	Multi_View = new MultiTrans3D("View");
-	Multi_Depth = new MultiDepth("Depth");
+	Multi_ViewPortSizeRatio = new Multiform::MultiSizeRatio2D("ViewPortSizeRatio");
+	Multi_View = new Multiform::MultiTrans3D("View");
+	Multi_Depth = new Multiform::MultiDepth("Depth");
 
 	BaseShader * shaders [] = {
 		OBJ_Shader,

@@ -4,14 +4,12 @@
 
 # include "Graphics/Shader/BaseShader.hpp"
 # include "Graphics/Multiform/Base/MultiformBase.hpp"
+# include "Graphics/Uniform/Base/UniformBase.hpp"
 
 # include <typeinfo>
 
-namespace Uniform
+namespace Multiform
 {
-	class UniformBase;
-};
-
 template <typename UniformType, typename DataType>
 class GenericMultiformBase : public MultiformBase
 {
@@ -104,6 +102,7 @@ class GenericMultiformBase : public MultiformBase
 				}
 			}
 		}
+};
 };
 
 #endif

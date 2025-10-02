@@ -2,11 +2,10 @@
 #ifndef  UNI_COLOR_HPP
 # define UNI_COLOR_HPP
 
-# include "Graphics/Shader/BaseShader.hpp"
 # include "Graphics/Uniform/Base/GenericUniformBase.hpp"
-# include "Graphics/Multiform/Base/GenericMultiformBase.hpp"
-
 # include "DataDec.hpp"
+
+class BaseShader;
 
 namespace Uniform
 {

@@ -2,14 +2,14 @@
 #ifndef  UNI_DEPTH_HPP
 # define UNI_DEPTH_HPP
 
-# include "Graphics/Shader/BaseShader.hpp"
 # include "Graphics/Uniform/Base/GenericUniformBase.hpp"
-# include "Graphics/Multiform/Base/GenericMultiformBase.hpp"
-
 # include "DataDec.hpp"
-# include "Graphics/Uniform/Data/1D/UniDepthFactors.hpp"
-# include "Graphics/Uniform/Data/1D/UniRange.hpp"
+
+# include "Graphics/Uniform/Data/UniDepthFactors.hpp"
+# include "Graphics/Uniform/Data/UniRange.hpp"
 # include "Graphics/Uniform/Data/UniColor.hpp"
+
+class BaseShader;
 
 namespace Uniform
 {

@@ -1,9 +1,7 @@
-#include "Graphics/Uniform/Data/2D/UniSizeRatio2D.hpp"
+#include "Graphics/Uniform/Data/UniSizeRatio2D.hpp"
 #include "Graphics/Shader/BaseShader.hpp"
-
-#include "DataStruct/Point2D.hpp"
 #include "DataStruct/SizeRatio2D.hpp"
-
+#include "DataStruct/Point2D.hpp"
 #include "OpenGL/openGL.h"
 
 

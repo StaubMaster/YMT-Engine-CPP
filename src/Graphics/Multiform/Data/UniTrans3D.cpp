@@ -1,13 +1,8 @@
-#include "Graphics/Multiform/Data/3D/UniTrans3D.hpp"
-#include "Graphics/Shader/BaseShader.hpp"
-
-#include "DataStruct/Trans3D.hpp"
-
-#include "OpenGL/openGL.h"
+#include "Graphics/Multiform/Data/UniTrans3D.hpp"
 
 
 
-MultiTrans3D::MultiTrans3D(std::string name) : GenericMultiformBase(name)
+Multiform::MultiTrans3D::MultiTrans3D(std::string name) : GenericMultiformBase(name)
 {
 
 }

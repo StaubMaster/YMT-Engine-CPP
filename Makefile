@@ -26,8 +26,6 @@ FILES_SRC = \
 	Graphics/Shader/ShaderCode.cpp \
 	Graphics/Shader/BaseShader.cpp \
 	Graphics/Uniform/Base/UniformBase.cpp \
-	Graphics/Multiform/Base/MultiformBase.cpp \
-\
 	Graphics/Uniform/Data/UniPoint3D.cpp \
 	Graphics/Uniform/Data/UniAngle3D.cpp \
 	Graphics/Uniform/Data/UniTrans3D.cpp \
@@ -38,6 +36,7 @@ FILES_SRC = \
 	Graphics/Uniform/Data/UniDepth.cpp \
 	Graphics/Uniform/Data/UniColor.cpp \
 \
+	Graphics/Multiform/Base/MultiformBase.cpp \
 	Graphics/Multiform/Data/UniTrans3D.cpp \
 	Graphics/Multiform/Data/UniSizeRatio2D.cpp \
 	Graphics/Multiform/Data/UniDepthFactors.cpp \

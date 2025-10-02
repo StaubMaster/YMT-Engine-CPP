@@ -3,10 +3,9 @@
 # define UNI_SIZE_RATIO_2D_HPP
 
 # include "Graphics/Uniform/Base/GenericUniformBase.hpp"
-# include "Graphics/Multiform/Base/GenericMultiformBase.hpp"
-
 # include "DataDec.hpp"
-# include "Graphics/Uniform/Data/2D/UniPoint2D.hpp"
+
+# include "Graphics/Uniform/Data/UniPoint2D.hpp"
 
 class BaseShader;
 

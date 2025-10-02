@@ -3,11 +3,10 @@
 # define UNI_TRANS_3D_HPP
 
 # include "Graphics/Uniform/Base/GenericUniformBase.hpp"
-# include "Graphics/Multiform/Base/GenericMultiformBase.hpp"
-
 # include "DataDec.hpp"
-# include "Graphics/Uniform/Data/3D/UniPoint3D.hpp"
-# include "Graphics/Uniform/Data/3D/UniAngle3D.hpp"
+
+# include "Graphics/Uniform/Data/UniPoint3D.hpp"
+# include "Graphics/Uniform/Data/UniAngle3D.hpp"
 
 class BaseShader;
 

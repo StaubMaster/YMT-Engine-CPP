@@ -3,8 +3,6 @@
 # define UNI_DEPTH_FACTORS_3D_HPP
 
 # include "Graphics/Uniform/Base/GenericUniformBase.hpp"
-# include "Graphics/Multiform/Base/GenericMultiformBase.hpp"
-
 # include "DataDec.hpp"
 
 class BaseShader;

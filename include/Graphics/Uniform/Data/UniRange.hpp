@@ -3,8 +3,6 @@
 # define UNI_RANGE_HPP
 
 # include "Graphics/Uniform/Base/GenericUniformBase.hpp"
-# include "Graphics/Multiform/Base/GenericMultiformBase.hpp"
-
 # include "DataDec.hpp"
 
 class BaseShader;

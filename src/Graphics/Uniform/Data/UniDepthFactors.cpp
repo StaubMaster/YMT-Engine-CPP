@@ -1,6 +1,6 @@
-#include "Graphics/Uniform/Data/1D/UniDepthFactors.hpp"
+#include "Graphics/Uniform/Data/UniDepthFactors.hpp"
+#include "Graphics/Shader/BaseShader.hpp"
 #include "DataStruct/DepthFactors.hpp"
-
 #include "OpenGL/openGL.h"
 
 

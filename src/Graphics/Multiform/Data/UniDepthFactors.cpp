@@ -1,11 +1,8 @@
-#include "Graphics/Multiform/Data/1D/UniDepthFactors.hpp"
-#include "DataStruct/DepthFactors.hpp"
-
-#include "OpenGL/openGL.h"
+#include "Graphics/Multiform/Data/UniDepthFactors.hpp"
 
 
 
-MultiDepthFactors::MultiDepthFactors(std::string name) : GenericMultiformBase(name)
+Multiform::MultiDepthFactors::MultiDepthFactors(std::string name) : GenericMultiformBase(name)
 {
 	
 }

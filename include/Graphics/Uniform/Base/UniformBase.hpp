@@ -5,7 +5,11 @@
 # include <string>
 
 class BaseShader;
-class MultiformBase;
+
+namespace Multiform
+{
+	class MultiformBase;
+};
 
 namespace Uniform
 {
@@ -14,7 +18,7 @@ class UniformBase
 	public:
 		std::string Name;
 		BaseShader & Shader;
-		MultiformBase * Uniform;
+		Multiform::MultiformBase * Uniform;
 		bool Changed;
 
 	protected:

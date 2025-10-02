@@ -1,11 +1,8 @@
-#include "Graphics/Multiform/Data/1D/UniRange.hpp"
-#include "DataStruct/Range.hpp"
-
-#include "OpenGL/openGL.h"
+#include "Graphics/Multiform/Data/UniRange.hpp"
 
 
 
-MultiRange::MultiRange(std::string name) : GenericMultiformBase(name)
+Multiform::MultiRange::MultiRange(std::string name) : GenericMultiformBase(name)
 {
 
 }

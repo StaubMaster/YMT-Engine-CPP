@@ -4,11 +4,11 @@
 
 
 
-MultiformBase::MultiformBase(std::string name)
+Multiform::MultiformBase::MultiformBase(std::string name)
 {
 	Name = name;
 }
-MultiformBase::~MultiformBase()
+Multiform::MultiformBase::~MultiformBase()
 {
 
 }

@@ -1,8 +1,6 @@
-#include "Graphics/Uniform/Data/3D/UniPoint3D.hpp"
+#include "Graphics/Uniform/Data/UniPoint3D.hpp"
 #include "Graphics/Shader/BaseShader.hpp"
-
 #include "DataStruct/Point3D.hpp"
-
 #include "OpenGL/openGL.h"
 
 

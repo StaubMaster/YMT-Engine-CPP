@@ -1,8 +1,7 @@
 #include "Graphics/Uniform/Data/UniColor.hpp"
+#include "Graphics/Shader/BaseShader.hpp"
 #include "DataStruct/Color.hpp"
-
 #include "OpenGL/openGL.h"
-#include <iostream>
 
 
 

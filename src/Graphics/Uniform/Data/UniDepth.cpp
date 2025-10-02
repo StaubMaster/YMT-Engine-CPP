@@ -1,6 +1,5 @@
 #include "Graphics/Uniform/Data/UniDepth.hpp"
 #include "DataStruct/Depth.hpp"
-
 #include "OpenGL/openGL.h"
 #include <iostream>
 

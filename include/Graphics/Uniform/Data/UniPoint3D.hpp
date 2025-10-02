@@ -3,7 +3,6 @@
 # define UNI_POINT_3D_HPP
 
 # include "Graphics/Uniform/Base/GenericUniformBase.hpp"
-
 # include "DataDec.hpp"
 
 class BaseShader;
