@@ -44,7 +44,7 @@ MAC_ARGS = \
 
 all:
 	$(foreach arc, $(ARC), \
-		echo '[' 'all' $(arc) ']' ; \
+		@echo '[' 'all' $(arc) ']' ; \
 		$(MAKE) -C $(dir $(arc)) all || exit 1 ; \
 	)
 	@echo '[ all Done ]'
@@ -52,14 +52,14 @@ all:
 
 clean:
 	$(foreach arc, $(ARC), \
-		echo '[' 'clean' $(arc) ']' ; \
+		@echo '[' 'clean' $(arc) ']' ; \
 		$(MAKE) -C $(dir $(arc)) clean || exit 1 ; \
 	)
 	@echo '[ clean Done ]'
 
 fclean:
 	$(foreach arc, $(ARC), \
-		echo '[' 'fclean' $(arc) ']' ; \
+		@echo '[' 'fclean' $(arc) ']' ; \
 		$(MAKE) -C $(dir $(arc)) fclean || exit 1 ; \
 	)
 	@echo '[ fclean Done ]'

@@ -90,36 +90,34 @@ void Window::Callback_Key(GLFWwindow * window, int key, int scancode, int action
 
 
 
-Point3D Window::MoveFromKeys(float speed)
+bool Window::IsMouseLocked() const
+{
+	return (glfwGetInputMode(win, GLFW_CURSOR) == GLFW_CURSOR_DISABLED);
+}
+Point3D Window::MoveFromKeys(float speed) const
 {
 	Point3D move;
 
-	if (glfwGetInputMode(win, GLFW_CURSOR) == GLFW_CURSOR_DISABLED)
-	{
-		if (glfwGetKey(win, GLFW_KEY_A) == GLFW_PRESS) { move.X -= speed; }
-		if (glfwGetKey(win, GLFW_KEY_D) == GLFW_PRESS) { move.X += speed; }
-		if (glfwGetKey(win, GLFW_KEY_S) == GLFW_PRESS) { move.Z -= speed; }
-		if (glfwGetKey(win, GLFW_KEY_W) == GLFW_PRESS) { move.Z += speed; }
-		if (glfwGetKey(win, GLFW_KEY_SPACE) == GLFW_PRESS)      { move.Y += speed; }
-		if (glfwGetKey(win, GLFW_KEY_LEFT_SHIFT) == GLFW_PRESS) { move.Y -= speed; }
-		if (glfwGetKey(win, GLFW_KEY_LEFT_CONTROL) == GLFW_PRESS) { move = move * 10; }
-	}
+	if (glfwGetKey(win, GLFW_KEY_A) == GLFW_PRESS) { move.X -= speed; }
+	if (glfwGetKey(win, GLFW_KEY_D) == GLFW_PRESS) { move.X += speed; }
+	if (glfwGetKey(win, GLFW_KEY_S) == GLFW_PRESS) { move.Z -= speed; }
+	if (glfwGetKey(win, GLFW_KEY_W) == GLFW_PRESS) { move.Z += speed; }
+	if (glfwGetKey(win, GLFW_KEY_SPACE) == GLFW_PRESS)      { move.Y += speed; }
+	if (glfwGetKey(win, GLFW_KEY_LEFT_SHIFT) == GLFW_PRESS) { move.Y -= speed; }
+	if (glfwGetKey(win, GLFW_KEY_LEFT_CONTROL) == GLFW_PRESS) { move = move * 10; }
 
 	return move;
 }
-Angle3D Window::SpinFromCursor(float speed)
+Angle3D Window::SpinFromCursor(float speed) const
 {
 	Angle3D spin;
 
-	if (glfwGetInputMode(win, GLFW_CURSOR) == GLFW_CURSOR_DISABLED)
-	{
-		double x, y;
-		glfwGetCursorPos(win, &x, &y);
+	double x, y;
+	glfwGetCursorPos(win, &x, &y);
 
-		spin.x = (+x) * speed;
-		spin.y = (-y) * speed;
-		spin.UpdateSinCos();
-	}
+	spin.x = (+x) * speed;
+	spin.y = (-y) * speed;
+	spin.UpdateSinCos();
 
 	return spin;
 }

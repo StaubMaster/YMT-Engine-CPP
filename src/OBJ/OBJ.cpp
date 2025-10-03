@@ -8,6 +8,7 @@
 
 #include "DataStruct/Point2D.hpp"
 #include "DataStruct/SizeRatio2D.hpp"
+#include "DataStruct/AxisBox3D.hpp"
 
 #include "DataO.hpp"
 
@@ -320,4 +321,19 @@ OBJ * OBJ::Load(const FileContext & file)
 		return obj;
 	}
 	return NULL;
+}
+
+
+
+AxisBox3D OBJ::ToAxisBox()
+{
+	AxisBox3D box;
+
+	for (unsigned int i = 0; i < Positions.Count(); i++)
+	{
+		const Point4D & p = Positions[i];
+		box.Consider(Point3D(p.X, p.Y, p.Z));
+	}
+
+	return box;
 }

@@ -13,6 +13,7 @@ FILES_SRC = \
 	DataStruct/Angle3D.cpp \
 	DataStruct/Trans3D.cpp \
 	DataStruct/Undex3D.cpp \
+	DataStruct/AxisBox3D.cpp \
 	DataStruct/Point2D.cpp \
 	DataStruct/SizeRatio2D.cpp \
 	DataStruct/Range.cpp \

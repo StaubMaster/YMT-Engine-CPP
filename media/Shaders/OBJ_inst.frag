@@ -76,8 +76,8 @@ float CalcDepthFactor()
 	depth_factor = (depth_factor - Depth.Factors[0]) / Depth.Factors[1];
 	gl_FragDepth = depth_factor;
 
-	//depth_factor = (depth_factor - Depth.Range.Min) / Depth.Range.Len;
-	//depth_factor = min(max(depth_factor, 0), 1);
+	depth_factor = (depth_factor - Depth.Range.Min) / Depth.Range.Len;
+	depth_factor = min(max(depth_factor, 0), 1);
 
 	return depth_factor;
 }

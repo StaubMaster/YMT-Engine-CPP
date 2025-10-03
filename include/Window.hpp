@@ -39,8 +39,9 @@ class Window
 		static void Callback_Key(GLFWwindow * window, int key, int scancode, int action, int mods);
 
 	public:
-		Point3D MoveFromKeys(float speed);
-		Angle3D SpinFromCursor(float speed);
+		bool IsMouseLocked() const;
+		Point3D MoveFromKeys(float speed) const;
+		Angle3D SpinFromCursor(float speed) const;
 
 	public:
 		void Run();

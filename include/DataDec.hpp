@@ -13,6 +13,7 @@ struct Point3D;
 struct Angle3D;
 struct Trans3D;
 struct Undex3D;
+struct AxisBox3D;
 
 struct Point4D;
 

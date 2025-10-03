@@ -82,6 +82,9 @@ class OBJ
 	public:
 		static OBJ * Load(const FileContext & file);
 
+	public:
+		AxisBox3D ToAxisBox();
+
 	private:
 		class Exception_InvalidString : public std::exception
 		{
