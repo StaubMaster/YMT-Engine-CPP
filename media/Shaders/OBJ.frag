@@ -38,10 +38,6 @@ const RangeData	LightRange = { 0.1, 0.9, 1.0 };
 
 
 in Vert {
-	vec3 Original;
-	vec3 Absolute;
-	vec3 Relative;
-
 	vec3 Normal;
 	vec3 Tex;
 	vec3 Col;
@@ -70,8 +66,6 @@ float CalcDepthFactor()
 
 	depth_factor = gl_FragCoord.z;
 	depth_factor = Depth.Factors[4] / (Depth.Factors[3] - (depth_factor * Depth.Factors[2]));
-
-	//depth_factor = length(fs_inn.Relative);
 
 	depth_factor = (depth_factor - Depth.Factors[0]) / Depth.Factors[1];
 	gl_FragDepth = depth_factor;

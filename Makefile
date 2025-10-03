@@ -22,12 +22,16 @@ FILES_SRC = \
 	DataStruct/Point4D.cpp \
 	DataStruct/Color.cpp \
 	DataStruct/Depth.cpp \
+	DataStruct/LightBase.cpp \
+	DataStruct/LightSolar.cpp \
+	DataStruct/LightSpot.cpp \
 	DataO.cpp \
 \
 	Graphics/Shader/ShaderCode.cpp \
 	Graphics/Shader/BaseShader.cpp \
 \
 	Graphics/Uniform/Base/UniformBase.cpp \
+	Graphics/Uniform/Data/Float1.cpp \
 	Graphics/Uniform/Data/Point3D.cpp \
 	Graphics/Uniform/Data/Angle3D.cpp \
 	Graphics/Uniform/Data/Trans3D.cpp \
@@ -38,6 +42,9 @@ FILES_SRC = \
 	Graphics/Uniform/Data/Depth.cpp \
 	Graphics/Uniform/Data/LInter.cpp \
 	Graphics/Uniform/Data/Color.cpp \
+	Graphics/Uniform/Data/LightBase.cpp \
+	Graphics/Uniform/Data/LightSolar.cpp \
+	Graphics/Uniform/Data/LightSpot.cpp \
 \
 	Graphics/Multiform/Base/MultiformBase.cpp \
 	Graphics/Multiform/Data/Trans3D.cpp \

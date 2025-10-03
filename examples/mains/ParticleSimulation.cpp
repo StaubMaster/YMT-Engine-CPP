@@ -197,7 +197,10 @@ void Free()
 }
 void Frame(double timeDelta)
 {
-	view_trans.TransformFlatX(win -> MoveFromKeys(2.0f * timeDelta), win -> SpinFromCursor(0.2f * timeDelta));
+	if (win -> IsMouseLocked())
+	{
+		view_trans.TransformFlatX(win -> MoveFromKeys(2.0f * timeDelta), win -> SpinFromCursor(0.2f * timeDelta));
+	}
 	PH_Shader -> View.PutData(view_trans);
 	tex_arr -> Bind();
 

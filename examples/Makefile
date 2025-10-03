@@ -8,7 +8,8 @@ FLAGS = -Wall -Wextra -Werror
 MAINS = \
 	OBJ_Parse.cpp \
 	DefaultInstances.cpp \
-	ParticleSimulation.cpp
+	ParticleSimulation.cpp \
+	LightTest.cpp
 
 EXES = $(MAINS:.cpp=.exe)
 
@@ -43,23 +44,23 @@ MAC_ARGS = \
 #	re		fclean and all ?
 
 all:
-	$(foreach arc, $(ARC), \
-		@echo '[' 'all' $(arc) ']' ; \
+	@$(foreach arc, $(ARC), \
+		echo '[' 'all' $(arc) ']' ; \
 		$(MAKE) -C $(dir $(arc)) all || exit 1 ; \
 	)
 	@echo '[ all Done ]'
 	@$(MAKE) $(EXES)
 
 clean:
-	$(foreach arc, $(ARC), \
-		@echo '[' 'clean' $(arc) ']' ; \
+	@$(foreach arc, $(ARC), \
+		echo '[' 'clean' $(arc) ']' ; \
 		$(MAKE) -C $(dir $(arc)) clean || exit 1 ; \
 	)
 	@echo '[ clean Done ]'
 
 fclean:
-	$(foreach arc, $(ARC), \
-		@echo '[' 'fclean' $(arc) ']' ; \
+	@$(foreach arc, $(ARC), \
+		echo '[' 'fclean' $(arc) ']' ; \
 		$(MAKE) -C $(dir $(arc)) fclean || exit 1 ; \
 	)
 	@echo '[ fclean Done ]'

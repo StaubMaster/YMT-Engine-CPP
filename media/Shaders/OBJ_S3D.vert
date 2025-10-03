@@ -56,10 +56,6 @@ layout(location = 22) in vec3 ICos;
 
 
 out Vert {
-	vec3 Original;
-	vec3 Absolute;
-	vec3 Relative;
-
 	vec3 Normal;
 	vec3 Tex;
 	vec3 Col;
@@ -110,10 +106,11 @@ vec4 proj(in vec3 p_inn)
 
 void main()
 {
-	vs_out.Original = VPos.xyz;
-	vs_out.Absolute = DSA(vs_out.Original, ISin, ICos) + IPos;
-	vs_out.Relative = ASD(vs_out.Absolute - View.Pos, View.Rot.Sin, View.Rot.Cos);
-	gl_Position = proj(vs_out.Relative);
+	vec3 pos;
+	pos = VPos.xyz;
+	pos = DSA(pos, ISin, ICos) + IPos;
+	pos = ASD(pos - View.Pos, View.Rot.Sin, View.Rot.Cos);
+	gl_Position = proj(pos);
 
 	vs_out.Normal = DSA(VNorm, ISin, ICos);
 	vs_out.Tex = VTex;

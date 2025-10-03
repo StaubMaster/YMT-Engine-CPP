@@ -8,6 +8,14 @@
 #include "Graphics/Multiform/Data/Trans3D.hpp"
 #include "Graphics/Multiform/Data/Depth.hpp"
 
+#include "Graphics/Uniform/Data/LightBase.hpp"
+#include "Graphics/Uniform/Data/LightSolar.hpp"
+#include "Graphics/Uniform/Data/LightSpot.hpp"
+
+#include "DataStruct/LightBase.hpp"
+#include "DataStruct/LightSolar.hpp"
+#include "DataStruct/LightSpot.hpp"
+
 #include "TextureArray.hpp"
 #include "PolyHedra.hpp"
 #include "Window.hpp"
@@ -24,6 +32,8 @@ DirectoryContext ShaderDir("../media/Shaders");
 
 
 Window * win;
+Trans3D	ViewTrans;
+Depth	ViewDepth;
 
 YMT::PolyHedra * Poly0;
 TextureArray * Tex0;
@@ -36,19 +46,21 @@ Multiform::SizeRatio2D * Multi_ViewPortSizeRatio;
 Multiform::Trans3D * Multi_View;
 Multiform::Depth * Multi_Depth;
 
-Trans3D view_trans;
+LightBase Light_Ambient;
+Uniform::LightBase * Uni_Light_Ambient;
+
+LightSolar Light_Solar;
+Uniform::LightSolar * Uni_Light_Solar;
+
+LightSpot Light_Spot;
+Uniform::LightSpot * Uni_Light_Spot;
+
 
 
 
 void InitShaders()
 {
 	PH_Shader = new PolyHedra_3D_Shader(ShaderDir);
-	win -> DefaultColor = Color(0.25f, 0.0f, 0.0f);
-
-	Depth Depth;
-	Depth.Factors = DepthFactors(0.1f, 100.0f);
-	Depth.Range = Range(0.8f, 1.0f);
-	Depth.Color = win -> DefaultColor;
 
 	Multi_ViewPortSizeRatio = new Multiform::SizeRatio2D("ViewPortSizeRatio");
 	Multi_View = new Multiform::Trans3D("View");
@@ -63,7 +75,11 @@ void InitShaders()
 	Multi_View -> FindUniforms(shaders, shader_count);
 	Multi_Depth -> FindUniforms(shaders, shader_count);
 
-	Multi_Depth -> ChangeData(Depth);
+	Multi_Depth -> ChangeData(ViewDepth);
+
+	Uni_Light_Ambient = new Uniform::LightBase("Ambient", *PH_Shader);
+	Uni_Light_Solar = new Uniform::LightSolar("Solar", *PH_Shader);
+	Uni_Light_Spot = new Uniform::LightSpot("Spot", *PH_Shader);
 }
 void FreeShaders()
 {
@@ -72,6 +88,10 @@ void FreeShaders()
 	delete Multi_ViewPortSizeRatio;
 	delete Multi_View;
 	delete Multi_Depth;
+
+	delete Uni_Light_Ambient;
+	delete Uni_Light_Solar;
+	delete Uni_Light_Spot;
 }
 
 void AddInstances()
@@ -153,11 +173,17 @@ void Frame(double timeDelta)
 {
 	if (win -> IsMouseLocked())
 	{
-		view_trans.TransformFlatX(win -> MoveFromKeys(2.0f * timeDelta), win -> SpinFromCursor(0.2f * timeDelta));
+		ViewTrans.TransformFlatX(win -> MoveFromKeys(2.0f * timeDelta), win -> SpinFromCursor(0.2f * timeDelta));
 	}
-	Multi_View -> ChangeData(view_trans);
+	Multi_View -> ChangeData(ViewTrans);
+	Light_Spot.Pos = ViewTrans.Pos;
+	Light_Spot.Dir = ViewTrans.Rot.rotate_back(Point3D(0, 0, 1));
 
 	PH_Shader -> Use();
+	Uni_Light_Ambient -> PutData(Light_Ambient);
+	Uni_Light_Solar -> PutData(Light_Solar);
+	Uni_Light_Spot -> PutData(Light_Spot);
+
 	Tex0 -> Bind();
 	PH_Instances -> Update();
 	PH_Instances -> Draw();
@@ -203,10 +229,16 @@ int main()
 		return -1;
 	}
 
-	view_trans = Trans3D(
-		Point3D(0, 0, 0),
-		Angle3D(0, 0, 0)
-	);
+	win -> DefaultColor = Color(0.25f, 0.0f, 0.0f);
+
+	ViewTrans = Trans3D(Point3D(0, 0, 0), Angle3D(0, 0, 0));
+	ViewDepth.Factors = DepthFactors(0.1f, 100.0f);
+	ViewDepth.Range = Range(0.8f, 1.0f);
+	ViewDepth.Color = win -> DefaultColor;
+
+	Light_Ambient = LightBase(0.25f, Color(1.0f, 0.0f, 0.0f));
+	Light_Solar = LightSolar(0.1f, Color(0.0f, 0.0f, 1.0f), Point3D(+1, -3, +2).normalize());
+	Light_Spot = LightSpot(1.0f, Color(0.0f, 1.0f, 0.0f), Point3D(0, 0, 0), Point3D(0, 0, 0), Range(0.9, 1.0));
 
 
 

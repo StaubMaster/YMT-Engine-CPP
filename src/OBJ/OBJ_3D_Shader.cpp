@@ -5,8 +5,8 @@
 
 OBJ_3D_Shader::OBJ_3D_Shader(const DirectoryContext & dir)
 	: BaseShader((const ShaderCode []) {
-		ShaderCode::FromFile(dir.File("OBJ_inst.vert")),
-		ShaderCode::FromFile(dir.File("OBJ_inst.frag")),
+		ShaderCode::FromFile(dir.File("OBJ_S3D.vert")),
+		ShaderCode::FromFile(dir.File("OBJ.frag")),
 	}, 2),
 	ViewPortSizeRatio("ViewPortSizeRatio", *this),
 	View("View", *this),

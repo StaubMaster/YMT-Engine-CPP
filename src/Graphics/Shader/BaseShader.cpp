@@ -3,7 +3,7 @@
 #include "Graphics/Uniform/Base/UniformBase.hpp"
 
 #include "OpenGL/openGL.h"
-//#include <iostream>
+#include <iostream>
 
 int BaseShader::CurrentID = -1;
 
@@ -54,11 +54,11 @@ int BaseShader::UniformFind(const std::string & name) const
 	int location = glGetUniformLocation(ID, name.c_str());
 	/*if (location == -1)
 	{
-		std::cout << "Uni '" << name <<"' not found in Prog " << ID << ".\n";
+		std::cout << "Uniform '" << name <<"' not found in Prog " << ID << ".\n";
 	}
 	else
 	{
-		std::cout << "Uni '" << name << "' found at " << location << " in Prog " << ID << ".\n";
+		std::cout << "Uniform '" << name << "' found at " << location << " in Prog " << ID << ".\n";
 	}*/
 	return location;
 }
