@@ -166,7 +166,7 @@ void Update_ObjTrans(double timeDelta)
 	for (int i = 0; i < OBJ_Count; i++)
 	{
 		OBJs_Trans[i].Pos = OBJs_Trans[i].Pos + (OBJs_Trans[i].Rot.rotate_back(OBJs_Center[i]));
-		OBJs_Trans[i].Rot.ChangeX(OBJs_Trans[i].Rot.x + 0.02f);
+		OBJs_Trans[i].Rot.ChangeX(OBJs_Trans[i].Rot.x + 0.01f);
 		OBJs_Trans[i].Pos = OBJs_Trans[i].Pos - (OBJs_Trans[i].Rot.rotate_back(OBJs_Center[i]));
 
 		if (!win -> IsMouseLocked())

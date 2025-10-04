@@ -31,6 +31,16 @@ std::string MTL::Material::ToString()
 
 MTL::MTL()
 {
+	DefaultMaterial.Ka = Color(0.25, 0.0, 0.0);
+	DefaultMaterial.Kd = Color(0.0, 0.0, 0.25);
+	DefaultMaterial.Ks = Color(0.0, 0.25, 0.0);
+	DefaultMaterial.Ns = 32;
+
+	DefaultMaterial.Ni = 1.0;
+	DefaultMaterial.d =  1.0;
+	DefaultMaterial.Tr = 0.0;
+	DefaultMaterial.illum = 2;
+
 	Index_Newest = 0xFFFFFFFF;
 	Index_Selected = 0xFFFFFFFF;
 }
@@ -49,13 +59,13 @@ MTL::Material * MTL::Newest()
 	}
 	return NULL;
 }
-MTL::Material * MTL::Selected()
+MTL::Material & MTL::Index(unsigned int idx)
 {
-	if (Index_Selected != 0xFFFFFFFF)
+	if (idx != 0xFFFFFFFF)
 	{
-		return &Materials[Index_Selected];
+		return Materials[idx];
 	}
-	return NULL;
+	return DefaultMaterial;
 }
 
 void MTL::Insert(MTL & mtl)
@@ -69,8 +79,10 @@ void MTL::Select(std::string name)
 		if (Materials[i].Name == name)
 		{
 			Index_Selected = i;
+			return;
 		}
 	}
+	Index_Selected = 0xFFFFFFFF;
 }
 
 
@@ -78,7 +90,7 @@ void MTL::Select(std::string name)
 void MTL::Parse_newmtl(const LineCommand & cmd)
 {
 	Index_Newest = Materials.Count();
-	Materials.Insert(Material());
+	Materials.Insert(DefaultMaterial);
 	Newest() -> Name = cmd.Args[0];
 }
 
@@ -107,16 +119,27 @@ void MTL::Parse_Ns(const LineCommand & cmd)
 void MTL::Parse_Ni(const LineCommand & cmd)
 {
 	Newest() -> Ni = std::stof(cmd.Args[0]);
+	if (Newest() -> Ni != 1.0f)
+	{
+		std::cout << "Ni values other then 1.0 are currently not Implemented.\n";
+	}
 }
 void MTL::Parse_d(const LineCommand & cmd)
 {
 	Newest() -> d = std::stof(cmd.Args[0]);
+	if (Newest() -> d != 1.0f)
+	{
+		std::cout << "d values other then 1.0 are currently not Implemented.\n";
+	}
 }
 
 void MTL::Parse_illum(const LineCommand & cmd)
 {
 	Newest() -> illum = std::stoi(cmd.Args[0]);
-	std::cout << "illum: " << Newest() -> illum << "\n";
+	if (Newest() -> illum != 2)
+	{
+		std::cout << "illum values other then 2 are currently not Implemented.\n";
+	}
 }
 
 void MTL::Parse(const LineCommand & cmd)
@@ -141,7 +164,6 @@ void MTL::Parse(const LineCommand & cmd)
 
 MTL * MTL::Load(const FileContext & file)
 {
-	std::cout << "'" << file.FilePath << "'" << " exists ? " << file.Exists() << "\n";
 	if (file.Exists())
 	{
 		if (file.Extension() != ".mtl")

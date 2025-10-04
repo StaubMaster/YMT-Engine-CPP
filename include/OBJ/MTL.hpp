@@ -36,8 +36,11 @@ class MTL
 
 	public:
 		ContainerDynamic<Material> Materials;
+		Material DefaultMaterial;
+
 	private:
 		unsigned int Index_Newest;
+	public:
 		unsigned int Index_Selected;
 
 	public:
@@ -46,7 +49,7 @@ class MTL
 
 	public:
 		Material * Newest();
-		Material * Selected();
+		Material & Index(unsigned int idx);
 	public:
 		void Insert(MTL & mtl);
 		void Select(std::string name);

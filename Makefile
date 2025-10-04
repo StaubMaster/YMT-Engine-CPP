@@ -66,6 +66,7 @@ FILES_SRC = \
 	Graphics/Attribute/Data/Point2D.cpp \
 	Graphics/Attribute/Data/Point4D.cpp \
 	Graphics/Attribute/Data/Color.cpp \
+	Graphics/Attribute/Data/Float1.cpp \
 \
 	Graphics/PH/PolyHedra_MainData.cpp \
 	Graphics/PH/PolyHedra_MainAttrib.cpp \

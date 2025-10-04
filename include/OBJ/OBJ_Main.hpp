@@ -16,6 +16,7 @@
 # include "Graphics/Attribute/Data/Point4D.hpp"
 # include "Graphics/Attribute/Data/Point3D.hpp"
 # include "Graphics/Attribute/Data/Color.hpp"
+# include "Graphics/Attribute/Data/Float1.hpp"
 
 
 
@@ -28,7 +29,12 @@ struct OBJ_MainData
 	Point4D	Position;
 	Point3D	Texture;
 	Point3D	Normal;
-	Color	Color;
+	::Color	Color;
+
+	::Color	AmbientColor;
+	::Color	DiffuseColor;
+	float	SpecularPower;
+	::Color	SpecularColor;
 };
 
 
@@ -41,6 +47,11 @@ class OBJ_MainAttrib : public Attribute::Base
 		Attribute::Point3D	Normal;
 		Attribute::Color	Color;
 
+		Attribute::Color	AmbientColor;
+		Attribute::Color	DiffuseColor;
+		Attribute::Float1	SpecularPower;
+		Attribute::Color	SpecularColor;
+
 	public:
 		OBJ_MainAttrib(
 			unsigned int divisor,
@@ -48,7 +59,11 @@ class OBJ_MainAttrib : public Attribute::Base
 			unsigned int indexPosition,
 			unsigned int indexTexture,
 			unsigned int indexNormal,
-			unsigned int indexColor
+			unsigned int indexColor,
+			unsigned int indexAmbientColor,
+			unsigned int indexDiffuseColor,
+			unsigned int indexSpecularPower,
+			unsigned int indexSpecularColor
 		);
 
 	public:
@@ -64,7 +79,11 @@ class OBJ_MainBuffer : public BaseBuffer
 			unsigned int indexPosition,
 			unsigned int indexTexture,
 			unsigned int indexNormal,
-			unsigned int indexColor
+			unsigned int indexColor,
+			unsigned int indexAmbientColor,
+			unsigned int indexDiffuseColor,
+			unsigned int indexSpecularPower,
+			unsigned int indexSpecularColor
 		);
 		~OBJ_MainBuffer();
 };

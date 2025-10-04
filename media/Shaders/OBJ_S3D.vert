@@ -47,7 +47,13 @@ uniform DepthData Depth;
 layout(location = 0) in vec4 VPos;
 layout(location = 1) in vec3 VTex;
 layout(location = 2) in vec3 VNorm;
+
 layout(location = 3) in vec3 VCol;
+
+layout(location = 4) in vec3	VAmbientColor;
+layout(location = 5) in vec3	VDiffuseColor;
+layout(location = 6) in float	VSpecularPower;
+layout(location = 7) in vec3	VSpecularColor;
 
 layout(location = 20) in vec3 IPos;
 layout(location = 21) in vec3 ISin;
@@ -56,9 +62,19 @@ layout(location = 22) in vec3 ICos;
 
 
 out Vert {
-	vec3 Normal;
-	vec3 Tex;
-	vec3 Col;
+	vec3	Original;
+	vec3	Absolute;
+	vec3	Relative;
+
+	vec3	Normal;
+	vec3	Tex;
+
+	vec3	Col;
+
+	vec3	AmbientColor;
+	vec3	DiffuseColor;
+	float	SpecularPower;
+	vec3	SpecularColor;
 } vs_out;
 
 
@@ -107,12 +123,17 @@ vec4 proj(in vec3 p_inn)
 void main()
 {
 	vec3 pos;
-	pos = VPos.xyz;
-	pos = DSA(pos, ISin, ICos) + IPos;
-	pos = ASD(pos - View.Pos, View.Rot.Sin, View.Rot.Cos);
-	gl_Position = proj(pos);
+	vs_out.Original = VPos.xyz;
+	vs_out.Absolute = DSA(vs_out.Original, ISin, ICos) + IPos;
+	vs_out.Relative = ASD(vs_out.Absolute - View.Pos, View.Rot.Sin, View.Rot.Cos);
+	gl_Position = proj(vs_out.Relative);
 
 	vs_out.Normal = DSA(VNorm, ISin, ICos);
 	vs_out.Tex = VTex;
 	vs_out.Col = VCol;
+
+	vs_out.AmbientColor = VAmbientColor;
+	vs_out.DiffuseColor = VDiffuseColor;
+	vs_out.SpecularPower = VSpecularPower;
+	vs_out.SpecularColor = VSpecularColor;
 }

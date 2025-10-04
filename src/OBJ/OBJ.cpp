@@ -43,27 +43,18 @@ OBJ::~OBJ()
 
 
 
-/*static char SizeMin(Point3D val)
-{
-	if (val.X < val.Y && val.X < val.Z) { return 0b001; }
-	if (val.Z < val.Z && val.Y < val.X) { return 0b010; }
-	if (val.Z < val.X && val.Z < val.Y) { return 0b100; }
-	return 0;
-}*/
 static char SizeMax(Point3D val)
 {
-	if (val.X > val.Y && val.X > val.Z) { std::cout << "Max: X\n"; return 0b001; }
-	if (val.Y > val.Z && val.Y > val.X) { std::cout << "Max: Y\n"; return 0b010; }
-	if (val.Z > val.X && val.Z > val.Y) { std::cout << "Max: Z\n"; return 0b100; }
-	std::cout << "Max: #\n";
+	if (val.X > val.Y && val.X > val.Z) { return 0b001; }
+	if (val.Y > val.Z && val.Y > val.X) { return 0b010; }
+	if (val.Z > val.X && val.Z > val.Y) { return 0b100; }
 	return 0;
 }
 static char SizeMid(Point3D val)
 {
-	if ((val.X > val.Y && val.X < val.Z) || (val.X < val.Y && val.X > val.Z)) { std::cout << "Mid: X\n"; return 0b001; }
-	if ((val.Y > val.X && val.Y < val.Z) || (val.Y < val.X && val.Y > val.Z)) { std::cout << "Mid: Y\n"; return 0b010; }
-	if ((val.Z > val.X && val.Z < val.Y) || (val.Z < val.X && val.Z > val.Y)) { std::cout << "Mid: Z\n"; return 0b100; }
-	std::cout << "Max: #\n";
+	if ((val.X > val.Y && val.X < val.Z) || (val.X < val.Y && val.X > val.Z)) { return 0b001; }
+	if ((val.Y > val.X && val.Y < val.Z) || (val.Y < val.X && val.Y > val.Z)) { return 0b010; }
+	if ((val.Z > val.X && val.Z < val.Y) || (val.Z < val.X && val.Z > val.Y)) { return 0b100; }
 	return 0;
 }
 
@@ -158,6 +149,23 @@ OBJ_MainData * OBJ::ToMainData(int & count, SizeRatio2D texScale)
 		c0.Color = col;
 		c1.Color = col;
 		c2.Color = col;
+
+		const MTL::Material & material = Materials.Index(face.MaterialIndex);
+
+		c0.AmbientColor = material.Ka;
+		c0.DiffuseColor = material.Kd;
+		c0.SpecularPower = material.Ns;
+		c0.SpecularColor = material.Ks;
+
+		c1.AmbientColor = material.Ka;
+		c1.DiffuseColor = material.Kd;
+		c1.SpecularPower = material.Ns;
+		c1.SpecularColor = material.Ks;
+
+		c2.AmbientColor = material.Ka;
+		c2.DiffuseColor = material.Kd;
+		c2.SpecularPower = material.Ns;
+		c2.SpecularColor = material.Ks;
 	}
 
 	return data;
@@ -247,21 +255,27 @@ void OBJ::Parse_f(const LineCommand & cmd)
 	if (corns.size() == 3)
 	{
 		Face face;
+
 		face.Corner1 = corns[0];
 		face.Corner2 = corns[1];
 		face.Corner3 = corns[2];
+		face.MaterialIndex = Materials.Index_Selected;
 		Faces.Insert(face);
 	}
 	else if (corns.size() == 4)
 	{
 		Face face;
+
 		face.Corner1 = corns[0];
 		face.Corner2 = corns[1];
 		face.Corner3 = corns[2];
+		face.MaterialIndex = Materials.Index_Selected;
 		Faces.Insert(face);
+
 		face.Corner1 = corns[0];
 		face.Corner2 = corns[2];
 		face.Corner3 = corns[3];
+		face.MaterialIndex = Materials.Index_Selected;
 		Faces.Insert(face);
 	}
 	else

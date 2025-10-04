@@ -37,7 +37,7 @@ class OBJ
 				FaceCorner Corner1;
 				FaceCorner Corner2;
 				FaceCorner Corner3;
-				int MaterialIndex;
+				unsigned int MaterialIndex;
 			public:
 				Face();
 		};
