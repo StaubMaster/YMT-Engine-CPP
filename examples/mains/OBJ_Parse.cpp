@@ -32,21 +32,22 @@ DirectoryContext ShaderDir("../media/Shaders");
 
 Window * win;
 
-int OBJ_Count;
-OBJ ** obj;
+Trans3D ViewTrans;
+Depth	ViewDepth;
+
 TextureArray * Tex0;
+int OBJ_Count;
+OBJ ** OBJs;
+Point3D * OBJs_Center;
+Trans3D * OBJs_Trans;
 
 OBJ_3D_BufferArray ** OBJ_BufferArray;
 OBJ_3D_Shader * OBJ_Shader;
-Point3D OBJ_Center;
-Trans3D OBJ_Trans;
 
 Multiform::SizeRatio2D * Multi_ViewPortSizeRatio;
 Multiform::Trans3D * Multi_View;
 Multiform::Depth * Multi_Depth;
 Multiform::LInter * Multi_ColorToTex;
-
-Trans3D view_trans;
 
 LInter ColorToTex;
 float ColorToTex_Speed = 0.01f;
@@ -58,12 +59,6 @@ bool ColorToTex_Direction_last = false;
 void InitShaders()
 {
 	OBJ_Shader = new OBJ_3D_Shader(ShaderDir);
-	win -> DefaultColor = Color(0.25f, 0.0f, 0.0f);
-
-	Depth Depth;
-	Depth.Factors = DepthFactors(0.1f, 100.0f);
-	Depth.Range = Range(0.8f, 1.0f);
-	Depth.Color = win -> DefaultColor;
 
 	ColorToTex = LInter::T0();
 	ColorToTex_Direction = false;
@@ -83,7 +78,7 @@ void InitShaders()
 	Multi_Depth -> FindUniforms(shaders, shader_count);
 	Multi_ColorToTex -> FindUniforms(shaders, shader_count);
 
-	Multi_Depth -> ChangeData(Depth);
+	Multi_Depth -> ChangeData(ViewDepth);
 	Multi_ColorToTex -> ChangeData(ColorToTex);
 }
 void FreeShaders()
@@ -113,7 +108,7 @@ void Init()
 
 		int main_count;
 		OBJ_MainData * main_data;
-		main_data = obj[i] -> ToMainData(main_count, Tex0 -> SizeRatio);
+		main_data = OBJs[i] -> ToMainData(main_count, Tex0 -> SizeRatio);
 		OBJ_BufferArray[i] -> BindMain(main_data, main_count);
 		delete [] main_data;
 
@@ -124,12 +119,6 @@ void Init()
 		int inst_count = 1;
 		OBJ_BufferArray[i] -> BindInst(inst_data, inst_count);
 	}
-
-	if (OBJ_Count != 0)
-	{
-		OBJ_Center = obj[0] -> ToAxisBox().Center();
-	}
-	OBJ_Trans = Trans3D(Point3D(0, 0, 3), Angle3D(0, 0, 0));
 
 	std::cout << "Init 1\n";
 }
@@ -174,24 +163,25 @@ void Update_ColorToTex()
 }
 void Update_ObjTrans(double timeDelta)
 {
+	for (int i = 0; i < OBJ_Count; i++)
 	{
-		OBJ_Trans.Pos = OBJ_Trans.Pos + (OBJ_Trans.Rot.rotate_back(OBJ_Center));
-		OBJ_Trans.Rot.ChangeX(OBJ_Trans.Rot.x + 0.02f);
-		OBJ_Trans.Pos = OBJ_Trans.Pos - (OBJ_Trans.Rot.rotate_back(OBJ_Center));
-	}
-	if (!win -> IsMouseLocked())
-	{
-		OBJ_Trans.Pos = OBJ_Trans.Pos + win -> MoveFromKeys(2.0f * timeDelta);
-	}
+		OBJs_Trans[i].Pos = OBJs_Trans[i].Pos + (OBJs_Trans[i].Rot.rotate_back(OBJs_Center[i]));
+		OBJs_Trans[i].Rot.ChangeX(OBJs_Trans[i].Rot.x + 0.02f);
+		OBJs_Trans[i].Pos = OBJs_Trans[i].Pos - (OBJs_Trans[i].Rot.rotate_back(OBJs_Center[i]));
 
-	if (OBJ_Count >= 1)
-	{
-		Simple3D_InstData inst_data []
+		if (!win -> IsMouseLocked())
 		{
-			(Simple3D_InstData)OBJ_Trans,
-		};
-		int inst_count = 1;
-		OBJ_BufferArray[0] -> BindInst(inst_data, inst_count);
+			OBJs_Trans[i].Pos = OBJs_Trans[i].Pos + ViewTrans.Rot.rotate_back(win -> MoveFromKeys(2.0f * timeDelta));
+		}
+
+		{
+			Simple3D_InstData inst_data []
+			{
+				(Simple3D_InstData)OBJs_Trans[i],
+			};
+			int inst_count = 1;
+			OBJ_BufferArray[i] -> BindInst(inst_data, inst_count);
+		}
 	}
 }
 
@@ -199,9 +189,9 @@ void Frame(double timeDelta)
 {
 	if (win -> IsMouseLocked())
 	{
-		view_trans.TransformFlatX(win -> MoveFromKeys(2.0f * timeDelta), win -> SpinFromCursor(0.2f * timeDelta));
+		ViewTrans.TransformFlatX(win -> MoveFromKeys(2.0f * timeDelta), win -> SpinFromCursor(0.2f * timeDelta));
 	}
-	Multi_View -> ChangeData(view_trans);
+	Multi_View -> ChangeData(ViewTrans);
 
 	Update_ColorToTex();
 	Update_ObjTrans(timeDelta);
@@ -259,17 +249,26 @@ int main(int argc, char * argv [])
 		glfwTerminate();
 		return -1;
 	}
+	win -> DefaultColor = Color(0.25f, 0.0f, 0.0f);
 
-	view_trans = Trans3D(
-		Point3D(0, 0, 0),
-		Angle3D(0, 0, 0)
-	);
+
+
+	ViewTrans = Trans3D(Point3D(0, 0, 0), Angle3D(0, 0, 0));
+	ViewDepth.Factors = DepthFactors(0.1f, 100.0f);
+	ViewDepth.Range = Range(0.8f, 1.0f);
+	ViewDepth.Color = win -> DefaultColor;
+
+
 
 	OBJ_Count = argc - 1;
-	obj = new OBJ * [OBJ_Count];
+	OBJs = new OBJ * [OBJ_Count];
+	OBJs_Center = new Point3D[OBJ_Count];
+	OBJs_Trans = new Trans3D[OBJ_Count];
 	for (int i = 0; i < OBJ_Count; i++)
 	{
-		obj[i] = OBJ::Load(FileContext(std::string(argv[i + 1])));
+		OBJs[i] = OBJ::Load(FileContext(std::string(argv[i + 1])));
+		OBJs_Center[i] = OBJs[i] -> ToAxisBox().Center();
+		OBJs_Trans[i] = Trans3D(Point3D(i * 5, 0, 3) - OBJs_Center[i], Angle3D(0, 0, 0));
 	}
 
 
@@ -280,11 +279,10 @@ int main(int argc, char * argv [])
 
 
 
-	for (int i = 0; i < OBJ_Count; i++)
-	{
-		delete obj[i];
-	}
-	delete [] obj;
+	for (int i = 0; i < OBJ_Count; i++) { delete OBJs[i]; }
+	delete [] OBJs;
+	delete [] OBJs_Center;
+	delete [] OBJs_Trans;
 	delete win;
 
 

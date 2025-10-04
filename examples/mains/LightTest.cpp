@@ -32,6 +32,7 @@ DirectoryContext ShaderDir("../media/Shaders");
 
 
 Window * win;
+
 Trans3D	ViewTrans;
 Depth	ViewDepth;
 
@@ -238,7 +239,7 @@ int main()
 
 	Light_Ambient = LightBase(0.25f, Color(1.0f, 0.0f, 0.0f));
 	Light_Solar = LightSolar(0.1f, Color(0.0f, 0.0f, 1.0f), Point3D(+1, -3, +2).normalize());
-	Light_Spot = LightSpot(1.0f, Color(0.0f, 1.0f, 0.0f), Point3D(0, 0, 0), Point3D(0, 0, 0), Range(0.9, 1.0));
+	Light_Spot = LightSpot(1.0f, Color(0.0f, 1.0f, 0.0f), Point3D(0, 0, 0), Point3D(0, 0, 0), Range(0.8, 0.95));
 
 
 
