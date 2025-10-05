@@ -22,7 +22,6 @@ class Instance_Base_BufferArray : public BaseBufferArray
 		unsigned int DrawMode;
 
 	public:
-	protected:
 		Instance_Base_BufferArray(
 			MainBufferType * main_buffer,
 			InstBufferType * inst_buffer,
@@ -31,6 +30,7 @@ class Instance_Base_BufferArray : public BaseBufferArray
 			MainBuffer(main_buffer),
 			InstBuffer(inst_buffer),
 			DrawMode(draw_mode) { }
+
 		~Instance_Base_BufferArray()
 		{
 			delete MainBuffer;

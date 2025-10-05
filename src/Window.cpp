@@ -48,6 +48,8 @@ Window::Window(float w, float h)
 	FreeFunc = NULL;
 	ResizeFunc = NULL;
 
+	ViewPortSizeRatio = SizeRatio2D(w, h);
+	Center = Point2D(w * 0.5f, h * 0.5f);
 	DefaultColor = Color(0.5f, 0.5f, 0.5f);
 }
 Window::~Window()
@@ -61,6 +63,8 @@ void Window::Callback_Resize(GLFWwindow * window, int w, int h)
 {
 	Window * win = (Window *)glfwGetWindowUserPointer(window);
 	glViewport(0, 0, w, h);
+	win -> ViewPortSizeRatio = SizeRatio2D(w, h);
+	win -> Center = Point2D(w * 0.5f, h * 0.5f);
 	if (win -> ResizeFunc != NULL) { win -> ResizeFunc(w, h); }
 }
 void Window::Callback_Key(GLFWwindow * window, int key, int scancode, int action, int mods)
@@ -121,6 +125,28 @@ Angle3D Window::SpinFromCursor(float speed) const
 
 	return spin;
 }
+Point2D Window::CursorCentered() const
+{
+	if (IsMouseLocked()) { return Point2D(0, 0); }
+
+	double x, y;
+	glfwGetCursorPos(win, &x, &y);
+
+	Point2D p;
+
+	p.X = (x - Center.X);
+	p.Y = (Center.Y - y);
+
+	p.X = p.X / (ViewPortSizeRatio.W * ViewPortSizeRatio.RatioW);
+	p.Y = p.Y / (ViewPortSizeRatio.H * ViewPortSizeRatio.RatioH);
+
+	p.X = p.X * 2;
+	p.Y = p.Y * 2;
+
+	return p;
+}
+
+
 
 void Window::Run()
 {
@@ -142,7 +168,7 @@ void Window::Run()
 	glfwGetFramebufferSize(win, &w, &h);
 	if (ResizeFunc != NULL) { ResizeFunc(w, h); }
 
-	int frameMissed = 0;
+	int frameSkipped = 0;
 	int frameCount = 0;
 	TimeMeasure timeFunc;
 	TimeMeasure timeSwap;
@@ -174,25 +200,25 @@ void Window::Run()
 			timePoll.T0();
 			glfwPollEvents();
 			timePoll.T1();
-			
+
 			if (ShowFrameData)
 			{
 				if ((frameCount % 64) == 0)
 				{
-					std::cout << "Frame: " << frameCount << " (" << frameMissed << ")" << "\n";
+					std::cout << "Frame: " << frameCount << " (" << frameSkipped << ")" << "\n";
 					std::cout << "FrameTime: " << ((1.0 / 64.0) * 1000) << "ms\n";
 					std::cout << "Func: " << (timeFunc.Average() * 1000) << "ms\n";
 					std::cout << "Swap: " << (timeSwap.Average() * 1000) << "ms\n";
 					std::cout << "Poll: " << (timePoll.Average() * 1000) << "ms\n";
 				}
 				frameCount++;
-				frameMissed = 0;
+				frameSkipped = 0;
 			}
 			FrameTimeLast = FrameTimeCurr;
 		}
 		else
 		{
-			frameMissed++;
+			frameSkipped++;
 		}
 	}
 	}

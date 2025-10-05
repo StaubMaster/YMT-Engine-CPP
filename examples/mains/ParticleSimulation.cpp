@@ -5,17 +5,30 @@
 #include "Window.hpp"
 #include "TextureArray.hpp"
 
-#include "Graphics/PH/PH_3D/PolyHedra_3D_BufferArray.hpp"
-#include "Graphics/PH/PH_3D/PolyHedra_3D_Shader.hpp"
+#include "PH/PolyHedra_MainData.hpp"
+#include "PH/PolyHedra_MainBuffer.hpp"
 
-#include "DataStruct/Depth.hpp"
-#include "DataStruct/Range.hpp"
 #include "DataStruct/SizeRatio2D.hpp"
+#include "DataStruct/Trans3D.hpp"
+#include "DataStruct/Depth.hpp"
+#include "DataStruct/Ray3D.hpp"
 
+#include "Physics3D/Physics3D_InstData.hpp"
+#include "Physics3D/Physics3D_InstAttrib.hpp"
+#include "Physics3D/Physics3D_InstBuffer.hpp"
 
+#include "Graphics/Shader/BaseShader.hpp"
+#include "Graphics/Shader/ShaderCode.hpp"
+#include "Graphics/Buffer/Instance_Base_BufferArray.hpp"
+
+#include "Graphics/Uniform/Data/SizeRatio2D.hpp"
+#include "Graphics/Uniform/Data/Trans3D.hpp"
+#include "Graphics/Uniform/Data/Depth.hpp"
 
 #include "FileManager/FileContext.hpp"
 #include "FileManager/DirectoryContext.hpp"
+
+#include "DataO.hpp"
 
 
 
@@ -33,12 +46,26 @@ DirectoryContext KernelDir("../media/Kernel");
 
 Window * win;
 
-YMT::PolyHedra * PH;
-TextureArray * tex_arr;
-PolyHedra_3D_BufferArray * PH_Buffer;
-PolyHedra_3D_Shader * PH_Shader;
+Trans3D	ViewTrans;
+Depth	ViewDepth;
+Ray3D	ViewRay;
 
-Trans3D view_trans;
+TextureArray * Texture;
+
+YMT::PolyHedra * PH;
+
+Instance_Base_BufferArray<
+	PolyHedra_MainData,
+	PolyHedra_MainBuffer,
+	Physics3D_InstData,
+	Physics3D_InstBuffer
+> * PH_Physics3D_BufferArray;
+
+BaseShader * PH_Physics3D_Shader;
+
+Uniform::SizeRatio2D * Uni_ViewPortSizeRatio;
+Uniform::Trans3D * Uni_ViewTrans;
+Uniform::Depth * Uni_ViewDepth;
 
 
 
@@ -61,39 +88,95 @@ void CL_PrintError(cl_int err, bool printSuccess = false)
 
 cl::Program CL_Program;
 
-cl::SVMAllocator<Trans3D, cl::SVMTraitFine<>> SVM_Alloc;
-unsigned int BufferSize = EntityCount * sizeof(Trans3D);
-Trans3D * VMP_O;
+cl::SVMAllocator<Ray3D, cl::SVMTraitCoarse<cl::SVMTraitReadOnly<>>> SVM_Ray_Alloc;
+Ray3D * ViewRay_GPU_Ptr;
+
+cl::SVMAllocator<Physics3D_InstData, cl::SVMTraitFine<>> SVM_Physics3D_Alloc;
+unsigned int BufferSize = EntityCount * sizeof(Physics3D_InstData);
+Physics3D_InstData * Physics3D_GPU_Ptr;
 
 cl::KernelFunctor<
-	Trans3D *
-> * Kernel_TransInit;
+	Physics3D_InstData *
+> * Kernel_Init;
 
 cl::KernelFunctor<
-	Trans3D *
-> * Kernel_TransSpinCenter;
+	Physics3D_InstData *
+> * Kernel_Move;
+
+cl::KernelFunctor<
+	Physics3D_InstData *
+> * Kernel_Keep;
+
+cl::KernelFunctor<
+	Physics3D_InstData *
+> * Kernel_Look;
+
+cl::KernelFunctor<
+	Ray3D *,
+	Physics3D_InstData *
+> * Kernel_GravRay;
 
 void CL_Run_Init()
 {
 	cl_int err = CL_SUCCESS;
-	(*Kernel_TransInit)(
+	(*Kernel_Init)(
 		cl::EnqueueArgs(
 			cl::NDRange(EntityCountX, EntityCountY, EntityCountZ)
 		),
-		VMP_O,
+		Physics3D_GPU_Ptr,
 		err
 	);
 	CL_PrintError(err);
 	cl::finish();
 }
-void CL_Run_SpinCenter()
+void CL_Run_Move()
 {
 	cl_int err = CL_SUCCESS;
-	(*Kernel_TransSpinCenter)(
+	(*Kernel_Move)(
 		cl::EnqueueArgs(
 			cl::NDRange(EntityCount)
 		),
-		VMP_O,
+		Physics3D_GPU_Ptr,
+		err
+	);
+	CL_PrintError(err);
+	cl::finish();
+}
+void CL_Run_Keep()
+{
+	cl_int err = CL_SUCCESS;
+	(*Kernel_Keep)(
+		cl::EnqueueArgs(
+			cl::NDRange(EntityCount)
+		),
+		Physics3D_GPU_Ptr,
+		err
+	);
+	CL_PrintError(err);
+	cl::finish();
+}
+void CL_Run_Look()
+{
+	cl_int err = CL_SUCCESS;
+	(*Kernel_Look)(
+		cl::EnqueueArgs(
+			cl::NDRange(EntityCount)
+		),
+		Physics3D_GPU_Ptr,
+		err
+	);
+	CL_PrintError(err);
+	cl::finish();
+}
+void CL_Run_GravRay()
+{
+	cl_int err = CL_SUCCESS;
+	(*Kernel_GravRay)(
+		cl::EnqueueArgs(
+			cl::NDRange(EntityCount)
+		),
+		ViewRay_GPU_Ptr,
+		Physics3D_GPU_Ptr,
 		err
 	);
 	CL_PrintError(err);
@@ -104,7 +187,7 @@ void CL_Init()
 {
 	cl_int err = CL_SUCCESS;
 
-	FileContext file = KernelDir.File("trans.cl");
+	FileContext file = KernelDir.File("PhysSim.cl");
 	std::string file_text = file.LoadText();
 	CL_Program = cl::Program(file_text);
 	try
@@ -123,31 +206,54 @@ void CL_Init()
 
 	try
 	{
-		Kernel_TransInit = new cl::KernelFunctor<
-			Trans3D *
-		>(CL_Program, "TransInit", &err);
+		Kernel_Init = new cl::KernelFunctor<
+			Physics3D_InstData *
+		>(CL_Program, "Init", &err);
 		CL_PrintError(err);
-		Kernel_TransSpinCenter = new cl::KernelFunctor<
-			Trans3D *
-		>(CL_Program, "TransSpinCenter", &err);
+
+		Kernel_Move = new cl::KernelFunctor<
+			Physics3D_InstData *
+		>(CL_Program, "Move", &err);
+		CL_PrintError(err);
+
+		Kernel_Keep = new cl::KernelFunctor<
+			Physics3D_InstData *
+		>(CL_Program, "Keep", &err);
+		CL_PrintError(err);
+
+		Kernel_Look = new cl::KernelFunctor<
+			Physics3D_InstData *
+		>(CL_Program, "Look", &err);
+		CL_PrintError(err);
+
+		Kernel_GravRay = new cl::KernelFunctor<
+			Ray3D *,
+			Physics3D_InstData *
+		>(CL_Program, "GravRay", &err);
 		CL_PrintError(err);
 	}
 	catch(...)
 	{
 		std::cout << "Kernel Error\n";
 		CL_PrintError(err);
+		exit(1);
 	}
 
-	VMP_O = SVM_Alloc.allocate(BufferSize);
+	ViewRay_GPU_Ptr = SVM_Ray_Alloc.allocate(1);
+	Physics3D_GPU_Ptr = SVM_Physics3D_Alloc.allocate(BufferSize);
 
 	CL_Run_Init();
 }
 void CL_Free()
 {
-	delete Kernel_TransInit;
-	delete Kernel_TransSpinCenter;
+	delete Kernel_Init;
+	delete Kernel_Move;
+	delete Kernel_Keep;
+	delete Kernel_Look;
+	delete Kernel_GravRay;
 
-	SVM_Alloc.deallocate(VMP_O, BufferSize);
+	SVM_Ray_Alloc.deallocate(ViewRay_GPU_Ptr, 1);
+	SVM_Physics3D_Alloc.deallocate(Physics3D_GPU_Ptr, BufferSize);
 }
 
 
@@ -156,27 +262,40 @@ void Init()
 {
 	std::cout << "Init 0\n";
 
-	tex_arr = new TextureArray(128, 128, 1, (FileContext[])
+	Texture = new TextureArray(128, 128, 1, (FileContext[])
 	{
 		ImageDir.File("GrayDeant.png"),
 	});
 
 	PH = YMT::PolyHedra::ConeC(12, 0.5f);
-	PH_Buffer = new PolyHedra_3D_BufferArray();
+	std::cout << (PH -> ToInfo()) << "\n";
+	PH_Physics3D_BufferArray = new Instance_Base_BufferArray<
+		PolyHedra_MainData,
+		PolyHedra_MainBuffer,
+		Physics3D_InstData,
+		Physics3D_InstBuffer
+	> (
+		new PolyHedra_MainBuffer(0, 1, 2),
+		new Physics3D_InstBuffer(3, 4, 5, 6, 7, 8),
+		GL_TRIANGLES
+	);
 	{
 		int count;
 		PolyHedra_MainData * data = PH -> ToMainData(count);
-		PH_Buffer -> BindMain(data, count);
+		PH_Physics3D_BufferArray -> BindMain(data, count);
 		delete [] data;
 	}
 
-	win -> DefaultColor = Color(0.125f, 0.0f, 0.0f);
+	PH_Physics3D_Shader = new BaseShader((const ShaderCode []) {
+		ShaderCode::FromFile(ShaderDir.File("PH_Phys3D.vert")),
+		ShaderCode::FromFile(ShaderDir.File("PH_Full.frag"))
+	}, 2);
+	Uni_ViewPortSizeRatio = new Uniform::SizeRatio2D("ViewPortSizeRatio", *PH_Physics3D_Shader);
+	Uni_ViewTrans = new Uniform::Trans3D("View", *PH_Physics3D_Shader);
+	Uni_ViewDepth = new Uniform::Depth("Depth", *PH_Physics3D_Shader);
 
-	Depth Depth;
-	Depth.Factors = DepthFactors(0.1f, 100.0f);
-	Depth.Range = Range(0.8f, 1.0f);
-	Depth.Color = win -> DefaultColor;
-	PH_Shader -> Depth.PutData(Depth);
+	PH_Physics3D_Shader -> Use();
+	Uni_ViewDepth -> PutData(ViewDepth);
 
 	CL_Init();
 
@@ -186,10 +305,14 @@ void Free()
 {
 	std::cout << "Free 0\n";
 
-	delete tex_arr;
+	delete Texture;
 	delete PH;
-	delete PH_Buffer;
-	delete PH_Shader;
+
+	delete PH_Physics3D_BufferArray;
+	delete PH_Physics3D_Shader;
+	delete Uni_ViewPortSizeRatio;
+	delete Uni_ViewTrans;
+	delete Uni_ViewDepth;
 
 	CL_Free();
 
@@ -199,28 +322,29 @@ void Frame(double timeDelta)
 {
 	if (win -> IsMouseLocked())
 	{
-		view_trans.TransformFlatX(win -> MoveFromKeys(2.0f * timeDelta), win -> SpinFromCursor(0.2f * timeDelta));
+		ViewTrans.TransformFlatX(win -> MoveFromKeys(20.0f * timeDelta), win -> SpinFromCursor(0.2f * timeDelta));
 	}
-	PH_Shader -> View.PutData(view_trans);
-	tex_arr -> Bind();
+	Point2D cursor = win -> CursorCentered();
+	ViewRay_GPU_Ptr -> Pos = ViewTrans.Pos;
+	ViewRay_GPU_Ptr -> Dir = ViewTrans.Rot.rotate_back(Point3D(cursor.X, cursor.Y, 1));
+	Uni_ViewTrans -> PutData(ViewTrans);
 
-	if (glfwGetKey(win -> win, GLFW_KEY_R))
+	if (glfwGetMouseButton(win -> win, GLFW_MOUSE_BUTTON_1) == GLFW_PRESS)
 	{
-		delete tex_arr;
-		tex_arr = new TextureArray(128, 128, 1, (FileContext[])
-		{
-			ImageDir.File("Orientation.png"),
-		});
+		CL_Run_GravRay();
 	}
 
-	CL_Run_SpinCenter();
+	CL_Run_Keep();
+	CL_Run_Look();
+	CL_Run_Move();
 
-	PH_Buffer -> BindInst((const Simple3D_InstData *)VMP_O, EntityCount);
-	PH_Buffer -> Draw();
+	PH_Physics3D_BufferArray -> BindInst((const Physics3D_InstData *)Physics3D_GPU_Ptr, EntityCount);
+	Texture -> Bind();
+	PH_Physics3D_BufferArray -> Draw();
 }
 void Resize(int w, int h)
 {
-	PH_Shader -> ViewPortSizeRatio.PutData(SizeRatio2D(w, h));
+	Uni_ViewPortSizeRatio -> PutData(SizeRatio2D(w, h));
 }
 
 
@@ -242,9 +366,6 @@ int main()
 		win -> FrameFunc = Frame;
 		win -> FreeFunc = Free;
 		win -> ResizeFunc = Resize;
-
-		PH_Shader = new PolyHedra_3D_Shader(ShaderDir);
-		PH_Shader -> Use();
 	}
 	catch (std::exception & ex)
 	{
@@ -263,12 +384,13 @@ int main()
 		return -1;
 	}
 
-	{
-		view_trans = Trans3D(
-			Point3D(0, 0, 0),
-			Angle3D(0, 0, 0)
-		);
-	}
+	win -> DefaultColor = Color(0.125f, 0.0f, 0.0f);
+
+	ViewTrans = Trans3D(Point3D(0, 0, 0), Angle3D(0, 0, 0));
+	ViewDepth = Depth();
+	ViewDepth.Factors = DepthFactors(0.1f, 1000.0f);
+	ViewDepth.Range = Range(0.8f, 1.0f);
+	ViewDepth.Color = win -> DefaultColor;
 
 
 

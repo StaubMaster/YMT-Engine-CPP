@@ -25,6 +25,7 @@ FILES_SRC = \
 	DataStruct/LightBase.cpp \
 	DataStruct/LightSolar.cpp \
 	DataStruct/LightSpot.cpp \
+	DataStruct/Ray3D.cpp \
 	DataO.cpp \
 \
 	Graphics/Shader/ShaderCode.cpp \
@@ -68,16 +69,20 @@ FILES_SRC = \
 	Graphics/Attribute/Data/Color.cpp \
 	Graphics/Attribute/Data/Float1.cpp \
 \
-	Graphics/PH/PolyHedra_MainData.cpp \
-	Graphics/PH/PolyHedra_MainAttrib.cpp \
-	Graphics/PH/PolyHedra_MainBuffer.cpp \
-	Graphics/PH/PH_3D/PolyHedra_3D_BufferArray.cpp \
-	Graphics/PH/PH_3D/PolyHedra_3D_Instances.cpp \
-	Graphics/PH/PH_3D/PolyHedra_3D_Shader.cpp \
+	PH/PolyHedra_MainData.cpp \
+	PH/PolyHedra_MainAttrib.cpp \
+	PH/PolyHedra_MainBuffer.cpp \
+	PH/PH_3D/PolyHedra_3D_BufferArray.cpp \
+	PH/PH_3D/PolyHedra_3D_Instances.cpp \
+	PH/PH_3D/PolyHedra_3D_Shader.cpp \
 \
-	Graphics/Simple3D/Simple3D_InstData.cpp \
-	Graphics/Simple3D/Simple3D_InstAttrib.cpp \
-	Graphics/Simple3D/Simple3D_InstBuffer.cpp \
+	Simple3D/Simple3D_InstData.cpp \
+	Simple3D/Simple3D_InstAttrib.cpp \
+	Simple3D/Simple3D_InstBuffer.cpp \
+\
+	Physics3D/Physics3D_InstData.cpp \
+	Physics3D/Physics3D_InstAttrib.cpp \
+	Physics3D/Physics3D_InstBuffer.cpp \
 \
 	OBJ/OBJ.cpp \
 	OBJ/OBJ_Main.cpp \

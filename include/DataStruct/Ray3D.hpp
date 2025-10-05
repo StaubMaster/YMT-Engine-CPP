@@ -11,6 +11,7 @@ struct Ray3D
 		Point3D Dir;
 
 	public:
+		Ray3D();
 		Ray3D(Point3D pos, Point3D dir);
 
 

@@ -1,4 +1,4 @@
-#include "Graphics/Simple3D/Simple3D_InstAttrib.hpp"
+#include "Simple3D/Simple3D_InstAttrib.hpp"
 
 
 

@@ -17,3 +17,20 @@ and ViewPortSizeRatio is for everything ?
 make Wrappers for CL stuff ?
 
 
+
+what Kernels do I need ?
+
+InitInGrid
+
+MoveForeward
+KeepInBound
+PointForeward
+
+sometimes:
+	VelTowardLine
+
+
+
+Subject also wants Text
+
+

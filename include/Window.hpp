@@ -2,12 +2,13 @@
 # define WINDOW_HPP
 
 # include "DataStruct/Color.hpp"
+# include "DataStruct/Point2D.hpp"
+# include "DataStruct/SizeRatio2D.hpp"
 
 struct GLFWwindow;
 
 class Point3D;
 class Angle3D;
-class Point2D;
 
 class Window
 {
@@ -27,6 +28,9 @@ class Window
 		void (*FreeFunc)();
 		void (*ResizeFunc)(int, int);
 
+	private:
+		SizeRatio2D ViewPortSizeRatio;
+		Point2D Center;
 	public:
 		Color DefaultColor;
 
@@ -42,6 +46,7 @@ class Window
 		bool IsMouseLocked() const;
 		Point3D MoveFromKeys(float speed) const;
 		Angle3D SpinFromCursor(float speed) const;
+		Point2D CursorCentered() const;
 
 	public:
 		void Run();

@@ -1,9 +1,10 @@
 #ifndef  POLYHEDRA_HPP
 # define POLYHEDRA_HPP
 
-# include "Graphics/PH/PolyHedra_MainData.hpp"
-
 # include "Miscellaneous/ContainerDynamic.hpp"
+# include <string>
+
+struct PolyHedra_MainData;
 
 namespace YMT
 {
@@ -43,6 +44,8 @@ class PolyHedra
 
 	public:
 		PolyHedra_MainData * ToMainData(int & count);
+	public:
+		std::string ToInfo() const;
 };
 };
 

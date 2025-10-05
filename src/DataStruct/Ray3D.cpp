@@ -5,6 +5,8 @@
 
 
 
+Ray3D::Ray3D() :
+	Pos(), Dir() { }
 Ray3D::Ray3D(Point3D pos, Point3D dir) :
 	Pos(pos), Dir(dir) { }
 

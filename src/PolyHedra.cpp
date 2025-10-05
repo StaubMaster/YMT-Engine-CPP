@@ -1,8 +1,11 @@
 #include "PolyHedra.hpp"
 #include "PolyHedraData.hpp"
 
+#include "PH/PolyHedra_MainData.hpp"
+
 #include "DataStruct/Angle3D.hpp"
 
+#include <sstream>
 #define TAU 6.28318530717958647692528676655900576839433879875021164194988918461563281257241799725606965068423413
 
 
@@ -227,4 +230,15 @@ PolyHedra_MainData * YMT::PolyHedra::ToMainData(int & count)
 	}
 
 	return data;
+}
+
+std::string YMT::PolyHedra::ToInfo() const
+{
+	std::ostringstream ss;
+
+	ss << "PolyHedra Info";
+	ss << "\n" << "Corner Count: " << Corners.Count();
+	ss << "\n" << "Face Count: " << Faces.Count();
+
+	return ss.str();
 }

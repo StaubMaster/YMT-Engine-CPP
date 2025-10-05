@@ -25,9 +25,8 @@ class BaseShader
 	public:
 		std::vector<Uniform::UniformBase *> Uniforms;
 
-	protected:
-		BaseShader(const ShaderCode * code, int count);
 	public:
+		BaseShader(const ShaderCode * code, int count);
 		virtual ~BaseShader();
 
 	public:

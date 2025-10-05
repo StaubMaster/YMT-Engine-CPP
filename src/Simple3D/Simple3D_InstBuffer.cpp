@@ -1,6 +1,6 @@
-#include "Graphics/Simple3D/Simple3D_InstBuffer.hpp"
-#include "Graphics/Simple3D/Simple3D_InstAttrib.hpp"
-#include "Graphics/Simple3D/Simple3D_InstData.hpp"
+#include "Simple3D/Simple3D_InstBuffer.hpp"
+#include "Simple3D/Simple3D_InstAttrib.hpp"
+#include "Simple3D/Simple3D_InstData.hpp"
 
 
 
