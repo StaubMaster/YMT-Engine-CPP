@@ -69,9 +69,9 @@ Uniform::Depth * Uni_ViewDepth;
 
 
 
-unsigned int EntityCountX = 16;
-unsigned int EntityCountY = 16;
-unsigned int EntityCountZ = 16;
+unsigned int EntityCountX = 32;
+unsigned int EntityCountY = 32;
+unsigned int EntityCountZ = 32;
 unsigned int EntityCount = EntityCountX * EntityCountY * EntityCountZ;
 
 void CL_PrintError(cl_int err, bool printSuccess = false)
@@ -127,7 +127,7 @@ void CL_Run_Init()
 		err
 	);
 	CL_PrintError(err);
-	cl::finish();
+	//cl::finish();
 }
 void CL_Run_Move()
 {
@@ -140,7 +140,7 @@ void CL_Run_Move()
 		err
 	);
 	CL_PrintError(err);
-	cl::finish();
+	//cl::finish();
 }
 void CL_Run_Keep()
 {
@@ -153,7 +153,7 @@ void CL_Run_Keep()
 		err
 	);
 	CL_PrintError(err);
-	cl::finish();
+	//cl::finish();
 }
 void CL_Run_Look()
 {
@@ -166,7 +166,7 @@ void CL_Run_Look()
 		err
 	);
 	CL_PrintError(err);
-	cl::finish();
+	//cl::finish();
 }
 void CL_Run_GravRay()
 {
@@ -180,7 +180,7 @@ void CL_Run_GravRay()
 		err
 	);
 	CL_PrintError(err);
-	cl::finish();
+	//cl::finish();
 }
 
 void CL_Init()
@@ -243,6 +243,7 @@ void CL_Init()
 	Physics3D_GPU_Ptr = SVM_Physics3D_Alloc.allocate(BufferSize);
 
 	CL_Run_Init();
+	cl::finish();
 }
 void CL_Free()
 {
@@ -267,7 +268,7 @@ void Init()
 		ImageDir.File("GrayDeant.png"),
 	});
 
-	PH = YMT::PolyHedra::ConeC(12, 0.5f);
+	PH = YMT::PolyHedra::ConeC(4, 0.5f);
 	std::cout << (PH -> ToInfo()) << "\n";
 	PH_Physics3D_BufferArray = new Instance_Base_BufferArray<
 		PolyHedra_MainData,
@@ -337,6 +338,7 @@ void Frame(double timeDelta)
 	CL_Run_Keep();
 	CL_Run_Look();
 	CL_Run_Move();
+	cl::finish();
 
 	PH_Physics3D_BufferArray -> BindInst((const Physics3D_InstData *)Physics3D_GPU_Ptr, EntityCount);
 	Texture -> Bind();
@@ -392,7 +394,7 @@ int main()
 	ViewDepth.Range = Range(0.8f, 1.0f);
 	ViewDepth.Color = win -> DefaultColor;
 
-
+	std::cout << "Count: " << EntityCount << "\n";
 
 	std::cout << "++++ Run\n";
 	win -> Run();

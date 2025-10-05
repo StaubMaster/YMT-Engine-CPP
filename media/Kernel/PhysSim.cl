@@ -105,9 +105,9 @@ kernel void Init(
 {
 	Physics3D phys;
 
-	phys.Trans.Pos.X = (get_global_id(0) - 8.0f + 0.5f) * 3;
-	phys.Trans.Pos.Y = (get_global_id(1) - 8.0f + 0.5f) * 3;
-	phys.Trans.Pos.Z = (get_global_id(2) - 8.0f + 0.5f) * 3;
+	phys.Trans.Pos.X = (get_global_id(0) - 16.0f + 0.5f) * 3;
+	phys.Trans.Pos.Y = (get_global_id(1) - 16.0f + 0.5f) * 3;
+	phys.Trans.Pos.Z = (get_global_id(2) - 16.0f + 0.5f) * 3;
 
 	phys.Trans.Rot.X = 0.0f;
 	phys.Trans.Rot.Y = 0.0f;
@@ -134,7 +134,7 @@ kernel void Init(
 	phys.Vel.Rot.SinY = sincos(phys.Vel.Rot.Y, &phys.Vel.Rot.CosY);
 	phys.Vel.Rot.SinZ = sincos(phys.Vel.Rot.Z, &phys.Vel.Rot.CosZ);
 
-	buffer[(16 * (16 * (get_global_id(0)) + get_global_id(1)) + get_global_id(2))] = phys;
+	buffer[(32 * (32 * (get_global_id(0)) + get_global_id(1)) + get_global_id(2))] = phys;
 }
 
 
@@ -216,7 +216,7 @@ kernel void GravRay(
 	float dist2 = Point3D_len2(diff);
 	diff = Point3D_mul_flt(diff, 1.0f / sqrt(dist2));
 
-	Point3D grav_vel = Point3D_mul_flt(diff, dist2 * 0.0001f);
+	Point3D grav_vel = Point3D_mul_flt(diff, 0.01f);
 
 //	phys.Vel.Pos = grav_vel;
 	phys.Vel.Pos = Point3D_add(phys.Vel.Pos, grav_vel);

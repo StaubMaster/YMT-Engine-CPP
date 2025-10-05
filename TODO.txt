@@ -1,28 +1,39 @@
 
 organize
-	Instance stuff
-		Simple3D is currently in Graphics/PH
-		but does it even count as Graphics ?
-		yes, it is used for Graphics,
-		but if I make a slightly differnet
-		for Physics, is it still for graphics or its own Category ?
-	Data Attribute Uniform Multiform
-		these are all related to Data types
-		Attribute are not in the Folder structure as Data
-		also Uniform and Multiform shadre files
-		should probably split those
-		so how should Data be organized ?
-		they all have different names so putting them all in one Folder should be fine
-		should the Uniforms start with Uni or just be put in a NameSpace called Uniform
-		same with Multiform and Attribute
-		same with Data but call the namespace DataStruct
-	should UniformBase be in Shader ?
-	and AttributeBase in Buffer ?
-	it would mean that UniformBase would not be in the middle of implemenentations
-	put the Base stuff in a seperate NameSpace ?
-	so Uniform::Base:: or just a global Base::
+	Uniforms can be generalized to FloatN and IntN
+	(and whatever other data types are needed in the future)
+	but storing FloatN is vague
+	so allow for all DataTypes to converted into these simples
+	and then use those for simple Uniforms
+	do the same for Attributes
+	more comlex stuff can also be generalized to some degree
+	like Ray3D and AxisBox3D both being made of 2 Point3D s
+	but first do normal FloatN
 
 
+
+WireFrame
+	would be best as its own thing like PolyHedra
+	so a full class probably just called WireFrame
+
+Display Collection Thing Types
+	PolyHedra, OBJ and the theoretical WireFrame
+	they do similar things
+	a Collection of Data that
+	that is then used as Main Data
+	"DisplayObject"
+Instance Data
+	there is also Instance Data
+	currently Simple3D and Physics3D
+	I dont want them in the base Folder
+	put them together with the DisplayObjects ?
+
+	right now PH_3D is in PH
+	but it should probably also be its own thing
+	BufferArray and associated Shader
+
+	EntryBuffer (currently PolyHedra_3D_Instances, dont like the name)
+	also still havent made EntryBufferArray, not sure if i even need that one
 
 
 
