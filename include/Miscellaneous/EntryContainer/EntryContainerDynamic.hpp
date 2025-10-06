@@ -1,5 +1,5 @@
 
-#ifndef ENTRY_CONTAINER_DYNAMIC_HPP
+#ifndef  ENTRY_CONTAINER_DYNAMIC_HPP
 # define ENTRY_CONTAINER_DYNAMIC_HPP
 
 # include "EntryContainerBase.hpp"
@@ -62,27 +62,27 @@ class EntryContainerDynamic : public EntryContainerBase<T>
 		void RemapEntrys() override
 		{
 			int offset = 0;
-			for (int i = 0; i < (int)(this -> EntryRefs.size()); i++)
+			for (int i = 0; i < (int)(this -> EntryRefs.Count()); i++)
 			{
-				this -> EntryRefs[i].Offset = offset;
-				offset += this -> EntryRefs[i].Length;
-				this -> EntryRefs[i].EntryIndex = i;
+				this -> EntryRefs[i] -> Offset = offset;
+				offset += this -> EntryRefs[i] -> Length;
+				this -> EntryRefs[i] -> EntryIndex = i;
 			}
 		}
 
 		void FreeEntry(int idx) override
 		{
-			if (idx < 0 && idx >= (int)(this -> EntryRefs.size()))
+			if (idx < 0 && idx >= (int)(this -> EntryRefs.Count()))
 			{
 				std::cout << "EntryContainer: Index " << idx << " out of Range.";
 				return;
 			}
 			this -> Changed = true;
 
-			typename EntryContainerBase<T>::Entry & entry = (this -> EntryRefs[idx]);
-			int off0 = entry.Offset;
-			int off1 = entry.Length + off0;
-			this -> EntryRefs.erase(this -> EntryRefs.begin() + idx);
+			typename EntryContainerBase<T>::Entry * entry = (this -> EntryRefs[idx]);
+			int off0 = entry -> Offset;
+			int off1 = entry -> Length + off0;
+			this -> EntryRefs.Remove(idx);
 
 			RemapEntrys();
 

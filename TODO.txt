@@ -1,4 +1,19 @@
 
+Angle
+right now Angle is just 3 Angles along with sin and cos
+what to do with those values (foreward/backward) is decided by what uses it
+the sin cos is stored because I think recalculating those thenever the Angle is used would be inefficient
+so my Idea is
+have a AngleBase class that stores the 3 Angles and a rotation matrix
+it dosent calculate the matrix
+then inherit AngleFore and AngleBack
+these automatically calculate their appropriate matrix
+no Idea how easy it is to rotate angles / invert angles is with this
+
+
+
+
+
 organize
 	Uniforms can be generalized to FloatN and IntN
 	(and whatever other data types are needed in the future)
@@ -6,6 +21,7 @@ organize
 	so allow for all DataTypes to converted into these simples
 	and then use those for simple Uniforms
 	do the same for Attributes
+
 	more comlex stuff can also be generalized to some degree
 	like Ray3D and AxisBox3D both being made of 2 Point3D s
 	but first do normal FloatN
@@ -40,84 +56,6 @@ Instance Data
 optimize compilation
 	foreward declaration
 		<iosfwd> in header instead of <iostream>
-
-
-
-Shaders:
-Light
-{
-	Range ?
-	LightBase
-	{
-		Color ?
-		Intensity ?
-	}
-
-	Ambient
-	{
-		LightBase Base
-	}
-
-	Soler
-	{
-		LightBase Base
-		Point3D Direction
-	}
-	Point
-	{
-		LightBase Base
-		Point3D Position
-		float falloff ?
-	}
-	Spot
-	{
-		LightBase Base
-		Point3D Position
-		Point3D Direction
-		float angle
-		float falloff ?
-	}
-}
-
-
-
-Particle:
-Physics Instance
-{
-	Point3D Position
-	Point3D MoveVel
-
-	Angle3D Rotation
-	Angle3D SpinVel
-}
-
-
-
-
-
-Angle
-right now Angle is just 3 Angles along with sin and cos
-what to do with those values (foreward/backward) is decided by what uses it
-the sin cos is stored because I think recalculating those thenever the Angle is used would be inefficient
-so my Idea is
-have a AngleBase class that stores the 3 Angles and a rotation matrix
-it dosent calculate the matrix
-then inherit AngleFore and AngleBack
-these automatically calculate their appropriate matrix
-no Idea how easy it is to rotate angles / invert angles is with this
-
-
-
-
-
-rename Abstract to Data ?
-is that less or more vague ?
-
-should all the Data stuff be put into one Folder ?
-instead of seperate by Dimension ?
-also should the PointN be renamed to FloatN ?
-same with IndexN and UndexN to IntN and UIntN ?
-nah
 
 
 

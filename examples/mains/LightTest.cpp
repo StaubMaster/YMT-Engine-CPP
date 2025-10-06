@@ -40,6 +40,7 @@ YMT::PolyHedra * Poly0;
 TextureArray * Tex0;
 
 PolyHedra_3D_Instances * PH_Instances;
+int Entrys_Count;
 EntryContainerDynamic<Simple3D_InstData>::Entry ** Entrys;
 PolyHedra_3D_Shader * PH_Shader;
 
@@ -97,12 +98,13 @@ void FreeShaders()
 
 void AddInstances()
 {
-	int j_len = 16;
-	int i_len = 16;
+	int j_len = 1;
+	int i_len = 1;
 	Entrys = new EntryContainerDynamic<Simple3D_InstData>::Entry*[j_len];
 	for (int j = 0; j < j_len; j++)
 	{
 		Entrys[j] = PH_Instances -> Alloc(i_len);
+		std::cout << "[" << j << "]" << (*Entrys[j]).Offset << "|" << (*Entrys[j]).Length << "\n";
 		Point3D center(
 			(std::rand() & 0x1F) - 0xF,
 			(std::rand() & 0x1F) - 0xF,
@@ -123,13 +125,19 @@ void AddInstances()
 			(*Entrys[j])[i].Trans.Rot = rot;
 		}
 	}
+	Entrys_Count = j_len;
+
+	for (int j = 0; j < j_len; j++)
+	{
+		std::cout << "[" << j << "]" << (*Entrys[j]).Offset << "|" << (*Entrys[j]).Length << "\n";
+	}
 
 	{
-		int MemSize = (PH_Instances -> Instances.Length) * sizeof(Simple3D_InstData);
-		std::cout << "Count: " << (PH_Instances -> Instances.Length) << "\n";
-		std::cout << (MemSize / (1)) << " Bytes\n";
-		std::cout << (MemSize / (1 * 1000)) << "k Bytes\n";
-		std::cout << (MemSize / (1 * 1000 * 1000)) << "M Bytes\n";
+		std::cout << "Instance Count: " << (PH_Instances -> Instances.Length) << "\n";
+		//int MemSize = (PH_Instances -> Instances.Length) * sizeof(Simple3D_InstData);
+		//std::cout << (MemSize / (1)) << " Bytes\n";
+		//std::cout << (MemSize / (1 * 1000)) << "k Bytes\n";
+		//std::cout << (MemSize / (1 * 1000 * 1000)) << "M Bytes\n";
 	}
 }
 
@@ -152,7 +160,9 @@ void Init()
 		//ImageDir.File("GrayDeant.png"),
 	});
 	PH_Instances = new PolyHedra_3D_Instances(Poly0);
+	std::cout << "Container: " << (&(PH_Instances -> Instances)) << ":" << (PH_Instances -> Instances.Data) << ":" << (PH_Instances -> Instances.Size) << "\n";
 	AddInstances();
+	std::cout << "Container: " << (&(PH_Instances -> Instances)) << ":" << (PH_Instances -> Instances.Data) << ":" << (PH_Instances -> Instances.Size) << "\n";
 
 	std::cout << "Init 1\n";
 }
@@ -184,6 +194,8 @@ void Frame(double timeDelta)
 	Uni_Light_Ambient -> PutData(Light_Ambient);
 	Uni_Light_Solar -> PutData(Light_Solar);
 	Uni_Light_Spot -> PutData(Light_Spot);
+
+	(*Entrys[0])[0].Trans.Rot = ViewTrans.Rot;
 
 	Tex0 -> Bind();
 	PH_Instances -> Update();

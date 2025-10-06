@@ -61,7 +61,10 @@ class ContainerDynamic
 	public:
 		ItemType & operator [] (unsigned int udx)
 		{
-			if (udx >= _Count) { throw Exception_OutOfRange(); }
+			if (udx >= _Count)
+			{
+				throw Exception_OutOfRange();
+			}
 			return Memory[udx];
 		}
 
@@ -118,7 +121,7 @@ class ContainerDynamic
 		ItemType		Remove(unsigned int udx)
 		{
 			ItemType item = Memory[udx];
-			for (unsigned int i = udx + 1; i < Count; i++)
+			for (unsigned int i = udx + 1; i < _Count; i++)
 			{
 				Memory[udx - 1] = Memory[udx];
 			}

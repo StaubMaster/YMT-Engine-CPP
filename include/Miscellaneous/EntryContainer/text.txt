@@ -1,14 +1,8 @@
 
-current problem
-how do Entrys work ?
-have them in the EntryContainer
-and return a Pointer ?
-maybe a referance
+ugly / disorganized
 
-but when the Container gets deleted, the Pointers become undefined
-need to make sure that dosent happen
+put Entry into its own File ?
+instead of being a nested class
 
-also right now all the functions, ported from C#, are kind of ugly
-will need to organize those
 
 

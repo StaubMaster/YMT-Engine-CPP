@@ -65,30 +65,50 @@ out Vert {
 
 
 
-void rot(inout float pls, inout float mns, in float fsin, in float fcos)
-{
-	float tmp;
-	tmp = fcos * pls - fsin * mns;
-	mns = fcos * mns + fsin * pls;
-	pls = tmp;
-}
-
 vec3 ASD(in vec3 p, in vec3 wSin, in vec3 wCos)
 {
-	vec3 n = p;
-	rot(n.x, n.z, wSin.x, wCos.x);
-	rot(n.y, n.z, wSin.y, wCos.y);
-	rot(n.y, n.x, wSin.z, wCos.z);
-	return n;
+	mat3 matX = {
+		{ +wCos.x , 0 , -wSin.x },
+		{ 0 , 1 , 0 },
+		{ +wSin.x , 0 , +wCos.x }
+	};
+
+	mat3 matY = {
+		{ 1 , 0 , 0 },
+		{ 0 , +wCos.y , -wSin.y },
+		{ 0 , +wSin.y , +wCos.y }
+	};
+
+	mat3 matZ = {
+		{ +wCos.z , +wSin.z , 0 },
+		{ -wSin.z , +wCos.z , 0 },
+		{ 0 , 0 , 1 }
+	};
+
+	return p * (matX * matY * matZ);
 }
 
 vec3 DSA(in vec3 p, in vec3 wSin, in vec3 wCos)
 {
-	vec3 n = p;
-	rot(n.x, n.y, wSin.z, wCos.z);
-	rot(n.z, n.y, wSin.y, wCos.y);
-	rot(n.z, n.x, wSin.x, wCos.x);
-	return n;
+	mat3 matZ = {
+		{ +wCos.z , -wSin.z , 0 },
+		{ +wSin.z , +wCos.z , 0 },
+		{ 0 , 0 , 1 }
+	};
+
+	mat3 matY = {
+		{ 1 , 0 , 0 },
+		{ 0 , +wCos.y , +wSin.y },
+		{ 0 , -wSin.y , +wCos.y }
+	};
+
+	mat3 matX = {
+		{ +wCos.x , 0 , +wSin.x },
+		{ 0 , 1 , 0 },
+		{ -wSin.x , 0 , +wCos.x }
+	};
+
+	return p * (matZ * matY * matX);
 }
 
 vec4 proj(in vec3 p_inn)
@@ -111,6 +131,7 @@ void main()
 	vs_out.Original = VPos;
 	vs_out.Absolute = DSA(vs_out.Original, ISin, ICos) + IPos;
 	vs_out.Relative = ASD(vs_out.Absolute - View.Pos, View.Rot.Sin, View.Rot.Cos);
+
 	gl_Position = proj(vs_out.Relative);
 
 	vs_out.Normal = -DSA(VNorm, ISin, ICos);

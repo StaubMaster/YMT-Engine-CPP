@@ -1,9 +1,12 @@
 
-#ifndef ENTRY_CONTAINER_BASE_HPP
+#ifndef  ENTRY_CONTAINER_BASE_HPP
 # define ENTRY_CONTAINER_BASE_HPP
+
+# include "Miscellaneous/ContainerDynamic.hpp"
 
 # include <vector>
 # include <iostream>
+# include <sstream>
 
 /*
 	EntryContainer holds any data
@@ -15,6 +18,30 @@
 		the Entry has an Indexer that is used to change things in the main Container
 */
 
+/*
+	right now pointers to the Entrys are returned
+	but when a Entry is added, it Points to a vector
+	which changes Memory when it changes size
+
+	so this is bad
+
+	just return a Copy of the data ?
+
+	no, because when the Container changes,
+	it needs to change the Offset in the Entry
+
+	so the outside needs a Pointer so it stays up to date
+	and the Container needs a Poitner to update it
+
+	so use new to Allocate them
+	but then the question is where to delete them ?
+	the Container allocates them and is guarenteed to know all of them
+
+	but then the outside might have an invalid pointer
+	but that would only happen after the Container was deleted
+	so just make sure that dosent happen
+*/
+
 template <typename T>
 class EntryContainerBase
 {
@@ -22,8 +49,8 @@ class EntryContainerBase
 		class Entry
 		{
 			private:
-				EntryContainerBase<T> * Container;
 			public:
+				EntryContainerBase<T> * Container;
 				int EntryIndex;
 
 			public:
@@ -69,6 +96,7 @@ class EntryContainerBase
 			public:
 				T& operator[](int idx)
 				{
+					//std::cout << "EntryContainerBase: [" << idx << "] " << Offset << "|" << Length << "(" << Container << ":" << (Container -> Data) << ":" << (Container -> Size) << ")" << EntryIndex << "\n";
 					if (idx < 0 || idx >= Length)
 					{
 						std::cout << "EntryContainerBase::Entry Index out of Range.";
@@ -104,15 +132,23 @@ class EntryContainerBase
 		};
 
 	public:
-		std::vector<Entry> EntryRefs;
+		ContainerDynamic<Entry*> EntryRefs;
 		T * Data;
 		int Size;
 		bool Changed;
 
 	public:
+		std::string ToInfo() const
+		{
+			std::ostringstream ss;
+			ss << "(" << this << ":" << Data << ":" << Size << ")";
+			return ss.str();
+		}
+
+	public:
 		EntryContainerBase(int size)
 		{
-			EntryRefs = std::vector<Entry>();
+			EntryRefs = ContainerDynamic<Entry*>();
 			Data = new T[size];
 			Size = size;
 			Changed = false;
@@ -120,6 +156,10 @@ class EntryContainerBase
 		}
 		~EntryContainerBase()
 		{
+			for (unsigned int i = 0; i < EntryRefs.Count(); i++)
+			{
+				delete EntryRefs[i];
+			}
 			std::cout << "---- EntryContainerBase\n";
 			delete [] Data;
 		}
@@ -137,10 +177,11 @@ class EntryContainerBase
 		virtual void FreeEntry(int idx) = 0;
 		Entry * AllocEntry(int off, int len)
 		{
-			int idx = EntryRefs.size();
-			EntryRefs.push_back(Entry(this, idx, off, len));
+			int idx = EntryRefs.Count();
+			Entry * entry = new Entry(this, idx, off, len);
+			EntryRefs.Insert(entry);
 			Changed = true;
-			return &(EntryRefs[idx]);
+			return entry;
 		}
 
 	public:
