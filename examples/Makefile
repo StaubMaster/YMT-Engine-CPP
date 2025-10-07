@@ -6,10 +6,10 @@ FLAGS = -Wall -Wextra -Werror
 
 
 MAINS = \
-	LightTest.cpp
-#	OBJ_Parse.cpp \
-#	DefaultInstances.cpp \
-#	ParticleSimulation.cpp \
+	DefaultInstances.cpp \
+	LightTest.cpp \
+	OBJ_Parse.cpp \
+	ParticleSimulation.cpp \
 
 EXES = $(MAINS:.cpp=.exe)
 

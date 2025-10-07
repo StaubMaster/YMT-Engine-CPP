@@ -8,31 +8,11 @@
 
 Angle3D::Angle3D() : X(0), Y(0), Z(0)
 {
-	Data[0][0] = 1.0f;
-	Data[0][1] = 0.0f;
-	Data[0][2] = 0.0f;
-
-	Data[0][0] = 0.0f;
-	Data[0][1] = 1.0f;
-	Data[0][2] = 0.0f;
-
-	Data[0][0] = 0.0f;
-	Data[0][1] = 0.0f;
-	Data[0][2] = 1.0f;
+	MatrixDefault(Data);
 }
 Angle3D::Angle3D(float x, float y, float z) : X(x), Y(y), Z(z)
 {
-	Data[0][0] = 1.0f;
-	Data[0][1] = 0.0f;
-	Data[0][2] = 0.0f;
-
-	Data[0][0] = 0.0f;
-	Data[0][1] = 1.0f;
-	Data[0][2] = 0.0f;
-
-	Data[0][0] = 0.0f;
-	Data[0][1] = 0.0f;
-	Data[0][2] = 1.0f;
+	MatrixDefault(Data);
 }
 Angle3D::~Angle3D()
 {
@@ -43,17 +23,7 @@ Angle3D::~Angle3D()
 
 Angle3D::Angle3D(const Angle3D & other) : X(other.X), Y(other.Y), Z(other.Z)
 {
-	Data[0][0] = other.Data[0][0];
-	Data[0][1] = other.Data[0][1];
-	Data[0][2] = other.Data[0][2];
-
-	Data[1][0] = other.Data[1][0];
-	Data[1][1] = other.Data[1][1];
-	Data[1][2] = other.Data[1][2];
-
-	Data[2][0] = other.Data[2][0];
-	Data[2][1] = other.Data[2][1];
-	Data[2][2] = other.Data[2][2];
+	MatrixCopy(Data, other.Data);
 }
 const Angle3D & Angle3D::operator =(const Angle3D & other)
 {
@@ -61,17 +31,8 @@ const Angle3D & Angle3D::operator =(const Angle3D & other)
 	this -> Y = other.Y;
 	this -> Z = other.Z;
 
-	this -> Data[0][0] = other.Data[0][0];
-	this -> Data[0][1] = other.Data[0][1];
-	this -> Data[0][2] = other.Data[0][2];
+	MatrixCopy(this -> Data, other.Data);
 
-	this -> Data[1][0] = other.Data[1][0];
-	this -> Data[1][1] = other.Data[1][1];
-	this -> Data[1][2] = other.Data[1][2];
-
-	this -> Data[2][0] = other.Data[2][0];
-	this -> Data[2][1] = other.Data[2][1];
-	this -> Data[2][2] = other.Data[2][2];
 	return *this;
 }
 
@@ -108,7 +69,27 @@ void Angle3D::MatrixDefault(float data[3][3])
 		}
 	}
 }
-void Angle3D::MatrixMultiply(float result[3][3], float mat0[3][3], float mat1[3][3])
+void Angle3D::MatrixCopy(float result[3][3], const float mat[3][3])
+{
+	for (int i = 0; i < 3; i++)
+	{
+		for (int j = 0; j < 3; j++)
+		{
+			result[i][j] = mat[i][j];
+		}
+	}
+}
+void Angle3D::MatrixTransPose(float result[3][3], const float mat[3][3])
+{
+	for (int i = 0; i < 3; i++)
+	{
+		for (int j = 0; j < 3; j++)
+		{
+			result[i][j] = mat[j][i];
+		}
+	}
+}
+void Angle3D::MatrixMultiply(float result[3][3], const float mat0[3][3], const float mat1[3][3])
 {
 /*
 	C00 = (A00 * B00) + (A01 * B10) + (A02 * B20)
@@ -139,6 +120,8 @@ void Angle3D::MatrixMultiply(float result[3][3], float mat0[3][3], float mat1[3]
 	}
 }
 
+
+
 void Angle3D::CalcFore()
 {
 	float sinX = sin(X);
@@ -167,7 +150,6 @@ void Angle3D::CalcFore()
 
 	float temp[3][3];
 	MatrixDefault(temp);
-
 	MatrixMultiply(Data, temp, matZ);
 	MatrixMultiply(temp, Data, matY);
 	MatrixMultiply(Data, temp, matX);
@@ -200,7 +182,6 @@ void Angle3D::CalcBack()
 
 	float temp[3][3];
 	MatrixDefault(temp);
-
 	MatrixMultiply(Data, temp, matX);
 	MatrixMultiply(temp, Data, matY);
 	MatrixMultiply(Data, temp, matZ);

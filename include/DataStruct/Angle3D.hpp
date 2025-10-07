@@ -25,7 +25,10 @@ struct Angle3D
 	public:
 		static void	MatrixToString(float mat[3][3]);
 		static void	MatrixDefault(float mat[3][3]);
-		static void	MatrixMultiply(float result[3][3], float mat0[3][3], float mat1[3][3]);
+		static void	MatrixCopy(float result[3][3], const float mat[3][3]);
+		static void	MatrixTransPose(float result[3][3], const float mat[3][3]);
+		static void	MatrixMultiply(float result[3][3], const float mat0[3][3], const float mat1[3][3]);
+
 	private:
 	public:
 		void	CalcFore();

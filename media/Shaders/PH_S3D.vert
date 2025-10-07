@@ -44,6 +44,11 @@ layout(location = 2) in vec2 VTex;
 
 layout(location = 3) in vec3 IPos;
 layout(location = 4) in mat3 IRot;
+/*
+	this also uses Locations 5 and 6
+	but using something with those locations dosent give an error
+	very odd
+*/
 
 
 
@@ -122,18 +127,11 @@ vec4 proj(in vec3 p_inn)
 void main()
 {
 	vs_out.Original = VPos;
-	//vs_out.Absolute = DSA(vs_out.Original, ISin, ICos) + IPos;
-	//vs_out.Relative = ASD(vs_out.Absolute - View.Pos, View.Rot.Sin, View.Rot.Cos);
-
-	//vs_out.Absolute = (vs_out.Original * IRot) + IPos;
-	vs_out.Absolute = vs_out.Original + IPos;
-
+	vs_out.Absolute = (vs_out.Original * IRot) + IPos;
 	vs_out.Relative = (vs_out.Absolute - View.Pos) * View.Rot;
-	//vs_out.Relative = (vs_out.Absolute - View.Pos);
 
 	gl_Position = proj(vs_out.Relative);
 
-	//vs_out.Normal = -DSA(VNorm, ISin, ICos);
-	vs_out.Normal = -(VNorm * View.Rot);
+	vs_out.Normal = -(VNorm * IRot);
 	vs_out.Tex = VTex;
 }

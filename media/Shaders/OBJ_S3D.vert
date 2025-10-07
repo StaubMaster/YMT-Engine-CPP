@@ -2,16 +2,10 @@
 
 
 
-struct Angle3D
-{
-	vec3 Sin;
-	vec3 Cos;
-};
-
 struct Trans3D
 {
 	vec3 Pos;
-	Angle3D Rot;
+	mat3 Rot;
 };
 
 struct SizeRatio2D
@@ -56,8 +50,7 @@ layout(location = 6) in float	VSpecularPower;
 layout(location = 7) in vec3	VSpecularColor;
 
 layout(location = 20) in vec3 IPos;
-layout(location = 21) in vec3 ISin;
-layout(location = 22) in vec3 ICos;
+layout(location = 21) in mat3 IRot;
 
 
 
@@ -124,11 +117,14 @@ void main()
 {
 	vec3 pos;
 	vs_out.Original = VPos.xyz;
-	vs_out.Absolute = DSA(vs_out.Original, ISin, ICos) + IPos;
-	vs_out.Relative = ASD(vs_out.Absolute - View.Pos, View.Rot.Sin, View.Rot.Cos);
+	//vs_out.Absolute = DSA(vs_out.Original, ISin, ICos) + IPos;
+	//vs_out.Relative = ASD(vs_out.Absolute - View.Pos, View.Rot.Sin, View.Rot.Cos);
+	vs_out.Absolute = (vs_out.Original * IRot) + IPos;
+	vs_out.Relative = (vs_out.Absolute - View.Pos) * View.Rot;
 	gl_Position = proj(vs_out.Relative);
 
-	vs_out.Normal = DSA(VNorm, ISin, ICos);
+	//vs_out.Normal = DSA(VNorm, ISin, ICos);
+	vs_out.Normal = VNorm * IRot;
 	vs_out.Tex = VTex;
 	vs_out.Col = VCol;
 

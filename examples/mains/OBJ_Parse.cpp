@@ -163,15 +163,18 @@ void Update_ColorToTex()
 }
 void Update_ObjTrans(double timeDelta)
 {
+	ViewTrans.Rot.CalcBack();
 	for (int i = 0; i < OBJ_Count; i++)
 	{
-		OBJs_Trans[i].Pos = OBJs_Trans[i].Pos + (OBJs_Trans[i].Rot.rotate_back(OBJs_Center[i]));
-		OBJs_Trans[i].Rot.ChangeX(OBJs_Trans[i].Rot.x + 0.01f);
-		OBJs_Trans[i].Pos = OBJs_Trans[i].Pos - (OBJs_Trans[i].Rot.rotate_back(OBJs_Center[i]));
+		OBJs_Trans[i].Rot.CalcBack();
+		OBJs_Trans[i].Pos = OBJs_Trans[i].Pos + (OBJs_Trans[i].Rot.rotate(OBJs_Center[i]));
+		OBJs_Trans[i].Rot.X += 0.01f;
+		OBJs_Trans[i].Rot.CalcBack();
+		OBJs_Trans[i].Pos = OBJs_Trans[i].Pos - (OBJs_Trans[i].Rot.rotate(OBJs_Center[i]));
 
 		if (!win -> IsMouseLocked())
 		{
-			OBJs_Trans[i].Pos = OBJs_Trans[i].Pos + ViewTrans.Rot.rotate_back(win -> MoveFromKeys(2.0f * timeDelta));
+			OBJs_Trans[i].Pos = OBJs_Trans[i].Pos + ViewTrans.Rot.rotate(win -> MoveFromKeys(2.0f * timeDelta));
 		}
 
 		{

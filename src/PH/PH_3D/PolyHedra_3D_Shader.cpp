@@ -7,7 +7,8 @@ PolyHedra_3D_Shader::PolyHedra_3D_Shader(const DirectoryContext & dir)
 	: BaseShader((const ShaderCode []) {
 		ShaderCode::FromFile(dir.File("PH_S3D.vert")),
 		//ShaderCode::FromFile(dir.File("PH_solar.frag")),
-		ShaderCode::FromFile(dir.File("PH_ULight.frag")),
+		//ShaderCode::FromFile(dir.File("PH_ULight.frag")),
+		ShaderCode::FromFile(dir.File("PH_Full.frag")),
 	}, 2),
 	ViewPortSizeRatio("ViewPortSizeRatio", *this),
 	View("View", *this),

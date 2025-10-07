@@ -2,16 +2,10 @@
 
 
 
-struct Angle3D
-{
-	vec3 Sin;
-	vec3 Cos;
-};
-
 struct Trans3D
 {
 	vec3 Pos;
-	Angle3D Rot;
+	mat3 Rot;
 };
 
 struct SizeRatio2D
@@ -49,12 +43,10 @@ layout(location = 1) in vec3 VNorm;
 layout(location = 2) in vec2 VTex;
 
 layout(location = 3) in vec3 ITransPos;
-layout(location = 4) in vec3 ITransSin;
-layout(location = 5) in vec3 ITransCos;
+layout(location = 4) in mat3 ITransRot;
 
-layout(location = 6) in vec3 IVelPos;
-layout(location = 7) in vec3 IVelSin;
-layout(location = 8) in vec3 IVelCos;
+layout(location = 7) in vec3 IVelPos;
+layout(location = 8) in mat3 IVelRot;
 
 
 
@@ -113,10 +105,16 @@ vec4 proj(in vec3 p_inn)
 void main()
 {
 	vs_out.Original = VPos;
-	vs_out.Absolute = DSA(vs_out.Original, ITransSin, ITransCos) + ITransPos;
-	vs_out.Relative = ASD(vs_out.Absolute - View.Pos, View.Rot.Sin, View.Rot.Cos);
+	//vs_out.Absolute = DSA(vs_out.Original, ITransSin, ITransCos) + ITransPos;
+	//vs_out.Relative = ASD(vs_out.Absolute - View.Pos, View.Rot.Sin, View.Rot.Cos);
+
+	vs_out.Absolute = (vs_out.Original * ITransRot) + ITransPos;
+	//vs_out.Absolute = (vs_out.Original) + ITransPos;
+	vs_out.Relative = (vs_out.Absolute - View.Pos) * View.Rot;
+
 	gl_Position = proj(vs_out.Relative);
 
-	vs_out.Normal = -DSA(VNorm, ITransSin, ITransCos);
+	//vs_out.Normal = -DSA(VNorm, ITransSin, ITransCos);
+	vs_out.Normal = -(VNorm * ITransRot);
 	vs_out.Tex = VTex;
 }

@@ -48,6 +48,11 @@ std::string FileContext::Extension() const
 
 std::string FileContext::LoadText() const
 {
+	if (!Exists())
+	{
+		throw Exception_FileNotFound(FilePath);
+	}
+
 	std::ifstream file(FilePath, std::ios::binary);
 	if (!file.is_open())
 	{

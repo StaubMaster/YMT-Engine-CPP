@@ -10,7 +10,9 @@ namespace Attribute
 class Angle3D : public Attribute::Base
 {
 	private:
-		Attribute::Location Location;
+		Attribute::Location Location0;
+		Attribute::Location Location1;
+		Attribute::Location Location2;
 
 	public:
 		Angle3D(

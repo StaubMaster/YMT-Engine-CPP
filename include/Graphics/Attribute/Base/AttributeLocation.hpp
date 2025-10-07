@@ -7,6 +7,7 @@ namespace Attribute
 class Location
 {
 	private:
+	public:
 		//	set from Child
 		const unsigned int Type;
 		const unsigned int Size;

@@ -277,7 +277,7 @@ void Init()
 		Physics3D_InstBuffer
 	> (
 		new PolyHedra_MainBuffer(0, 1, 2),
-		new Physics3D_InstBuffer(3, 4, 5, 6, 7, 8),
+		new Physics3D_InstBuffer(3, 4, 7, 8),
 		GL_TRIANGLES
 	);
 	{
@@ -325,9 +325,10 @@ void Frame(double timeDelta)
 	{
 		ViewTrans.TransformFlatX(win -> MoveFromKeys(20.0f * timeDelta), win -> SpinFromCursor(0.2f * timeDelta));
 	}
+	ViewTrans.Rot.CalcBack();
 	Point2D cursor = win -> CursorCentered();
 	ViewRay_GPU_Ptr -> Pos = ViewTrans.Pos;
-	ViewRay_GPU_Ptr -> Dir = ViewTrans.Rot.rotate_back(Point3D(cursor.X, cursor.Y, 1));
+	ViewRay_GPU_Ptr -> Dir = ViewTrans.Rot.rotate(Point3D(cursor.X, cursor.Y, 1));
 	Uni_ViewTrans -> PutData(ViewTrans);
 
 	if (glfwGetMouseButton(win -> win, GLFW_MOUSE_BUTTON_1) == GLFW_PRESS)

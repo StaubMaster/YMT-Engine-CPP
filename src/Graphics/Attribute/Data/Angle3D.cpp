@@ -1,5 +1,8 @@
 #include "Graphics/Attribute/Data/Angle3D.hpp"
+#include "DataStruct/Angle3D.hpp"
 #include "OpenGL/openGL.h"
+
+#include <iostream>
 
 
 
@@ -8,7 +11,9 @@ Attribute::Angle3D::Angle3D(
 	unsigned int stride,
 	unsigned int index
 ) :
-	Location(GL_FLOAT, sizeof(float) * 3 * 3, 3 * 3, divisor, stride, index)
+	Location0(GL_FLOAT, sizeof(float) * 3, 3, divisor, stride, index + 0),
+	Location1(GL_FLOAT, sizeof(float) * 3, 3, divisor, stride, index + 1),
+	Location2(GL_FLOAT, sizeof(float) * 3, 3, divisor, stride, index + 2)
 { }
 
 
@@ -16,5 +21,7 @@ Attribute::Angle3D::Angle3D(
 void Attribute::Angle3D::Bind(const unsigned char * & offset) const
 {
 	offset += sizeof(float) * 3;
-	Location.Bind(offset);
+	Location0.Bind(offset);
+	Location1.Bind(offset);
+	Location2.Bind(offset);
 }

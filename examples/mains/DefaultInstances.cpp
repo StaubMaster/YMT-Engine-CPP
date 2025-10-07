@@ -25,6 +25,9 @@ DirectoryContext ShaderDir("../media/Shaders");
 
 Window * win;
 
+Trans3D	ViewTrans;
+Depth	ViewDepth;
+
 YMT::PolyHedra * Poly0;
 TextureArray * Tex0;
 
@@ -36,19 +39,11 @@ Multiform::SizeRatio2D * Multi_ViewPortSizeRatio;
 Multiform::Trans3D * Multi_View;
 Multiform::Depth * Multi_Depth;
 
-Trans3D view_trans;
-
 
 
 void InitShaders()
 {
 	PH_Shader = new PolyHedra_3D_Shader(ShaderDir);
-	win -> DefaultColor = Color(0.25f, 0.0f, 0.0f);
-
-	Depth Depth;
-	Depth.Factors = DepthFactors(0.1f, 100.0f);
-	Depth.Range = Range(0.8f, 1.0f);
-	Depth.Color = win -> DefaultColor;
 
 	Multi_ViewPortSizeRatio = new Multiform::SizeRatio2D("ViewPortSizeRatio");
 	Multi_View = new Multiform::Trans3D("View");
@@ -63,7 +58,7 @@ void InitShaders()
 	Multi_View -> FindUniforms(shaders, shader_count);
 	Multi_Depth -> FindUniforms(shaders, shader_count);
 
-	Multi_Depth -> ChangeData(Depth);
+	Multi_Depth -> ChangeData(ViewDepth);
 }
 void FreeShaders()
 {
@@ -153,9 +148,10 @@ void Frame(double timeDelta)
 {
 	if (win -> IsMouseLocked())
 	{
-		view_trans.TransformFlatX(win -> MoveFromKeys(2.0f * timeDelta), win -> SpinFromCursor(0.2f * timeDelta));
+		ViewTrans.TransformFlatX(win -> MoveFromKeys(2.0f * timeDelta), win -> SpinFromCursor(0.2f * timeDelta));
 	}
-	Multi_View -> ChangeData(view_trans);
+	ViewTrans.Rot.CalcBack();
+	Multi_View -> ChangeData(ViewTrans);
 
 	PH_Shader -> Use();
 	Tex0 -> Bind();
@@ -203,11 +199,13 @@ int main()
 		return -1;
 	}
 
-	view_trans = Trans3D(
-		Point3D(0, 0, 0),
-		Angle3D(0, 0, 0)
-	);
+	win -> DefaultColor = Color(0.25f, 0.0f, 0.0f);
 
+	ViewTrans = Trans3D(Point3D(0, 0, 0), Angle3D(0, 0, 0));
+
+	ViewDepth.Factors = DepthFactors(0.1f, 100.0f);
+	ViewDepth.Range = Range(0.8f, 1.0f);
+	ViewDepth.Color = win -> DefaultColor;
 
 
 	std::cout << "++++ Run\n";

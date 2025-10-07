@@ -2,7 +2,13 @@
 #include "OpenGL/openGL.h"
 
 #include "PH/PH_3D/PolyHedra_3D_Instances.hpp"
-#include "PH/PH_3D/PolyHedra_3D_Shader.hpp"
+
+#include "Graphics/Shader/ShaderCode.hpp"
+#include "Graphics/Shader/BaseShader.hpp"
+
+#include "Graphics/Uniform/Data/SizeRatio2D.hpp"
+#include "Graphics/Uniform/Data/Trans3D.hpp"
+#include "Graphics/Uniform/Data/Depth.hpp"
 
 #include "Graphics/Multiform/Data/SizeRatio2D.hpp"
 #include "Graphics/Multiform/Data/Trans3D.hpp"
@@ -44,7 +50,12 @@ TextureArray * Tex0;
 PolyHedra_3D_Instances * PH_Instances;
 int Entrys_Count;
 EntryContainerDynamic<Simple3D_InstData>::Entry ** Entrys;
-PolyHedra_3D_Shader * PH_Shader;
+
+BaseShader * PH_Shader;
+
+Uniform::SizeRatio2D * Uni_ViewPortSizeRatio;
+Uniform::Trans3D * Uni_View;
+Uniform::Depth * Uni_Depth;
 
 Multiform::SizeRatio2D * Multi_ViewPortSizeRatio;
 Multiform::Trans3D * Multi_View;
@@ -64,7 +75,14 @@ Uniform::LightSpot * Uni_Light_Spot;
 
 void InitShaders()
 {
-	PH_Shader = new PolyHedra_3D_Shader(ShaderDir);
+	PH_Shader = new BaseShader((const ShaderCode []) {
+		ShaderCode::FromFile(ShaderDir.File("PH_S3D.vert")),
+		ShaderCode::FromFile(ShaderDir.File("PH_ULight.frag"))
+	}, 2);
+
+	Uni_ViewPortSizeRatio = new Uniform::SizeRatio2D("ViewPortSizeRatio", *PH_Shader);
+	Uni_View = new Uniform::Trans3D("View", *PH_Shader);
+	Uni_Depth = new Uniform::Depth("Depth", *PH_Shader);
 
 	Multi_ViewPortSizeRatio = new Multiform::SizeRatio2D("ViewPortSizeRatio");
 	Multi_View = new Multiform::Trans3D("View");
@@ -88,6 +106,10 @@ void InitShaders()
 void FreeShaders()
 {
 	delete PH_Shader;
+
+	delete Uni_ViewPortSizeRatio;
+	delete Uni_View;
+	delete Uni_Depth;
 
 	delete Multi_ViewPortSizeRatio;
 	delete Multi_View;
@@ -117,7 +139,7 @@ void AddInstances()
 			(std::rand() & 0x1F) - 0xF,
 			(std::rand() & 0x1F) - 0xF
 		);
-		rot.CalcBack();
+		rot.CalcFore();
 		for (int i = 0; i < i_len; i++)
 		{
 			(*Entrys[j])[i].Trans.Pos = center + Point3D(
@@ -198,7 +220,9 @@ void Frame(double timeDelta)
 	Uni_Light_Solar -> PutData(Light_Solar);
 	Uni_Light_Spot -> PutData(Light_Spot);
 
+	(*Entrys[0])[0].Trans.Pos = Point3D(0, 0, 3);
 	(*Entrys[0])[0].Trans.Rot = ViewTrans.Rot;
+	(*Entrys[0])[0].Trans.Rot.CalcBack();
 
 	Tex0 -> Bind();
 	PH_Instances -> Update();
