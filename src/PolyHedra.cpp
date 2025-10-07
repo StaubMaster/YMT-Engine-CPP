@@ -161,8 +161,9 @@ YMT::PolyHedra * YMT::PolyHedra::ConeC(int segments, float width, float height)
 	temp -> Corners.Insert(Point3D(0, 0, +height));
 	for (int i = 0; i < segments; i++)
 	{
-		angle.ChangeZ((TAU * i) / segments);
-		temp -> Corners.Insert(angle.rotate_fore(Point3D(0, +width, -height)));
+		angle.Z = (TAU * i) / segments;
+		angle.CalcFore();
+		temp -> Corners.Insert(angle.rotate(Point3D(0, +width, -height)));
 	}
 	int idx_last = temp -> Corners.Count();
 	temp -> Corners.Insert(Point3D(0, 0, -height));

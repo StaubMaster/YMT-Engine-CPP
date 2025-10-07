@@ -16,8 +16,7 @@ class Simple3D_InstAttrib : public Attribute::Base
 			unsigned int divisor,
 			unsigned int stride,
 			unsigned int indexTransPos,
-			unsigned int indexTransRotSin,
-			unsigned int indexTransRotCos
+			unsigned int indexTransRot
 		);
 
 	public:

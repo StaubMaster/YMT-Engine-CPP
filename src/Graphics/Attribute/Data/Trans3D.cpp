@@ -7,11 +7,10 @@ Attribute::Trans3D::Trans3D(
 	unsigned int divisor,
 	unsigned int stride,
 	unsigned int indexPos,
-	unsigned int indexRotSin,
-	unsigned int indexRotCos
+	unsigned int indexRot
 ) :
 	Pos(divisor, stride, indexPos),
-	Rot(divisor, stride, indexRotSin, indexRotCos)
+	Rot(divisor, stride, indexRot)
 { }
 
 

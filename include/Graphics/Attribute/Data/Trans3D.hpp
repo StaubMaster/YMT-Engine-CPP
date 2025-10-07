@@ -21,8 +21,7 @@ class Trans3D : public Attribute::Base
 			unsigned int divisor,
 			unsigned int stride,
 			unsigned int indexPos,
-			unsigned int indexRotSin,
-			unsigned int indexRotCos
+			unsigned int indexRot
 		);
 
 	public:

@@ -21,14 +21,16 @@ Trans3D::~Trans3D()
 
 void Trans3D::MoveFlatX(Point3D move)
 {
-	Pos = Pos + (Angle3D(Rot.x, 0, 0).rotate_back(move));
+	Angle3D a(Rot.X, 0, 0);
+	a.CalcBack();
+	Pos = Pos + a.rotate(move);
+	//Pos = Pos + (Angle3D(Rot.X, 0, 0).rotate(move));
 }
 void Trans3D::SpinFlatX(Angle3D spin)
 {
-	Rot.x = Rot.x + spin.x;
-	Rot.y = Rot.y + spin.y;
-	Rot.z = 0;
-	Rot.UpdateSinCos();
+	Rot.X = Rot.X + spin.X;
+	Rot.Y = Rot.Y + spin.Y;
+	Rot.Z = 0;
 }
 void Trans3D::TransformFlatX(Point3D move, Angle3D spin)
 {

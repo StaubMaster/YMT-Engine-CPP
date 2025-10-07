@@ -16,6 +16,8 @@
 #include "DataStruct/LightSolar.hpp"
 #include "DataStruct/LightSpot.hpp"
 
+#include "DataO.hpp"
+
 #include "TextureArray.hpp"
 #include "PolyHedra.hpp"
 #include "Window.hpp"
@@ -98,13 +100,13 @@ void FreeShaders()
 
 void AddInstances()
 {
-	int j_len = 1;
-	int i_len = 1;
+	int j_len = 16;
+	int i_len = 16;
 	Entrys = new EntryContainerDynamic<Simple3D_InstData>::Entry*[j_len];
 	for (int j = 0; j < j_len; j++)
 	{
 		Entrys[j] = PH_Instances -> Alloc(i_len);
-		std::cout << "[" << j << "]" << (*Entrys[j]).Offset << "|" << (*Entrys[j]).Length << "\n";
+		//std::cout << "[" << j << "]" << (*Entrys[j]).Offset << "|" << (*Entrys[j]).Length << "\n";
 		Point3D center(
 			(std::rand() & 0x1F) - 0xF,
 			(std::rand() & 0x1F) - 0xF,
@@ -115,6 +117,7 @@ void AddInstances()
 			(std::rand() & 0x1F) - 0xF,
 			(std::rand() & 0x1F) - 0xF
 		);
+		rot.CalcBack();
 		for (int i = 0; i < i_len; i++)
 		{
 			(*Entrys[j])[i].Trans.Pos = center + Point3D(
@@ -127,10 +130,10 @@ void AddInstances()
 	}
 	Entrys_Count = j_len;
 
-	for (int j = 0; j < j_len; j++)
+	/*for (int j = 0; j < j_len; j++)
 	{
 		std::cout << "[" << j << "]" << (*Entrys[j]).Offset << "|" << (*Entrys[j]).Length << "\n";
-	}
+	}*/
 
 	{
 		std::cout << "Instance Count: " << (PH_Instances -> Instances.Length) << "\n";
@@ -160,9 +163,8 @@ void Init()
 		//ImageDir.File("GrayDeant.png"),
 	});
 	PH_Instances = new PolyHedra_3D_Instances(Poly0);
-	std::cout << "Container: " << (&(PH_Instances -> Instances)) << ":" << (PH_Instances -> Instances.Data) << ":" << (PH_Instances -> Instances.Size) << "\n";
+
 	AddInstances();
-	std::cout << "Container: " << (&(PH_Instances -> Instances)) << ":" << (PH_Instances -> Instances.Data) << ":" << (PH_Instances -> Instances.Size) << "\n";
 
 	std::cout << "Init 1\n";
 }
@@ -186,9 +188,10 @@ void Frame(double timeDelta)
 	{
 		ViewTrans.TransformFlatX(win -> MoveFromKeys(2.0f * timeDelta), win -> SpinFromCursor(0.2f * timeDelta));
 	}
+	ViewTrans.Rot.CalcBack();
 	Multi_View -> ChangeData(ViewTrans);
 	Light_Spot.Pos = ViewTrans.Pos;
-	Light_Spot.Dir = ViewTrans.Rot.rotate_back(Point3D(0, 0, 1));
+	Light_Spot.Dir = ViewTrans.Rot.rotate(Point3D(0, 0, 1));
 
 	PH_Shader -> Use();
 	Uni_Light_Ambient -> PutData(Light_Ambient);

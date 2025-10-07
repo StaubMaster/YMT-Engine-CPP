@@ -6,14 +6,12 @@ Physics3D_InstAttrib::Physics3D_InstAttrib(
 	unsigned int divisor,
 	unsigned int stride,
 	unsigned int indexTransPos,
-	unsigned int indexTransRotSin,
-	unsigned int indexTransRotCos,
+	unsigned int indexTransRot,
 	unsigned int indexVelPos,
-	unsigned int indexVelRotSin,
-	unsigned int indexVelRotCos
+	unsigned int indexVelRot
 ) :
-	Trans(divisor, stride, indexTransPos, indexTransRotSin, indexTransRotCos),
-	Vel(divisor, stride, indexVelPos, indexVelRotSin, indexVelRotCos)
+	Trans(divisor, stride, indexTransPos, indexTransRot),
+	Vel(divisor, stride, indexVelPos, indexVelRot)
 { }
 
 

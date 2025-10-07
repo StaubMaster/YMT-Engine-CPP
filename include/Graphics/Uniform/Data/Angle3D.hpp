@@ -12,8 +12,7 @@ namespace Uniform
 class Angle3D : public Uniform::GenericUniformBase<::Angle3D>
 {
 	private:
-		int LocationSin;
-		int LocationCos;
+		int Location;
 
 	public:
 		Angle3D(std::string name, BaseShader & shader);

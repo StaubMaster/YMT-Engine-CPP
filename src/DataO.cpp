@@ -39,9 +39,9 @@ std::ostream & operator <<(std::ostream & o, const Point4D & val)
 
 std::ostream & operator <<(std::ostream & o, const Angle3D & val)
 {
-	o << "( " << val.x << " | " << val.y << " | " << val.z << " )";
-	o << "#( " << val.sin_x << " | " << val.sin_y << " | " << val.sin_z << " )";
-	o << "#( " << val.cos_x << " | " << val.cos_y << " | " << val.cos_z << " )";
+	o << "( " << val.X << " | " << val.Y << " | " << val.Z << " )";
+	//o << "#( " << val.sin_x << " | " << val.sin_y << " | " << val.sin_z << " )";
+	//o << "#( " << val.cos_x << " | " << val.cos_y << " | " << val.cos_z << " )";
 	return o;
 }
 

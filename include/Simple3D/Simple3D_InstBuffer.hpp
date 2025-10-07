@@ -9,8 +9,7 @@ class Simple3D_InstBuffer : public BaseBuffer
 	public:
 		Simple3D_InstBuffer(
 			unsigned int indexTransPos,
-			unsigned int indexTransRotSin,
-			unsigned int indexTransRotCos
+			unsigned int indexTransRot
 		);
 		~Simple3D_InstBuffer();
 };

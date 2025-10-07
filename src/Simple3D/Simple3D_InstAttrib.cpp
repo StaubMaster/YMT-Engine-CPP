@@ -6,10 +6,9 @@ Simple3D_InstAttrib::Simple3D_InstAttrib(
 	unsigned int divisor,
 	unsigned int stride,
 	unsigned int indexTransPos,
-	unsigned int indexTransRotSin,
-	unsigned int indexTransRotCos
+	unsigned int indexTransRot
 ) :
-	Trans(divisor, stride, indexTransPos, indexTransRotSin, indexTransRotCos)
+	Trans(divisor, stride, indexTransPos, indexTransRot)
 { }
 
 

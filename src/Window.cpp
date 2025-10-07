@@ -119,9 +119,9 @@ Angle3D Window::SpinFromCursor(float speed) const
 	double x, y;
 	glfwGetCursorPos(win, &x, &y);
 
-	spin.x = (+x) * speed;
-	spin.y = (-y) * speed;
-	spin.UpdateSinCos();
+	spin.X = (+x) * speed;
+	spin.Y = (-y) * speed;
+	spin.Z = 0;
 
 	return spin;
 }

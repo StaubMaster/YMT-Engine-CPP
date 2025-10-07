@@ -10,15 +10,13 @@ namespace Attribute
 class Angle3D : public Attribute::Base
 {
 	private:
-		Attribute::Location Sin;
-		Attribute::Location Cos;
+		Attribute::Location Location;
 
 	public:
 		Angle3D(
 			unsigned int divisor,
 			unsigned int stride,
-			unsigned int indexSin,
-			unsigned int indexCos
+			unsigned int index
 		);
 
 	public:

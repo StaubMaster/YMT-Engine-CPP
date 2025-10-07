@@ -7,15 +7,12 @@ struct Point3D;
 struct Angle3D
 {
 	public:
-		float	sin_x;
-		float	sin_y;
-		float	sin_z;
-		float	cos_x;
-		float	cos_y;
-		float	cos_z;
-		float	x;
-		float	y;
-		float	z;
+		float	X;
+		float	Y;
+		float	Z;
+
+	//private:
+		float	Data[3][3];
 
 	public:
 		Angle3D();
@@ -26,16 +23,21 @@ struct Angle3D
 		const Angle3D & operator =(const Angle3D & other);
 
 	public:
-		void UpdateSinCos();
-		void ChangeX(float x);
-		void ChangeY(float y);
-		void ChangeZ(float z);
+		static void	MatrixToString(float mat[3][3]);
+		static void	MatrixDefault(float mat[3][3]);
+		static void	MatrixMultiply(float result[3][3], float mat0[3][3], float mat1[3][3]);
+	private:
+	public:
+		void	CalcFore();
+		void	CalcBack();
 
-		Point3D	rotate_fore(Point3D p) const;
-		Point3D	rotate_back(Point3D p) const;
+		Point3D	rotate(Point3D p) const;
+		//Point3D	rotate_fore(Point3D p) const;
+		//Point3D	rotate_back(Point3D p) const;
 
-		Angle3D	rotate_fore(Angle3D a) const;
-		Angle3D	rotate_back(Angle3D a) const;
+		Angle3D	rotate(Angle3D a) const;
+		//Angle3D	rotate_fore(Angle3D a) const;
+		//Angle3D	rotate_back(Angle3D a) const;
 
 	public:
 		static void	rotate(float & pls, float & mns, float cos, float sin);
