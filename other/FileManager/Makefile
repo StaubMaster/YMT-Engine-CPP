@@ -1,5 +1,9 @@
 
+
+
 NAME = fileManager.a
+COMPILER = c++ -std=c++11
+FLAGS = -Wall -Wextra -Werror
 
 FILES_CPP = \
 	FileContext.cpp \
@@ -24,14 +28,12 @@ FILES_PNG_CPP = \
 FILES_O = $(FILES_CPP:.cpp=.o)
 FILES_O += $(FILES_PNG_CPP:.cpp=.o)
 
-Flags = -Wall -Wextra -Werror
-
 all:
 	$(MAKE) $(FILES_O)
 	ar -rcs $(NAME) $(FILES_O)
 
 %.o: %.cpp
-	c++ $(Flags) -c $^ -o $@
+	$(COMPILER) $(FLAGS) -c $^ -o $@
 
 clean:
 	rm -f $(FILES_O)

@@ -4,7 +4,7 @@
 
 #include "Point3D.hpp"
 
-class AxisBox3D
+struct AxisBox3D
 {
 	public:
 		Point3D	Min;

@@ -105,7 +105,7 @@ void	DEFLATE::decode_Huffman(BitStream & bits, HuffmanTree & literal, HuffmanTre
 		else
 		{
 			os << "\e[31mError: Invalid Huffman Decode\e[m\n";
-			throw Exception_InvalidData("Huffman Decode: " + decode_value);
+			throw Exception_InvalidData("Huffman Decode: ", decode_value);
 		}
 	}
 
@@ -156,7 +156,7 @@ uint8 *	DEFLATE::dynamic_Huffman(BitStream & bits, uint32 H_LIT, uint32 H_DIST, 
 			else
 			{
 				os << "\e[31mError: Invalid Huffman Decode\e[m\n";
-				throw Exception_InvalidData("Huffman Decode: " + decode_value);
+				throw Exception_InvalidData("Huffman Decode: ", decode_value);
 			}
 
 			for (uint32 r = 0; r < repeat_count; r++)
@@ -178,7 +178,7 @@ void	DEFLATE::Block_direct(BitStream & bits, DataStream & data)
 	std::ostream & os = DebugManager::GetOut();
 	os << "\e[34mdirect Data ...\e[m\n";
 
-	throw Exception_NotImplemented("direct Data Block");
+	throw Exception_NotImplemented("direct Data Block", "");
 
 	os << "\e[34mdirect Data done\e[m\n";
 	(void)bits;
@@ -189,7 +189,7 @@ void	DEFLATE::Block_static(BitStream & bits, DataStream & data)
 	std::ostream & os = DebugManager::GetOut();
 	os << "\e[34mstatic Huffman ...\e[m\n";
 
-	throw Exception_NotImplemented("static Huffman Block");
+	throw Exception_NotImplemented("static Huffman Block", "");
 
 	os << "\e[34mstatic Huffman done\e[m\n";
 	(void)bits;
@@ -262,11 +262,24 @@ void	DEFLATE::Blocks(BitStream & bits, DataStream & data)
 
 
 
+#include <sstream>
+/*
+	put this here so it dosent slow down compile of above stuff
+	should probably put this in a seperate file
+	but I want to make a BaseExceptin for these anyway
+	that stores text
+	this is just to make it compile for now
+	also the headers here could use more foreward declate stuff
+*/
 
 
-DEFLATE::Exception_NotImplemented::Exception_NotImplemented(std::string name)
+
+DEFLATE::Exception_NotImplemented::Exception_NotImplemented(std::string head, std::string name)
 {
-	Text = "DEFLATE: not implemented: " + name;
+	std::ostringstream ss("DEFLATE: not implemented: ");
+	ss << head;
+	ss << name;
+	Text = ss.str();
 }
 const char * DEFLATE::Exception_NotImplemented::what() const noexcept
 {
@@ -277,7 +290,9 @@ const char * DEFLATE::Exception_NotImplemented::what() const noexcept
 
 DEFLATE::Exception_InvalidBlockType::Exception_InvalidBlockType(uint32 type)
 {
-	Text = "DEFLATE: invalid Block Type: " + type;
+	std::ostringstream ss("DEFLATE: invalid Block Type: ");
+	ss << type;
+	Text = ss.str();
 }
 const char * DEFLATE::Exception_InvalidBlockType::what() const noexcept
 {
@@ -286,9 +301,12 @@ const char * DEFLATE::Exception_InvalidBlockType::what() const noexcept
 
 
 
-DEFLATE::Exception_InvalidData::Exception_InvalidData(std::string text)
+DEFLATE::Exception_InvalidData::Exception_InvalidData(std::string head, uint32 value)
 {
-	Text = "DEFLATE: invalid Data: " + text;
+	std::ostringstream ss("DEFLATE: invalid Data: ");
+	ss << head;
+	ss << value;
+	Text = ss.str();
 }
 const char * DEFLATE::Exception_InvalidData::what() const noexcept
 {

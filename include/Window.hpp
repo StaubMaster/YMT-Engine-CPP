@@ -7,8 +7,8 @@
 
 struct GLFWwindow;
 
-class Point3D;
-class Angle3D;
+struct Point3D;
+struct Angle3D;
 
 class Window
 {

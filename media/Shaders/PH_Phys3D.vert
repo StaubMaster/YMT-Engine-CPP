@@ -61,32 +61,6 @@ out Vert {
 
 
 
-void rot(inout float pls, inout float mns, in float fsin, in float fcos)
-{
-	float tmp;
-	tmp = fcos * pls - fsin * mns;
-	mns = fcos * mns + fsin * pls;
-	pls = tmp;
-}
-
-vec3 ASD(in vec3 p, in vec3 wSin, in vec3 wCos)
-{
-	vec3 n = p;
-	rot(n.x, n.z, wSin.x, wCos.x);
-	rot(n.y, n.z, wSin.y, wCos.y);
-	rot(n.y, n.x, wSin.z, wCos.z);
-	return n;
-}
-
-vec3 DSA(in vec3 p, in vec3 wSin, in vec3 wCos)
-{
-	vec3 n = p;
-	rot(n.x, n.y, wSin.z, wCos.z);
-	rot(n.z, n.y, wSin.y, wCos.y);
-	rot(n.z, n.x, wSin.x, wCos.x);
-	return n;
-}
-
 vec4 proj(in vec3 p_inn)
 {
 	vec4 p_out;

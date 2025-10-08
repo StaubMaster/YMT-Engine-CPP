@@ -76,8 +76,8 @@ re:
 
 
 %.exe : $(MAINS_DIR)%.cpp $(ARC)
-	$(COMPILER) $(FLAGS) -I ../include -I ../other -o $@ $^ $(WIN_ARGS)
-#	$(COMPILER) $(FLAGS) -I ../include -I ../other -o $@ $^ $(MAC_ARGS)
+#	$(COMPILER) $(FLAGS) -I ../include -I ../other -o $@ $^ $(WIN_ARGS)
+	$(COMPILER) $(FLAGS) -I ../include -I ../other -o $@ $^ $(MAC_ARGS)
 
 $(ARC) :
 	@$(MAKE) -C $(ARC_DIR) all

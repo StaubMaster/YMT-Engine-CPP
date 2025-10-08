@@ -169,6 +169,7 @@ void Update_ObjTrans(double timeDelta)
 		OBJs_Trans[i].Rot.CalcBack();
 		OBJs_Trans[i].Pos = OBJs_Trans[i].Pos + (OBJs_Trans[i].Rot.rotate(OBJs_Center[i]));
 		OBJs_Trans[i].Rot.X += 0.01f;
+
 		OBJs_Trans[i].Rot.CalcBack();
 		OBJs_Trans[i].Pos = OBJs_Trans[i].Pos - (OBJs_Trans[i].Rot.rotate(OBJs_Center[i]));
 
@@ -178,10 +179,25 @@ void Update_ObjTrans(double timeDelta)
 		}
 
 		{
+			Trans3D trans;
+			trans.Pos = Point3D(0, 0, 3);
+			trans.Rot = Angle3D(0, 0, 0);
+			trans.Rot.CalcBack();
 			Simple3D_InstData inst_data []
 			{
-				(Simple3D_InstData)OBJs_Trans[i],
+				//(Simple3D_InstData)OBJs_Trans[i],
+				(Simple3D_InstData)trans,
 			};
+			/*const float * ptr = (const float *)inst_data;
+			std::cout << "#\n";
+			for (int i = 0; i < 5; i++)
+			{
+				for (int j = 0; j < 3; j++)
+				{
+					std::cout << "|" << ptr[i * 3 + j];
+				}
+				std::cout << "|\n";
+			}*/
 			int inst_count = 1;
 			OBJ_BufferArray[i] -> BindInst(inst_data, inst_count);
 		}

@@ -29,7 +29,7 @@ class DEFLATE
 			private:
 				std::string Text;
 			public:
-				Exception_NotImplemented(std::string name);
+				Exception_NotImplemented(std::string head, std::string name);
 			public: 
 				const char * what() const noexcept;
 		};
@@ -47,7 +47,7 @@ class DEFLATE
 			private:
 				std::string Text;
 			public:
-				Exception_InvalidData(std::string text);
+				Exception_InvalidData(std::string head, uint32 value);
 			public:
 				const char * what() const noexcept;
 		};

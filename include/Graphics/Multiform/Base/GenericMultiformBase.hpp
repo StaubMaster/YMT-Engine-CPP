@@ -79,7 +79,7 @@ class GenericMultiformBase : public MultiformBase
 			delete [] uniforms;
 		}
 
-		void Data_PutUniform(Uniform::UniformBase * uni_base)
+		void Data_PutUniform(Uniform::UniformBase * uni_base) override
 		{
 			UniformType * uni = (UniformType*)uni_base;
 			uni -> PutData(Data);

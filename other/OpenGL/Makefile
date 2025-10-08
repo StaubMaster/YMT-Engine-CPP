@@ -9,9 +9,11 @@ FILES_SRC = \
 FILES_OBJ = $(FILES_SRC:.c=.o)
 
 
-
-all: $(FILES_OBJ)
+$(NAME) :
 	ar -rcs $(NAME) $(FILES_OBJ)
+
+all: $(FILES_OBJ) $(NAME)
+	@echo '[ all ]'
 
 clean:
 	rm -f $(FILES_OBJ)

@@ -63,52 +63,6 @@ out Vert {
 
 
 
-vec3 ASD(in vec3 p, in vec3 wSin, in vec3 wCos)
-{
-	mat3 matX = {
-		{ +wCos.x , 0 , -wSin.x },
-		{ 0 , 1 , 0 },
-		{ +wSin.x , 0 , +wCos.x }
-	};
-
-	mat3 matY = {
-		{ 1 , 0 , 0 },
-		{ 0 , +wCos.y , -wSin.y },
-		{ 0 , +wSin.y , +wCos.y }
-	};
-
-	mat3 matZ = {
-		{ +wCos.z , +wSin.z , 0 },
-		{ -wSin.z , +wCos.z , 0 },
-		{ 0 , 0 , 1 }
-	};
-
-	return p * (matX * matY * matZ);
-}
-
-vec3 DSA(in vec3 p, in vec3 wSin, in vec3 wCos)
-{
-	mat3 matZ = {
-		{ +wCos.z , -wSin.z , 0 },
-		{ +wSin.z , +wCos.z , 0 },
-		{ 0 , 0 , 1 }
-	};
-
-	mat3 matY = {
-		{ 1 , 0 , 0 },
-		{ 0 , +wCos.y , +wSin.y },
-		{ 0 , -wSin.y , +wCos.y }
-	};
-
-	mat3 matX = {
-		{ +wCos.x , 0 , +wSin.x },
-		{ 0 , 1 , 0 },
-		{ -wSin.x , 0 , +wCos.x }
-	};
-
-	return p * (matZ * matY * matX);
-}
-
 vec4 proj(in vec3 p_inn)
 {
 	vec4 p_out;

@@ -38,19 +38,19 @@ uniform DepthData Depth;
 
 
 
-layout(location = 0) in vec4 VPos;
-layout(location = 1) in vec3 VTex;
-layout(location = 2) in vec3 VNorm;
+layout(location = 0) in vec4	VPos;
+layout(location = 1) in vec3	VTex;
+layout(location = 2) in vec3	VNorm;
 
-layout(location = 3) in vec3 VCol;
+layout(location = 3) in vec3	VCol;
 
 layout(location = 4) in vec3	VAmbientColor;
 layout(location = 5) in vec3	VDiffuseColor;
 layout(location = 6) in float	VSpecularPower;
 layout(location = 7) in vec3	VSpecularColor;
 
-layout(location = 20) in vec3 IPos;
-layout(location = 21) in mat3 IRot;
+layout(location = 20) in vec3	IPos;
+layout(location = 21) in mat3	IRot;
 
 
 
@@ -72,32 +72,6 @@ out Vert {
 
 
 
-void rot(inout float pls, inout float mns, in float fsin, in float fcos)
-{
-	float tmp;
-	tmp = fcos * pls - fsin * mns;
-	mns = fcos * mns + fsin * pls;
-	pls = tmp;
-}
-
-vec3 ASD(in vec3 p, in vec3 wSin, in vec3 wCos)
-{
-	vec3 n = p;
-	rot(n.x, n.z, wSin.x, wCos.x);
-	rot(n.y, n.z, wSin.y, wCos.y);
-	rot(n.y, n.x, wSin.z, wCos.z);
-	return n;
-}
-
-vec3 DSA(in vec3 p, in vec3 wSin, in vec3 wCos)
-{
-	vec3 n = p;
-	rot(n.x, n.y, wSin.z, wCos.z);
-	rot(n.z, n.y, wSin.y, wCos.y);
-	rot(n.z, n.x, wSin.x, wCos.x);
-	return n;
-}
-
 vec4 proj(in vec3 p_inn)
 {
 	vec4 p_out;
@@ -117,8 +91,6 @@ void main()
 {
 	vec3 pos;
 	vs_out.Original = VPos.xyz;
-	//vs_out.Absolute = DSA(vs_out.Original, ISin, ICos) + IPos;
-	//vs_out.Relative = ASD(vs_out.Absolute - View.Pos, View.Rot.Sin, View.Rot.Cos);
 	vs_out.Absolute = (vs_out.Original * IRot) + IPos;
 	vs_out.Relative = (vs_out.Absolute - View.Pos) * View.Rot;
 	gl_Position = proj(vs_out.Relative);
