@@ -1,7 +1,8 @@
 
 NAME = openGL.a
-
 FLAGS = -Wall -Wextra -Werror
+
+
 
 FILES_SRC = \
 	glad/glad.c

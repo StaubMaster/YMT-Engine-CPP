@@ -140,6 +140,6 @@ re:
 
 $(DIR_OBJ)%.o : $(DIR_SRC)%.cpp
 	@mkdir -p $(dir $@)
-	$(COMPILER) $(FLAGS) -I include -I other -c $^ -o $@
+	$(COMPILER) $(FLAGS) -Iinclude -Iother -c $^ -o $@
 
 

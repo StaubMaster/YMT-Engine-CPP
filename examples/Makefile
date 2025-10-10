@@ -6,7 +6,8 @@ FLAGS = -Wall -Wextra -Werror
 
 
 MAINS = \
-	DefaultInstances.cpp \
+	test.cpp
+#	DefaultInstances.cpp \
 	LightTest.cpp \
 	OBJ_Parse.cpp \
 	ParticleSimulation.cpp \
@@ -92,7 +93,7 @@ re:
 
 
 %.exe : $(MAINS_DIR)%.cpp $(ARC)
-	$(COMPILER) $(FLAGS) -I ../include -I ../other -o $@ $^ $(OS_ARGS)
+	$(COMPILER) $(FLAGS) -I../include -I../other -o $@ $^ $(OS_ARGS)
 
 $(ARC) :
 	@$(MAKE) -C $(ARC_DIR) all

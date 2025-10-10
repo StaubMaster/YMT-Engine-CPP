@@ -7,6 +7,8 @@
 
 class Image;
 
+class DirectoryContext;
+
 class FileContext
 {
 	public:
@@ -17,6 +19,16 @@ class FileContext
 
 	public:
 		bool Exists() const;
+		//	check Permissions
+
+		bool IsDirectory() const;				//	check if Path is actually a Directory that exists
+		DirectoryContext ToDirectory() const;	//	Convert to DirectoryContext
+
+		bool IsAbsolute() const;
+		bool IsRelative() const;
+		FileContext ToAbsolute() const;
+		FileContext ToRelative(const DirectoryContext & root) const;
+
 		std::string Path() const;
 		std::string Name() const;
 		std::string Extension() const;

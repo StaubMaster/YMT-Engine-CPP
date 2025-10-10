@@ -20,9 +20,15 @@ FileManager into its own project
 			if for other reasons it cant load the file
 				like RAM problems
 		it would be nicest to set what to do
-		for throwing, allways return something
 		for non throwing, return NULL or equivalent, and have a Referance to return what the error was ?
 		or just a ref to a bool to check weather NULL was returned from an error or normal Behaviour
+		with LoadPNG returning NULL is enough to show that an Error occured
+		it't like that with anything that is expected to return a deletable Pointer
+		but the problem then is LoadText
+		how to know if an Error occured vs if the file was empty
+		just make the user use try-catch
+		if I return NULL then that would need to be checked as well
+		so its probably fine ?
 	ToIStream
 	ToOStream
 	ToBitStream
