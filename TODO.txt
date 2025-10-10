@@ -62,6 +62,17 @@ IntelliSense Comments
 
 
 
+other/OpenGL
+	the OS checks in the other makefile are for this stuff
+	put them there
+	extract all the archive stuff and put it all into the openGL.a ?
+	so it's all in one place.
+	but there are still the other -l args
+	-l also looks for archives, look for those and compile them all into one
+	also turn this into a more general thing that check for openGL usability
+
+
+
 organize
 	Uniforms can be generalized to FloatN and IntN
 	(and whatever other data types are needed in the future)
@@ -148,6 +159,5 @@ Voxel I also already have but that Project needs a Partner :(
 
 
 
-
-
 also maybe look for a job.
+

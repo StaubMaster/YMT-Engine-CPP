@@ -22,17 +22,33 @@ ARC = \
 	../other/OpenGL/openGL.a \
 	../other/FileManager/fileManager.a
 
-WIN_ARGS = \
+
+
+ifeq ($(OS), Windows_NT)	# Windows dosent have uname
+	CheckOS := Windows
+else						# everywhere else does
+	CheckOS := $(shell uname -s)
+endif
+
+ifeq ($(CheckOS), Windows)	#	these files are only there on my System. change to check for those files, else throw an error ?
+OS_ARGS := \
 	E:/Utility/glfw-3.4.bin.WIN64/lib-mingw-w64/libglfw3.a \
 	E:/Utility/msys32/ucrt64/lib/libOpenCL.dll.a \
 	-lgdi32
+endif
 
-MAC_ARGS = \
+ifeq ($(CheckOS), Darwin)
+OS_ARGS := \
 	-lglfw
+endif
 
-#	pretty sure I can add these directories to some environment PATH variable
-#	but I cant really find which path ?
-#	not sure if the documentation sucks, if google sucks, or if I'm just stupid
+#	echo | gcc -E -Wp,-v -
+#	get Paths searched by gcc
+#		-E	
+#		-Wp,	"bypass the compiler driver and pass option directly through to the preprocessor"
+#			v ?
+#		-v		verbose ? prints commands used by compiler
+#		-		???
 
 
 
@@ -76,10 +92,7 @@ re:
 
 
 %.exe : $(MAINS_DIR)%.cpp $(ARC)
-	$(COMPILER) $(FLAGS) -I ../include -I ../other -o $@ $^ $(WIN_ARGS)
-#	$(COMPILER) $(FLAGS) -I ../include -I ../other -o $@ $^ $(MAC_ARGS)
+	$(COMPILER) $(FLAGS) -I ../include -I ../other -o $@ $^ $(OS_ARGS)
 
 $(ARC) :
 	@$(MAKE) -C $(ARC_DIR) all
-
-
