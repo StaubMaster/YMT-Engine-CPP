@@ -1,6 +1,67 @@
 
 
 
+FileManager into its own project
+	put into its own project
+		looks better
+	BMP load (save ?)
+	DirectoryContext
+		give an Array of all Directorys
+		give an Array of all Files
+	Behaviour
+		Exception vs Null
+		for something like LoadPNG
+			return null or throw Exception
+		for something like LoadText
+			allways throw ?
+			since file not Existing can be checked
+				make something to check Permissions
+			what about any other error ?
+			if for other reasons it cant load the file
+				like RAM problems
+		it would be nicest to set what to do
+		for throwing, allways return something
+		for non throwing, return NULL or equivalent, and have a Referance to return what the error was ?
+		or just a ref to a bool to check weather NULL was returned from an error or normal Behaviour
+	ToIStream
+	ToOStream
+	ToBitStream
+		change BitStream to be a Base
+		then have variants
+			one gets a void Pointer and reads from that
+			one gets a StringStream or something and reads from that
+		this is all reading BitStream
+		have a write BitStream
+			dont really need that right now
+			better call it IBitStream so I dont need to rename
+
+wrapper for Exception
+	lots of the Exceptions build a string and then return c_str() to that string
+
+
+
+
+
+OBJ_Parser and Particle Simulator
+also put into own projects
+make it so all of that stuff can be put into the 42 repo
+so it just has a simple makefile
+
+
+
+unrelated:
+	put the chrome extensions into a repo
+	maybe give it a ui so the parts can be turned on and off
+	stop doing it with a timer
+
+
+
+IntelliSense Comments
+	add comments to functions to explain what they do
+	at least for the functions used in the Mains
+
+
+
 organize
 	Uniforms can be generalized to FloatN and IntN
 	(and whatever other data types are needed in the future)
