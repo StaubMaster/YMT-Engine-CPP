@@ -10,10 +10,36 @@
 #include <sstream>
 #include <vector>
 
+#if defined(_WIN32)
+# include <windows.h>
+//# include <winbase.h>
+#endif
 
+#if defined(_WIN32)
+# define SLASH '\\'
+#endif
+
+#if defined(__APPLE__)
+# define SLASH '/'
+#endif
 
 DirectoryContext::DirectoryContext(std::string dir_path) :
 	DirPath(dir_path) { }
+
+#if defined(_WIN32)
+DirectoryContext DirectoryContext::Here()
+{
+	TCHAR buf[MAX_PATH];
+	//DWORD len = GetCurrentDirectory(MAX_PATH, buf);
+	if (GetCurrentDirectory(MAX_PATH, buf) == 0)
+	{
+		std::cout << "Error getting current Dir\n";
+	}
+	return DirectoryContext(std::string((const char *)buf));
+}
+#endif
+
+#if defined(__APPLE__)
 DirectoryContext DirectoryContext::Here()
 {
 	char path[PATH_MAX];
@@ -23,6 +49,7 @@ DirectoryContext DirectoryContext::Here()
 	}
 	return DirectoryContext(std::string(path));
 }
+#endif
 
 
 
@@ -55,7 +82,7 @@ bool DirectoryContext::IsAbsolute() const
 
 	if (!std::isalpha(DirPath[0])) { return false; }
 	if (DirPath[1] != ':') { return false; }
-	if (DirPath[2] != '/' && DirPath[2] != '\\') { return false; }
+	if (DirPath[2] != SLASH) { return false; }
 
 	return true;
 }
@@ -70,7 +97,7 @@ bool DirectoryContext::IsAbsolute() const
 {
 	if (DirPath.size() < 1) { return false; }
 
-	if (DirPath[0] != '/') { return false; }
+	if (DirPath[0] != SLASH) { return false; }
 
 	return true;
 }
@@ -88,7 +115,7 @@ DirectoryContext DirectoryContext::ToAbsolute() const
 {
 	if (IsAbsolute()) { return DirectoryContext(DirPath); }
 	DirectoryContext here = Here();
-	return DirectoryContext(here.DirPath + "/" + DirPath);
+	return DirectoryContext(here.DirPath + SLASH + DirPath);
 }
 
 /*	ToRelative()
@@ -121,7 +148,7 @@ DirectoryContext DirectoryContext::ToRelative(const DirectoryContext & root) con
 	{
 		std::stringstream ss(DirPath);
 		std::string segment;
-		while (std::getline(ss, segment, '/'))
+		while (std::getline(ss, segment, SLASH))
 		{
 			this_segments.push_back(segment);
 		}
@@ -131,7 +158,7 @@ DirectoryContext DirectoryContext::ToRelative(const DirectoryContext & root) con
 	{
 		std::stringstream ss(root.DirPath);
 		std::string segment;
-		while (std::getline(ss, segment, '/'))
+		while (std::getline(ss, segment, SLASH))
 		{
 			root_segments.push_back(segment);
 		}
@@ -158,12 +185,12 @@ DirectoryContext DirectoryContext::ToRelative(const DirectoryContext & root) con
 
 	for (size_t j = i; j < root_segments.size(); j++)
 	{
-		relPath += "../";
+		relPath += ".." + SLASH;
 	}
 
 	for (size_t j = i; j < this_segments.size(); j++)
 	{
-		if (j != i) { relPath += "/"; }
+		if (j != i) { relPath += SLASH; }
 		relPath += this_segments[j];
 	}
 

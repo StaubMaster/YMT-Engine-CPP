@@ -38,6 +38,18 @@ OS_ARGS := \
 	-lgdi32
 endif
 
+#	#include "..." search starts here:
+#	#include <...> search starts here:
+#	 ../include
+#	 ../other
+#	 E:/Utility/msys32/ucrt64/bin/../lib/gcc/x86_64-w64-mingw32/15.2.0/../../../../include/c++/15.2.0
+#	 E:/Utility/msys32/ucrt64/bin/../lib/gcc/x86_64-w64-mingw32/15.2.0/../../../../include/c++/15.2.0/x86_64-w64-mingw32
+#	 E:/Utility/msys32/ucrt64/bin/../lib/gcc/x86_64-w64-mingw32/15.2.0/../../../../include/c++/15.2.0/backward
+#	 E:/Utility/msys32/ucrt64/bin/../lib/gcc/x86_64-w64-mingw32/15.2.0/include
+#	 E:/Utility/msys32/ucrt64/bin/../lib/gcc/x86_64-w64-mingw32/15.2.0/../../../../include
+#	 E:/Utility/msys32/ucrt64/bin/../lib/gcc/x86_64-w64-mingw32/15.2.0/include-fixed
+#	End of search list.
+
 ifeq ($(CheckOS), Darwin)
 OS_ARGS := \
 	-lglfw
@@ -50,6 +62,7 @@ endif
 #			v ?
 #		-v		verbose ? prints commands used by compiler
 #		-		???
+#	or just use -v when compiling
 
 
 
