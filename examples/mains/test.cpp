@@ -5,55 +5,15 @@
 #include "FileManager/FileMode.hpp"
 #include "FileManager/DirectoryContext.hpp"
 
+#include "FileManager/Parsing/uint.hpp"
+
 #include <vector>
 #include <iostream>
 
 
 
-int main(int argc, char * argv [])
+void FileDirContextPathInfoMode_Stuff(int argc, char * argv [])
 {
-	//std::cout << "here\n";
-	//DirectoryContext here = DirectoryContext::Here();
-	//std::cout << "Path: " << here.DirPath << "\n";
-
-	//std::cout << "\n";
-	/*for (int i = 0; i < argc; i++)
-	{
-		std::string str(argv[i]);
-		
-		std::cout << "[" << i << "]" << str << "|" << "\n";
-
-		DirectoryContext dir(str);
-		std::cout << "Path:" << dir.DirPath << "\n";
-		std::cout << "IsAbs: " << dir.IsAbsolute() << "\n";
-		std::cout << "IsRel: " << dir.IsRelative() << "\n";
-		std::cout << "\n";
-
-		DirectoryContext dirA = dir.ToAbsolute();
-		std::cout << "Path:" << dirA.DirPath << "\n";
-		std::cout << "IsAbs: " << dirA.IsAbsolute() << "\n";
-		std::cout << "IsRel: " << dirA.IsRelative() << "\n";
-		std::cout << "\n";
-
-		DirectoryContext dirR = dirA.ToRelative(here);
-		std::cout << "Path:" << dirR.DirPath << "\n";
-		std::cout << "IsAbs: " << dirR.IsAbsolute() << "\n";
-		std::cout << "IsRel: " << dirR.IsRelative() << "\n";
-		std::cout << "\n";
-	}*/
-
-	//FileContext file(argv[0]);
-	//std::cout << "Valid: " << file.Info.Valid << "\n";
-	//std::cout << "Mode: " << file.Info.Mode << "\n";
-	//std::cout << "ID_U: " << file.Info.ID_User << "\n";
-	//std::cout << "ID_G: " << file.Info.ID_Group << "\n";
-	//std::cout << "ID_D: " << file.Info.ID_Device << "\n";
-	//std::cout << "ID_S: " << file.Info.ID_Special << "\n";
-	//std::cout << "Time Access: " << file.Info.TimeLastAccess << "\n";
-	//std::cout << "Time Modify: " << file.Info.TimeLastModify << "\n";
-	//std::cout << "Time Change: " << file.Info.TimeLastChange << "\n";
-	//std::cout << "Size: " << file.Info.Size << "\n";
-
 	FilePath here = FilePath::Here();
 	std::cout << "Here:" << here << "\n";
 	std::cout << "\n";
@@ -104,10 +64,55 @@ int main(int argc, char * argv [])
 		std::cout << "\n";
 	}
 
-	//FileContext file("Makefile");
-	//std::cout << "\n################################################################\n";
-	//std::cout << file.LoadText();
-	//std::cout << "\n################################################################\n";
+	(void)argc;
+	(void)argv;
+}
+
+uint8 Random8()
+{
+	return std::rand();
+}
+uint16 Random16()
+{
+	short n0 = std::rand();
+	short n1 = std::rand();
+	return (n0 << 0) ^ (n1 << 1);
+}
+uint32 Random32()
+{
+	uint32 n0 = Random16();
+	uint32 n1 = Random16();
+	return (n0 << 0) ^ (n1 << 16);
+}
+uint64 Random64()
+{
+	uint64 n0 = Random32();
+	uint64 n1 = Random32();
+	return (n0 << 0) ^ (n1 << 32);
+}
+
+void UIntTest()
+{
+	for (int i = 0; i < 64; i++)
+	{
+		//uint8 n = Random8();
+		//uint16 n = Random16();
+		//uint32 n = Random32();
+		uint64 n = Random64();
+
+		//std::cout << "Bit: " << uint_Bit(n8) << " " << uint_Bit(n16) << " " << uint_Bit(n32) << " " << uint_Bit(n64) << "\n";
+
+		std::cout << "Bit: " << ToBase2(n) << "\n";
+		std::cout << "Bit: " << ToBase2(n, ' ') << "\n";
+		std::cout << "Hex: " << ToBase16(n) << "\n";
+		std::cout << "Hex: " << ToBase16(n, ' ') << "\n";
+	}
+}
+
+int main(int argc, char * argv [])
+{
+	//FileDirContextPathInfoMode_Stuff(argc, argv);
+	UIntTest();
 
 	(void)argc;
 	(void)argv;

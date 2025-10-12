@@ -1,5 +1,25 @@
 
 #include "uint.hpp"
+//#include <iostream>
+#include <sstream>
+
+#define UINT_BIT_SECTION_SIZE 8
+#define UINT_HEX_SECTION_SIZE 2
+
+#define  UINT8_SECTION_COUNT 1
+#define UINT16_SECTION_COUNT 2
+#define UINT32_SECTION_COUNT 4
+#define UINT64_SECTION_COUNT 8
+
+#define  UINT8_SEPERATORS  UINT8_SECTION_COUNT - 1
+#define UINT16_SEPERATORS UINT16_SECTION_COUNT - 1
+#define UINT32_SEPERATORS UINT32_SECTION_COUNT - 1
+#define UINT64_SEPERATORS UINT64_SECTION_COUNT - 1
+
+#define  UINT8_HEX_CHARS UINT_HEX_SECTION_SIZE *  UINT8_SECTION_COUNT
+#define UINT16_HEX_CHARS UINT_HEX_SECTION_SIZE * UINT16_SECTION_COUNT
+#define UINT32_HEX_CHARS UINT_HEX_SECTION_SIZE * UINT32_SECTION_COUNT
+#define UINT64_HEX_CHARS UINT_HEX_SECTION_SIZE * UINT64_SECTION_COUNT
 
 /*static const char * bits_table[] = {
 	"00000000", "00000001", "00000010", "00000011", "00000100", "00000101", "00000110", "00000111",
@@ -36,20 +56,95 @@
 	"11111000", "11111001", "11111010", "11111011", "11111100", "11111101", "11111110", "11111111",
 };*/
 
+
+
+static const char Base2_Chars[16] = { '0', '1' };
+template <typename uint> std::string ToBase2(uint val, uint8 num, uint8 limit)
+{
+	num = (num & limit) + 1;
+	char chars[num];
+	uint8 c = 0;
+	for (uint8 i = 0; i < num; i++)
+	{
+		chars[c] = Base2_Chars[(val >> (limit - i)) & 1];
+		c++;
+	}
+	return (std::string(chars, num));
+}
+template <typename uint> std::string ToBase2(uint val, char seperator, uint8 num, uint8 limit, uint8 sep_count)
+{
+	num = (num & limit) + 1;
+	char chars[num + sep_count];
+	uint8 c = 0;
+	for (uint8 i = 0; i < num; i++)
+	{
+		if (i != 0 && (i & 0b111) == 0)
+		{
+			chars[c] = seperator;
+			c++;
+		}
+		chars[c] = Base2_Chars[(val >> (limit - i)) & 1];
+		c++;
+	}
+	return (std::string(chars, num + sep_count));
+}
+
+
+
+static const char Base16_Chars[16] = { '0', '1', '2', '3', '4', '5', '6', '7', '8', '9', 'A', 'B', 'C', 'D', 'E', 'F' };
+template <typename uint> std::string ToBase16(uint val, uint8 char_count)
+{
+	char chars[char_count];
+	uint8 c = 0;
+	for (uint8 i = 0; i < char_count; i++)
+	{
+		chars[c] = Base16_Chars[(val >> (((char_count - i) - 1) * 4)) & 0xF];
+		c++;
+	}
+	return (std::string(chars, char_count));
+}
+template <typename uint> std::string ToBase16(uint val, char seperator, uint8 char_count, uint8 sep_count)
+{
+	char chars[char_count + sep_count];
+	uint8 c = 0;
+	for (uint8 i = 0; i < char_count; i++)
+	{
+		if (i != 0 && (i & 0b1) == 0)
+		{
+			chars[c] = seperator;
+			c++;
+		}
+		chars[c] = Base16_Chars[(val >> (((char_count - i) - 1) * 4)) & 0xF];
+		c++;
+	}
+	return (std::string(chars, char_count + sep_count));
+}
+
+
+
+//	8
+
 std::string	uint_Bit(uint8 val, uint8 num)
 {
-	num = num & 0b111;
-	std::stringstream ss;
-
-	for (uint8 i = num; i <= num; i--)
+	num = num & UINT8_BIT_LIMIT;
+	char chars[num + 1];
+	for (uint8 i = 0; i <= num; i++)
 	{
-		if ((val >> i) & 1)
-			ss << "1";
+		if ((val >> (UINT8_BIT_LIMIT - i)) & 1)
+		{ chars[i] = '1'; }
 		else
-			ss << "0";
+		{ chars[i] = '0'; }
 	}
-
-	return (ss.str());
+	return (std::string(chars, num + 1));
+}
+std::string	uint_Hex(uint8 val)
+{
+	char chars[UINT8_HEX_CHARS];
+	for (uint8 i = 0; i < UINT8_HEX_CHARS; i++)
+	{
+		chars[i] = Base16_Chars[(val >> (((UINT8_HEX_CHARS - i) - 1) * 4)) & 0xF];
+	}
+	return (std::string(chars, UINT8_HEX_CHARS));
 }
 std::string	uint_Chr(uint8 val)
 {
@@ -59,38 +154,87 @@ std::string	uint_Chr(uint8 val)
 
 	return (ss.str());
 }
-std::string	uint_Hex(uint8 val)
+
+std::string	ToBase2(uint8 val, uint8 num)
 {
-	std::stringstream ss;
-	ss << std::uppercase << std::hex;
-
-	ss << std::setfill('0') << std::setw(2) << (uint16)(val);
-
-	return (ss.str());
+	return ToBase2<uint8>(val, num, UINT8_BIT_LIMIT);
+}
+std::string	ToBase16(uint8 val)
+{
+	return ToBase16<uint8>(val, UINT8_HEX_CHARS);
 }
 
 
+
+
+
+//	16
+
+std::string	uint_Bit(uint16 val, uint8 num)
+{
+	num = num & UINT16_BIT_LIMIT;
+	char chars[num + 1];
+	for (uint8 i = 0; i <= num; i++)
+	{
+		if ((val >> (UINT16_BIT_LIMIT - i)) & 1)
+		{ chars[i] = '1'; }
+		else
+		{ chars[i] = '0'; }
+	}
+	return (std::string(chars, num + 1));
+}
+std::string	uint_Hex(uint16 val)
+{
+	char chars[UINT16_HEX_CHARS];
+	for (uint8 i = 0; i < UINT16_HEX_CHARS; i++)
+	{
+		chars[i] = Base16_Chars[(val >> (((UINT16_HEX_CHARS - i) - 1) * 4)) & 0xF];
+	}
+	return (std::string(chars, UINT16_HEX_CHARS));
+}
+
+std::string	ToBase2(uint16 val, uint8 num)
+{
+	return ToBase2<uint16>(val, num, UINT16_BIT_LIMIT);
+}
+std::string	ToBase2(uint16 val, char seperator, uint8 num)
+{
+	return ToBase2<uint16>(val, seperator, num, UINT16_BIT_LIMIT, UINT16_SEPERATORS);
+}
+std::string	ToBase16(uint16 val)
+{
+	return ToBase16<uint16>(val, UINT16_HEX_CHARS);
+}
+std::string	ToBase16(uint16 val, char seperator)
+{
+	return ToBase16<uint16>(val, seperator, UINT16_HEX_CHARS, UINT16_SEPERATORS);
+}
+
+
+
+//	32
+
 std::string	uint_Bit(uint32 val, uint8 num)
 {
-	num = num & 0b11111;
-	std::stringstream ss;
-
-	for (uint8 i = num; i <= num; i--)
+	num = num & UINT32_BIT_LIMIT;
+	char chars[num + 1];
+	for (uint8 i = 0; i <= num; i++)
 	{
-		//if ((num - i) == 24)
-		//	ss << " ";
-		//if ((num - i) == 16)
-		//	ss << " ";
-		//if ((num - i) == 8)
-		//	ss << " ";
-
-		if ((val >> i) & 1)
-			ss << "1";
+		if ((val >> (UINT32_BIT_LIMIT - i)) & 1)
+		{ chars[i] = '1'; }
 		else
-			ss << "0";
+		{ chars[i] = '0'; }
 	}
-
-	return (ss.str());
+	return (std::string(chars, num + 1));
+}
+std::string	uint_Hex(uint32 val)
+{
+	char chars[UINT32_HEX_CHARS];
+	for (uint8 i = 0; i < UINT32_HEX_CHARS; i++)
+	{
+		chars[i] = Base16_Chars[(val >> (((UINT32_HEX_CHARS - i) - 1) * 4)) & 0xF];
+	}
+	return (std::string(chars, UINT32_HEX_CHARS));
 }
 std::string	uint_Chr(uint32 val)
 {
@@ -104,36 +248,69 @@ std::string	uint_Chr(uint32 val)
 
 	return (ss.str());
 }
-std::string	uint_Hex(uint32 val)
+
+
+
+std::string	ToBase2(uint32 val, uint8 num)
 {
-	std::stringstream ss;
-	ss << std::uppercase << std::hex;
-
-	uint8 * ptr = (uint8 *)&val;
-	for (int i = 0; i < 4; i++)
-	{
-		if (i != 0)
-			ss << " ";
-		ss << std::setfill('0') << std::setw(2) << (uint16)(ptr[i]);
-	}
-
-	return (ss.str());
+	return ToBase2<uint32>(val, num, UINT32_BIT_LIMIT);
+}
+std::string	ToBase2(uint32 val, char seperator, uint8 num)
+{
+	return ToBase2<uint32>(val, seperator, num, UINT32_BIT_LIMIT, UINT32_SEPERATORS);
+}
+std::string	ToBase16(uint32 val)
+{
+	return ToBase16<uint32>(val, UINT32_HEX_CHARS);
+}
+std::string	ToBase16(uint32 val, char seperator)
+{
+	return ToBase16<uint32>(val, seperator, UINT32_HEX_CHARS, UINT32_SEPERATORS);
 }
 
 
 
+
+//	64
+
+std::string	uint_Bit(uint64 val, uint8 num)
+{
+	num = num & UINT64_BIT_LIMIT;
+	char chars[num + 1];
+	for (uint8 i = 0; i <= num; i++)
+	{
+		if ((val >> (UINT64_BIT_LIMIT - i)) & 1)
+		{ chars[i] = '1'; }
+		else
+		{ chars[i] = '0'; }
+	}
+	return (std::string(chars, num + 1));
+}
 std::string	uint_Hex(uint64 val)
 {
-	std::stringstream ss;
-	ss << std::uppercase << std::hex;
-
-	uint8 * ptr = (uint8 *)&val;
-	for (int i = 0; i < 8; i++)
+	char chars[UINT64_HEX_CHARS];
+	for (uint8 i = 0; i < UINT64_HEX_CHARS; i++)
 	{
-		if (i != 0)
-			ss << " ";
-		ss << std::setfill('0') << std::setw(2) << (uint16)(ptr[i]);
+		chars[i] = Base16_Chars[(val >> (((UINT64_HEX_CHARS - i) - 1) * 4)) & 0xF];
 	}
+	return (std::string(chars, UINT64_HEX_CHARS));
+}
 
-	return (ss.str());
+
+
+std::string	ToBase2(uint64 val, uint8 num)
+{
+	return ToBase2<uint64>(val, num, UINT64_BIT_LIMIT);
+}
+std::string	ToBase2(uint64 val, char seperator, uint8 num)
+{
+	return ToBase2<uint64>(val, seperator, num, UINT64_BIT_LIMIT, UINT64_SEPERATORS);
+}
+std::string	ToBase16(uint64 val)
+{
+	return ToBase16<uint64>(val, UINT64_HEX_CHARS);
+}
+std::string	ToBase16(uint64 val, char seperator)
+{
+	return ToBase16<uint64>(val, seperator, UINT64_HEX_CHARS, UINT64_SEPERATORS);
 }
