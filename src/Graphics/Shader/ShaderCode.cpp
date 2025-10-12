@@ -85,13 +85,13 @@ ShaderCode ShaderCode::FromFile(const FileContext & file)
 	std::string ext = file.Extension();
 
 	GLenum type;
-	if      (ext == ".glsg") { throw EInvalidFileExtention(file.FilePath); }
+	if      (ext == ".glsg") { throw EInvalidFileExtention(file.Path.ToString()); }
 	else if (ext == ".vert") { type = GL_VERTEX_SHADER; }
 	else if (ext == ".geom") { type = GL_GEOMETRY_SHADER; }
 	else if (ext == ".frag") { type = GL_FRAGMENT_SHADER; }
-	else { throw EInvalidFileExtention(file.FilePath); }
+	else { throw EInvalidFileExtention(file.Path.ToString()); }
 
-	return ShaderCode(type, file.LoadText(), file.FilePath);
+	return ShaderCode(type, file.LoadText(), file.Path.ToString());
 }
 
 ShaderCode::EInvalidFileExtention::EInvalidFileExtention(const std::string & path)

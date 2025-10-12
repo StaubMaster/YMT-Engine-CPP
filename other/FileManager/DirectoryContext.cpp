@@ -3,208 +3,135 @@
 #include "FileContext.hpp"
 
 #include <sys/stat.h>
+#include <sys/types.h>
+#include <dirent.h>
 #include <unistd.h>
 #include <cctype>
 
 #include <iostream>
-#include <sstream>
-#include <vector>
 
-#if defined(_WIN32)
-# include <windows.h>
-//# include <winbase.h>
-#endif
 
-#if defined(_WIN32)
-# define SLASH '\\'
-#endif
 
-#if defined(__APPLE__)
-# define SLASH '/'
-#endif
+DirectoryContext::DirectoryContext() :
+	Path(""),
+	Info("")
+{ }
+DirectoryContext::DirectoryContext(std::string path) :
+	Path(path),
+	Info(path)
+{ }
+DirectoryContext::DirectoryContext(FilePath path) :
+	Path(path),
+	Info(path.ToString())
+{ }
 
-DirectoryContext::DirectoryContext(std::string dir_path) :
-	DirPath(dir_path) { }
 
-#if defined(_WIN32)
+
+DirectoryContext::DirectoryContext(const DirectoryContext & other) :
+	Path(other.Path),
+	Info(Path.ToString())
+{ }
+DirectoryContext & DirectoryContext::operator =(const DirectoryContext & other)
+{
+	Path = other.Path;
+	Info = FileInfo(Path.ToString());
+	return *this;
+}
+
+
+
 DirectoryContext DirectoryContext::Here()
 {
-	TCHAR buf[MAX_PATH];
-	//DWORD len = GetCurrentDirectory(MAX_PATH, buf);
-	if (GetCurrentDirectory(MAX_PATH, buf) == 0)
-	{
-		std::cout << "Error getting current Dir\n";
-	}
-	return DirectoryContext(std::string((const char *)buf));
+	return DirectoryContext(FilePath::Here());
 }
-#endif
-
-#if defined(__APPLE__)
-DirectoryContext DirectoryContext::Here()
-{
-	char path[PATH_MAX];
-	if (getwd(path) == NULL)
-	{
-		std::cout << "Error getting current Dir\n";
-	}
-	return DirectoryContext(std::string(path));
-}
-#endif
 
 
 
 bool DirectoryContext::Exists() const
 {
-	struct stat sb;
-	return (stat(DirPath.c_str(), &sb) == 0 && (sb.st_mode & S_IFDIR) != 0);
+	return (Info.Valid && Info.Mode.IsDirectory());
 }
-
-
 
 bool DirectoryContext::IsFile() const
 {
-	struct stat sb;
-	return (stat(DirPath.c_str(), &sb) == 0 && (sb.st_mode & S_IFREG) != 0);
+	return (Info.Valid && Info.Mode.IsFile());
 }
 FileContext DirectoryContext::ToFile() const
 {
-	return FileContext(DirPath);
+	return FileContext(Path);
 }
 
 
 
-//	this is Different for Windows and Mac
-#if defined(_WIN32)
-//	Windows:	https://learn.microsoft.com/en-us/dotnet/standard/io/file-path-formats
-bool DirectoryContext::IsAbsolute() const
+std::vector<FilePath> DirectoryContext::Children() const
 {
-	if (DirPath.size() < 3) { return false; }
-
-	if (!std::isalpha(DirPath[0])) { return false; }
-	if (DirPath[1] != ':') { return false; }
-	if (DirPath[2] != SLASH) { return false; }
-
-	return true;
-}
-bool DirectoryContext::IsRelative() const
-{
-	return !IsAbsolute();
-}
-#endif
-
-#if defined(__APPLE__)
-bool DirectoryContext::IsAbsolute() const
-{
-	if (DirPath.size() < 1) { return false; }
-
-	if (DirPath[0] != SLASH) { return false; }
-
-	return true;
-}
-bool DirectoryContext::IsRelative() const
-{
-	return !IsAbsolute();
-}
-#endif
-//	alternatively, get Here. compare if beginning is the same ?
-//	but it might have ../ in it
-
-
-
-DirectoryContext DirectoryContext::ToAbsolute() const
-{
-	if (IsAbsolute()) { return DirectoryContext(DirPath); }
-	DirectoryContext here = Here();
-	return DirectoryContext(here.DirPath + SLASH + DirPath);
-}
-
-/*	ToRelative()
-	dosent handle ./ and ../ for now
-
-	this:	/Users/dgerold/test
-	root:	/Users/dgerold/Desktop/self/YMT/examples
-	return:	../../../../test
-
-	this:	/Users/dgerold/Desktop/self/YMT/examples/another/dir/test
-	root:	/Users/dgerold/Desktop/self/YMT/examples
-	return:	another/dir/test
-	return:	./another/dir/test	?
-
-	some of the things being done here might be useful in other funcitons
-	make a PathHelper thing ?
-*/
-
-DirectoryContext DirectoryContext::ToRelative(const DirectoryContext & root) const
-{
-	if (IsRelative())
+	DIR * dir = opendir(Path.ToString().c_str());
+	if (dir == NULL)
 	{
-		return ToAbsolute().ToRelative(root);
+		std::cout << "DirectoryContext: Error: opendir\n";
 	}
 
-	//std::cout << "this: " << DirPath << "\n";
-	//std::cout << "root: " << root.DirPath << "\n";
+	std::vector<FilePath> children;
 
-	std::vector<std::string> this_segments;
+	struct dirent * ent;
+	ent = readdir(dir);
+	while (ent != NULL)
 	{
-		std::stringstream ss(DirPath);
-		std::string segment;
-		while (std::getline(ss, segment, SLASH))
+		children.push_back(FilePath(std::string(ent -> d_name)));
+		ent = readdir(dir);
+	}
+
+	if (closedir(dir) != 0)
+	{
+		std::cout << "DirectoryContext: Error: closedir\n";
+	}
+	return children;
+}
+std::vector<FileContext> DirectoryContext::Files() const
+{
+	std::vector<FilePath> paths = Children();
+
+	std::vector<FileContext> files;
+
+	for (size_t i = 0; i < paths.size(); i++)
+	{
+		FileInfo info(paths[i].ToString());
+		if (info.Mode.IsFile())
 		{
-			this_segments.push_back(segment);
+			files.push_back(FileContext(paths[i]));
 		}
 	}
 
-	std::vector<std::string> root_segments;
+	return files;
+}
+std::vector<DirectoryContext> DirectoryContext::Directorys() const
+{
+	std::vector<FilePath> paths = Children();
+
+	std::vector<DirectoryContext> dirs;
+
+	for (size_t i = 0; i < paths.size(); i++)
 	{
-		std::stringstream ss(root.DirPath);
-		std::string segment;
-		while (std::getline(ss, segment, SLASH))
+		FileInfo info(paths[i].ToString());
+		if (info.Mode.IsDirectory())
 		{
-			root_segments.push_back(segment);
+			dirs.push_back(DirectoryContext(paths[i]));
 		}
 	}
 
-	//std::cout << "this | ";
-	//for (size_t i = 0; i < this_segments.size(); i++) { std::cout << this_segments[i] << " | "; }
-	//std::cout << "\n";
-
-	//std::cout << "root | ";
-	//for (size_t i = 0; i < root_segments.size(); i++) { std::cout << root_segments[i] << " | "; }
-	//std::cout << "\n";
-
-	size_t i;
-	for (i = 0; i < this_segments.size() && i < root_segments.size(); i++)
-	{
-		if (this_segments[i] != root_segments[i])
-		{
-			break;
-		}
-	}
-
-	std::string relPath;
-
-	for (size_t j = i; j < root_segments.size(); j++)
-	{
-		relPath += ".." + SLASH;
-	}
-
-	for (size_t j = i; j < this_segments.size(); j++)
-	{
-		if (j != i) { relPath += SLASH; }
-		relPath += this_segments[j];
-	}
-
-	return DirectoryContext(relPath);
+	return dirs;
 }
 
 
 
-
-
-
+bool DirectoryContext::HasFile(std::string name) const
+{
+	FileInfo info(Path.Child(name).ToString());
+	return (info.Valid && info.Mode.IsFile());
+}
 FileContext DirectoryContext::File(std::string name) const
 {
-	return FileContext(DirPath + "/" + name);
+	return FileContext(Path.Child(name));
 }
 
 

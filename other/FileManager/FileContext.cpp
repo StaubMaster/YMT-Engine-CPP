@@ -1,5 +1,7 @@
 
 #include "FileContext.hpp"
+#include "FileMode.hpp"
+#include "DirectoryContext.hpp"
 
 #include "Format/Image.hpp"
 #include "Format/PNG/PNG.hpp"
@@ -9,38 +11,63 @@
 
 
 
-FileContext::FileContext(std::string file_path) :
-	FilePath(file_path) { }
+FileContext::FileContext() : 
+	Path(""),
+	Info("")
+{ }
+FileContext::FileContext(std::string path) :
+	Path(path),
+	Info(path)
+{ }
+FileContext::FileContext(FilePath path) :
+	Path(path),
+	Info(path.ToString())
+{ }
+
+
+
+FileContext::FileContext(const FileContext & other) :
+	Path(other.Path),
+	Info(Path.ToString())
+{ }
+FileContext & FileContext::operator =(const FileContext & other)
+{
+	Path = other.Path;
+	Info = FileInfo(Path.ToString());
+	return *this;
+}
 
 
 
 bool FileContext::Exists() const
 {
-	struct stat sb;
-	return (stat(FilePath.c_str(), &sb) == 0 && (sb.st_mode & S_IFREG) != 0);
+	return (Info.Valid && Info.Mode.IsFile());
 }
-std::string FileContext::Path() const
+
+bool FileContext::IsDirectory() const
 {
-	size_t idx;
-	idx = FilePath.find_last_of('/');
-	if (idx != std::string::npos) { return FilePath.substr(0, idx); }
-	idx = FilePath.find_last_of('\\');
-	if (idx != std::string::npos) { return FilePath.substr(0, idx); }
-	return "";
+	return (Info.Valid && Info.Mode.IsDirectory());
+}
+DirectoryContext FileContext::ToDirectory() const
+{
+	return DirectoryContext(Path);
+}
+
+
+
+std::string FileContext::Directory() const
+{
+	return Path.Parent().ToString();
 }
 std::string FileContext::Name() const
 {
-	size_t idx;
-	idx = FilePath.find_last_of('/');
-	if (idx != std::string::npos) { return FilePath.substr(idx + 1); }
-	idx = FilePath.find_last_of('\\');
-	if (idx != std::string::npos) { return FilePath.substr(idx + 1); }
-	return "";
+	return Path.Segments[Path.Segments.size() - 1];
 }
 std::string FileContext::Extension() const
 {
-	size_t idx = FilePath.find_last_of('.');
-	if (idx != std::string::npos) { return FilePath.substr(idx); }
+	const std::string & str = Path.Segments[Path.Segments.size() - 1];
+	size_t idx = str.find_last_of('.');
+	if (idx != std::string::npos) { return str.substr(idx); }
 	return "";
 }
 
@@ -50,27 +77,27 @@ std::string FileContext::LoadText() const
 {
 	if (!Exists())
 	{
-		throw Exception_FileNotFound(FilePath);
+		throw Exception_FileNotFound(Path.ToString());
 	}
 
-	std::ifstream file(FilePath, std::ios::binary);
-	if (!file.is_open())
+	std::ifstream stream(Path.ToString(), std::ios::binary);
+	if (!stream.is_open())
 	{
-		throw Exception_FileProblem(FilePath);
+		throw Exception_FileProblem(Path.ToString());
 	}
 
-	std::string file_text;
+	std::string text;
 	char	binary_block[1024];
 
-	file.read(binary_block, 1024);
-	while (!file.eof())
+	stream.read(binary_block, 1024);
+	while (!stream.eof())
 	{
-		file_text += std::string(binary_block, 1024);
-		file.read(binary_block, 1024);
+		text += std::string(binary_block, 1024);
+		stream.read(binary_block, 1024);
 	}
-	file_text += std::string(binary_block, file.gcount());
+	text += std::string(binary_block, stream.gcount());
 
-	return (file_text);
+	return (text);
 }
 void FileContext::SaveText(std::string text) const
 {

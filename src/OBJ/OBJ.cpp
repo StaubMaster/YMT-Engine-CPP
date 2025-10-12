@@ -321,11 +321,11 @@ OBJ * OBJ::Load(const FileContext & file)
 	{
 		if (file.Extension() != ".obj")
 		{
-			std::cout << "\e[38;2;255;000;000m" << "Warnign: " << file.FilePath << " is being loaded as OBJ but does not have .obj extension.\n" << "\e[m";
+			std::cout << "\e[38;2;255;000;000m" << "Warnign: " << file.Path << " is being loaded as OBJ but does not have .obj extension.\n" << "\e[m";
 		}
 
 		OBJ * obj = new OBJ();
-		obj -> Path = file.Path();
+		obj -> Path = file.Directory();
 		LineCommand::Split(file, *obj, &OBJ::Parse);
 		std::cout << "Materials:\n";
 		for (unsigned int i = 0; i < obj -> Materials.Materials.Count(); i++)

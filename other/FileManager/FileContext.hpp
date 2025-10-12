@@ -2,6 +2,9 @@
 #ifndef  FILE_CONTEXT_HPP
 # define FILE_CONTEXT_HPP
 
+# include "FilePath.hpp"
+# include "FileInfo.hpp"
+
 # include <string>
 # include <exception>
 
@@ -12,24 +15,25 @@ class DirectoryContext;
 class FileContext
 {
 	public:
-		std::string FilePath;
+		FilePath Path;
+		FileInfo Info;
 
 	public:
-		FileContext(std::string file_path);
+		FileContext();
+		FileContext(std::string path);
+		FileContext(FilePath path);
+
+		FileContext(const FileContext & other);
+		FileContext & operator =(const FileContext & other);
 
 	public:
 		bool Exists() const;
-		//	check Permissions
 
-		bool IsDirectory() const;				//	check if Path is actually a Directory that exists
-		DirectoryContext ToDirectory() const;	//	Convert to DirectoryContext
+		bool IsDirectory() const;
+		DirectoryContext ToDirectory() const;
 
-		bool IsAbsolute() const;
-		bool IsRelative() const;
-		FileContext ToAbsolute() const;
-		FileContext ToRelative(const DirectoryContext & root) const;
-
-		std::string Path() const;
+	public:
+		std::string Directory() const;
 		std::string Name() const;
 		std::string Extension() const;
 

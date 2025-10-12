@@ -3,7 +3,13 @@
 # define OPEN_GL_HPP
 
 # include "glad/glad.h"
-//# include "GLFW/glfw3.h"
-# include <GLFW/glfw3.h>
+
+# if defined(_WIN32)
+#  include "GLFW/glfw3.h"
+# endif
+
+# if defined(__APPLE__)
+#  include <GLFW/glfw3.h>
+# endif
 
 #endif

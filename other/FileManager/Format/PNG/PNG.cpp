@@ -25,7 +25,7 @@ Image * PNG::Load(const FileContext & file, bool debug)
 
 	try
 	{
-		os << "loading '" << file.FilePath << "' ...\n";
+		os << "loading '" << file.Path.ToString() << "' ...\n";
 		std::string file_str = file.LoadText();
 
 		os << "file length: " << file_str.size() << "\n";

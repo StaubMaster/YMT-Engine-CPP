@@ -6,8 +6,12 @@ COMPILER = c++ -std=c++11
 FLAGS = -Wall -Wextra -Werror
 
 FILES_CPP = \
+	FilePath.cpp \
+	FileInfo.cpp \
+	FileMode.cpp \
 	FileContext.cpp \
 	DirectoryContext.cpp \
+	\
 	Format/Image.cpp \
 	\
 	Parsing/uint.cpp \

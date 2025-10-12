@@ -50,6 +50,8 @@ endif
 #	 E:/Utility/msys32/ucrt64/bin/../lib/gcc/x86_64-w64-mingw32/15.2.0/include-fixed
 #	End of search list.
 
+#	GLFW/glfw3.h is in E:\Utility\glfw-3.4.bin.WIN64\include
+
 ifeq ($(CheckOS), Darwin)
 OS_ARGS := \
 	-lglfw
