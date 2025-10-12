@@ -98,15 +98,20 @@ void UIntTest()
 		//uint8 n = Random8();
 		//uint16 n = Random16();
 		//uint32 n = Random32();
-		uint64 n = Random64();
+		uint32 n = Random32();
 
 		//std::cout << "Bit: " << uint_Bit(n8) << " " << uint_Bit(n16) << " " << uint_Bit(n32) << " " << uint_Bit(n64) << "\n";
 
-		std::cout << "Bit: " << ToBase2(n) << "\n";
-		std::cout << "Bit: " << ToBase2(n, ' ') << "\n";
-		std::cout << "Hex: " << ToBase16(n) << "\n";
-		std::cout << "Hex: " << ToBase16(n, ' ') << "\n";
+		//std::cout << "Bit: " << ToBase2(n) << "\n";
+		std::cout << ToSBase2(n, ' ') << "\n";
+		//std::cout << "Hex: " << ToBase16(n) << "\n";
+		//std::cout << "Hex: " << ToSBase16(n, ' ') << "\n";
 	}
+}
+
+void BitStream()
+{
+
 }
 
 int main(int argc, char * argv [])

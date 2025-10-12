@@ -108,7 +108,7 @@ void FileContext::SaveText(std::string text) const
 
 Image * FileContext::LoadImagePNG() const
 {
-	return PNG::Load(*this);
+	return PNG::Load(*this, true);
 }
 
 

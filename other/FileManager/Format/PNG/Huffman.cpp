@@ -1,4 +1,6 @@
 #include "Huffman.hpp"
+#include <iostream>
+#include <iomanip>
 
 
 
@@ -82,7 +84,7 @@ HuffmanTree::HuffmanTree(uint8 * codeBitLen, uint32 len)
 	if (yes == 0)
 	{
 		for (uint32 i = 0; i <= maxBitLen; i++)
-			std::cout << "first [" << std::setw(3) << i << "] " << uint_Bit(firstCodes[i], i) << "\n";
+			std::cout << "first [" << std::setw(3) << i << "] " << ToBase2(firstCodes[i], i) << "\n";
 		std::cout << "\n";
 	}
 
@@ -92,7 +94,7 @@ HuffmanTree::HuffmanTree(uint8 * codeBitLen, uint32 len)
 		for (uint32 i = 0; i < Len; i++)
 		{
 			if (codeBitLen[i] != 0)
-				std::cout << "assign [" << std::setw(3) << i << "] " << uint_Bit(Codes[i], codeBitLen[i]) << "\n";
+				std::cout << "assign [" << std::setw(3) << i << "] " << ToBase2(Codes[i], codeBitLen[i]) << "\n";
 		}
 		std::cout << "\n";
 	}
@@ -112,7 +114,7 @@ void	HuffmanTree::ToString() const
 {
 	for (uint32 i = 0; i < Len; i++)
 	{
-		std::cout << "[" << std::setw(3) << i << "] " << uint_Bit(Codes[i], BitLens[i]) << "\n";
+		std::cout << "[" << std::setw(3) << i << "] " << ToBase2(Codes[i], BitLens[i]) << "\n";
 	}
 }
 
@@ -124,6 +126,26 @@ uint32	HuffmanTree::decode(BitStream & bits)
 		if (BitLens[i] != 0)
 		{
 			uint32 code = bits.bits(BitLens[i], BITSTREAM_STAY | BITSTREAM_REV);
+			//uint32 code_new = ReverseBytes(bits.GetBits32());
+
+			//uint32 mask = 0xFFFFFFFF >> (32 - BitLens[i]);
+			//uint8 bit_count = BitLens[i];
+			//uint8 bit_count = 31;
+
+			/*std::cout << ToBase2(ReverseBits(mask), bit_count) << "\n";
+			std::cout << ToBase2(ReverseBits(code), bit_count) << " " << ((int)BitLens[i]) << "\n";
+			std::cout << "\n";
+			for (uint8 jjj = 0; jjj < 31; jjj++)
+			{
+				uint32 ccc = (code_new >> jjj) & mask;
+				std::cout << ToBase2(ReverseBits(ccc), bit_count);
+				if (ccc == code)
+				{
+					std::cout << " " << ((int)jjj);
+				}
+				std::cout << "\n";
+			}*/
+			//std::cout << "\n";
 
 			if (Codes[i] == code)
 			{

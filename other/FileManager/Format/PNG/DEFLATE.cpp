@@ -228,12 +228,13 @@ void	DEFLATE::Blocks(BitStream & bits, DataStream & data)
 
 	do
 	{
-		os << "decoding ...  " << bits.get_ByteIndex() << "/" << bits.Len << "\n";
+		//os << "decoding ...  " << bits.get_ByteIndex() << "/" << bits.Len << "\n";
+		os << "decoding ...\n";
 
 		BFINAL = bits.bits(1);
 		BTYPE = bits.bits(2);
-		os << "BFINAL : " << uint_Bit(BFINAL, 0) << "\n";
-		os << "BTYPE  : " << uint_Bit(BTYPE, 1) << "\n";
+		os << "BFINAL : " << ToBase2(BFINAL, 0) << "\n";
+		os << "BTYPE  : " << ToBase2(BTYPE, 1) << "\n";
 
 		if (BTYPE == 0b00)
 		{
@@ -255,7 +256,8 @@ void	DEFLATE::Blocks(BitStream & bits, DataStream & data)
 		os << "\n";
 	}
 	while (BFINAL == 0);
-	os << "decoding done " << bits.get_ByteIndex() << "/" << bits.Len << "\n";
+	//os << "decoding done " << bits.get_ByteIndex() << "/" << bits.Len << "\n";
+	os << "decoding done\n";
 }
 
 

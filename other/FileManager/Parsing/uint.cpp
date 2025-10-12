@@ -3,23 +3,18 @@
 //#include <iostream>
 #include <sstream>
 
-#define UINT_BIT_SECTION_SIZE 8
-#define UINT_HEX_SECTION_SIZE 2
+#define UINT_BIT_CHARS_PER_BYTE 8
+#define UINT_HEX_CHARS_PER_BYTE 2
 
-#define  UINT8_SECTION_COUNT 1
-#define UINT16_SECTION_COUNT 2
-#define UINT32_SECTION_COUNT 4
-#define UINT64_SECTION_COUNT 8
+#define  UINT8_SEPERATORS  UINT8_BYTE_COUNT - 1
+#define UINT16_SEPERATORS UINT16_BYTE_COUNT - 1
+#define UINT32_SEPERATORS UINT32_BYTE_COUNT - 1
+#define UINT64_SEPERATORS UINT64_BYTE_COUNT - 1
 
-#define  UINT8_SEPERATORS  UINT8_SECTION_COUNT - 1
-#define UINT16_SEPERATORS UINT16_SECTION_COUNT - 1
-#define UINT32_SEPERATORS UINT32_SECTION_COUNT - 1
-#define UINT64_SEPERATORS UINT64_SECTION_COUNT - 1
-
-#define  UINT8_HEX_CHARS UINT_HEX_SECTION_SIZE *  UINT8_SECTION_COUNT
-#define UINT16_HEX_CHARS UINT_HEX_SECTION_SIZE * UINT16_SECTION_COUNT
-#define UINT32_HEX_CHARS UINT_HEX_SECTION_SIZE * UINT32_SECTION_COUNT
-#define UINT64_HEX_CHARS UINT_HEX_SECTION_SIZE * UINT64_SECTION_COUNT
+#define  UINT8_HEX_CHARS UINT_HEX_CHARS_PER_BYTE *  UINT8_BYTE_COUNT
+#define UINT16_HEX_CHARS UINT_HEX_CHARS_PER_BYTE * UINT16_BYTE_COUNT
+#define UINT32_HEX_CHARS UINT_HEX_CHARS_PER_BYTE * UINT32_BYTE_COUNT
+#define UINT64_HEX_CHARS UINT_HEX_CHARS_PER_BYTE * UINT64_BYTE_COUNT
 
 /*static const char * bits_table[] = {
 	"00000000", "00000001", "00000010", "00000011", "00000100", "00000101", "00000110", "00000111",
@@ -69,9 +64,9 @@ template <typename uint> std::string ToBase2(uint val, uint8 num, uint8 limit)
 		chars[c] = Base2_Chars[(val >> (limit - i)) & 1];
 		c++;
 	}
-	return (std::string(chars, num));
+	return (std::string(chars, c));
 }
-template <typename uint> std::string ToBase2(uint val, char seperator, uint8 num, uint8 limit, uint8 sep_count)
+template <typename uint> std::string ToSBase2(uint val, char seperator, uint8 num, uint8 limit, uint8 sep_count)
 {
 	num = (num & limit) + 1;
 	char chars[num + sep_count];
@@ -86,7 +81,7 @@ template <typename uint> std::string ToBase2(uint val, char seperator, uint8 num
 		chars[c] = Base2_Chars[(val >> (limit - i)) & 1];
 		c++;
 	}
-	return (std::string(chars, num + sep_count));
+	return (std::string(chars, c));
 }
 
 
@@ -101,9 +96,9 @@ template <typename uint> std::string ToBase16(uint val, uint8 char_count)
 		chars[c] = Base16_Chars[(val >> (((char_count - i) - 1) * 4)) & 0xF];
 		c++;
 	}
-	return (std::string(chars, char_count));
+	return (std::string(chars, c));
 }
-template <typename uint> std::string ToBase16(uint val, char seperator, uint8 char_count, uint8 sep_count)
+template <typename uint> std::string ToSBase16(uint val, char seperator, uint8 char_count, uint8 sep_count)
 {
 	char chars[char_count + sep_count];
 	uint8 c = 0;
@@ -117,35 +112,34 @@ template <typename uint> std::string ToBase16(uint val, char seperator, uint8 ch
 		chars[c] = Base16_Chars[(val >> (((char_count - i) - 1) * 4)) & 0xF];
 		c++;
 	}
-	return (std::string(chars, char_count + sep_count));
+	return (std::string(chars, c));
 }
+
+
+
+template <typename uint> uint ReverseBytes(uint val, uint8 byte_count)
+{
+	const uint8 * val_ptr = (const uint8 *)&val;
+
+	uint ret = 0;
+	uint8 * ret_ptr = (uint8 *)&ret;
+
+	byte_count--;
+	for (uint8 i = 0; i <= byte_count; i++)
+	{
+		ret_ptr[i] = val_ptr[byte_count - i];
+	}
+
+	return ret;
+}
+
+
+
 
 
 
 //	8
 
-std::string	uint_Bit(uint8 val, uint8 num)
-{
-	num = num & UINT8_BIT_LIMIT;
-	char chars[num + 1];
-	for (uint8 i = 0; i <= num; i++)
-	{
-		if ((val >> (UINT8_BIT_LIMIT - i)) & 1)
-		{ chars[i] = '1'; }
-		else
-		{ chars[i] = '0'; }
-	}
-	return (std::string(chars, num + 1));
-}
-std::string	uint_Hex(uint8 val)
-{
-	char chars[UINT8_HEX_CHARS];
-	for (uint8 i = 0; i < UINT8_HEX_CHARS; i++)
-	{
-		chars[i] = Base16_Chars[(val >> (((UINT8_HEX_CHARS - i) - 1) * 4)) & 0xF];
-	}
-	return (std::string(chars, UINT8_HEX_CHARS));
-}
 std::string	uint_Chr(uint8 val)
 {
 	std::stringstream ss;
@@ -159,9 +153,29 @@ std::string	ToBase2(uint8 val, uint8 num)
 {
 	return ToBase2<uint8>(val, num, UINT8_BIT_LIMIT);
 }
+std::string	ToSBase2(uint8 val, char seperator, uint8 num)
+{
+	return ToSBase2<uint8>(val, seperator, num, UINT8_BIT_LIMIT, UINT8_SEPERATORS);
+}
 std::string	ToBase16(uint8 val)
 {
 	return ToBase16<uint8>(val, UINT8_HEX_CHARS);
+}
+std::string	ToSBase16(uint8 val, char seperator)
+{
+	return ToSBase16<uint8>(val, seperator, UINT8_HEX_CHARS, UINT8_SEPERATORS);
+}
+
+uint8 ReverseBits(uint8 val)
+{
+	val = ((val & 0xF0F0F0F0) >> 4) | ((val & 0x0F0F0F0F) << 4);
+	val = ((val & 0xCCCCCCCC) >> 2) | ((val & 0x33333333) << 2);
+	val = ((val & 0xAAAAAAAA) >> 1) | ((val & 0x55555555) << 1);
+	return val;
+}
+uint8 ReverseBytes(uint8 val)
+{
+	return ReverseBytes<uint8>(val, UINT8_BYTE_COUNT);
 }
 
 
@@ -170,72 +184,42 @@ std::string	ToBase16(uint8 val)
 
 //	16
 
-std::string	uint_Bit(uint16 val, uint8 num)
-{
-	num = num & UINT16_BIT_LIMIT;
-	char chars[num + 1];
-	for (uint8 i = 0; i <= num; i++)
-	{
-		if ((val >> (UINT16_BIT_LIMIT - i)) & 1)
-		{ chars[i] = '1'; }
-		else
-		{ chars[i] = '0'; }
-	}
-	return (std::string(chars, num + 1));
-}
-std::string	uint_Hex(uint16 val)
-{
-	char chars[UINT16_HEX_CHARS];
-	for (uint8 i = 0; i < UINT16_HEX_CHARS; i++)
-	{
-		chars[i] = Base16_Chars[(val >> (((UINT16_HEX_CHARS - i) - 1) * 4)) & 0xF];
-	}
-	return (std::string(chars, UINT16_HEX_CHARS));
-}
-
 std::string	ToBase2(uint16 val, uint8 num)
 {
 	return ToBase2<uint16>(val, num, UINT16_BIT_LIMIT);
 }
-std::string	ToBase2(uint16 val, char seperator, uint8 num)
+std::string	ToSBase2(uint16 val, char seperator, uint8 num)
 {
-	return ToBase2<uint16>(val, seperator, num, UINT16_BIT_LIMIT, UINT16_SEPERATORS);
+	return ToSBase2<uint16>(val, seperator, num, UINT16_BIT_LIMIT, UINT16_SEPERATORS);
 }
 std::string	ToBase16(uint16 val)
 {
 	return ToBase16<uint16>(val, UINT16_HEX_CHARS);
 }
-std::string	ToBase16(uint16 val, char seperator)
+std::string	ToSBase16(uint16 val, char seperator)
 {
-	return ToBase16<uint16>(val, seperator, UINT16_HEX_CHARS, UINT16_SEPERATORS);
+	return ToSBase16<uint16>(val, seperator, UINT16_HEX_CHARS, UINT16_SEPERATORS);
 }
+
+uint16 ReverseBits(uint16 val)
+{
+	val = ((val & 0xFF00FF00) >> 8)  | ((val & 0x00FF00FF) << 8);
+	val = ((val & 0xF0F0F0F0) >> 4)  | ((val & 0x0F0F0F0F) << 4);
+	val = ((val & 0xCCCCCCCC) >> 2)  | ((val & 0x33333333) << 2);
+	val = ((val & 0xAAAAAAAA) >> 1)  | ((val & 0x55555555) << 1);
+	return val;
+}
+uint16 ReverseBytes(uint16 val)
+{
+	return ReverseBytes<uint16>(val, UINT16_BYTE_COUNT);
+}
+
+
 
 
 
 //	32
 
-std::string	uint_Bit(uint32 val, uint8 num)
-{
-	num = num & UINT32_BIT_LIMIT;
-	char chars[num + 1];
-	for (uint8 i = 0; i <= num; i++)
-	{
-		if ((val >> (UINT32_BIT_LIMIT - i)) & 1)
-		{ chars[i] = '1'; }
-		else
-		{ chars[i] = '0'; }
-	}
-	return (std::string(chars, num + 1));
-}
-std::string	uint_Hex(uint32 val)
-{
-	char chars[UINT32_HEX_CHARS];
-	for (uint8 i = 0; i < UINT32_HEX_CHARS; i++)
-	{
-		chars[i] = Base16_Chars[(val >> (((UINT32_HEX_CHARS - i) - 1) * 4)) & 0xF];
-	}
-	return (std::string(chars, UINT32_HEX_CHARS));
-}
 std::string	uint_Chr(uint32 val)
 {
 	std::stringstream ss;
@@ -255,62 +239,69 @@ std::string	ToBase2(uint32 val, uint8 num)
 {
 	return ToBase2<uint32>(val, num, UINT32_BIT_LIMIT);
 }
-std::string	ToBase2(uint32 val, char seperator, uint8 num)
+std::string	ToSBase2(uint32 val, char seperator, uint8 num)
 {
-	return ToBase2<uint32>(val, seperator, num, UINT32_BIT_LIMIT, UINT32_SEPERATORS);
+	return ToSBase2<uint32>(val, seperator, num, UINT32_BIT_LIMIT, UINT32_SEPERATORS);
 }
 std::string	ToBase16(uint32 val)
 {
 	return ToBase16<uint32>(val, UINT32_HEX_CHARS);
 }
-std::string	ToBase16(uint32 val, char seperator)
+std::string	ToSBase16(uint32 val, char seperator)
 {
-	return ToBase16<uint32>(val, seperator, UINT32_HEX_CHARS, UINT32_SEPERATORS);
+	return ToSBase16<uint32>(val, seperator, UINT32_HEX_CHARS, UINT32_SEPERATORS);
 }
+
+uint32 ReverseBits(uint32 val)
+{
+	val = ((val & 0xFFFF0000) >> 16) | ((val & 0x0000FFFF) << 16);
+	val = ((val & 0xFF00FF00) >> 8)  | ((val & 0x00FF00FF) << 8);
+	val = ((val & 0xF0F0F0F0) >> 4)  | ((val & 0x0F0F0F0F) << 4);
+	val = ((val & 0xCCCCCCCC) >> 2)  | ((val & 0x33333333) << 2);
+	val = ((val & 0xAAAAAAAA) >> 1)  | ((val & 0x55555555) << 1);
+	return val;
+}
+uint32 ReverseBytes(uint32 val)
+{
+	return ReverseBytes<uint32>(val, UINT32_BYTE_COUNT);
+}
+
 
 
 
 
 //	64
 
-std::string	uint_Bit(uint64 val, uint8 num)
-{
-	num = num & UINT64_BIT_LIMIT;
-	char chars[num + 1];
-	for (uint8 i = 0; i <= num; i++)
-	{
-		if ((val >> (UINT64_BIT_LIMIT - i)) & 1)
-		{ chars[i] = '1'; }
-		else
-		{ chars[i] = '0'; }
-	}
-	return (std::string(chars, num + 1));
-}
-std::string	uint_Hex(uint64 val)
-{
-	char chars[UINT64_HEX_CHARS];
-	for (uint8 i = 0; i < UINT64_HEX_CHARS; i++)
-	{
-		chars[i] = Base16_Chars[(val >> (((UINT64_HEX_CHARS - i) - 1) * 4)) & 0xF];
-	}
-	return (std::string(chars, UINT64_HEX_CHARS));
-}
-
-
-
 std::string	ToBase2(uint64 val, uint8 num)
 {
 	return ToBase2<uint64>(val, num, UINT64_BIT_LIMIT);
 }
-std::string	ToBase2(uint64 val, char seperator, uint8 num)
+std::string	ToSBase2(uint64 val, char seperator, uint8 num)
 {
-	return ToBase2<uint64>(val, seperator, num, UINT64_BIT_LIMIT, UINT64_SEPERATORS);
+	return ToSBase2<uint64>(val, seperator, num, UINT64_BIT_LIMIT, UINT64_SEPERATORS);
 }
 std::string	ToBase16(uint64 val)
 {
 	return ToBase16<uint64>(val, UINT64_HEX_CHARS);
 }
-std::string	ToBase16(uint64 val, char seperator)
+std::string	ToSBase16(uint64 val, char seperator)
 {
-	return ToBase16<uint64>(val, seperator, UINT64_HEX_CHARS, UINT64_SEPERATORS);
+	return ToSBase16<uint64>(val, seperator, UINT64_HEX_CHARS, UINT64_SEPERATORS);
 }
+
+uint64 ReverseBits(uint64 val)
+{
+	val = ((val & 0xFFFFFFFF00000000) >> 32) | ((val & 0x00000000FFFFFFFF) << 32);
+	val = ((val & 0xFFFF0000FFFF0000) >> 16) | ((val & 0x0000FFFF0000FFFF) << 16);
+	val = ((val & 0xFF00FF00FF00FF00) >> 8)  | ((val & 0x00FF00FF00FF00FF) << 8);
+	val = ((val & 0xF0F0F0F0F0F0F0F0) >> 4)  | ((val & 0x0F0F0F0F0F0F0F0F) << 4);
+	val = ((val & 0xCCCCCCCCCCCCCCCC) >> 2)  | ((val & 0x3333333333333333) << 2);
+	val = ((val & 0xAAAAAAAAAAAAAAAA) >> 1)  | ((val & 0x5555555555555555) << 1);
+	return val;
+}
+uint64 ReverseBytes(uint64 val)
+{
+	return ReverseBytes<uint64>(val, UINT64_BYTE_COUNT);
+}
+
+

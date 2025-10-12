@@ -8,12 +8,15 @@
 
 ZLIB::ZLIB(BitStream & bits)
 {
-	CMF = bits.byte8();
-	FLG = bits.byte8();
+	CMF = bits.GetMoveBits8();
+	//CMF = bits.byte8();
+	FLG = bits.GetMoveBits8();
+	//FLG = bits.byte8();
 
 	if ((FLG >> 5) & 0b1)
 	{
-		DICTID = bits.byte32();
+		DICTID = bits.GetMoveBits32();
+		//DICTID = bits.byte32();
 		Length = bits.Len - 10;
 	}
 	else
@@ -23,7 +26,10 @@ ZLIB::ZLIB(BitStream & bits)
 	}
 
 	Data = bits.DataAtIndex();
-	ADLER32 = bits.byte32(Length);
+	bits.MoveToNextByte();
+	bits.MoveBytes(Length);
+	ADLER32 = bits.GetMoveBits32();
+	//ADLER32 = bits.byte32(Length);
 }
 
 BitStream	ZLIB::ToBitStream() const
@@ -39,20 +45,20 @@ std::string	ZLIB::ToString() const
 
 	uint8	CM = (CMF >> 0) & 0b1111;
 	uint8	CINFO = (CMF >> 4) & 0b1111;
-	os << "CMF   : " << uint_Bit(CMF) << "\n";
-	os << "CM    : "    << uint_Bit(CM, 3) << "\n";
-	os << "CINFO : " << uint_Bit(CINFO, 3) << "\n";
+	os << "CMF   : " << ToBase2(CMF) << "\n";
+	os << "CM    : "    << ToBase2(CM, 3) << "\n";
+	os << "CINFO : " << ToBase2(CINFO, 3) << "\n";
 
 	uint8	FCHECK = (FLG >> 0) & 0b11111;
 	uint8	FDICT = (FLG >> 5) & 0b1;
 	uint8	FLEVEL = (FLG >> 6) & 0b11;
-	os << "FLG    : " << uint_Bit(FLG) << "\n";
-	os << "FCHECK : "    << uint_Bit(FCHECK, 4) << "\n";
-	os << "FDICT  : " << uint_Bit(FDICT, 0) << "\n";
-	os << "FLEVEL : " << uint_Bit(FLEVEL, 1) << "\n";
+	os << "FLG    : " << ToBase2(FLG) << "\n";
+	os << "FCHECK : "    << ToBase2(FCHECK, 4) << "\n";
+	os << "FDICT  : " << ToBase2(FDICT, 0) << "\n";
+	os << "FLEVEL : " << ToBase2(FLEVEL, 1) << "\n";
 
-	os << "DICTID  : " << uint_Hex(DICTID) << "\n";
-	os << "ADLER32 : " << uint_Hex(ADLER32) << "\n";
+	os << "DICTID  : " << ToBase16(DICTID) << "\n";
+	os << "ADLER32 : " << ToBase16(ADLER32) << "\n";
 
 	os << "Length : " << Length << "\n";
 

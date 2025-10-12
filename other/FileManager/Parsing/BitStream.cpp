@@ -41,15 +41,6 @@ void	BitStream::set_Index(uint32 bits, uint32 bytes)
 }
 
 
-uint32	reverse(uint32 bits)
-{
-	bits = ((bits & 0xFFFF0000) >> 16) | ((bits & 0x0000FFFF) << 16);
-	bits = ((bits & 0xFF00FF00) >> 8) | ((bits & 0x00FF00FF) << 8);
-	bits = ((bits & 0xF0F0F0F0) >> 4) | ((bits & 0x0F0F0F0F) << 4);
-	bits = ((bits & 0xCCCCCCCC) >> 2) | ((bits & 0x33333333) << 2);
-	bits = ((bits & 0xAAAAAAAA) >> 1) | ((bits & 0x55555555) << 1);
-	return (bits);
-}
 
 uint32	BitStream::bits(uint32 num, uint8 extra)
 {
@@ -81,7 +72,7 @@ uint32	BitStream::bits(uint32 num, uint8 extra)
 	}
 
 	if ((extra & BITSTREAM_REV) != 0)
-		sum = (reverse(sum) >> mun);
+		sum = (ReverseBits(sum) >> mun);
 	sum = sum & (0xFFFFFFFF >> mun);
 
 	if ((extra & BITSTREAM_STAY) == 0)
@@ -92,97 +83,6 @@ uint32	BitStream::bits(uint32 num, uint8 extra)
 
 	return (sum);
 }
-
-
-
-/// @brief Gets the next 8 Byte-aligned Bits
-/// @param skipBytes Bytes to skip (until read)
-/// @param move Weather the the Index should be moved (by 1 Bytes)
-/// @return The 1 Bytes read
-uint8	BitStream::byte8(uint8 extra, uint32 skipBytes)
-{
-	const uint8 * idx8 = Data + get_ByteIndex() + skipBytes;
-
-	uint8 n = 0;
-	if (extra & BITSTREAM_REV)
-	{
-		n = (n << 8) | idx8[0];
-	}
-	else
-	{
-		n = (n << 8) | idx8[0];
-	}
-
-	if (!(extra & BITSTREAM_STAY))
-		moveIndex(1 + skipBytes);
-	return (n);
-}
-/// @brief Gets the next 32 Byte-aligned Bits
-/// @param skipBytes Bytes to skip (until read)
-/// @param move Weather the the Index should be moved (by 4 Bytes)
-/// @return The 4 Bytes read
-uint32	BitStream::byte32(uint8 extra, uint32 skipBytes)
-{
-	const uint8 * idx8 = Data + get_ByteIndex() + skipBytes;
-
-	uint32 n = 0;
-	if (extra & BITSTREAM_REV)
-	{
-		n = (n << 8) | idx8[0];
-		n = (n << 8) | idx8[1];
-		n = (n << 8) | idx8[2];
-		n = (n << 8) | idx8[3];
-	}
-	else
-	{
-		n = (n << 8) | idx8[3];
-		n = (n << 8) | idx8[2];
-		n = (n << 8) | idx8[1];
-		n = (n << 8) | idx8[0];
-	}
-
-	if (!(extra & BITSTREAM_STAY))
-		moveIndex(4 + skipBytes);
-	return (n);
-}
-/// @brief Gets the next 64 Byte-aligned Bits
-/// @param skipBytes Bytes to skip (until read)
-/// @param move Weather the the Index should be moved (by 8 Bytes)
-/// @return The 8 Bytes read
-uint64	BitStream::byte64(uint8 extra, uint32 skipBytes)
-{
-	const uint8 * idx8 = Data + get_ByteIndex() + skipBytes;
-
-	uint64 n = 0;
-	if (extra & BITSTREAM_REV)
-	{
-		n = (n << 8) | idx8[0];
-		n = (n << 8) | idx8[1];
-		n = (n << 8) | idx8[2];
-		n = (n << 8) | idx8[3];
-		n = (n << 8) | idx8[4];
-		n = (n << 8) | idx8[5];
-		n = (n << 8) | idx8[6];
-		n = (n << 8) | idx8[7];
-	}
-	else
-	{
-		n = (n << 8) | idx8[7];
-		n = (n << 8) | idx8[6];
-		n = (n << 8) | idx8[5];
-		n = (n << 8) | idx8[4];
-		n = (n << 8) | idx8[3];
-		n = (n << 8) | idx8[2];
-		n = (n << 8) | idx8[1];
-		n = (n << 8) | idx8[0];
-	}
-
-	if (!(extra & BITSTREAM_STAY))
-		moveIndex(8 + skipBytes);
-	return (n);
-}
-
-
 
 const uint8 *	BitStream::DataAtIndex(uint32 skipBytes) const
 {
@@ -198,6 +98,151 @@ void	BitStream::moveIndex(uint32 skip)
 		throw LenReachedException();
 	set_Index(0, idx);
 }
+
+
+
+
+
+uint32	BitStream::GetBitIndex() const
+{
+	return (Index & 0b111);
+}
+uint32	BitStream::GetByteIndex() const
+{
+	return (Index >> 3);
+}
+
+
+
+void	BitStream::MoveToNextByte()
+{
+	uint32 bit = GetBitIndex();
+	if (bit != 0)
+	{
+		Index += (8 - bit);
+	}
+}
+void	BitStream::MoveBytes(uint32 count)
+{
+	Index += count << 3;
+}
+void	BitStream::MoveBits(uint32 count)
+{
+	Index += count;
+}
+
+
+
+uint8	BitStream::GetBits8(uint8 bit_count)
+{
+	uint32	bitI = get_BitIndex();
+	uint32	byteI = get_ByteIndex();
+
+	uint8 val = 0;
+	if (bitI != 0)
+	{
+		val |= ((uint8)Data[byteI + 0]) >> (bitI);
+		byteI++;
+	}
+
+	for (uint8 i = 0; i < UINT8_BYTE_COUNT; i++)
+	{
+		val |= ((uint8)Data[byteI + i]) << ((i * 8) - bitI);
+	}
+
+	val = val & (0xFF >> (UINT8_BIT_COUNT - bit_count));
+	return val;
+}
+uint16	BitStream::GetBits16(uint8 bit_count)
+{
+	uint32	bitI = get_BitIndex();
+	uint32	byteI = get_ByteIndex();
+
+	uint16 val = 0;
+	if (bitI != 0)
+	{
+		val |= ((uint16)Data[byteI + 0]) >> (bitI);
+		byteI++;
+	}
+
+	for (uint8 i = 0; i < UINT16_BYTE_COUNT; i++)
+	{
+		val |= ((uint16)Data[byteI + i]) << ((i * 8) - bitI);
+	}
+
+	val = val & (0xFFFF >> (UINT16_BIT_COUNT - bit_count));
+	return val;
+}
+uint32	BitStream::GetBits32(uint8 bit_count)
+{
+	uint32	bitI = get_BitIndex();
+	uint32	byteI = get_ByteIndex();
+
+	uint32 val = 0;
+	if (bitI != 0)
+	{
+		val |= ((uint32)Data[byteI]) >> (bitI);
+		byteI++;
+	}
+
+	for (uint8 i = 0; i < UINT32_BYTE_COUNT; i++)
+	{
+		val |= ((uint32)Data[byteI + i]) << ((i * 8) - bitI);
+	}
+
+	val = val & (0xFFFFFFFF >> (UINT32_BIT_COUNT - bit_count));
+	return val;
+}
+uint64	BitStream::GetBits64(uint8 bit_count)
+{
+	uint32	bitI = get_BitIndex();
+	uint32	byteI = get_ByteIndex();
+
+	uint64 val = 0;
+	if (bitI != 0)
+	{
+		val |= ((uint64)Data[byteI + 0]) >> (bitI);
+		byteI++;
+	}
+
+	for (uint8 i = 0; i < UINT64_BYTE_COUNT; i++)
+	{
+		val |= ((uint64)Data[byteI + i]) << ((i * 8) - bitI);
+	}
+
+	val = val & (0xFFFFFFFFFFFFFFFF >> (UINT64_BIT_COUNT - bit_count));
+	return val;
+}
+
+
+
+uint8	BitStream::GetMoveBits8(uint8 bit_count)
+{
+	uint8 val = GetBits8(bit_count);
+	MoveBits(bit_count);
+	return val;
+}
+uint16	BitStream::GetMoveBits16(uint8 bit_count)
+{
+	uint16 val = GetBits16(bit_count);
+	MoveBits(bit_count);
+	return val;
+}
+uint32	BitStream::GetMoveBits32(uint8 bit_count)
+{
+	uint32 val = GetBits32(bit_count);
+	MoveBits(bit_count);
+	return val;
+}
+uint64	BitStream::GetMoveBits64(uint8 bit_count)
+{
+	uint64 val = GetBits64(bit_count);
+	MoveBits(bit_count);
+	return val;
+}
+
+
+
 
 
 const char * BitStream::LenReachedException::what() const throw() { return "BitStream Length reached"; }

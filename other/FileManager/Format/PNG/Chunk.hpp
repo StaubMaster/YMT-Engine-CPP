@@ -18,6 +18,8 @@ class Chunk
 
 		const uint8		typeIndex;
 
+		const BitStream & BitS;
+
 		Chunk(BitStream & bits);
 
 	private:

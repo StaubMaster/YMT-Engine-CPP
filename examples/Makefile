@@ -6,9 +6,9 @@ FLAGS = -Wall -Wextra -Werror
 
 
 MAINS = \
-	test.cpp \
 	DefaultInstances.cpp \
-	LightTest.cpp \
+	test.cpp
+#	LightTest.cpp \
 	OBJ_Parse.cpp \
 	ParticleSimulation.cpp \
 

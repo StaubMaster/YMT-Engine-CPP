@@ -36,10 +36,11 @@ Image * PNG::Load(const FileContext & file, bool debug)
 			uint64	signature_template = 0x0A1A0A0D474E5089;
 			uint64	signature_received;
 
-			signature_received = file.byte64();
+			signature_received = file.GetMoveBits64();
+			//signature_received = file.byte64();
 			os << "signature\n";
-			os << "template: " << uint_Hex(signature_template) << "\n";
-			os << "received: " << uint_Hex(signature_received) << "\n";
+			os << "template: " << ToBase16(signature_template) << "\n";
+			os << "received: " << ToBase16(signature_received) << "\n";
 
 			if (signature_received != signature_template)
 			{

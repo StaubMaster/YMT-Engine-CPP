@@ -1,4 +1,5 @@
 #include "Chunk.hpp"
+#include <sstream>
 
 
 
@@ -32,11 +33,12 @@ uint8	Chunk::knownTypeIndex(uint32 type)
 
 
 Chunk::Chunk(BitStream & bits) :
-	Length(bits.byte32(BITSTREAM_REV)),
-	Type(bits.byte32()),
+	Length(ReverseBytes(bits.GetMoveBits32())),
+	Type(bits.GetMoveBits32()),
 	Data(bits.DataAtIndex()),
-	CRC(bits.byte32(BITSTREAM_REV, Length)),
-	typeIndex(knownTypeIndex(Type))
+	CRC((bits.MoveBytes(Length), ReverseBytes(bits.GetMoveBits32()))),
+	typeIndex(knownTypeIndex(Type)),
+	BitS(bits)
 {
 
 }
@@ -121,8 +123,8 @@ std::string	Chunk::ToString() const
 	ss << ")\n";
 
 	uint32 crc = calc_CRC();
-	ss << "CRC: " << uint_Hex(CRC) << "\n";
-	ss << "     " << uint_Hex(crc);
+	ss << "CRC: " << ToBase16(CRC) << "\n";
+	ss << "     " << ToBase16(crc);
 	ss << " (";
 	if (CRC == crc)
 		ss << "\e[32mMatch\e[m";

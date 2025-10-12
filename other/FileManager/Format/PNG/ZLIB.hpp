@@ -13,7 +13,9 @@ class ZLIB
 		uint8	CMF;
 		uint8	FLG;
 
+	private:
 		const uint8	*Data;
+	public:
 		uint32		Length;
 
 		uint32	DICTID;

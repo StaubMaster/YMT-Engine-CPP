@@ -1,5 +1,6 @@
 
 #include "DataStream.hpp"
+#include <iostream>
 
 DataStream::DataStream(uint32 len)
 {

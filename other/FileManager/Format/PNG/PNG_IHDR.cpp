@@ -1,4 +1,7 @@
 #include "PNG_IHDR.hpp"
+#include <sstream>
+
+#include <iostream>
 
 
 
@@ -8,15 +11,24 @@ IHDR::IHDR()
 }
 IHDR::IHDR(BitStream & bits)
 {
-	width = bits.byte32(BITSTREAM_REV);
-	height = bits.byte32(BITSTREAM_REV);
+	bits.MoveToNextByte();
 
-	bit_depth = bits.byte8();
-	color_type = bits.byte8();
+	width = ReverseBytes(bits.GetMoveBits32());
+	height = ReverseBytes(bits.GetMoveBits32());
+	//width = bits.byte32(BITSTREAM_REV);
+	//height = bits.byte32(BITSTREAM_REV);
 
-	compression_method = bits.byte8();
-	filter_method = bits.byte8();
-	interlace_method = bits.byte8();
+	bit_depth = bits.GetMoveBits8();
+	color_type = bits.GetMoveBits8();
+	//bit_depth = bits.byte8();
+	//color_type = bits.byte8();
+
+	compression_method = bits.GetMoveBits8();
+	filter_method = bits.GetMoveBits8();
+	interlace_method = bits.GetMoveBits8();
+	//compression_method = bits.byte8();
+	//filter_method = bits.byte8();
+	//interlace_method = bits.byte8();
 }
 void	IHDR::ToString(std::ostream & os) const
 {
