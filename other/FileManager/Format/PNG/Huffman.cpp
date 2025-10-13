@@ -125,31 +125,11 @@ uint32	HuffmanTree::decode(BitStream & bits)
 	{
 		if (BitLens[i] != 0)
 		{
-			uint32 code = bits.bits(BitLens[i], BITSTREAM_STAY | BITSTREAM_REV);
-			//uint32 code_new = ReverseBytes(bits.GetBits32());
-
-			//uint32 mask = 0xFFFFFFFF >> (32 - BitLens[i]);
-			//uint8 bit_count = BitLens[i];
-			//uint8 bit_count = 31;
-
-			/*std::cout << ToBase2(ReverseBits(mask), bit_count) << "\n";
-			std::cout << ToBase2(ReverseBits(code), bit_count) << " " << ((int)BitLens[i]) << "\n";
-			std::cout << "\n";
-			for (uint8 jjj = 0; jjj < 31; jjj++)
-			{
-				uint32 ccc = (code_new >> jjj) & mask;
-				std::cout << ToBase2(ReverseBits(ccc), bit_count);
-				if (ccc == code)
-				{
-					std::cout << " " << ((int)jjj);
-				}
-				std::cout << "\n";
-			}*/
-			//std::cout << "\n";
+			uint32 code = ReverseBits(bits.GetBits32(BitLens[i]) << (UINT32_BIT_COUNT - BitLens[i]));
 
 			if (Codes[i] == code)
 			{
-				bits.Index += BitLens[i];
+				bits.MoveBits(BitLens[i]);
 				return (i);
 			}
 		}

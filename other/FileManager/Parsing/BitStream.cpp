@@ -5,101 +5,20 @@ BitStream::BitStream(const uint8 * ptr, uint32 len) :
 	Data(ptr),
 	Len(len),
 	Index(0)
-{
-
-}
+{ }
 
 BitStream::BitStream(const std::string & str) :
 	Data((const uint8 *)str.c_str()),
 	Len(str.size()),
 	Index(0)
-{
-	
-}
+{ }
 
 
-
-uint32	BitStream::get_BitIndex() const
-{
-	return (Index & 0b111);
-}
-/*void	BitStream::set_BitIndex(uint32 idx)
-{
-	Index = ((Index | 0b111) ^ 0b111) | (idx & 0b111);
-}*/
-uint32	BitStream::get_ByteIndex() const
-{
-	return (Index >> 3);
-}
-/*void	BitStream::set_ByteIndex(uint32 idx)
-{
-	Index = (Index & 0b111) | (idx << 3);
-}*/
-void	BitStream::set_Index(uint32 bits, uint32 bytes)
-{
-	Index = (bytes << 3) | (bits & 0b111);
-}
-
-
-
-uint32	BitStream::bits(uint32 num, uint8 extra)
-{
-	if (num == 0)
-		return (0);
-	num = ((num - 1) & 0b11111) + 1;
-	uint32	mun = 32 - num;
-
-	uint32	bitI = get_BitIndex();
-	uint32	byteI = get_ByteIndex();
-
-	uint32 sum;
-	if (bitI == 0)
-	{
-		sum =
-			(((uint32)Data[byteI + 0]) >> (bitI)) |
-			(((uint32)Data[byteI + 1]) << (8 - bitI)) |
-			(((uint32)Data[byteI + 2]) << (16 - bitI)) |
-			(((uint32)Data[byteI + 3]) << (24 - bitI));
-	}
-	else
-	{
-		sum =
-			(((uint32)Data[byteI + 0]) >> (bitI)) |
-			(((uint32)Data[byteI + 1]) << (8 - bitI)) |
-			(((uint32)Data[byteI + 2]) << (16 - bitI)) |
-			(((uint32)Data[byteI + 3]) << (24 - bitI)) |
-			(((uint32)Data[byteI + 4]) << (32 - bitI));
-	}
-
-	if ((extra & BITSTREAM_REV) != 0)
-		sum = (ReverseBits(sum) >> mun);
-	sum = sum & (0xFFFFFFFF >> mun);
-
-	if ((extra & BITSTREAM_STAY) == 0)
-		Index += num;
-
-	if (get_ByteIndex() > Len)
-		throw LenReachedException();
-
-	return (sum);
-}
 
 const uint8 *	BitStream::DataAtIndex(uint32 skipBytes) const
 {
-	return Data + get_ByteIndex() + skipBytes;
+	return Data + GetByteIndex() + skipBytes;
 }
-void	BitStream::moveIndex(uint32 skip)
-{
-	uint32	idx = get_ByteIndex();
-	if (get_BitIndex() != 0)
-		idx++;
-	idx += skip;
-	if (idx > Len)
-		throw LenReachedException();
-	set_Index(0, idx);
-}
-
-
 
 
 
@@ -133,84 +52,112 @@ void	BitStream::MoveBits(uint32 count)
 
 
 
-uint8	BitStream::GetBits8(uint8 bit_count)
+uint8	BitStream::GetBits8(uint8 bit_count) const
 {
-	uint32	bitI = get_BitIndex();
-	uint32	byteI = get_ByteIndex();
+	if (bit_count == 0) { return 0; }
+	bit_count = ((bit_count - 1) & UINT8_BIT_LIMIT) + 1;
+
+	uint32	bitI = GetBitIndex();
+	uint32	byteI = GetByteIndex();
 
 	uint8 val = 0;
+	uint8 byte_count = UINT8_BYTE_COUNT;
 	if (bitI != 0)
 	{
-		val |= ((uint8)Data[byteI + 0]) >> (bitI);
-		byteI++;
+		val |= ((uint8)Data[byteI]) >> (bitI);
+		byte_count++;
 	}
 
-	for (uint8 i = 0; i < UINT8_BYTE_COUNT; i++)
+	for (uint8 i = 0; i < byte_count; i++)
 	{
 		val |= ((uint8)Data[byteI + i]) << ((i * 8) - bitI);
 	}
 
-	val = val & (0xFF >> (UINT8_BIT_COUNT - bit_count));
+	if (bit_count != UINT8_BIT_COUNT)
+	{
+		val = val & (0xFF >> (UINT8_BIT_COUNT - bit_count));
+	}
 	return val;
 }
-uint16	BitStream::GetBits16(uint8 bit_count)
+uint16	BitStream::GetBits16(uint8 bit_count) const
 {
-	uint32	bitI = get_BitIndex();
-	uint32	byteI = get_ByteIndex();
+	if (bit_count == 0) { return 0; }
+	bit_count = ((bit_count - 1) & UINT16_BIT_LIMIT) + 1;
+
+	uint32	bitI = GetBitIndex();
+	uint32	byteI = GetByteIndex();
 
 	uint16 val = 0;
+	uint8 byte_count = UINT16_BYTE_COUNT;
 	if (bitI != 0)
 	{
-		val |= ((uint16)Data[byteI + 0]) >> (bitI);
-		byteI++;
+		val |= ((uint16)Data[byteI]) >> (bitI);
+		byte_count++;
 	}
 
-	for (uint8 i = 0; i < UINT16_BYTE_COUNT; i++)
+	for (uint8 i = 0; i < byte_count; i++)
 	{
 		val |= ((uint16)Data[byteI + i]) << ((i * 8) - bitI);
 	}
 
-	val = val & (0xFFFF >> (UINT16_BIT_COUNT - bit_count));
+	if (bit_count != UINT16_BIT_COUNT)
+	{
+		val = val & (0xFFFF >> (UINT16_BIT_COUNT - bit_count));
+	}
 	return val;
 }
-uint32	BitStream::GetBits32(uint8 bit_count)
+uint32	BitStream::GetBits32(uint8 bit_count) const
 {
-	uint32	bitI = get_BitIndex();
-	uint32	byteI = get_ByteIndex();
+	if (bit_count == 0) { return 0; }
+	bit_count = ((bit_count - 1) & UINT32_BIT_LIMIT) + 1;
+
+	uint32	bitI = GetBitIndex();
+	uint32	byteI = GetByteIndex();
 
 	uint32 val = 0;
+
+	uint8 byte_count = UINT32_BYTE_COUNT;
 	if (bitI != 0)
 	{
 		val |= ((uint32)Data[byteI]) >> (bitI);
-		byteI++;
+		byte_count++;
 	}
-
-	for (uint8 i = 0; i < UINT32_BYTE_COUNT; i++)
+	for (uint8 i = 0; i < byte_count; i++)
 	{
 		val |= ((uint32)Data[byteI + i]) << ((i * 8) - bitI);
 	}
 
-	val = val & (0xFFFFFFFF >> (UINT32_BIT_COUNT - bit_count));
+	if (bit_count != UINT32_BIT_COUNT)
+	{
+		val = val & (0xFFFFFFFF >> (UINT32_BIT_COUNT - bit_count));
+	}
 	return val;
 }
-uint64	BitStream::GetBits64(uint8 bit_count)
+uint64	BitStream::GetBits64(uint8 bit_count) const
 {
-	uint32	bitI = get_BitIndex();
-	uint32	byteI = get_ByteIndex();
+	if (bit_count == 0) { return 0; }
+	bit_count = ((bit_count - 1) & UINT64_BIT_LIMIT) + 1;
+
+	uint32	bitI = GetBitIndex();
+	uint32	byteI = GetByteIndex();
 
 	uint64 val = 0;
+	uint8 byte_count = UINT64_BYTE_COUNT;
 	if (bitI != 0)
 	{
-		val |= ((uint64)Data[byteI + 0]) >> (bitI);
-		byteI++;
+		val |= ((uint64)Data[byteI]) >> (bitI);
+		byte_count++;
 	}
 
-	for (uint8 i = 0; i < UINT64_BYTE_COUNT; i++)
+	for (uint8 i = 0; i < byte_count; i++)
 	{
 		val |= ((uint64)Data[byteI + i]) << ((i * 8) - bitI);
 	}
 
-	val = val & (0xFFFFFFFFFFFFFFFF >> (UINT64_BIT_COUNT - bit_count));
+	if (bit_count != UINT64_BIT_COUNT)
+	{
+		val = val & (0xFFFFFFFFFFFFFFFF >> (UINT64_BIT_COUNT - bit_count));
+	}
 	return val;
 }
 

@@ -7,6 +7,8 @@
 
 #include "FileManager/Parsing/uint.hpp"
 
+#include "FileManager/Parsing/BitStream.hpp"
+
 #include <vector>
 #include <iostream>
 
@@ -109,15 +111,59 @@ void UIntTest()
 	}
 }
 
-void BitStream()
+void BitStreamTest()
 {
+	uint32 size = 1024 * 1024;
+	uint8 data [size];
 
+	for (uint32 i = 0; i < size; i++)
+	{
+		data[i] = Random8();
+	}
+
+	BitStream bits(data, size);
+
+	try
+	{
+		while (1)
+		{
+			uint8 bit_count = Random8() & UINT32_BIT_LIMIT;
+			if (bit_count != 0)
+			{
+				uint8 data0 = bits.Data[bits.GetByteIndex() + 0];
+				uint8 data1 = bits.Data[bits.GetByteIndex() + 1];
+				uint32 code1 = bits.GetBits32(bit_count);
+				//uint32 code0 = bits.bits(bit_count);
+
+				//if (code0 != code1)
+				{
+					std::cout << "idx   : " << bits.GetBitIndex() << " : " << bits.GetByteIndex() << "\n";
+					std::cout << "bits  : " << ((int)bit_count) << "\n";
+					std::cout << "data  : " << ToBase2(data0) << " " << ToBase2(data1) << "\n";
+					//std::cout << "code0 : " << ToSBase2(code0, ' ') << "\n";
+					std::cout << "code1 : " << ToSBase2(code1, ' ') << "\n";
+					std::cout << "\n";
+				}
+
+				/*if ((Random8() & 0b11) == 0)
+				{
+					std::cout << "Move\n\n";
+					bits.moveIndex(bit_count);
+				}*/
+			}
+		}
+	}
+	catch(const std::exception& e)
+	{
+		std::cerr << e.what() << '\n';
+	}
 }
 
 int main(int argc, char * argv [])
 {
 	//FileDirContextPathInfoMode_Stuff(argc, argv);
-	UIntTest();
+	//UIntTest();
+	BitStreamTest();
 
 	(void)argc;
 	(void)argv;
