@@ -15,6 +15,7 @@ class ZLIB
 
 	private:
 		const uint8	*Data;
+		//BitStream	& BitS;
 	public:
 		uint32		Length;
 

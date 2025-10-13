@@ -130,16 +130,16 @@ void BitStreamTest()
 			uint8 bit_count = Random8() & UINT32_BIT_LIMIT;
 			if (bit_count != 0)
 			{
-				uint8 data0 = bits.Data[bits.GetByteIndex() + 0];
-				uint8 data1 = bits.Data[bits.GetByteIndex() + 1];
+				//uint8 data0 = bits.Data[bits.GetByteIndex() + 0];
+				//uint8 data1 = bits.Data[bits.GetByteIndex() + 1];
 				uint32 code1 = bits.GetBits32(bit_count);
 				//uint32 code0 = bits.bits(bit_count);
 
 				//if (code0 != code1)
 				{
-					std::cout << "idx   : " << bits.GetBitIndex() << " : " << bits.GetByteIndex() << "\n";
+					//std::cout << "idx   : " << bits.GetBitIndex() << " : " << bits.GetByteIndex() << "\n";
 					std::cout << "bits  : " << ((int)bit_count) << "\n";
-					std::cout << "data  : " << ToBase2(data0) << " " << ToBase2(data1) << "\n";
+					//std::cout << "data  : " << ToBase2(data0) << " " << ToBase2(data1) << "\n";
 					//std::cout << "code0 : " << ToSBase2(code0, ' ') << "\n";
 					std::cout << "code1 : " << ToSBase2(code1, ' ') << "\n";
 					std::cout << "\n";

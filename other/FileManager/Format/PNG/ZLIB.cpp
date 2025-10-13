@@ -8,15 +8,12 @@
 
 ZLIB::ZLIB(BitStream & bits)
 {
-	CMF = bits.GetMoveBits8();
-	//CMF = bits.byte8();
-	FLG = bits.GetMoveBits8();
-	//FLG = bits.byte8();
+	CMF = bits.GetIncBits8();
+	FLG = bits.GetIncBits8();
 
 	if ((FLG >> 5) & 0b1)
 	{
-		DICTID = bits.GetMoveBits32();
-		//DICTID = bits.byte32();
+		DICTID = bits.GetIncBits32();
 		Length = bits.Len - 10;
 	}
 	else
@@ -27,14 +24,14 @@ ZLIB::ZLIB(BitStream & bits)
 
 	Data = bits.DataAtIndex();
 	bits.MoveToNextByte();
-	bits.MoveBytes(Length);
-	ADLER32 = bits.GetMoveBits32();
-	//ADLER32 = bits.byte32(Length);
+	bits.IncByBytes(Length);
+	ADLER32 = bits.GetIncBits32();
 }
 
 BitStream	ZLIB::ToBitStream() const
 {
 	return (BitStream(Data, Length));
+	//return BitStream(BitS, Length);
 }
 
 

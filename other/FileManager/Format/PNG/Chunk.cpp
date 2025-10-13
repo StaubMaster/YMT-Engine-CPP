@@ -33,10 +33,10 @@ uint8	Chunk::knownTypeIndex(uint32 type)
 
 
 Chunk::Chunk(BitStream & bits) :
-	Length(ReverseBytes(bits.GetMoveBits32())),
-	Type(bits.GetMoveBits32()),
+	Length(ReverseBytes(bits.GetIncBits32())),
+	Type(bits.GetIncBits32()),
 	Data(bits.DataAtIndex()),
-	CRC((bits.MoveBytes(Length), ReverseBytes(bits.GetMoveBits32()))),
+	CRC((bits.IncByBytes(Length), ReverseBytes(bits.GetIncBits32()))),
 	typeIndex(knownTypeIndex(Type)),
 	BitS(bits)
 {

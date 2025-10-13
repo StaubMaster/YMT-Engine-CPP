@@ -129,7 +129,7 @@ uint32	HuffmanTree::decode(BitStream & bits)
 
 			if (Codes[i] == code)
 			{
-				bits.MoveBits(BitLens[i]);
+				bits.IncByBits(BitLens[i]);
 				return (i);
 			}
 		}

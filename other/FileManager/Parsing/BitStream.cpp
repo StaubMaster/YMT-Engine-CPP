@@ -1,53 +1,56 @@
 
 #include "BitStream.hpp"
 
-BitStream::BitStream(const uint8 * ptr, uint32 len) :
-	Data(ptr),
+BitStream::BitStream(const void * ptr, uint32 len) :
+	Data((const uint8*)ptr),
 	Len(len),
-	Index(0)
+	BitIndex(0),
+	ByteIndex(0)
 { }
 
 BitStream::BitStream(const std::string & str) :
-	Data((const uint8 *)str.c_str()),
+	Data((const uint8*)str.c_str()),
 	Len(str.size()),
-	Index(0)
+	BitIndex(0),
+	ByteIndex(0)
+{ }
+
+BitStream::BitStream(const BitStream & other, uint32 len) :
+	Data(other.Data),
+	Len(len),
+	BitIndex(0),
+	ByteIndex(0)
 { }
 
 
 
-const uint8 *	BitStream::DataAtIndex(uint32 skipBytes) const
-{
-	return Data + GetByteIndex() + skipBytes;
-}
 
 
-
-uint32	BitStream::GetBitIndex() const
+const uint8 *	BitStream::DataAtIndex() const
 {
-	return (Index & 0b111);
-}
-uint32	BitStream::GetByteIndex() const
-{
-	return (Index >> 3);
+	return Data + ByteIndex;
 }
 
 
 
 void	BitStream::MoveToNextByte()
 {
-	uint32 bit = GetBitIndex();
-	if (bit != 0)
+	if (BitIndex != 0)
 	{
-		Index += (8 - bit);
+		BitIndex = 0;
+		ByteIndex++;
 	}
 }
-void	BitStream::MoveBytes(uint32 count)
+
+void	BitStream::IncByBytes(uint32 count)
 {
-	Index += count << 3;
+	ByteIndex += count;
 }
-void	BitStream::MoveBits(uint32 count)
+void	BitStream::IncByBits(uint32 count)
 {
-	Index += count;
+	BitIndex += count;
+	ByteIndex += BitIndex >> 3;
+	BitIndex &= 0b111;
 }
 
 
@@ -57,8 +60,8 @@ uint8	BitStream::GetBits8(uint8 bit_count) const
 	if (bit_count == 0) { return 0; }
 	bit_count = ((bit_count - 1) & UINT8_BIT_LIMIT) + 1;
 
-	uint32	bitI = GetBitIndex();
-	uint32	byteI = GetByteIndex();
+	uint32	bitI = BitIndex;
+	uint32	byteI = ByteIndex;
 
 	uint8 val = 0;
 	uint8 byte_count = UINT8_BYTE_COUNT;
@@ -84,8 +87,8 @@ uint16	BitStream::GetBits16(uint8 bit_count) const
 	if (bit_count == 0) { return 0; }
 	bit_count = ((bit_count - 1) & UINT16_BIT_LIMIT) + 1;
 
-	uint32	bitI = GetBitIndex();
-	uint32	byteI = GetByteIndex();
+	uint32	bitI = BitIndex;
+	uint32	byteI = ByteIndex;
 
 	uint16 val = 0;
 	uint8 byte_count = UINT16_BYTE_COUNT;
@@ -111,8 +114,8 @@ uint32	BitStream::GetBits32(uint8 bit_count) const
 	if (bit_count == 0) { return 0; }
 	bit_count = ((bit_count - 1) & UINT32_BIT_LIMIT) + 1;
 
-	uint32	bitI = GetBitIndex();
-	uint32	byteI = GetByteIndex();
+	uint32	bitI = BitIndex;
+	uint32	byteI = ByteIndex;
 
 	uint32 val = 0;
 
@@ -138,8 +141,8 @@ uint64	BitStream::GetBits64(uint8 bit_count) const
 	if (bit_count == 0) { return 0; }
 	bit_count = ((bit_count - 1) & UINT64_BIT_LIMIT) + 1;
 
-	uint32	bitI = GetBitIndex();
-	uint32	byteI = GetByteIndex();
+	uint32	bitI = BitIndex;
+	uint32	byteI = ByteIndex;
 
 	uint64 val = 0;
 	uint8 byte_count = UINT64_BYTE_COUNT;
@@ -163,28 +166,28 @@ uint64	BitStream::GetBits64(uint8 bit_count) const
 
 
 
-uint8	BitStream::GetMoveBits8(uint8 bit_count)
+uint8	BitStream::GetIncBits8(uint8 bit_count)
 {
 	uint8 val = GetBits8(bit_count);
-	MoveBits(bit_count);
+	IncByBits(bit_count);
 	return val;
 }
-uint16	BitStream::GetMoveBits16(uint8 bit_count)
+uint16	BitStream::GetIncBits16(uint8 bit_count)
 {
 	uint16 val = GetBits16(bit_count);
-	MoveBits(bit_count);
+	IncByBits(bit_count);
 	return val;
 }
-uint32	BitStream::GetMoveBits32(uint8 bit_count)
+uint32	BitStream::GetIncBits32(uint8 bit_count)
 {
 	uint32 val = GetBits32(bit_count);
-	MoveBits(bit_count);
+	IncByBits(bit_count);
 	return val;
 }
-uint64	BitStream::GetMoveBits64(uint8 bit_count)
+uint64	BitStream::GetIncBits64(uint8 bit_count)
 {
 	uint64 val = GetBits64(bit_count);
-	MoveBits(bit_count);
+	IncByBits(bit_count);
 	return val;
 }
 

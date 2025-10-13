@@ -13,22 +13,15 @@ IHDR::IHDR(BitStream & bits)
 {
 	bits.MoveToNextByte();
 
-	width = ReverseBytes(bits.GetMoveBits32());
-	height = ReverseBytes(bits.GetMoveBits32());
-	//width = bits.byte32(BITSTREAM_REV);
-	//height = bits.byte32(BITSTREAM_REV);
+	width = ReverseBytes(bits.GetIncBits32());
+	height = ReverseBytes(bits.GetIncBits32());
 
-	bit_depth = bits.GetMoveBits8();
-	color_type = bits.GetMoveBits8();
-	//bit_depth = bits.byte8();
-	//color_type = bits.byte8();
+	bit_depth = bits.GetIncBits8();
+	color_type = bits.GetIncBits8();
 
-	compression_method = bits.GetMoveBits8();
-	filter_method = bits.GetMoveBits8();
-	interlace_method = bits.GetMoveBits8();
-	//compression_method = bits.byte8();
-	//filter_method = bits.byte8();
-	//interlace_method = bits.byte8();
+	compression_method = bits.GetIncBits8();
+	filter_method = bits.GetIncBits8();
+	interlace_method = bits.GetIncBits8();
 }
 void	IHDR::ToString(std::ostream & os) const
 {
