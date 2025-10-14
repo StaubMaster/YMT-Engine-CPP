@@ -2,6 +2,8 @@
 #include "ZLIB.hpp"
 #include "DEFLATE.hpp"
 
+#include "../../Parsing/BitStream.hpp"
+#include "../../Parsing/ByteStream.hpp"
 #include "../../Parsing/DebugManager.hpp"
 
 
@@ -63,7 +65,7 @@ std::string	ZLIB::ToString() const
 }
 
 
-void	ZLIB::decompress(BitStream & bits, DataStream & data)
+void	ZLIB::decompress(BitStream & bits, ByteStream & data)
 {
 	std::ostream & os = DebugManager::GetOut();
 	os << "\e[34mzlib ...\e[m\n";

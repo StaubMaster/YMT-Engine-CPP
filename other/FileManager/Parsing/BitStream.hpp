@@ -1,5 +1,5 @@
 
-#ifndef BITSTREAM_HPP
+#ifndef  BITSTREAM_HPP
 # define BITSTREAM_HPP
 # include "uint.hpp"
 

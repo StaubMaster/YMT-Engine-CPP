@@ -3,7 +3,8 @@
 # define HUFFMAN_HPP
 
 # include "../../Parsing/uint.hpp"
-# include "../../Parsing/BitStream.hpp"
+
+class BitStream;
 
 class HuffmanTree
 {
@@ -13,7 +14,7 @@ class HuffmanTree
 		static void		first_code_for_BitLen(uint32 *firstCodes, uint32 *codeCount, uint32 len);
 		static void		assing_HuffmanCode(uint32 *assignCodes, uint32 *firstCodes, uint8 *codeBitLen, uint32 len);
 
-	public:
+	private:
 		uint32	Len;
 		uint8	*BitLens;
 		uint32	*Codes;

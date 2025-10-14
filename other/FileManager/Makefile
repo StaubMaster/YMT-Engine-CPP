@@ -16,7 +16,7 @@ FILES_CPP = \
 	\
 	Parsing/uint.cpp \
 	Parsing/BitStream.cpp \
-	Parsing/DataStream.cpp \
+	Parsing/ByteStream.cpp \
 	Parsing/LineCommand.cpp \
 	Parsing/DebugManager.cpp
 

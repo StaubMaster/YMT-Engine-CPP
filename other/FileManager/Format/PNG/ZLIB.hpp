@@ -1,11 +1,11 @@
 
-#ifndef ZLIB_HPP
+#ifndef  ZLIB_HPP
 # define ZLIB_HPP
 
 # include "../../Parsing/uint.hpp"
-# include "../../Parsing/BitStream.hpp"
-# include "../../Parsing/DataStream.hpp"
 
+class BitStream;
+class ByteStream;
 
 class ZLIB
 {
@@ -28,7 +28,7 @@ class ZLIB
 
 		std::string	ToString() const;
 
-		static void	decompress(BitStream & bits, DataStream & data);
+		static void	decompress(BitStream & bits, ByteStream & data);
 };
 
 #endif

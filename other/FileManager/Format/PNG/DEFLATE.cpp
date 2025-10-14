@@ -1,6 +1,13 @@
 
 #include "DEFLATE.hpp"
 
+# include "../../Parsing/DebugManager.hpp"
+# include "../../Parsing/uint.hpp"
+# include "../../Parsing/BitStream.hpp"
+# include "../../Parsing/ByteStream.hpp"
+
+# include "Huffman.hpp"
+
 static uint32 len_base[] = {
     3, 4, 5, 6, 7, 8, 9, 10, //257 - 264
     11, 13, 15, 17,          //265 - 268
@@ -59,7 +66,7 @@ static uint32 dist_base_extra_bits[] = {
 
 
 
-void	DEFLATE::decode_Huffman(BitStream & bits, HuffmanTree & literal, HuffmanTree & distance, DataStream & data)
+void	DEFLATE::decode_Huffman(BitStream & bits, HuffmanTree & literal, HuffmanTree & distance, ByteStream & data)
 {
 	std::ostream & os = DebugManager::GetOut();
 	os << "\e[34mHuffman decode ... \e[m\n";
@@ -84,7 +91,8 @@ void	DEFLATE::decode_Huffman(BitStream & bits, HuffmanTree & literal, HuffmanTre
 		}
 		else if (decode_value < 256)
 		{
-			data.Insert(decode_value);
+			data.Set(decode_value);
+			data.Next();
 		}
 		else if (decode_value < 286)
 		{
@@ -98,7 +106,8 @@ void	DEFLATE::decode_Huffman(BitStream & bits, HuffmanTree & literal, HuffmanTre
 			while (len_len != 0)
 			{
 				len_len--;
-				data.Insert(data.Data[back_idx]);
+				data.Set(data.Data[back_idx]);
+				data.Next();
 				back_idx++;
 			}
 		}
@@ -173,7 +182,7 @@ uint8 *	DEFLATE::dynamic_Huffman(BitStream & bits, uint32 H_LIT, uint32 H_DIST, 
 
 
 
-void	DEFLATE::Block_direct(BitStream & bits, DataStream & data)
+void	DEFLATE::Block_direct(BitStream & bits, ByteStream & data)
 {
 	std::ostream & os = DebugManager::GetOut();
 	os << "\e[34mdirect Data ...\e[m\n";
@@ -184,7 +193,7 @@ void	DEFLATE::Block_direct(BitStream & bits, DataStream & data)
 	(void)bits;
 	(void)data;
 }
-void	DEFLATE::Block_static(BitStream & bits, DataStream & data)
+void	DEFLATE::Block_static(BitStream & bits, ByteStream & data)
 {
 	std::ostream & os = DebugManager::GetOut();
 	os << "\e[34mstatic Huffman ...\e[m\n";
@@ -195,7 +204,7 @@ void	DEFLATE::Block_static(BitStream & bits, DataStream & data)
 	(void)bits;
 	(void)data;
 }
-void	DEFLATE::Block_dynamic(BitStream & bits, DataStream & data)
+void	DEFLATE::Block_dynamic(BitStream & bits, ByteStream & data)
 {
 	std::ostream & os = DebugManager::GetOut();
 	os << "\e[34mdynamic Huffman ...\e[m\n";
@@ -219,7 +228,7 @@ void	DEFLATE::Block_dynamic(BitStream & bits, DataStream & data)
 	os << "\e[34mdynamic Huffman done\e[m\n";
 }
 
-void	DEFLATE::Blocks(BitStream & bits, DataStream & data)
+void	DEFLATE::Blocks(BitStream & bits, ByteStream & data)
 {
 	std::ostream & os = DebugManager::GetOut();
 

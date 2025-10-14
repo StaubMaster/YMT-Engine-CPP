@@ -2,7 +2,7 @@
 #ifndef PNG_FILTER_HPP
 # define PNG_FILTER_HPP
 
-# include "../../Parsing/DataStream.hpp"
+# include "../../Parsing/ByteStream.hpp"
 
 # include "PNG.hpp"
 
@@ -37,7 +37,7 @@ class PNG_Filter
 		static void		filter_Paeth(PixelData pxl, uint8 byte);
 
 	public:
-		static void		filter(DataStream & data, Image & img);
+		static void		filter(ByteStream & data, Image & img);
 };
 
 #endif

@@ -71,7 +71,7 @@ void	PNG_Filter::filter_Paeth(PixelData pxl, uint8 byte)
 		pxl.img.Data8[PixelIndex(pxl)] = byte + c;
 }
 
-void	PNG_Filter::filter(DataStream & data, Image & img)
+void	PNG_Filter::filter(ByteStream & data, Image & img)
 {
 	PixelData pxl(img);
 	void (*filter)(PixelData, uint8);
@@ -81,7 +81,8 @@ void	PNG_Filter::filter(DataStream & data, Image & img)
 	uint8	data_byte;
 	for (pxl.y = 0; pxl.y < img.H; pxl.y++)
 	{
-		data_byte = data.Exsert();
+		data_byte = data.Get();
+		data.Next();
 		if (data_byte == 0)
 			filter = &filter_None;
 		else if (data_byte == 1)
@@ -96,20 +97,24 @@ void	PNG_Filter::filter(DataStream & data, Image & img)
 		for (pxl.x = 0; pxl.x < img.W; pxl.x++)
 		{
 			pxl.col = 0;
-			data_byte = data.Exsert();
+			data_byte = data.Get();
+			data.Next();
 			filter(pxl, data_byte);
 
 			pxl.col = 1;
-			data_byte = data.Exsert();
+			data_byte = data.Get();
+			data.Next();
 			filter(pxl, data_byte);
 
 			pxl.col = 2;
-			data_byte = data.Exsert();
+			data_byte = data.Get();
+			data.Next();
 			filter(pxl, data_byte);
 
 			pxl.col = 3;
 			//	color_type = 6
-			data_byte = data.Exsert();
+			data_byte = data.Get();
+			data.Next();
 			filter(pxl, data_byte);
 
 			//	color_type = 2

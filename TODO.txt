@@ -1,4 +1,19 @@
 
+MakeFile
+right now all the archives are put together in the example Makefile
+but that should be like the end result
+
+the end result should only have to include one archive file
+so go back to putting everything together before then
+but that also requires knowing where the glfw archives are
+
+which is currently hardcoded my Windows
+and IDK where they are on the MACs
+
+
+
+
+
 
 
 FileManager into its own project

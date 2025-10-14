@@ -3,13 +3,19 @@
 # define OPEN_GL_HPP
 
 # include "glad/glad.h"
+# include "GLFW/glfw3.h"
+//# include <GLFW/glfw3.h>
 
-# if defined(_WIN32)
-#  include "GLFW/glfw3.h"
-# endif
+/*
+	gcc -dumpspecs > specs  
+gives specs
 
-# if defined(__APPLE__)
-#  include <GLFW/glfw3.h>
-# endif
+	gcc -specs=specs
+should set specs file but it gives
+	gcc.exe: fatal error: specs file malformed after 3 characters
+
+and idk how to fix that ?
+
+*/
 
 #endif

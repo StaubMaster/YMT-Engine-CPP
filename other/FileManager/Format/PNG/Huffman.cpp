@@ -1,4 +1,7 @@
 #include "Huffman.hpp"
+
+#include "../../Parsing/BitStream.hpp"
+
 #include <iostream>
 #include <iomanip>
 
@@ -117,6 +120,7 @@ void	HuffmanTree::ToString() const
 		std::cout << "[" << std::setw(3) << i << "] " << ToBase2(Codes[i], BitLens[i]) << "\n";
 	}
 }
+
 
 
 uint32	HuffmanTree::decode(BitStream & bits)

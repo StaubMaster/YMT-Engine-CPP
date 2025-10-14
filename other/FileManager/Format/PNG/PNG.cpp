@@ -1,5 +1,5 @@
 
-#include "../../Parsing/DataStream.hpp"
+#include "../../Parsing/ByteStream.hpp"
 #include "../../Parsing/DebugManager.hpp"
 
 #include "PNG.hpp"
@@ -49,7 +49,7 @@ Image * PNG::Load(const FileContext & file, bool debug)
 		os << "\n";
 
 		IHDR imageHead;
-		DataStream imageData(0);
+		ByteStream imageData(0);
 
 		while (1)
 		{
@@ -73,7 +73,7 @@ Image * PNG::Load(const FileContext & file, bool debug)
 
 		BitStream bits(imageData.Data, imageData.Len);
 
-		DataStream * data = new DataStream(0xFFFFFFFF);
+		ByteStream * data = new ByteStream(0xFFFFFFFF);
 		ZLIB::decompress(bits, *data);
 
 		img = new Image(imageHead.width, imageHead.height);
