@@ -1,26 +1,6 @@
 
 COMPILER = c++ -std=c++11
-
 FLAGS = -Wall -Wextra -Werror
-
-
-
-MAINS = \
-	DefaultInstances.cpp \
-	test.cpp
-#	LightTest.cpp \
-	OBJ_Parse.cpp \
-	ParticleSimulation.cpp \
-
-EXES = $(MAINS:.cpp=.exe)
-
-MAINS_DIR = mains/
-
-
-
-ARC = \
-	../YMT.a \
-	../other/OpenGL/openGL.a
 
 
 
@@ -46,13 +26,32 @@ endif
 
 
 
+MAINS = \
+	DefaultInstances.cpp \
+	test.cpp
+#	LightTest.cpp \
+	OBJ_Parse.cpp \
+	ParticleSimulation.cpp \
+
+EXES = $(MAINS:.cpp=.exe)
+
+MAINS_DIR = mains/
+
+
+
+ARC = \
+	../YMT.a \
+	../other/OpenGL/openGL.a \
+	../other/FileManager/FileManager.a
+
+
+
 ################################################################
 #                  Standard Makefile Commands                  #
 ################################################################
 
 #	check everything to see if something needs to be recompiled
 all:
-	@$(MAKE) $(FM_ARC)
 	@$(foreach arc, $(ARC), \
 		echo '[' 'all' $(arc) ']' ; \
 		$(MAKE) -C $(dir $(arc)) all || exit 1 ; \
@@ -93,46 +92,12 @@ re:
 
 
 
-################################################################
-#                 Interaction with Repositroys                 #
-################################################################
-
-#	clean on all other repos
-rclean:
-	$(MAKE) -C $(FM_DIR) clean
-
-#	fclean on all other repos
-rfclean:
-	$(MAKE) -C $(FM_DIR) fclean
-
-#	remove directory of repos
-rrm:
-	rm -rf $(FM_DIR)
-
-################################################################
-
-
-
-
-
 %.exe : $(MAINS_DIR)%.cpp $(ARC)
-	$(COMPILER) $(FLAGS) -I../include -I../other -I../other/FileManager/include -o $@ $^ $(FM_ARC) $(OS_ARGS)
+	$(COMPILER) $(FLAGS) -I../include -I../other -I../other/FileManager/include -o $@ $^ $(OS_ARGS)
 
 $(ARC) :
 	@$(MAKE) -C $(ARC_DIR) all
 
 
-
-
-
-FM_DIR := ../other/FileManager
-FM_HTTPS := https://github.com/StaubMaster/CPP-FileManager.git
-FM_ARC := $(FM_DIR)/FileManager.a
-
-$(FM_ARC): $(FM_DIR)
-	$(MAKE) -C $(FM_DIR) all
-
-$(FM_DIR):
-	git clone $(FM_HTTPS) $(FM_DIR)
 
 

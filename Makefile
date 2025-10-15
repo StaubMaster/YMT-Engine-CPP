@@ -1,13 +1,13 @@
 
 
 
-NAME = YMT.a
-COMPILER = c++ -std=c++11
-FLAGS = -Wall -Wextra -Werror
+NAME := YMT.a
+COMPILER := c++ -std=c++11
+FLAGS := -Wall -Wextra -Werror
 
 
 
-FILES_SRC = \
+FILES_SRC := \
 \
 	DataStruct/Point3D.cpp \
 	DataStruct/Angle3D.cpp \
@@ -96,18 +96,24 @@ FILES_SRC = \
 	TimeMeasure.cpp \
 	Window.cpp
 
-FILES_OBJ = $(FILES_SRC:.cpp=.o)
+FILES_OBJ := $(FILES_SRC:.cpp=.o)
 
-DIR_SRC = src/
-DIR_OBJ = obj/
+DIR_SRC := src
+DIR_OBJ := obj
 
-FILES_ABS_OBJ = $(addprefix $(DIR_OBJ), $(FILES_OBJ))
-
-
-
-ARC_X_DIR = obj/arc/
+FILES_ABS_OBJ := $(addprefix $(DIR_OBJ)/, $(FILES_OBJ))
 
 
+
+ARC_X_DIR := obj/arc
+
+
+
+
+
+################################################################
+#                  Standard Makefile Commands                  #
+################################################################
 
 $(NAME) : $(FILES_ABS_OBJ)
 #	@mkdir -p $(ARC_X_DIR)
@@ -116,19 +122,23 @@ $(NAME) : $(FILES_ABS_OBJ)
 #	ar -x E:/Utility/glfw-3.4.bin.WIN64/lib-mingw-w64/libglfw3.a --output ./obj/arc
 #	ar -rcs $(NAME) $(FILES_ABS_OBJ) $(ARC_X_DIR)*
 #	ar -rcs $(NAME) $(FILES_ABS_OBJ) -lgdi32
-	ar -rcs $(NAME) $(FILES_ABS_OBJ)
+	@echo "[ Compiling Archive ]" $@
+	@ar -rcs $(NAME) $(FILES_ABS_OBJ)
 
 all:
+	@$(MAKE) $(FM_REPO)
 	@$(MAKE) $(FILES_ABS_OBJ)
 	@$(MAKE) $(NAME)
 
 clean:
-	rm -f $(FILES_ABS_OBJ)
-	rm -f $(ARC_X_DIR)*
+	@echo "[ Removing all Objects ]"
+	@rm -f $(FILES_ABS_OBJ)
+	rm -f $(ARC_X_DIR)/*
 
 fclean:
 	@$(MAKE) clean
-	rm -f $(NAME)
+	@echo "[ Removing Archive ]"
+	@rm -f $(NAME)
 
 re:
 	@$(MAKE) fclean
@@ -136,10 +146,61 @@ re:
 
 .PHONY: all clean fclean re arc
 
+################################################################
 
 
-$(DIR_OBJ)%.o : $(DIR_SRC)%.cpp
+
+
+
+$(DIR_OBJ)/%.o : $(DIR_SRC)/%.cpp $(FM_REPO)
+#	should create FM_REPO if it dosent exist, currently dosent do that
+	@echo "[ Compiling Object ]" $@
+#	the lines are getting long so I added an echo here
 	@mkdir -p $(dir $@)
-	$(COMPILER) $(FLAGS) -Iinclude -Iother -Iother/FileManager/include -c $^ -o $@
+	@$(COMPILER) $(FLAGS) -Iinclude -Iother -I$(FM_REPO)/include -c $< -o $@
+
+
+
+
+
+################################################################
+#                 Interaction with Repositroys                 #
+################################################################
+
+REPO_DIR := other
+
+#	clean on all other repos
+rclean:
+	$(MAKE) -C $(FM_REPO) clean
+
+#	fclean on all other repos
+rfclean:
+	$(MAKE) -C $(FM_REPO) fclean
+
+#	remove directory of repos
+rrm:
+	rm -rf $(FM_REPO)
+
+################################################################
+
+
+
+
+
+################################################################
+#                         File Manager                         #
+################################################################
+
+FM_HTTPS := https://github.com/StaubMaster/CPP-FileManager.git
+FM_REPO := $(REPO_DIR)/FileManager
+FM_ARC := $(FM_REPO)/FileManager.a
+
+$(FM_REPO) :
+	git clone $(FM_HTTPS) $@
+
+$(FM_ARC) : $(FM_REPO)
+	$(MAKE) -C $(FM_REPO) all
+
+################################################################
 
 
