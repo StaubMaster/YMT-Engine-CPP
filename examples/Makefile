@@ -20,8 +20,7 @@ MAINS_DIR = mains/
 
 ARC = \
 	../YMT.a \
-	../other/OpenGL/openGL.a \
-	../other/FileManager/fileManager.a
+	../other/OpenGL/openGL.a
 
 
 
@@ -47,14 +46,13 @@ endif
 
 
 
-#	all		check everything to see if something needs to be recompiled
-#	clean	remove everything except final output
-#			so only the final .exe or also all the .a ?
-#	fclean	remove everything
-#			including included Libraries ?
-#	re		fclean and all ?
+################################################################
+#                  Standard Makefile Commands                  #
+################################################################
 
+#	check everything to see if something needs to be recompiled
 all:
+	@$(MAKE) $(FM_ARC)
 	@$(foreach arc, $(ARC), \
 		echo '[' 'all' $(arc) ']' ; \
 		$(MAKE) -C $(dir $(arc)) all || exit 1 ; \
@@ -62,6 +60,7 @@ all:
 	@echo '[ all Done ]'
 	@$(MAKE) $(EXES)
 
+#	remove Everything created my this Makefile except the final output
 clean:
 	@$(foreach arc, $(ARC), \
 		echo '[' 'clean' $(arc) ']' ; \
@@ -69,6 +68,7 @@ clean:
 	)
 	@echo '[ clean Done ]'
 
+#	remove everything that this makefile created
 fclean:
 	@$(foreach arc, $(ARC), \
 		echo '[' 'fclean' $(arc) ']' ; \
@@ -78,16 +78,61 @@ fclean:
 	@$(MAKE) clean
 	rm -f $(EXES)
 
+#	fclean and all ?
 re:
 	@$(MAKE) fclean
 	@$(MAKE) all
 
 .PHONY: all clean fclean re
 
+################################################################
+
+
+
+
+
+
+
+################################################################
+#                 Interaction with Repositroys                 #
+################################################################
+
+#	clean on all other repos
+rclean:
+	$(MAKE) -C $(FM_DIR) clean
+
+#	fclean on all other repos
+rfclean:
+	$(MAKE) -C $(FM_DIR) fclean
+
+#	remove directory of repos
+rrm:
+	rm -rf $(FM_DIR)
+
+################################################################
+
+
+
 
 
 %.exe : $(MAINS_DIR)%.cpp $(ARC)
-	$(COMPILER) $(FLAGS) -I../include -I../other -o $@ $^ $(OS_ARGS) -v
+	$(COMPILER) $(FLAGS) -I../include -I../other -I../other/FileManager/include -o $@ $^ $(FM_ARC) $(OS_ARGS)
 
 $(ARC) :
 	@$(MAKE) -C $(ARC_DIR) all
+
+
+
+
+
+FM_DIR := ../other/FileManager
+FM_HTTPS := https://github.com/StaubMaster/CPP-FileManager.git
+FM_ARC := $(FM_DIR)/FileManager.a
+
+$(FM_ARC): $(FM_DIR)
+	$(MAKE) -C $(FM_DIR) all
+
+$(FM_DIR):
+	git clone $(FM_HTTPS) $(FM_DIR)
+
+

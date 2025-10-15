@@ -110,7 +110,7 @@ ARC_X_DIR = obj/arc/
 
 
 $(NAME) : $(FILES_ABS_OBJ)
-	@mkdir -p $(ARC_X_DIR)
+#	@mkdir -p $(ARC_X_DIR)
 #	ar -x $(ARC_OPENGL) --output ./obj/arc
 #	ar -x $(ARC_FILEPARSER) --output ./obj/arc
 #	ar -x E:/Utility/glfw-3.4.bin.WIN64/lib-mingw-w64/libglfw3.a --output ./obj/arc
@@ -140,6 +140,6 @@ re:
 
 $(DIR_OBJ)%.o : $(DIR_SRC)%.cpp
 	@mkdir -p $(dir $@)
-	$(COMPILER) $(FLAGS) -Iinclude -Iother -c $^ -o $@
+	$(COMPILER) $(FLAGS) -Iinclude -Iother -Iother/FileManager/include -c $^ -o $@
 
 

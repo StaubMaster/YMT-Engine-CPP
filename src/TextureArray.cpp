@@ -1,6 +1,7 @@
 #include "TextureArray.hpp"
 
-#include "FileManager/Format/Image.hpp"
+#include "Format/Image.hpp"
+#include "FileContext.hpp"
 
 #include "OpenGL/openGL.h"
 #include <iostream>

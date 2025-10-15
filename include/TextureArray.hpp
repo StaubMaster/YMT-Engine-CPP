@@ -1,8 +1,9 @@
 #ifndef TEXTURE_ARRAY_HPP
 # define TEXTURE_ARRAY_HPP
 
-# include "FileManager/FileContext.hpp"
 # include "DataStruct/SizeRatio2D.hpp"
+
+class FileContext;
 
 class TextureArray
 {

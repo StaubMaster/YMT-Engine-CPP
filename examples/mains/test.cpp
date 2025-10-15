@@ -1,13 +1,13 @@
 
-#include "FileManager/FileContext.hpp"
-#include "FileManager/FilePath.hpp"
-#include "FileManager/FileInfo.hpp"
-#include "FileManager/FileMode.hpp"
-#include "FileManager/DirectoryContext.hpp"
+#include "FileContext.hpp"
+#include "FilePath.hpp"
+#include "FileInfo.hpp"
+#include "FileMode.hpp"
+#include "DirectoryContext.hpp"
 
-#include "FileManager/Parsing/uint.hpp"
+#include "Parsing/uint.hpp"
 
-#include "FileManager/Parsing/BitStream.hpp"
+#include "Parsing/BitStream.hpp"
 
 #include <vector>
 #include <iostream>

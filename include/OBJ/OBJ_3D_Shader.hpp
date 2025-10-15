@@ -5,10 +5,7 @@
 # include "Graphics/Shader/BaseShader.hpp"
 # include "Graphics/Uniform/Uniforms.hpp"
 
-# include "FileManager/DirectoryContext.hpp"
-# include "FileManager/FileContext.hpp"
-
-
+class DirectoryContext;
 
 class OBJ_3D_Shader : public BaseShader
 {

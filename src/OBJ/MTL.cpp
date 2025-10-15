@@ -1,9 +1,9 @@
 #include "OBJ/MTL.hpp"
 
-#include "FileManager/FileContext.hpp"
-#include "FileManager/Parsing/LineCommand.hpp"
-
 #include "DataO.hpp"
+
+#include "FileContext.hpp"
+#include "Parsing/LineCommand.hpp"
 
 #include <string>
 

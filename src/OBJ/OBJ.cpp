@@ -3,8 +3,8 @@
 
 #include "OBJ/MTL.hpp"
 
-#include "FileManager/FileContext.hpp"
-#include "FileManager/Parsing/LineCommand.hpp"
+#include "FileContext.hpp"
+#include "Parsing/LineCommand.hpp"
 
 #include "DataStruct/Point2D.hpp"
 #include "DataStruct/SizeRatio2D.hpp"
