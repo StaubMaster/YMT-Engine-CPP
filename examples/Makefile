@@ -38,33 +38,12 @@ OS_ARGS := \
 	-lgdi32
 endif
 
-#	#include "..." search starts here:
-#	#include <...> search starts here:
-#	 ../include
-#	 ../other
-#	 E:/Utility/msys32/ucrt64/bin/../lib/gcc/x86_64-w64-mingw32/15.2.0/../../../../include/c++/15.2.0
-#	 E:/Utility/msys32/ucrt64/bin/../lib/gcc/x86_64-w64-mingw32/15.2.0/../../../../include/c++/15.2.0/x86_64-w64-mingw32
-#	 E:/Utility/msys32/ucrt64/bin/../lib/gcc/x86_64-w64-mingw32/15.2.0/../../../../include/c++/15.2.0/backward
-#	 E:/Utility/msys32/ucrt64/bin/../lib/gcc/x86_64-w64-mingw32/15.2.0/include
-#	 E:/Utility/msys32/ucrt64/bin/../lib/gcc/x86_64-w64-mingw32/15.2.0/../../../../include
-#	 E:/Utility/msys32/ucrt64/bin/../lib/gcc/x86_64-w64-mingw32/15.2.0/include-fixed
-#	End of search list.
-
-#	GLFW/glfw3.h is in E:\Utility\glfw-3.4.bin.WIN64\include
-
 ifeq ($(CheckOS), Darwin)
 OS_ARGS := \
 	-lglfw
 endif
 
-#	echo | gcc -E -Wp,-v -
-#	get Paths searched by gcc
-#		-E	
-#		-Wp,	"bypass the compiler driver and pass option directly through to the preprocessor"
-#			v ?
-#		-v		verbose ? prints commands used by compiler
-#		-		???
-#	or just use -v when compiling
+
 
 
 
@@ -108,7 +87,7 @@ re:
 
 
 %.exe : $(MAINS_DIR)%.cpp $(ARC)
-	$(COMPILER) $(FLAGS) -I../include -I../other -o $@ $^ $(OS_ARGS)
+	$(COMPILER) $(FLAGS) -I../include -I../other -o $@ $^ $(OS_ARGS) -v
 
 $(ARC) :
 	@$(MAKE) -C $(ARC_DIR) all

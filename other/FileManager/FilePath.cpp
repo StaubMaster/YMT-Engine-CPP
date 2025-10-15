@@ -10,14 +10,11 @@
 
 #if defined(_WIN32)
 # include <windows.h>
-//# include <winbase.h>
-#endif
-
-#if defined(_WIN32)
 # define SLASH '\\'
 #endif
 
 #if defined(__APPLE__)
+# include <unistd.h>
 # define SLASH '/'
 #endif
 
@@ -70,7 +67,7 @@ FilePath FilePath::Here()
 	{
 		std::cout << "Error getting current Dir\n";
 	}
-	return DirectoryContext(std::string(path));
+	return FilePath(std::string(path));
 #endif
 }
 

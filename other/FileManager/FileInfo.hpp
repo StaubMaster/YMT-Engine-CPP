@@ -14,17 +14,6 @@ class FileInfo
 		bool Valid;
 		FileMode Mode;
 
-		const short & ID_User;
-		const short & ID_Group;
-		const unsigned int & ID_Device;
-		const unsigned int & ID_Special;
-
-		const long long & TimeLastAccess;
-		const long long & TimeLastModify;
-		const long long & TimeLastChange;
-
-		const long & Size;
-
 	private:
 		struct stat info;
 
@@ -34,6 +23,19 @@ class FileInfo
 
 		FileInfo(const FileInfo & other);
 		FileInfo & operator = (const FileInfo & other);
+
+	public:
+		short ID_User() const;
+		short ID_Group() const;
+
+		unsigned int ID_Device() const;
+		unsigned int ID_Special() const;
+
+		long long TimeLastAccess() const;
+		long long TimeLastModify() const;
+		long long TimeLastChange() const;
+
+		long Size() const;
 };
 
 #endif

@@ -16,44 +16,22 @@ bool stat_copy(bool valid, const struct stat * other, struct stat * info)
 	return valid;
 }
 
+
+
 FileInfo::FileInfo() :
 	Valid(stat_default(&info)),
-	Mode(info.st_mode),
-	ID_User(info.st_uid),
-	ID_Group(info.st_gid),
-	ID_Device(info.st_dev),
-	ID_Special(info.st_rdev),
-	TimeLastAccess(info.st_atime),
-	TimeLastModify(info.st_mtime),
-	TimeLastChange(info.st_ctime),
-	Size(info.st_size)
+	Mode(info.st_mode)
 { }
 FileInfo::FileInfo(std::string path) :
 	Valid(stat(path.c_str(), &info) == 0),
-	Mode(info.st_mode),
-	ID_User(info.st_uid),
-	ID_Group(info.st_gid),
-	ID_Device(info.st_dev),
-	ID_Special(info.st_rdev),
-	TimeLastAccess(info.st_atime),
-	TimeLastModify(info.st_mtime),
-	TimeLastChange(info.st_ctime),
-	Size(info.st_size)
+	Mode(info.st_mode)
 { }
 
 
 
 FileInfo::FileInfo(const FileInfo & other) :
-	Valid(stat_copy(other.Valid, &(other.info), &info)),
+	Valid(other.Valid),
 	Mode(info.st_mode),
-	ID_User(info.st_uid),
-	ID_Group(info.st_gid),
-	ID_Device(info.st_dev),
-	ID_Special(info.st_rdev),
-	TimeLastAccess(info.st_atime),
-	TimeLastModify(info.st_mtime),
-	TimeLastChange(info.st_ctime),
-	Size(info.st_size),
 	info(other.info)
 { }
 FileInfo & FileInfo::operator = (const FileInfo & other)
@@ -64,3 +42,36 @@ FileInfo & FileInfo::operator = (const FileInfo & other)
 }
 
 
+
+short FileInfo::ID_User() const
+{
+	return info.st_uid;
+}
+short FileInfo::ID_Group() const
+{
+	return info.st_gid;
+}
+unsigned int FileInfo::ID_Device() const
+{
+	return info.st_dev;
+}
+unsigned int FileInfo::ID_Special() const
+{
+	return info.st_rdev;
+}
+long long FileInfo::TimeLastAccess() const
+{
+	return info.st_atime;
+}
+long long FileInfo::TimeLastModify() const
+{
+	return info.st_mtime;
+}
+long long FileInfo::TimeLastChange() const
+{
+	return info.st_ctime;
+}
+long FileInfo::Size() const
+{
+	return info.st_size;
+}
