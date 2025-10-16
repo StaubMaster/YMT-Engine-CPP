@@ -10,7 +10,8 @@ FILES_SRC = \
 FILES_OBJ = $(FILES_SRC:.c=.o)
 
 
-$(NAME) :
+
+$(NAME) : $(FILES_OBJ)
 	ar -rcs $(NAME) $(FILES_OBJ)
 
 all: $(FILES_OBJ) $(NAME)
@@ -26,8 +27,6 @@ fclean:
 re:
 	$(MAKE) fclean
 	$(MAKE) all
-
-#c++ $(FLAGS) -o $(NAME) $(FILES_O) $(ARC_OPENGL) $(ARC_FILES) E:/Utility/glfw-3.4.bin.WIN64/lib-mingw-w64/libglfw3.a -lgdi32
 
 .PHONY: all clean fclean re
 

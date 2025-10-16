@@ -25,8 +25,8 @@
 #include "Graphics/Uniform/Data/Trans3D.hpp"
 #include "Graphics/Uniform/Data/Depth.hpp"
 
-#include "FileManager/FileContext.hpp"
-#include "FileManager/DirectoryContext.hpp"
+#include "FileContext.hpp"
+#include "DirectoryContext.hpp"
 
 #include "DataO.hpp"
 
@@ -188,8 +188,7 @@ void CL_Init()
 	cl_int err = CL_SUCCESS;
 
 	FileContext file = KernelDir.File("PhysSim.cl");
-	std::string file_text = file.LoadText();
-	CL_Program = cl::Program(file_text);
+	CL_Program = cl::Program(file.LoadText());
 	try
 	{
 		CL_Program.build("-cl-std=CL2.0");

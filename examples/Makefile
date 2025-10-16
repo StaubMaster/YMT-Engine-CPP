@@ -4,6 +4,8 @@ FLAGS = -Wall -Wextra -Werror
 
 
 
+
+
 ifeq ($(OS), Windows_NT)	# Windows dosent have uname
 	CheckOS := Windows
 else						# everywhere else does
@@ -12,10 +14,12 @@ endif
 
 ifeq ($(CheckOS), Windows)	#	these files are only there on my System. change to check for those files, else throw an error ?
 OS_ARGS := \
-	E:/Utility/glfw-3.4.bin.WIN64/lib-mingw-w64/libglfw3.a \
-	E:/Utility/msys32/ucrt64/lib/libOpenCL.dll.a \
+	-lglfw3 \
+	-lOpenCL \
 	-lgdi32
 endif
+
+#	works but still different from Mac
 
 ifeq ($(CheckOS), Darwin)
 OS_ARGS := \
@@ -30,8 +34,8 @@ MAINS = \
 	DefaultInstances.cpp \
 	test.cpp
 #	LightTest.cpp \
-	OBJ_Parse.cpp \
 	ParticleSimulation.cpp \
+	OBJ_Parse.cpp \
 
 EXES = $(MAINS:.cpp=.exe)
 
@@ -43,6 +47,10 @@ ARC = \
 	../YMT.a \
 	../other/OpenGL/openGL.a \
 	../other/FileManager/FileManager.a
+
+
+
+
 
 
 
