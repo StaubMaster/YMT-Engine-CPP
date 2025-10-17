@@ -28,9 +28,9 @@
 #include "PolyHedra.hpp"
 #include "Window.hpp"
 
-#include "FileManager/DirectoryContext.hpp"
-#include "FileManager/FileContext.hpp"
-#include "FileManager/Format/Image.hpp"
+#include "DirectoryContext.hpp"
+#include "FileContext.hpp"
+#include "Format/Image.hpp"
 
 
 

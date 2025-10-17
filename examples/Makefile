@@ -32,10 +32,10 @@ endif
 
 MAINS = \
 	DefaultInstances.cpp \
+	LightTest.cpp \
 	test.cpp
-#	LightTest.cpp \
-	ParticleSimulation.cpp \
-	OBJ_Parse.cpp \
+#	ParticleSimulation.cpp \
+#	OBJ_Parse.cpp \
 
 EXES = $(MAINS:.cpp=.exe)
 
@@ -101,7 +101,8 @@ re:
 
 
 %.exe : $(MAINS_DIR)%.cpp $(ARC)
-	$(COMPILER) $(FLAGS) -I../include -I../other -I../other/FileManager/include -o $@ $^ $(OS_ARGS)
+	$(MAKE) env_include
+	$(COMPILER) $(FLAGS) $(ARGS_INCLUDE) -o $@ $^ $(OS_ARGS)
 
 $(ARC) :
 	@$(MAKE) -C $(ARC_DIR) all
@@ -110,8 +111,17 @@ $(ARC) :
 
 
 
-test:
-	$(MAKE) -C ../ env
-	@echo $(var0)
+################################################################
+#                     Environment Variables                    #
+################################################################
 
+YMT_DIR := ..
+INCLUDES := $(foreach include, $(shell $(MAKE) -C $(YMT_DIR) env_include), $(YMT_DIR)/$(include))
+ARGS_INCLUDE := $(foreach include, $(INCLUDES), -I$(include))
+
+env_include:
+	@echo $(INCLUDES)
+	@echo $(ARGS_INCLUDE)
+
+################################################################
 

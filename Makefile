@@ -111,13 +111,13 @@ FILES_ABS_OBJ := $(addprefix $(DIR_OBJ)/, $(FILES_OBJ))
 #                  Standard Makefile Commands                  #
 ################################################################
 
-$(NAME) : $(FILES_ABS_OBJ) arc_ext
+$(NAME) : $(FILES_ABS_OBJ)
 #	ar -x $(ARC_OPENGL) --output ./obj/arc
 #	ar -x E:/Utility/glfw-3.4.bin.WIN64/lib-mingw-w64/libglfw3.a --output ./obj/arc
 #	ar -rcs $(NAME) $(FILES_ABS_OBJ) $(ARC_X_DIR)*
 #	ar -rcs $(NAME) $(FILES_ABS_OBJ) -lgdi32
 	@echo "[ Compiling Archive ]" $@
-	@ar -rcs $(NAME) $(FILES_ABS_OBJ) $(ARC_X_DIR)/*
+	@ar -rcs $(NAME) $(FILES_ABS_OBJ)
 
 all:
 	@$(MAKE) $(ARCS)
@@ -159,11 +159,18 @@ re:
 #	this could also be done recursivly
 #	so YMT can ask the EnvVars of FileManager and OpenGL and assamble those together with its own
 
-env:
-	@echo test123
-#	@echo '>>>>'
-#	@export YMT_INCLUDES := 'test'
-#	@echo '<<<<'
+INCLUDES := include other
+
+env_include:
+	@echo $(INCLUDES)
+
+args_include:
+	$(eval INCLUDE_ARGS := $(foreach inc, $(INCLUDES), \
+		-I$(inc) \
+	))
+
+test: args_include
+	@echo $(INCLUDE_ARGS)
 
 ################################################################
 
@@ -171,12 +178,12 @@ env:
 
 
 
-$(DIR_OBJ)/%.o : $(DIR_SRC)/%.cpp arc_gen_includes
+$(DIR_OBJ)/%.o : $(DIR_SRC)/%.cpp args_include
 #	should create FM_REPO if it dosent exist, currently dosent do that
 	@mkdir -p $(dir $@)
 	@echo "[ Compiling Object ]" $@
 #	the lines are getting long so I added an echo here
-	@$(COMPILER) $(FLAGS) -Iinclude -Iother $(ARC_INCLUDES) -c $< -o $@
+	@$(COMPILER) $(FLAGS) $(INCLUDE_ARGS) -c $< -o $@
 
 
 
@@ -194,25 +201,17 @@ arc_all:
 		$(MAKE) $(arc) \
 	)
 
-arc_gen_includes:
-	$(eval ARC_INCLUDES := $(foreach arc, $(ARCS), \
-		-I$(dir $(ARCS))include \
-	))
-
-test: arc_gen_includes
-	@echo $(ARC_INCLUDES)
-
 $(ARCS) :
 	$(foreach arc, $(ARCS), \
 		$(MAKE) $(arc) \
 	)
 
-arc_ext:
-	@echo "[ Extracting Archives ]"
-	@mkdir -p $(ARC_X_DIR)
-	@cd $(ARC_X_DIR) && $(foreach arc, $(ARCS), \
-		ar -x ../../$(arc) \
-	)
+#arc_ext:
+#	@echo "[ Extracting Archives ]"
+#	@mkdir -p $(ARC_X_DIR)
+#	@cd $(ARC_X_DIR) && $(foreach arc, $(ARCS), \
+#		ar -x ../../$(arc) \
+#	)
 
 ################################################################
 
@@ -261,6 +260,7 @@ FM_HTTPS := https://github.com/StaubMaster/CPP-FileManager.git
 FM_REPO := $(REPO_DIR)/FileManager
 FM_ARC := $(FM_REPO)/FileManager.a
 
+INCLUDES += $(FM_REPO)/include
 REPOS += $(FM_REPO)
 ARCS += $(FM_ARC)
 
