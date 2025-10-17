@@ -45,8 +45,8 @@ MAINS_DIR = mains/
 
 ARC = \
 	../YMT.a \
-	../other/OpenGL/openGL.a \
-	../other/FileManager/FileManager.a
+	../other/OpenGL/openGL.a
+#	../other/FileManager/FileManager.a
 
 
 
@@ -107,5 +107,11 @@ $(ARC) :
 	@$(MAKE) -C $(ARC_DIR) all
 
 
+
+
+
+test:
+	$(MAKE) -C ../ env
+	@echo $(var0)
 
 

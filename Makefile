@@ -105,28 +105,22 @@ FILES_ABS_OBJ := $(addprefix $(DIR_OBJ)/, $(FILES_OBJ))
 
 
 
-ARC_X_DIR := obj/arc
-
-
-
 
 
 ################################################################
 #                  Standard Makefile Commands                  #
 ################################################################
 
-$(NAME) : $(FILES_ABS_OBJ)
-#	@mkdir -p $(ARC_X_DIR)
+$(NAME) : $(FILES_ABS_OBJ) arc_ext
 #	ar -x $(ARC_OPENGL) --output ./obj/arc
-#	ar -x $(ARC_FILEPARSER) --output ./obj/arc
 #	ar -x E:/Utility/glfw-3.4.bin.WIN64/lib-mingw-w64/libglfw3.a --output ./obj/arc
 #	ar -rcs $(NAME) $(FILES_ABS_OBJ) $(ARC_X_DIR)*
 #	ar -rcs $(NAME) $(FILES_ABS_OBJ) -lgdi32
 	@echo "[ Compiling Archive ]" $@
-	@ar -rcs $(NAME) $(FILES_ABS_OBJ)
+	@ar -rcs $(NAME) $(FILES_ABS_OBJ) $(ARC_X_DIR)/*
 
 all:
-	@$(MAKE) $(FM_REPO)
+	@$(MAKE) $(ARCS)
 	@$(MAKE) $(FILES_ABS_OBJ)
 	@$(MAKE) $(NAME)
 
@@ -152,12 +146,75 @@ re:
 
 
 
-$(DIR_OBJ)/%.o : $(DIR_SRC)/%.cpp $(FM_REPO)
+################################################################
+#                     Environment Variables                    #
+################################################################
+
+#	right now the plan is to make it so the example Makefile
+#	which acts as the "end project" should have as little hardcoded stuff as possible
+#	right now it needs to know the Includes for FileManager
+#	it does not currently know the .a of FileManager since thats compiled into .YMT
+#	so the plan is to use EnvVars to tell the example Makefile what to include
+#	this could also be used for the .a, so no more extracting
+#	this could also be done recursivly
+#	so YMT can ask the EnvVars of FileManager and OpenGL and assamble those together with its own
+
+env:
+	@echo test123
+#	@echo '>>>>'
+#	@export YMT_INCLUDES := 'test'
+#	@echo '<<<<'
+
+################################################################
+
+
+
+
+
+$(DIR_OBJ)/%.o : $(DIR_SRC)/%.cpp arc_gen_includes
 #	should create FM_REPO if it dosent exist, currently dosent do that
+	@mkdir -p $(dir $@)
 	@echo "[ Compiling Object ]" $@
 #	the lines are getting long so I added an echo here
-	@mkdir -p $(dir $@)
-	@$(COMPILER) $(FLAGS) -Iinclude -Iother -I$(FM_REPO)/include -c $< -o $@
+	@$(COMPILER) $(FLAGS) -Iinclude -Iother $(ARC_INCLUDES) -c $< -o $@
+
+
+
+
+
+################################################################
+#                 Interaction with Repositroys                 #
+################################################################
+
+ARCS := 
+ARC_X_DIR := obj/arc
+
+arc_all:
+	$(foreach arc, $(ARCS), \
+		$(MAKE) $(arc) \
+	)
+
+arc_gen_includes:
+	$(eval ARC_INCLUDES := $(foreach arc, $(ARCS), \
+		-I$(dir $(ARCS))include \
+	))
+
+test: arc_gen_includes
+	@echo $(ARC_INCLUDES)
+
+$(ARCS) :
+	$(foreach arc, $(ARCS), \
+		$(MAKE) $(arc) \
+	)
+
+arc_ext:
+	@echo "[ Extracting Archives ]"
+	@mkdir -p $(ARC_X_DIR)
+	@cd $(ARC_X_DIR) && $(foreach arc, $(ARCS), \
+		ar -x ../../$(arc) \
+	)
+
+################################################################
 
 
 
@@ -168,18 +225,27 @@ $(DIR_OBJ)/%.o : $(DIR_SRC)/%.cpp $(FM_REPO)
 ################################################################
 
 REPO_DIR := other
+REPOS := 
 
 #	clean on all other repos
 rclean:
-	$(MAKE) -C $(FM_REPO) clean
+	@echo "[ CLeaning Repos ]"
+	@$(foreach repo, $(REPOS), \
+		$(MAKE) -C $(repo) clean \
+	)
 
 #	fclean on all other repos
 rfclean:
-	$(MAKE) -C $(FM_REPO) fclean
+	@echo "[ FCLeaning Repos ]"
+	@$(foreach repo, $(REPOS), \
+		$(MAKE) -C $(repo) fclean \
+	)
 
 #	remove directory of repos
 rrm:
-	rm -rf $(FM_REPO)
+	@echo "[ Removing Repos ]"
+	@rm -rf $(REPOS)
+
 
 ################################################################
 
@@ -194,6 +260,9 @@ rrm:
 FM_HTTPS := https://github.com/StaubMaster/CPP-FileManager.git
 FM_REPO := $(REPO_DIR)/FileManager
 FM_ARC := $(FM_REPO)/FileManager.a
+
+REPOS += $(FM_REPO)
+ARCS += $(FM_ARC)
 
 $(FM_REPO) :
 	git clone $(FM_HTTPS) $@
