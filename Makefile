@@ -162,10 +162,10 @@ re:
 LIBRARYS = other/OpenGL/OpenGL.a
 INCLUDES = include other
 
-librarys:
+librarys: repos_clone
 	@echo $(LIBRARYS)
 
-includes:
+includes: repos_clone
 	@echo $(INCLUDES)
 
 #	should these only be gotten on "command" ?
@@ -221,7 +221,6 @@ repos_fclean:
 	)
 
 repos_clone:
-	@echo "[ Repositorys clone ]" $(REPOS)
 	@$(foreach repo, $(REPOS), \
 		$(MAKE) $(repo)_clone \
 	)
@@ -236,11 +235,11 @@ repos_rm:
 	@rm -rf $(REPOS)
 
 repos_test:
-	rm -rf $(FM_REPO)
+#	@$(MAKE) repos_rm
 	@echo '==== ==== 1'
-	$(MAKE) repos_clone
+	@$(MAKE) librarys -s
 	@echo '==== ==== 2'
-	@$(MAKE) repos_librarys -s
+	@$(MAKE) includes -s
 	@echo '==== ==== 3'
 
 ################################################################
@@ -273,54 +272,14 @@ FM_HTTPS := https://github.com/StaubMaster/CPP-FileManager.git
 FM_REPO := $(REPOS_DIR)/FileManager
 
 REPOS += $(FM_REPO)
-
-#LIBRARYS += $(shell \
-if ! $(MAKE) -C $(FM_REPO) -s librarys ; then \
-	echo $(FM_REPO); \
-fi)
-#LIBRARYS += $(shell $(MAKE) -C $(FM_REPO) -s librarys)
-
-#INCLUDES += $(FM_REPO)/include
-#REPOS += $(FM_REPO)
-#REPOS += $(FM_ARC)
+LIBRARYS += $(foreach librarys, $(shell $(MAKE) -C $(FM_REPO) -s librarys), $(FM_REPO)/$(librarys))
+INCLUDES += $(foreach includes, $(shell $(MAKE) -C $(FM_REPO) -s includes), $(FM_REPO)/$(includes))
 
 $(FM_REPO)_clone :
-	@echo '[ File Manager REPO ]'
-	git clone $(FM_HTTPS) $(FM_REPO)
-#	@echo '==== REPO 0'
-#	@echo '$$(FM_REPO)' $(FM_REPO)
-#	@echo '$$(FM_ARC)' $(FM_ARC)
-#	@echo '==== REPO 1'
-#	if ! [ -d $(FM_REPO) ]; then \
-#		echo '[ File Manager REPO ]'; \
-#		git clone $(FM_HTTPS) $(FM_REPO); \
-#	fi
-#	@echo '==== REPO 2'
-#	@echo '$$(FM_REPO)' $(FM_REPO)
-#	@echo '$$(FM_ARC)' $(FM_ARC)
-#	@echo '==== REPO 3'
-#	$(MAKE) -C $(FM_REPO) all
-#	@echo '==== REPO 4'
-#	@echo '$$(FM_REPO)' $(FM_REPO)
-#	@echo '$$(FM_ARC)' $(FM_ARC)
-#	@echo '==== REPO 5'
+	if ! [ -d $(FM_REPO) ]; then \
+		git clone $(FM_HTTPS) $(FM_REPO) -q ; \
+	fi
 
-#	$(eval FM_ARC = $(shell $(MAKE) -C $(FM_REPO) -s librarys))
-#	@echo '==== REPO 2'
-#	echo $(FM_ARC)
-#	@echo '==== REPO 3'
-
-#$(FM_ARC) :
-#	@echo '$$(FM_REPO)' $(FM_REPO)
-#	@echo '$$(FM_ARC)' $(FM_ARC)
-#	@echo '[ File Manager ARC ]'
-#	$(MAKE) -C $(FM_REPO) all
-#	@echo '==== LIBRARY 0'
-#	echo $(FM_ARC)
-#	@echo '==== LIBRARY 1'
-
-fm_test_do: $(FM_REPO) $(FM_ARC)
-#
 ################################################################
 
 
