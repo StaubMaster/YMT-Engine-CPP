@@ -120,7 +120,7 @@ $(NAME) : $(FILES_ABS_OBJ)
 	@ar -rcs $(NAME) $(FILES_ABS_OBJ)
 
 all:
-	@$(MAKE) $(ARCS)
+	@$(MAKE) $(REPOS)
 	@$(MAKE) $(FILES_ABS_OBJ)
 	@$(MAKE) $(NAME)
 
@@ -159,18 +159,18 @@ re:
 #	this could also be done recursivly
 #	so YMT can ask the EnvVars of FileManager and OpenGL and assamble those together with its own
 
-INCLUDES := include other
+LIBRARYS = other/OpenGL/OpenGL.a
+INCLUDES = include other
 
-env_include:
+librarys:
+	@echo $(LIBRARYS)
+
+includes:
 	@echo $(INCLUDES)
 
-args_include:
-	$(eval INCLUDE_ARGS := $(foreach inc, $(INCLUDES), \
-		-I$(inc) \
-	))
-
-test: args_include
-	@echo $(INCLUDE_ARGS)
+#	should these only be gotten on "command" ?
+#	that would avoid any order problems
+#	but I still need it as a Variable
 
 ################################################################
 
@@ -190,61 +190,58 @@ $(DIR_OBJ)/%.o : $(DIR_SRC)/%.cpp args_include
 
 
 ################################################################
-#                 Interaction with Repositroys                 #
+#                 Interaction with Repositorys                 #
 ################################################################
 
-ARCS := 
-ARC_X_DIR := obj/arc
-
-arc_all:
-	$(foreach arc, $(ARCS), \
-		$(MAKE) $(arc) \
-	)
-
-$(ARCS) :
-	$(foreach arc, $(ARCS), \
-		$(MAKE) $(arc) \
-	)
-
-#arc_ext:
-#	@echo "[ Extracting Archives ]"
-#	@mkdir -p $(ARC_X_DIR)
-#	@cd $(ARC_X_DIR) && $(foreach arc, $(ARCS), \
-#		ar -x ../../$(arc) \
-#	)
-
-################################################################
-
-
-
-
-
-################################################################
-#                 Interaction with Repositroys                 #
-################################################################
-
-REPO_DIR := other
+REPOS_DIR := other/
 REPOS := 
 
-#	clean on all other repos
-rclean:
-	@echo "[ CLeaning Repos ]"
+repos:
+	@echo "[ Repositorys make ]"
+	@$(foreach repo, $(REPOS), \
+		$(MAKE) -C $(repo) \
+	)
+
+repos_all:
+	@echo "[ Repositorys make all ]"
+	@$(foreach repo, $(REPOS), \
+		$(MAKE) -C $(repo) all \
+	)
+
+repos_clean:
+	@echo "[ Repositorys make clean ]"
 	@$(foreach repo, $(REPOS), \
 		$(MAKE) -C $(repo) clean \
 	)
 
-#	fclean on all other repos
-rfclean:
-	@echo "[ FCLeaning Repos ]"
+repos_fclean:
+	@echo "[ Repositorys make fclean ]"
 	@$(foreach repo, $(REPOS), \
 		$(MAKE) -C $(repo) fclean \
 	)
 
-#	remove directory of repos
-rrm:
-	@echo "[ Removing Repos ]"
+repos_clone:
+	@echo "[ Repositorys clone ]" $(REPOS)
+	@$(foreach repo, $(REPOS), \
+		$(MAKE) $(repo)_clone \
+	)
+
+repos_librarys:
+	@$(foreach repo, $(REPOS), \
+		$(MAKE) -C $(repo) -s librarys \
+	)
+
+repos_rm:
+	@echo "[ Repositorys rm ]"
 	@rm -rf $(REPOS)
 
+repos_test:
+	rm -rf $(FM_REPO)
+	@echo '==== ==== 1'
+	$(MAKE) repos_clone
+	@echo '==== ==== 2'
+	@$(MAKE) repos_librarys -s
+	@echo '==== ==== 3'
 
 ################################################################
 
@@ -256,20 +253,74 @@ rrm:
 #                         File Manager                         #
 ################################################################
 
+#	how should this work ?
+#	HTTPS and Directory are allways known
+#	but Librarys and Includes are gotten from the makefile
+#	so they can only be assigned once the Repo is cloned
+#	but the other stuff needs to know something to check if it exists?
+#	first check if repo exists, then if the archive exists ?
+#	I think how it works is that := assigns the variable now
+#	while = waits for when the variable is used
+
+#	when another Makefile asks for librarys or includes
+#	then the "child" makefiles might now exist jet
+#	so if that happens it first needs to clone all the Repos
+#	after that everything should be fine
+#	non of this is standard. so just add another rule
+#	that automatically clones all the needed repos
+
 FM_HTTPS := https://github.com/StaubMaster/CPP-FileManager.git
-FM_REPO := $(REPO_DIR)/FileManager
-FM_ARC := $(FM_REPO)/FileManager.a
+FM_REPO := $(REPOS_DIR)/FileManager
 
-INCLUDES += $(FM_REPO)/include
 REPOS += $(FM_REPO)
-ARCS += $(FM_ARC)
 
-$(FM_REPO) :
-	git clone $(FM_HTTPS) $@
+#LIBRARYS += $(shell \
+if ! $(MAKE) -C $(FM_REPO) -s librarys ; then \
+	echo $(FM_REPO); \
+fi)
+#LIBRARYS += $(shell $(MAKE) -C $(FM_REPO) -s librarys)
 
-$(FM_ARC) : $(FM_REPO)
-	$(MAKE) -C $(FM_REPO) all
+#INCLUDES += $(FM_REPO)/include
+#REPOS += $(FM_REPO)
+#REPOS += $(FM_ARC)
 
+$(FM_REPO)_clone :
+	@echo '[ File Manager REPO ]'
+	git clone $(FM_HTTPS) $(FM_REPO)
+#	@echo '==== REPO 0'
+#	@echo '$$(FM_REPO)' $(FM_REPO)
+#	@echo '$$(FM_ARC)' $(FM_ARC)
+#	@echo '==== REPO 1'
+#	if ! [ -d $(FM_REPO) ]; then \
+#		echo '[ File Manager REPO ]'; \
+#		git clone $(FM_HTTPS) $(FM_REPO); \
+#	fi
+#	@echo '==== REPO 2'
+#	@echo '$$(FM_REPO)' $(FM_REPO)
+#	@echo '$$(FM_ARC)' $(FM_ARC)
+#	@echo '==== REPO 3'
+#	$(MAKE) -C $(FM_REPO) all
+#	@echo '==== REPO 4'
+#	@echo '$$(FM_REPO)' $(FM_REPO)
+#	@echo '$$(FM_ARC)' $(FM_ARC)
+#	@echo '==== REPO 5'
+
+#	$(eval FM_ARC = $(shell $(MAKE) -C $(FM_REPO) -s librarys))
+#	@echo '==== REPO 2'
+#	echo $(FM_ARC)
+#	@echo '==== REPO 3'
+
+#$(FM_ARC) :
+#	@echo '$$(FM_REPO)' $(FM_REPO)
+#	@echo '$$(FM_ARC)' $(FM_ARC)
+#	@echo '[ File Manager ARC ]'
+#	$(MAKE) -C $(FM_REPO) all
+#	@echo '==== LIBRARY 0'
+#	echo $(FM_ARC)
+#	@echo '==== LIBRARY 1'
+
+fm_test_do: $(FM_REPO) $(FM_ARC)
+#
 ################################################################
 
 

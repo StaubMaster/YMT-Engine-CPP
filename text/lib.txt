@@ -9,3 +9,10 @@ CPLUS_INCLUDE_PATH	=	E:\Utility\glfw-3.4.bin.WIN64\include
 LIBRARY_PATH		=	E:/Utility/glfw-3.4.bin.WIN64/lib-mingw-w64/
 
 
+
+PowerShell:
+$env:name
+$env:name='val'
+$env:name+='val'
+
+

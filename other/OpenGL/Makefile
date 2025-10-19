@@ -11,11 +11,14 @@ FILES_OBJ = $(FILES_SRC:.c=.o)
 
 
 
+
+
 $(NAME) : $(FILES_OBJ)
 	ar -rcs $(NAME) $(FILES_OBJ)
 
-all: $(FILES_OBJ) $(NAME)
-	@echo '[ all ]'
+all:
+	$(MAKE) $(FILES_OBJ)
+	$(MAKE) $(NAME)
 
 clean:
 	rm -f $(FILES_OBJ)

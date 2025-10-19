@@ -60,7 +60,7 @@ ARC = \
 
 #	check everything to see if something needs to be recompiled
 all:
-	@$(foreach arc, $(ARC), \
+#	@$(foreach arc, $(ARC), \
 		echo '[' 'all' $(arc) ']' ; \
 		$(MAKE) -C $(dir $(arc)) all || exit 1 ; \
 	)
@@ -116,12 +116,21 @@ $(ARC) :
 ################################################################
 
 YMT_DIR := ..
-INCLUDES := $(foreach include, $(shell $(MAKE) -C $(YMT_DIR) env_include), $(YMT_DIR)/$(include))
+LIBRARYS := $(foreach library, $(shell $(MAKE) -C $(YMT_DIR) -s librarys), $(YMT_DIR)/$(library))
+INCLUDES := $(foreach include, $(shell $(MAKE) -C $(YMT_DIR) -s includes), $(YMT_DIR)/$(include))
 ARGS_INCLUDE := $(foreach include, $(INCLUDES), -I$(include))
 
-env_include:
+librarys:
+	@echo '===='
+	@echo $(LIBRARYS)
+	@echo '===='
+
+includes:
+	@echo '===='
 	@echo $(INCLUDES)
+	@echo '===='
 	@echo $(ARGS_INCLUDE)
+	@echo '===='
 
 ################################################################
 
