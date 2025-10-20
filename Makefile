@@ -149,6 +149,8 @@ re:
 
 
 
+
+
 $(DIR_OBJ)/%.o : $(DIR_SRC)/%.cpp
 	@echo -e "$(COLOR_REPO)$(FANCY_NAME): $(COLOR_TYPE)Compiling: $(COLOR_FILE)$@$(COLOR_NONE)"
 	@mkdir -p $(dir $@)
@@ -156,21 +158,14 @@ $(DIR_OBJ)/%.o : $(DIR_SRC)/%.cpp
 
 
 
+
+
 ################################################################
 #                     Environment Variables                    #
 ################################################################
 
-#	right now the plan is to make it so the example Makefile
-#	which acts as the "end project" should have as little hardcoded stuff as possible
-#	right now it needs to know the Includes for FileManager
-#	it does not currently know the .a of FileManager since thats compiled into .YMT
-#	so the plan is to use EnvVars to tell the example Makefile what to include
-#	this could also be used for the .a, so no more extracting
-#	this could also be done recursivly
-#	so YMT can ask the EnvVars of FileManager and OpenGL and assamble those together with its own
-
-LIBRARYS = $(NAME) other/OpenGL/OpenGL.a
-INCLUDES = include/ other/
+LIBRARYS = $(NAME)
+INCLUDES = include/
 
 ARGS_LIBRARYS = $(foreach library, $(LIBRARYS), $(library))
 ARGS_INCLUDES = $(foreach include, $(INCLUDES), -I$(include))
@@ -183,10 +178,6 @@ includes: repos_clone
 
 .PHONY: librarys includes
 
-#	should these only be gotten on "command" ?
-#	that would avoid any order problems
-#	but I still need it as a Variable
-
 ################################################################
 
 
@@ -198,46 +189,49 @@ includes: repos_clone
 ################################################################
 
 REPOS_DIR := other/
-REPOS := 
+REPOS = 
 
 repos: repos_clone
-#	@echo -e "$(COLOR_REPO)$(FANCY_NAME): $(COLOR_TYPE)Target: $(COLOR_FILE)$@$(COLOR_NONE)"
+#	echo -e "$(COLOR_REPO)$(FANCY_NAME): $(COLOR_TYPE)Target: $(COLOR_FILE)$@$(COLOR_NONE)"
 	@echo -e "$(COLOR_REPO)$(FANCY_NAME): $(COLOR_TYPE)Compiling: $(COLOR_FILE)$@$(COLOR_NONE)"
 	@$(foreach repo, $(REPOS), \
-		$(MAKE) -C $(repo) \
+		$(MAKE) -C $(repo) ; \
 	)
 
 repos_all: repos_clone
 #	@echo -e "$(COLOR_REPO)$(FANCY_NAME): $(COLOR_TYPE)Target: $(COLOR_FILE)$@$(COLOR_NONE)"
 	@$(foreach repo, $(REPOS), \
-		$(MAKE) -C $(repo) all \
+		$(MAKE) -C $(repo) all ; \
 	)
 
 repos_clean:
 #	@echo -e "$(COLOR_REPO)$(FANCY_NAME): $(COLOR_TYPE)Target: $(COLOR_FILE)$@$(COLOR_NONE)"
 	@$(foreach repo, $(REPOS), \
-		if [ -d $(repo) ]; then \
+		if [ -d $(repo) ] ; then \
 			$(MAKE) -C $(repo) clean ; \
-		fi \
+		fi ; \
 	)
 
 repos_fclean:
 #	@echo -e "$(COLOR_REPO)$(FANCY_NAME): $(COLOR_TYPE)Target: $(COLOR_FILE)$@$(COLOR_NONE)"
 	@$(foreach repo, $(REPOS), \
-		if [ -d $(repo) ]; then \
+		if [ -d $(repo) ] ; then \
 			$(MAKE) -C $(repo) fclean ; \
-		fi \
+		fi ; \
 	)
 
 repos_clone:
-#	@echo -e "$(COLOR_REPO)$(FANCY_NAME): $(COLOR_TYPE)Target: $(COLOR_FILE)$@$(COLOR_NONE)"
-	@$(foreach repo, $(REPOS), \
-		$(MAKE) $(repo)_clone \
+#	echo -e "$(COLOR_REPO)$(FANCY_NAME): $(COLOR_TYPE)Target: $(COLOR_FILE)$@$(COLOR_NONE)"
+	$(foreach repo, $(REPOS), \
+		$(MAKE) $(repo)_clone ; \
 	)
 
 repos_rm:
 #	@echo -e "$(COLOR_REPO)$(FANCY_NAME): $(COLOR_TYPE)Target: $(COLOR_FILE)$@$(COLOR_NONE)"
-	@rm -rf $(REPOS)
+#	@rm -rf $(REPOS)
+	@$(foreach repo, $(REPOS), \
+		$(MAKE) $(repo)_rm ; \
+	)
 
 .PHONY: repos repos_all repos_clean repos_fclean repos_clone repos_rm
 
@@ -251,21 +245,25 @@ repos_rm:
 #                         File Manager                         #
 ################################################################
 
-#	how should this work ?
-#	HTTPS and Directory are allways known
-#	but Librarys and Includes are gotten from the makefile
-#	so they can only be assigned once the Repo is cloned
-#	but the other stuff needs to know something to check if it exists?
-#	first check if repo exists, then if the archive exists ?
-#	I think how it works is that := assigns the variable now
-#	while = waits for when the variable is used
+OPENGL_REPO := $(REPOS_DIR)/OpenGL
 
-#	when another Makefile asks for librarys or includes
-#	then the "child" makefiles might now exist jet
-#	so if that happens it first needs to clone all the Repos
-#	after that everything should be fine
-#	non of this is standard. so just add another rule
-#	that automatically clones all the needed repos
+REPOS += $(OPENGL_REPO)
+LIBRARYS += $(OPENGL_REPO)/OpenGL.a
+INCLUDES += $(OPENGL_REPO)/../
+
+$(OPENGL_REPO)_clone : ;
+
+$(OPENGL_REPO)_rm : ;
+
+################################################################
+
+
+
+
+
+################################################################
+#                         File Manager                         #
+################################################################
 
 FM_HTTPS := https://github.com/StaubMaster/CPP-FileManager.git
 FM_REPO := $(REPOS_DIR)/FileManager
@@ -275,11 +273,14 @@ LIBRARYS += $(foreach library, $(shell $(MAKE) -C $(FM_REPO) -s librarys), $(FM_
 INCLUDES += $(foreach include, $(shell $(MAKE) -C $(FM_REPO) -s includes), $(FM_REPO)/$(include))
 
 $(FM_REPO)_clone :
-	@if ! [ -d $(FM_REPO) ]; then \
+	@if ! [ -d $(FM_REPO) ] ; then \
 		git clone $(FM_HTTPS) $(FM_REPO) -q ; \
 	fi
 #		echo -e "$(COLOR_REPO)$(FANCY_NAME): $(COLOR_TYPE)Cloning: $(COLOR_FILE)FileManager$(COLOR_NONE)"; \
-#
+
+$(FM_REPO)_rm :
+	@rm -rf $(FM_REPO)
+
 ################################################################
 
 
