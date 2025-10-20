@@ -1,25 +1,31 @@
 
+
+
+FANCY_NAME := YMT/examples
+COLOR_REPO := \e[38;2;127;127;127m
+COLOR_TYPE := \e[38;2;127;255;127m
+COLOR_FILE := \e[38;2;127;127;255m
+COLOR_NONE := \e[m
+
+
+
 COMPILER = c++ -std=c++11
 FLAGS = -Wall -Wextra -Werror
 
 
 
-
-
-ifeq ($(OS), Windows_NT)	# Windows dosent have uname
+ifeq ($(OS), Windows_NT)
 	CheckOS := Windows
-else						# everywhere else does
+else
 	CheckOS := $(shell uname -s)
 endif
 
-ifeq ($(CheckOS), Windows)	#	these files are only there on my System. change to check for those files, else throw an error ?
+ifeq ($(CheckOS), Windows)
 OS_ARGS := \
 	-lglfw3 \
 	-lOpenCL \
 	-lgdi32
 endif
-
-#	works but still different from Mac
 
 ifeq ($(CheckOS), Darwin)
 OS_ARGS := \
@@ -44,8 +50,8 @@ MAINS_DIR = mains/
 
 
 ARC = \
-	../YMT.a \
 	../other/OpenGL/openGL.a
+#	../YMT.a \
 #	../other/FileManager/FileManager.a
 
 
@@ -58,37 +64,22 @@ ARC = \
 #                  Standard Makefile Commands                  #
 ################################################################
 
-#	check everything to see if something needs to be recompiled
 all:
-#	@$(foreach arc, $(ARC), \
-		echo '[' 'all' $(arc) ']' ; \
-		$(MAKE) -C $(dir $(arc)) all || exit 1 ; \
-	)
-	@echo '[ all Done ]'
-	@$(MAKE) $(EXES)
+	@echo -e "$(COLOR_REPO)$(FANCY_NAME): $(COLOR_TYPE)Target: $(COLOR_FILE)$@$(COLOR_NONE)"
+	@$(MAKE) $(EXES) -s
 
-#	remove Everything created my this Makefile except the final output
-clean:
-	@$(foreach arc, $(ARC), \
-		echo '[' 'clean' $(arc) ']' ; \
-		$(MAKE) -C $(dir $(arc)) clean || exit 1 ; \
-	)
-	@echo '[ clean Done ]'
+clean: repos_clean
+	@echo -e "$(COLOR_REPO)$(FANCY_NAME): $(COLOR_TYPE)Target: $(COLOR_FILE)$@$(COLOR_NONE)"
 
-#	remove everything that this makefile created
-fclean:
-	@$(foreach arc, $(ARC), \
-		echo '[' 'fclean' $(arc) ']' ; \
-		$(MAKE) -C $(dir $(arc)) fclean || exit 1 ; \
-	)
-	@echo '[ fclean Done ]'
-	@$(MAKE) clean
-	rm -f $(EXES)
+fclean: repos_fclean
+	@echo -e "$(COLOR_REPO)$(FANCY_NAME): $(COLOR_TYPE)Target: $(COLOR_FILE)$@$(COLOR_NONE)"
+	@$(MAKE) clean -s
+	@rm -f $(EXES)
 
-#	fclean and all ?
 re:
-	@$(MAKE) fclean
-	@$(MAKE) all
+	@echo -e "$(COLOR_REPO)$(FANCY_NAME): $(COLOR_TYPE)Target: $(COLOR_FILE)$@$(COLOR_NONE)"
+	@$(MAKE) fclean -s
+	@$(MAKE) all -s
 
 .PHONY: all clean fclean re
 
@@ -98,14 +89,9 @@ re:
 
 
 
-
-
-%.exe : $(MAINS_DIR)%.cpp $(ARC)
-	$(MAKE) env_include
-	$(COMPILER) $(FLAGS) $(ARGS_INCLUDE) -o $@ $^ $(OS_ARGS)
-
-$(ARC) :
-	@$(MAKE) -C $(ARC_DIR) all
+%.exe : $(MAINS_DIR)%.cpp repos
+	@echo -e "$(COLOR_REPO)$(FANCY_NAME): $(COLOR_TYPE)Compiling: $(COLOR_FILE)$@$(COLOR_NONE)"
+	@$(COMPILER) $(FLAGS) $(ARGS_INCLUDES) -o $@ $< $(ARGS_LIBRARYS) $(OS_ARGS)
 
 
 
@@ -115,22 +101,62 @@ $(ARC) :
 #                     Environment Variables                    #
 ################################################################
 
-YMT_DIR := ..
-LIBRARYS := $(foreach library, $(shell $(MAKE) -C $(YMT_DIR) -s librarys), $(YMT_DIR)/$(library))
-INCLUDES := $(foreach include, $(shell $(MAKE) -C $(YMT_DIR) -s includes), $(YMT_DIR)/$(include))
-ARGS_INCLUDE := $(foreach include, $(INCLUDES), -I$(include))
+LIBRARYS = 
+INCLUDES = 
+
+ARGS_LIBRARYS = $(foreach library, $(LIBRARYS), $(library))
+ARGS_INCLUDES = $(foreach include, $(INCLUDES), -I$(include))
 
 librarys:
 	@echo '===='
 	@echo $(LIBRARYS)
+	@echo '===='
+	@echo $(ARGS_LIBRARYS)
 	@echo '===='
 
 includes:
 	@echo '===='
 	@echo $(INCLUDES)
 	@echo '===='
-	@echo $(ARGS_INCLUDE)
+	@echo $(ARGS_INCLUDES)
 	@echo '===='
+
+.PHONY: librarys includes
 
 ################################################################
 
+
+
+
+
+################################################################
+#                             REPO                             #
+################################################################
+
+YMT_DIR := ..
+LIBRARYS += $(foreach library, $(shell $(MAKE) -C $(YMT_DIR) -s librarys), $(YMT_DIR)/$(library))
+INCLUDES += $(foreach include, $(shell $(MAKE) -C $(YMT_DIR) -s includes), $(YMT_DIR)/$(include))
+
+repos:
+#	@echo -e "$(COLOR_REPO)$(FANCY_NAME): $(COLOR_TYPE)Target: $(COLOR_FILE)$@$(COLOR_NONE)"
+	@$(MAKE) -C $(YMT_DIR) -s
+
+repos_all:
+#	@echo -e "$(COLOR_REPO)$(FANCY_NAME): $(COLOR_TYPE)Target: $(COLOR_FILE)$@$(COLOR_NONE)"
+	@$(MAKE) -C $(YMT_DIR) all -s
+
+repos_clean:
+#	@echo -e "$(COLOR_REPO)$(FANCY_NAME): $(COLOR_TYPE)Target: $(COLOR_FILE)$@$(COLOR_NONE)"
+	@$(MAKE) -C $(YMT_DIR) clean -s
+
+repos_fclean:
+#	@echo -e "$(COLOR_REPO)$(FANCY_NAME): $(COLOR_TYPE)Target: $(COLOR_FILE)$@$(COLOR_NONE)"
+	@$(MAKE) -C $(YMT_DIR) fclean -s
+
+repos_rm:
+#	@echo -e "$(COLOR_REPO)$(FANCY_NAME): $(COLOR_TYPE)Target: $(COLOR_FILE)$@$(COLOR_NONE)"
+	@$(MAKE) -C $(YMT_DIR) repos_rm -s
+
+.PHONY: repos
+
+################################################################

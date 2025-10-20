@@ -1,6 +1,14 @@
 
 
 
+FANCY_NAME := YMT
+COLOR_REPO := \e[38;2;127;127;127m
+COLOR_TYPE := \e[38;2;127;255;127m
+COLOR_FILE := \e[38;2;127;127;255m
+COLOR_NONE := \e[m
+
+
+
 NAME := YMT.a
 COMPILER := c++ -std=c++11
 FLAGS := -Wall -Wextra -Werror
@@ -98,8 +106,8 @@ FILES_SRC := \
 
 FILES_OBJ := $(FILES_SRC:.cpp=.o)
 
-DIR_SRC := src
-DIR_OBJ := obj
+DIR_SRC := src/
+DIR_OBJ := obj/
 
 FILES_ABS_OBJ := $(addprefix $(DIR_OBJ)/, $(FILES_OBJ))
 
@@ -111,38 +119,40 @@ FILES_ABS_OBJ := $(addprefix $(DIR_OBJ)/, $(FILES_OBJ))
 #                  Standard Makefile Commands                  #
 ################################################################
 
-$(NAME) : $(FILES_ABS_OBJ)
-#	ar -x $(ARC_OPENGL) --output ./obj/arc
-#	ar -x E:/Utility/glfw-3.4.bin.WIN64/lib-mingw-w64/libglfw3.a --output ./obj/arc
-#	ar -rcs $(NAME) $(FILES_ABS_OBJ) $(ARC_X_DIR)*
-#	ar -rcs $(NAME) $(FILES_ABS_OBJ) -lgdi32
-	@echo "[ Compiling Archive ]" $@
+$(NAME) : repos $(FILES_ABS_OBJ)
+	@echo -e "$(COLOR_REPO)$(FANCY_NAME): $(COLOR_TYPE)Target: $(COLOR_FILE)$@$(COLOR_NONE)"
 	@ar -rcs $(NAME) $(FILES_ABS_OBJ)
 
-all:
+all: repos_all
+	@echo -e "$(COLOR_REPO)$(FANCY_NAME): $(COLOR_TYPE)Target: $(COLOR_FILE)$@$(COLOR_NONE)"
 	@$(MAKE) $(REPOS)
 	@$(MAKE) $(FILES_ABS_OBJ)
 	@$(MAKE) $(NAME)
 
-clean:
-	@echo "[ Removing all Objects ]"
+clean: repos_clean
+	@echo -e "$(COLOR_REPO)$(FANCY_NAME): $(COLOR_TYPE)Target: $(COLOR_FILE)$@$(COLOR_NONE)"
 	@rm -f $(FILES_ABS_OBJ)
-	rm -f $(ARC_X_DIR)/*
 
-fclean:
+fclean: repos_fclean
+	@echo -e "$(COLOR_REPO)$(FANCY_NAME): $(COLOR_TYPE)Target: $(COLOR_FILE)$@$(COLOR_NONE)"
 	@$(MAKE) clean
-	@echo "[ Removing Archive ]"
 	@rm -f $(NAME)
 
 re:
+	@echo -e "$(COLOR_REPO)$(FANCY_NAME): $(COLOR_TYPE)Target: $(COLOR_FILE)$@$(COLOR_NONE)"
 	@$(MAKE) fclean
 	@$(MAKE) all
 
-.PHONY: all clean fclean re arc
+.PHONY: all clean fclean re
 
 ################################################################
 
 
+
+$(DIR_OBJ)/%.o : $(DIR_SRC)/%.cpp
+	@echo -e "$(COLOR_REPO)$(FANCY_NAME): $(COLOR_TYPE)Compiling: $(COLOR_FILE)$@$(COLOR_NONE)"
+	@mkdir -p $(dir $@)
+	@$(COMPILER) $(FLAGS) $(ARGS_INCLUDES) -c $< -o $@
 
 
 
@@ -159,8 +169,11 @@ re:
 #	this could also be done recursivly
 #	so YMT can ask the EnvVars of FileManager and OpenGL and assamble those together with its own
 
-LIBRARYS = other/OpenGL/OpenGL.a
-INCLUDES = include other
+LIBRARYS = $(NAME) other/OpenGL/OpenGL.a
+INCLUDES = include/ other/
+
+ARGS_LIBRARYS = $(foreach library, $(LIBRARYS), $(library))
+ARGS_INCLUDES = $(foreach include, $(INCLUDES), -I$(include))
 
 librarys: repos_clone
 	@echo $(LIBRARYS)
@@ -168,22 +181,13 @@ librarys: repos_clone
 includes: repos_clone
 	@echo $(INCLUDES)
 
+.PHONY: librarys includes
+
 #	should these only be gotten on "command" ?
 #	that would avoid any order problems
 #	but I still need it as a Variable
 
 ################################################################
-
-
-
-
-
-$(DIR_OBJ)/%.o : $(DIR_SRC)/%.cpp args_include
-#	should create FM_REPO if it dosent exist, currently dosent do that
-	@mkdir -p $(dir $@)
-	@echo "[ Compiling Object ]" $@
-#	the lines are getting long so I added an echo here
-	@$(COMPILER) $(FLAGS) $(INCLUDE_ARGS) -c $< -o $@
 
 
 
@@ -196,51 +200,46 @@ $(DIR_OBJ)/%.o : $(DIR_SRC)/%.cpp args_include
 REPOS_DIR := other/
 REPOS := 
 
-repos:
-	@echo "[ Repositorys make ]"
+repos: repos_clone
+#	@echo -e "$(COLOR_REPO)$(FANCY_NAME): $(COLOR_TYPE)Target: $(COLOR_FILE)$@$(COLOR_NONE)"
+	@echo -e "$(COLOR_REPO)$(FANCY_NAME): $(COLOR_TYPE)Compiling: $(COLOR_FILE)$@$(COLOR_NONE)"
 	@$(foreach repo, $(REPOS), \
 		$(MAKE) -C $(repo) \
 	)
 
-repos_all:
-	@echo "[ Repositorys make all ]"
+repos_all: repos_clone
+#	@echo -e "$(COLOR_REPO)$(FANCY_NAME): $(COLOR_TYPE)Target: $(COLOR_FILE)$@$(COLOR_NONE)"
 	@$(foreach repo, $(REPOS), \
 		$(MAKE) -C $(repo) all \
 	)
 
 repos_clean:
-	@echo "[ Repositorys make clean ]"
+#	@echo -e "$(COLOR_REPO)$(FANCY_NAME): $(COLOR_TYPE)Target: $(COLOR_FILE)$@$(COLOR_NONE)"
 	@$(foreach repo, $(REPOS), \
-		$(MAKE) -C $(repo) clean \
+		if [ -d $(repo) ]; then \
+			$(MAKE) -C $(repo) clean ; \
+		fi \
 	)
 
 repos_fclean:
-	@echo "[ Repositorys make fclean ]"
+#	@echo -e "$(COLOR_REPO)$(FANCY_NAME): $(COLOR_TYPE)Target: $(COLOR_FILE)$@$(COLOR_NONE)"
 	@$(foreach repo, $(REPOS), \
-		$(MAKE) -C $(repo) fclean \
+		if [ -d $(repo) ]; then \
+			$(MAKE) -C $(repo) fclean ; \
+		fi \
 	)
 
 repos_clone:
+#	@echo -e "$(COLOR_REPO)$(FANCY_NAME): $(COLOR_TYPE)Target: $(COLOR_FILE)$@$(COLOR_NONE)"
 	@$(foreach repo, $(REPOS), \
 		$(MAKE) $(repo)_clone \
 	)
 
-repos_librarys:
-	@$(foreach repo, $(REPOS), \
-		$(MAKE) -C $(repo) -s librarys \
-	)
-
 repos_rm:
-	@echo "[ Repositorys rm ]"
+#	@echo -e "$(COLOR_REPO)$(FANCY_NAME): $(COLOR_TYPE)Target: $(COLOR_FILE)$@$(COLOR_NONE)"
 	@rm -rf $(REPOS)
 
-repos_test:
-#	@$(MAKE) repos_rm
-	@echo '==== ==== 1'
-	@$(MAKE) librarys -s
-	@echo '==== ==== 2'
-	@$(MAKE) includes -s
-	@echo '==== ==== 3'
+.PHONY: repos repos_all repos_clean repos_fclean repos_clone repos_rm
 
 ################################################################
 
@@ -272,14 +271,15 @@ FM_HTTPS := https://github.com/StaubMaster/CPP-FileManager.git
 FM_REPO := $(REPOS_DIR)/FileManager
 
 REPOS += $(FM_REPO)
-LIBRARYS += $(foreach librarys, $(shell $(MAKE) -C $(FM_REPO) -s librarys), $(FM_REPO)/$(librarys))
-INCLUDES += $(foreach includes, $(shell $(MAKE) -C $(FM_REPO) -s includes), $(FM_REPO)/$(includes))
+LIBRARYS += $(foreach library, $(shell $(MAKE) -C $(FM_REPO) -s librarys), $(FM_REPO)/$(library))
+INCLUDES += $(foreach include, $(shell $(MAKE) -C $(FM_REPO) -s includes), $(FM_REPO)/$(include))
 
 $(FM_REPO)_clone :
-	if ! [ -d $(FM_REPO) ]; then \
+	@if ! [ -d $(FM_REPO) ]; then \
 		git clone $(FM_HTTPS) $(FM_REPO) -q ; \
 	fi
-
+#		echo -e "$(COLOR_REPO)$(FANCY_NAME): $(COLOR_TYPE)Cloning: $(COLOR_FILE)FileManager$(COLOR_NONE)"; \
+#
 ################################################################
 
 
