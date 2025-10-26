@@ -1,0 +1,49 @@
+
+right now there is the main folder with a lot of things in it
+
+and I would like the other things to be more organized
+
+
+
+but then the paths would get long and convoluted again
+like with DataStructs
+
+
+
+
+how much should go into Graphics
+this is a Graphics Engine so technically most things fit in there
+but right now it is for the Basic Graphics stuff
+
+
+
+/Miscellaneous
+	helpful stuff that is not directly related to Graphics
+
+/Graphics
+	base / basic Graphics related stuff
+
+/DataStruct
+	basic data stuff
+	some of the things are very specific
+	like Light
+	so just more or less simple Data stuff
+	with a fixed and relatively small size
+	and mostly unspecific
+
+
+
+
+
+	Temporary:
+
+/DataStruct/Main
+	Main Data for Buffers
+
+/DataStruct/Inst
+	Instance Data for Buffers
+
+/DataStruct/Full
+	Main and Instance Data for Buffers
+
+
