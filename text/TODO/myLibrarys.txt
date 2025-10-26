@@ -1,0 +1,28 @@
+
+some of the stuff could be put into their own Librarys ?
+but I dont want to put them into their own Projects
+since that would require Cloning them which would be too much for this stuff
+
+but I still want to seperate them further then they are currently ?
+right now the stuff is directly in the main folder
+put them in other ?
+that seems too seperated
+
+
+
+Collective Header ?
+these are usually a main thing and some related things
+when I only want the main thing i use thing.hpp
+but what if I want everything ?
+
+
+
+
+
+all the Data Structs ?
+	they are inherent to the "Engine"
+PolyHedra
+OBJ
+Physics3D
+
+
