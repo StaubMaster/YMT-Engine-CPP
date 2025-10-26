@@ -1,0 +1,44 @@
+
+
+all the stuff I want to do needs 3D Models
+specifically Files
+
+I already have a bunch in .polyhedra.ymt
+but the format is not finished
+and still kind of janky
+
+just use .obj ?
+
+
+
+
+
+in the past I had an Idea of having PolyHedra be abstract
+so its just Corners and Faces
+no Colors / Textures
+
+I could make that
+and make OBJ inherit / use that
+
+my thaught is that I dont really need the save the whole thing
+it gets assambled differently for the buffers anyway
+and the only part that might be needed agains would be for intersections ?
+which only needs corners and faces
+
+
+
+
+
+
+
+Generate Models ?
+	Basic:
+		Cube
+		Cone
+		Ball
+		Pyramide ?
+	Complex:
+		Tower ?
+		Tree ?
+		
+
