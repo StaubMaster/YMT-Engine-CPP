@@ -1,7 +1,7 @@
 #include <iostream>
 #include "OpenGL/openGL.h"
 
-#include "PH/PH_3D/PolyHedra_3D_Instances.hpp"
+#include "DataStruct/Full/PolyHedra_3D/PolyHedra_3D_Instances.hpp"
 
 #include "Graphics/Shader/ShaderCode.hpp"
 #include "Graphics/Shader/BaseShader.hpp"

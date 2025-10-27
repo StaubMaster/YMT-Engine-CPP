@@ -1,4 +1,4 @@
-#include "OBJ/OBJ_3D_BufferArray.hpp"
+#include "DataStruct/Main/Waveform/OBJ_3D_BufferArray.hpp"
 
 # include "OpenGL/openGL.h"
 # include <iostream>

@@ -1,7 +1,7 @@
 #include "PolyHedra.hpp"
 #include "PolyHedraData.hpp"
 
-#include "PH/PolyHedra_MainData.hpp"
+#include "DataStruct/Main/PolyHedra/PolyHedra_MainData.hpp"
 
 #include "DataStruct/Angle3D.hpp"
 

@@ -1,4 +1,4 @@
-#include "PH/PolyHedra_MainAttrib.hpp"
+#include "DataStruct/Main/PolyHedra/PolyHedra_MainAttrib.hpp"
 
 #include "OpenGL/openGL.h"
 

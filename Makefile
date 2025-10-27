@@ -77,26 +77,26 @@ FILES_SRC := \
 	Graphics/Attribute/Data/Color.cpp \
 	Graphics/Attribute/Data/Float1.cpp \
 \
-	PH/PolyHedra_MainData.cpp \
-	PH/PolyHedra_MainAttrib.cpp \
-	PH/PolyHedra_MainBuffer.cpp \
-	PH/PH_3D/PolyHedra_3D_BufferArray.cpp \
-	PH/PH_3D/PolyHedra_3D_Instances.cpp \
-	PH/PH_3D/PolyHedra_3D_Shader.cpp \
+	DataStruct/Main/PolyHedra/PolyHedra_MainData.cpp \
+	DataStruct/Main/PolyHedra/PolyHedra_MainAttrib.cpp \
+	DataStruct/Main/PolyHedra/PolyHedra_MainBuffer.cpp \
+	DataStruct/Full/PolyHedra_3D/PolyHedra_3D_BufferArray.cpp \
+	DataStruct/Full/PolyHedra_3D/PolyHedra_3D_Instances.cpp \
+	DataStruct/Full/PolyHedra_3D/PolyHedra_3D_Shader.cpp \
 \
-	Simple3D/Simple3D_InstData.cpp \
-	Simple3D/Simple3D_InstAttrib.cpp \
-	Simple3D/Simple3D_InstBuffer.cpp \
+	DataStruct/Inst/Simple3D/Simple3D_InstData.cpp \
+	DataStruct/Inst/Simple3D/Simple3D_InstAttrib.cpp \
+	DataStruct/Inst/Simple3D/Simple3D_InstBuffer.cpp \
 \
-	Physics3D/Physics3D_InstData.cpp \
-	Physics3D/Physics3D_InstAttrib.cpp \
-	Physics3D/Physics3D_InstBuffer.cpp \
+	DataStruct/Inst/Physics3D/Physics3D_InstData.cpp \
+	DataStruct/Inst/Physics3D/Physics3D_InstAttrib.cpp \
+	DataStruct/Inst/Physics3D/Physics3D_InstBuffer.cpp \
 \
-	OBJ/OBJ.cpp \
-	OBJ/OBJ_Main.cpp \
-	OBJ/OBJ_3D_BufferArray.cpp \
-	OBJ/OBJ_3D_Shader.cpp \
-	OBJ/MTL.cpp \
+	DataStruct/Main/Waveform/OBJ.cpp \
+	DataStruct/Main/Waveform/OBJ_Main.cpp \
+	DataStruct/Main/Waveform/OBJ_3D_BufferArray.cpp \
+	DataStruct/Main/Waveform/OBJ_3D_Shader.cpp \
+	DataStruct/Main/Waveform/MTL.cpp \
 \
 	TextureArray.cpp \
 	PolyHedra.cpp \

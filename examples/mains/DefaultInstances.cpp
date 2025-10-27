@@ -1,8 +1,8 @@
 #include <iostream>
 #include "OpenGL/openGL.h"
 
-#include "PH/PH_3D/PolyHedra_3D_Instances.hpp"
-#include "PH/PH_3D/PolyHedra_3D_Shader.hpp"
+#include "DataStruct/Full/PolyHedra_3D/PolyHedra_3D_Instances.hpp"
+#include "DataStruct/Full/PolyHedra_3D/PolyHedra_3D_Shader.hpp"
 
 #include "Graphics/Multiform/Data/SizeRatio2D.hpp"
 #include "Graphics/Multiform/Data/Trans3D.hpp"

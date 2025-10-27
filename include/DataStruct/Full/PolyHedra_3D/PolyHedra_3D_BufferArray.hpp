@@ -4,11 +4,11 @@
 
 # include "Graphics/Buffer/Instance_Base_BufferArray.hpp"
 
-# include "PH/PolyHedra_MainData.hpp"
-# include "PH/PolyHedra_MainBuffer.hpp"
+# include "DataStruct/Main/PolyHedra/PolyHedra_MainData.hpp"
+# include "DataStruct/Main/PolyHedra/PolyHedra_MainBuffer.hpp"
 
-# include "Simple3D/Simple3D_InstData.hpp"
-# include "Simple3D/Simple3D_InstBuffer.hpp"
+# include "DataStruct/Inst/Simple3D/Simple3D_InstData.hpp"
+# include "DataStruct/Inst/Simple3D/Simple3D_InstBuffer.hpp"
 
 
 

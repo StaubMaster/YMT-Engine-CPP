@@ -6,8 +6,8 @@
 
 # include "OBJ_Main.hpp"
 
-# include "Simple3D//Simple3D_InstData.hpp"
-# include "Simple3D//Simple3D_InstBuffer.hpp"
+# include "DataStruct/Inst/Simple3D/Simple3D_InstData.hpp"
+# include "DataStruct/Inst/Simple3D/Simple3D_InstBuffer.hpp"
 
 
 
