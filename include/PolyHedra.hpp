@@ -6,6 +6,10 @@
 
 struct PolyHedra_MainData;
 
+class PolyHedra_Skin2DA;
+
+struct Point2D;
+
 namespace YMT
 {
 
@@ -19,6 +23,7 @@ class PolyHedra
 	private:
 		ContainerDynamic<Corner>	Corners;
 		ContainerDynamic<Face>		Faces;
+		PolyHedra_Skin2DA *			Skin;
 
 	public:
 		bool UseCornerNormals;
