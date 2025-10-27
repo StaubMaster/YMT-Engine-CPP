@@ -29,6 +29,46 @@ which only needs corners and faces
 
 
 
+PolyHedraBase<CornerType, FaceType>
+
+PolyHedra
+	simple Corners and Faces
+
+problem:
+OBJ has different Arrays for the different Datas
+and just referances them by Index
+I dont think there is an easy way to generalize that
+
+
+
+PolyHedra
+{
+	< Float 3 > Corners
+	< Index 3 > Faces
+	SkinBase * Skin
+}
+
+make it have a Pointer to a "Skin"
+Skin can be NULL for fully abstract
+Skin2DA (Texture 2D Array)
+{
+	< Float 3 > Texture Coords
+	TextureArray
+}
+
+TextureArray:
+	currenty its called that but is for 2D Array specifically
+	rename / also generalize
+	I dont see why I would currenty need others
+	so just rename
+	if I want to change it to inherit later on it will be easyer
+
+all this would also require the .ymt file parsing stuff
+but the current is very complex
+so just implement a simple version for now
+
+
+
 
 
 Generate Models ?
