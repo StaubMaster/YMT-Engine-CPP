@@ -37,9 +37,9 @@ endif
 
 
 MAINS = \
-	DefaultInstances.cpp \
-	LightTest.cpp \
-	test.cpp
+	DefaultInstances.cpp
+#	test.cpp
+#	LightTest.cpp \
 #	ParticleSimulation.cpp \
 #	OBJ_Parse.cpp \
 

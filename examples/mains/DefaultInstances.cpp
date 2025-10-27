@@ -8,7 +8,7 @@
 #include "Graphics/Multiform/Data/Trans3D.hpp"
 #include "Graphics/Multiform/Data/Depth.hpp"
 
-#include "TextureArray.hpp"
+#include "Texture2DArray.hpp"
 #include "PolyHedra.hpp"
 #include "Window.hpp"
 
@@ -29,7 +29,7 @@ Trans3D	ViewTrans;
 Depth	ViewDepth;
 
 YMT::PolyHedra * Poly0;
-TextureArray * Tex0;
+Texture2DArray * Tex0;
 
 PolyHedra_3D_Instances * PH_Instances;
 EntryContainerDynamic<Simple3D_InstData>::Entry ** Entrys;
@@ -120,7 +120,7 @@ void Init()
 	//Poly0 = YMT::PolyHedra::ConeC(12, 0.5f);
 	
 	Poly0 -> UseCornerNormals = false;
-	Tex0 = new TextureArray(128, 128, 1, (FileContext[])
+	Tex0 = new Texture2DArray(128, 128, 1, (FileContext[])
 	{
 		ImageDir.File("Orientation.png"),
 		//ImageDir.File("GrayDeant.png"),

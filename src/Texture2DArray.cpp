@@ -1,4 +1,4 @@
-#include "TextureArray.hpp"
+#include "Texture2DArray.hpp"
 
 #include "Format/Image.hpp"
 #include "FileContext.hpp"
@@ -8,11 +8,9 @@
 
 
 
-TextureArray::TextureArray(const FileContext & file)
+Texture2DArray::Texture2DArray(const FileContext & file)
+	: TextureBase(GL_TEXTURE_2D_ARRAY)
 {
-	glGenTextures(1, &GL_TextureArray);
-	glBindTexture(GL_TEXTURE_2D_ARRAY, GL_TextureArray);
-
 	Image * img = file.LoadImagePNG();
 	SizeRatio = SizeRatio2D(img -> W, img -> H);
 	glTexImage3D(GL_TEXTURE_2D_ARRAY, 0, GL_RGBA8, img -> W, img -> H, 1, 0, GL_RGBA, GL_UNSIGNED_INT_8_8_8_8_REV, img -> Data32);
@@ -25,12 +23,10 @@ TextureArray::TextureArray(const FileContext & file)
 
 	glGenerateMipmap(GL_TEXTURE_2D_ARRAY);
 }
-TextureArray::TextureArray(unsigned int w, unsigned int h, unsigned int count, const FileContext files [])
+Texture2DArray::Texture2DArray(unsigned int w, unsigned int h, unsigned int count, const FileContext files [])
+	: TextureBase(GL_TEXTURE_2D_ARRAY)
 {
 	SizeRatio = SizeRatio2D(w, h);
-
-	glGenTextures(1, &GL_TextureArray);
-	glBindTexture(GL_TEXTURE_2D_ARRAY, GL_TextureArray);
 
 	glTexImage3D(GL_TEXTURE_2D_ARRAY, 0, GL_RGBA8, w, h, count, 0, GL_RGBA, GL_UNSIGNED_INT_8_8_8_8_REV, NULL);
 
@@ -51,16 +47,7 @@ TextureArray::TextureArray(unsigned int w, unsigned int h, unsigned int count, c
 
 	glGenerateMipmap(GL_TEXTURE_2D_ARRAY);
 }
-TextureArray::~TextureArray()
+Texture2DArray::~Texture2DArray()
 {
-	glDeleteTextures(1, &GL_TextureArray);
+
 }
-
-
-
-void TextureArray::Bind()
-{
-	glActiveTexture(GL_TEXTURE0);
-	glBindTexture(GL_TEXTURE_2D_ARRAY, GL_TextureArray);
-}
-

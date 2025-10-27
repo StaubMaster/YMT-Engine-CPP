@@ -98,7 +98,9 @@ FILES_SRC := \
 	DataStruct/Main/Waveform/OBJ_3D_Shader.cpp \
 	DataStruct/Main/Waveform/MTL.cpp \
 \
-	TextureArray.cpp \
+	TextureBase.cpp \
+	Texture2DArray.cpp \
+\
 	PolyHedra.cpp \
 	PolyHedraData.cpp \
 	TimeMeasure.cpp \
