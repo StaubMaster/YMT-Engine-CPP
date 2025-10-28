@@ -104,6 +104,7 @@ FILES_SRC := \
 	PolyHedra/PolyHedra.cpp \
 	PolyHedra/PolyHedraData.cpp \
 	PolyHedra/Skin/SkinBase.cpp \
+	PolyHedra/Skin/Skin2D_Data.cpp \
 	PolyHedra/Skin/Skin2DA.cpp \
 \
 	TimeMeasure.cpp \

@@ -78,7 +78,6 @@ void YMT::PolyHedra::Insert_Corn(Corner corn)
 void YMT::PolyHedra::Insert_Face3(FaceCorner corn0, FaceCorner corn1, FaceCorner corn2)
 {
 	Faces.Insert(Face(corn0, corn1, corn2));
-	//Skin -> Insert_Face3(tex0, tex1, tex2);
 }
 void YMT::PolyHedra::Insert_Face4(FaceCorner corn0, FaceCorner corn1, FaceCorner corn2, FaceCorner corn3)
 {
@@ -105,10 +104,10 @@ YMT::PolyHedra * YMT::PolyHedra::FullTexture(float scale)
 	);
 
 	temp -> Skin -> Insert_Face4(
-		PolyHedra_Skin2DA::FaceCorner(0.0f, 1.0f),
-		PolyHedra_Skin2DA::FaceCorner(0.0f, 0.0f),
-		PolyHedra_Skin2DA::FaceCorner(1.0f, 1.0f),
-		PolyHedra_Skin2DA::FaceCorner(1.0f, 0.0f)
+		Skin2DFaceCorner(Point2D(0.0f, 1.0f)),
+		Skin2DFaceCorner(Point2D(0.0f, 0.0f)),
+		Skin2DFaceCorner(Point2D(1.0f, 1.0f)),
+		Skin2DFaceCorner(Point2D(1.0f, 0.0f))
 	);
 
 	temp -> Done();
@@ -166,41 +165,41 @@ YMT::PolyHedra * YMT::PolyHedra::Cube(float scale)
 	);
 
 	temp -> Skin -> Insert_Face4(
-		PolyHedra_Skin2DA::FaceCorner(0.00f, 0.00f),
-		PolyHedra_Skin2DA::FaceCorner(0.00f, 0.50f),
-		PolyHedra_Skin2DA::FaceCorner(0.25f, 0.00f),
-		PolyHedra_Skin2DA::FaceCorner(0.25f, 0.50f)
+		Skin2DFaceCorner(Point2D(0.00f, 0.00f)),
+		Skin2DFaceCorner(Point2D(0.00f, 0.50f)),
+		Skin2DFaceCorner(Point2D(0.25f, 0.00f)),
+		Skin2DFaceCorner(Point2D(0.25f, 0.50f))
 	);
 	temp -> Skin -> Insert_Face4(
-		PolyHedra_Skin2DA::FaceCorner(0.25f, 0.00f),
-		PolyHedra_Skin2DA::FaceCorner(0.25f, 0.50f),
-		PolyHedra_Skin2DA::FaceCorner(0.50f, 0.00f),
-		PolyHedra_Skin2DA::FaceCorner(0.50f, 0.50f)
+		Skin2DFaceCorner(Point2D(0.25f, 0.00f)),
+		Skin2DFaceCorner(Point2D(0.25f, 0.50f)),
+		Skin2DFaceCorner(Point2D(0.50f, 0.00f)),
+		Skin2DFaceCorner(Point2D(0.50f, 0.50f))
 	);
 	temp -> Skin -> Insert_Face4(
-		PolyHedra_Skin2DA::FaceCorner(0.50f, 0.00f),
-		PolyHedra_Skin2DA::FaceCorner(0.50f, 0.50f),
-		PolyHedra_Skin2DA::FaceCorner(0.75f, 0.00f),
-		PolyHedra_Skin2DA::FaceCorner(0.75f, 0.50f)
+		Skin2DFaceCorner(Point2D(0.50f, 0.00f)),
+		Skin2DFaceCorner(Point2D(0.50f, 0.50f)),
+		Skin2DFaceCorner(Point2D(0.75f, 0.00f)),
+		Skin2DFaceCorner(Point2D(0.75f, 0.50f))
 	);
 
 	temp -> Skin -> Insert_Face4(
-		PolyHedra_Skin2DA::FaceCorner(0.25f, 1.00f),
-		PolyHedra_Skin2DA::FaceCorner(0.00f, 1.00f),
-		PolyHedra_Skin2DA::FaceCorner(0.25f, 0.50f),
-		PolyHedra_Skin2DA::FaceCorner(0.00f, 0.50f)
+		Skin2DFaceCorner(Point2D(0.25f, 1.00f)),
+		Skin2DFaceCorner(Point2D(0.00f, 1.00f)),
+		Skin2DFaceCorner(Point2D(0.25f, 0.50f)),
+		Skin2DFaceCorner(Point2D(0.00f, 0.50f))
 	);
 	temp -> Skin -> Insert_Face4(
-		PolyHedra_Skin2DA::FaceCorner(0.50f, 1.00f),
-		PolyHedra_Skin2DA::FaceCorner(0.25f, 1.00f),
-		PolyHedra_Skin2DA::FaceCorner(0.50f, 0.50f),
-		PolyHedra_Skin2DA::FaceCorner(0.25f, 0.50f)
+		Skin2DFaceCorner(Point2D(0.50f, 1.00f)),
+		Skin2DFaceCorner(Point2D(0.25f, 1.00f)),
+		Skin2DFaceCorner(Point2D(0.50f, 0.50f)),
+		Skin2DFaceCorner(Point2D(0.25f, 0.50f))
 	);
 	temp -> Skin -> Insert_Face4(
-		PolyHedra_Skin2DA::FaceCorner(0.75f, 1.00f),
-		PolyHedra_Skin2DA::FaceCorner(0.50f, 1.00f),
-		PolyHedra_Skin2DA::FaceCorner(0.75f, 0.50f),
-		PolyHedra_Skin2DA::FaceCorner(0.50f, 0.50f)
+		Skin2DFaceCorner(Point2D(0.75f, 1.00f)),
+		Skin2DFaceCorner(Point2D(0.50f, 1.00f)),
+		Skin2DFaceCorner(Point2D(0.75f, 0.50f)),
+		Skin2DFaceCorner(Point2D(0.50f, 0.50f))
 	);
 
 	temp -> Done();
@@ -240,10 +239,10 @@ YMT::PolyHedra * YMT::PolyHedra::ConeC(int segments, float width, float height)
 		);
 
 		temp -> Skin -> Insert_Face4(
-			PolyHedra_Skin2DA::FaceCorner(texM, 0.0f),
-			PolyHedra_Skin2DA::FaceCorner(tex1, 1.0f),
-			PolyHedra_Skin2DA::FaceCorner(tex0, 1.0f),
-			PolyHedra_Skin2DA::FaceCorner(texM, 0.0f)
+			Skin2DFaceCorner(Point2D(texM, 0.0f)),
+			Skin2DFaceCorner(Point2D(tex1, 1.0f)),
+			Skin2DFaceCorner(Point2D(tex0, 1.0f)),
+			Skin2DFaceCorner(Point2D(texM, 0.0f))
 		);
 	}
 
@@ -287,7 +286,7 @@ PolyHedra_MainData * YMT::PolyHedra::ToMainData(int & count)
 			data[c + 2].Normal = cornerZ.Normal;
 		}
 
-		const PolyHedra_Skin2DA::Face & skin_face = Skin -> Faces[f];
+		const Skin2DFace & skin_face = Skin -> Faces[f];
 		data[c + 0].Texture = skin_face.Corner0.Tex;
 		data[c + 1].Texture = skin_face.Corner1.Tex;
 		data[c + 2].Texture = skin_face.Corner2.Tex;
