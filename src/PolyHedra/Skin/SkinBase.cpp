@@ -1,4 +1,4 @@
-#include "PolyHedra_SkinBase.hpp"
+#include "PolyHedra/Skin/SkinBase.hpp"
 
 
 

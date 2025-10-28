@@ -101,10 +101,10 @@ FILES_SRC := \
 	TextureBase.cpp \
 	Texture2DArray.cpp \
 \
-	PolyHedra.cpp \
-	PolyHedraData.cpp \
-	PolyHedra_SkinBase.cpp \
-	PolyHedra_Skin2DA.cpp \
+	PolyHedra/PolyHedra.cpp \
+	PolyHedra/PolyHedraData.cpp \
+	PolyHedra/Skin/SkinBase.cpp \
+	PolyHedra/Skin/Skin2DA.cpp \
 \
 	TimeMeasure.cpp \
 	Window.cpp

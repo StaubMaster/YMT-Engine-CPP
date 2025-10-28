@@ -11,6 +11,7 @@ namespace YMT
 	struct PolyHedra::Corner
 	{
 		Point3D	Position;
+		Point3D	Normal;
 		Corner();
 		Corner(Point3D pos);
 	};
@@ -25,6 +26,7 @@ namespace YMT
 		FaceCorner Corner0;
 		FaceCorner Corner1;
 		FaceCorner Corner2;
+		Point3D	Normal;
 		Face();
 		Face(FaceCorner c0, FaceCorner c1, FaceCorner c2);
 	};

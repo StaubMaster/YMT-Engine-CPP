@@ -1,7 +1,7 @@
 #ifndef  POLYHEDRA_SKIN_2DA_HPP
 # define POLYHEDRA_SKIN_2DA_HPP
 
-# include "PolyHedra_SkinBase.hpp"
+# include "PolyHedra/Skin/SkinBase.hpp"
 # include "Texture2DArray.hpp"
 
 # include "Miscellaneous/ContainerDynamic.hpp"
@@ -15,14 +15,12 @@ class PolyHedra_Skin2DA : public PolyHedra_SkinBase
 	public:
 		struct Corner
 		{
-			Point3D	Normal;
 			Corner();
 		};
 		struct FaceCorner
 		{
 			Point2D	Tex;
 			FaceCorner();
-			//FaceCorner(Point2D tex);
 			FaceCorner(float tex_x, float tex_y);
 		};
 		struct Face
@@ -30,7 +28,6 @@ class PolyHedra_Skin2DA : public PolyHedra_SkinBase
 			FaceCorner	Corner0;
 			FaceCorner	Corner1;
 			FaceCorner	Corner2;
-			Point3D	Normal;
 			Face();
 			Face(FaceCorner corn0, FaceCorner corn1, FaceCorner corn2);
 		};

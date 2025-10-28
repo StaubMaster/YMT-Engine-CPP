@@ -2,7 +2,7 @@
 #ifndef POLYHEDRA_3D_Instances
 # define POLYHEDRA_3D_Instances
 
-# include "PolyHedra.hpp"
+# include "PolyHedra/PolyHedra.hpp"
 # include "Miscellaneous/EntryContainer/EntryContainerDynamic.hpp"
 
 # include "PolyHedra_3D_BufferArray.hpp"

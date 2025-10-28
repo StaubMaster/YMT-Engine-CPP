@@ -1,12 +1,11 @@
-#include "PolyHedra_Skin2DA.hpp"
-#include "PolyHedra.hpp"
+#include "PolyHedra/Skin/Skin2DA.hpp"
+#include "PolyHedra/PolyHedra.hpp"
 
 
 
 PolyHedra_Skin2DA::Corner::Corner() { }
 
 PolyHedra_Skin2DA::FaceCorner::FaceCorner() { }
-//PolyHedra_Skin2DA::FaceCorner::FaceCorner(Point2D tex) : Tex(tex) { }
 PolyHedra_Skin2DA::FaceCorner::FaceCorner(float tex_x, float tex_y) : Tex(tex_x, tex_y) { }
 
 PolyHedra_Skin2DA::Face::Face() { }

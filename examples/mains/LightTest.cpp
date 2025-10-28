@@ -24,8 +24,8 @@
 
 #include "DataO.hpp"
 
+#include "PolyHedra/PolyHedra.hpp"
 #include "Texture2DArray.hpp"
-#include "PolyHedra.hpp"
 #include "Window.hpp"
 
 #include "DirectoryContext.hpp"

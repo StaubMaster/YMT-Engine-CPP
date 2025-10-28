@@ -1,4 +1,4 @@
-#include "PolyHedraData.hpp"
+#include "PolyHedra/PolyHedraData.hpp"
 
 YMT::PolyHedra::Corner::Corner() { }
 YMT::PolyHedra::Corner::Corner(Point3D pos) : Position(pos) { }
