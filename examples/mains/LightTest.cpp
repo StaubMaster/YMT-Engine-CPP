@@ -179,12 +179,10 @@ void Init()
 
 	InitShaders();
 
-	//Poly0 = YMT::PolyHedra::FullTexture();
-	Poly0 = YMT::PolyHedra::Cube();
+	//Poly0 = YMT::PolyHedra::Cube();
 	//Poly0 = YMT::PolyHedra::ConeC(12, 0.5f);
+	Poly0 = YMT::PolyHedra::FullTexture(TextureGen::Orientation2D());
 
-	//Image * img = TextureGen::Orientation2D();
-	Poly0 -> Skin -> Images.Insert(TextureGen::Orientation3D());
 	Poly0 -> UseCornerNormals = false;
 
 	PH_Instances = new PolyHedra_3D_Instances(Poly0);

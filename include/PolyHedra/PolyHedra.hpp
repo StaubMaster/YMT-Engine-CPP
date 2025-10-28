@@ -10,6 +10,8 @@ class PolyHedra_SkinBase;
 
 struct Point2D;
 
+class Image;
+
 namespace YMT
 {
 
@@ -44,9 +46,9 @@ class PolyHedra
 		void Insert_Face4(FaceCorner corn0, FaceCorner corn1, FaceCorner corn2, FaceCorner corn3);
 
 	public:
-		static PolyHedra * FullTexture(float scale = 1.0f);
 		static PolyHedra * Cube(float scale = 1.0f);
 		static PolyHedra * ConeC(int segments, float width = 1.0f, float height = 1.0f);
+		static PolyHedra * FullTexture(Image * img, float scale = 1.0f);
 
 	public:
 		PolyHedra_MainData * ToMainData(int & count);
