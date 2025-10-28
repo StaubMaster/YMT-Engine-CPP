@@ -8,3 +8,10 @@ PolyHedra_Skin2DA::PolyHedra_Skin2DA(YMT::PolyHedra & polyhedra) :
 { }
 PolyHedra_Skin2DA::~PolyHedra_Skin2DA()
 { }
+
+
+
+TextureBase * PolyHedra_Skin2DA::ToTexture() const
+{
+	return new Texture2DArray(W, H, Images.Count(), (const Image**)Images.ToPointer());
+}

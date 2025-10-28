@@ -5,6 +5,7 @@
 # include "DataStruct/SizeRatio2D.hpp"
 
 class FileContext;
+class Image;
 
 class Texture2DArray : public TextureBase
 {
@@ -12,6 +13,8 @@ class Texture2DArray : public TextureBase
 		SizeRatio2D	SizeRatio;
 
 	public:
+		Texture2DArray(const Image * img);
+		Texture2DArray(unsigned int w, unsigned int h, unsigned int count, const Image ** img);
 		Texture2DArray(const FileContext & file);
 		Texture2DArray(unsigned int w, unsigned int h, unsigned int count, const FileContext files []);
 		~Texture2DArray();

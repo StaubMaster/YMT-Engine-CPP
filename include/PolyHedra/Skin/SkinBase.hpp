@@ -10,13 +10,14 @@ namespace YMT
 };
 
 class TextureBase;
+class Image;
 
 class PolyHedra_SkinBase
 {
 	protected:
 		YMT::PolyHedra & PolyHedra;
 	public:
-		TextureBase * Texture;
+		ContainerDynamic<Image *> Images;
 
 	public:
 		PolyHedra_SkinBase(YMT::PolyHedra & polyhedra);
@@ -24,6 +25,8 @@ class PolyHedra_SkinBase
 
 	public:
 		virtual void Done() = 0;
+
+		virtual TextureBase * ToTexture() const = 0;
 };
 
 #endif

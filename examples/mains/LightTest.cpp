@@ -27,7 +27,11 @@
 #include "PolyHedra/PolyHedra.hpp"
 #include "PolyHedra/Skin/SkinBase.hpp"
 #include "PolyHedra/Skin/Skin2DA.hpp"
+
+#include "Texture/TextureBase.hpp"
 #include "Texture/Texture2DArray.hpp"
+#include "Texture/TextureGen.hpp"
+
 #include "Window.hpp"
 
 #include "DirectoryContext.hpp"
@@ -47,7 +51,6 @@ Trans3D	ViewTrans;
 Depth	ViewDepth;
 
 YMT::PolyHedra * Poly0;
-//Texture2DArray * Tex0;
 
 PolyHedra_3D_Instances * PH_Instances;
 int Entrys_Count;
@@ -180,11 +183,10 @@ void Init()
 	Poly0 = YMT::PolyHedra::Cube();
 	//Poly0 = YMT::PolyHedra::ConeC(12, 0.5f);
 
+	//Image * img = TextureGen::Orientation2D();
+	Poly0 -> Skin -> Images.Insert(TextureGen::Orientation3D());
 	Poly0 -> UseCornerNormals = false;
-	Poly0 -> Skin -> Texture = new Texture2DArray(128, 128, 1, (FileContext[])
-	{
-		ImageDir.File("Orientation.png"),
-	});
+
 	PH_Instances = new PolyHedra_3D_Instances(Poly0);
 
 	AddInstances();
@@ -221,12 +223,12 @@ void Frame(double timeDelta)
 	Uni_Light_Spot -> PutData(Light_Spot);
 
 	(*Entrys[0])[0].Trans.Pos = Point3D(0, 0, 3);
-	(*Entrys[0])[0].Trans.Rot = ViewTrans.Rot;
+	//(*Entrys[0])[0].Trans.Rot = ViewTrans.Rot;
+	(*Entrys[0])[0].Trans.Rot = Angle3D();
 	(*Entrys[0])[0].Trans.Rot.CalcBack();
 
-	//Tex0 -> Bind();
-	Poly0 -> Skin -> Texture -> Bind();
 	PH_Instances -> Update();
+	PH_Instances -> Texture -> Bind();
 	PH_Instances -> Draw();
 }
 
@@ -279,7 +281,8 @@ int main()
 
 	Light_Ambient = LightBase(0.25f, Color(1.0f, 0.0f, 0.0f));
 	Light_Solar = LightSolar(0.1f, Color(0.0f, 0.0f, 1.0f), Point3D(+1, -3, +2).normalize());
-	Light_Spot = LightSpot(1.0f, Color(0.0f, 1.0f, 0.0f), Point3D(0, 0, 0), Point3D(0, 0, 0), Range(0.8, 0.95));
+	//Light_Spot = LightSpot(1.0f, Color(0.0f, 1.0f, 0.0f), Point3D(0, 0, 0), Point3D(0, 0, 0), Range(0.8, 0.95));
+	Light_Spot = LightSpot(1.0f, Color(1.0f, 1.0f, 1.0f), Point3D(0, 0, 0), Point3D(0, 0, 0), Range(0.8, 0.95));
 
 
 

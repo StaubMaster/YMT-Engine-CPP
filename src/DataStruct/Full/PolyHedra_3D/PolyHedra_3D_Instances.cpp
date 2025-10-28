@@ -1,4 +1,6 @@
 #include "DataStruct/Full/PolyHedra_3D/PolyHedra_3D_Instances.hpp"
+#include "PolyHedra/Skin/SkinBase.hpp"
+#include "Texture/TextureBase.hpp"
 
 
 
@@ -8,10 +10,12 @@ PolyHedra_3D_Instances::PolyHedra_3D_Instances(YMT::PolyHedra * polyhedra)
 	PolyHedra_MainData * data = polyhedra -> ToMainData(count);
 	Buffer.BindMain(data, count);
 	delete [] data;
+
+	Texture = polyhedra -> Skin -> ToTexture();
 }
 PolyHedra_3D_Instances::~PolyHedra_3D_Instances()
 {
-
+	delete Texture;
 }
 
 

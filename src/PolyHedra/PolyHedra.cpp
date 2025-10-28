@@ -82,7 +82,7 @@ void YMT::PolyHedra::Insert_Face4(FaceCorner corn0, FaceCorner corn1, FaceCorner
 
 
 
-/*YMT::PolyHedra * YMT::PolyHedra::FullTexture(float scale)
+YMT::PolyHedra * YMT::PolyHedra::FullTexture(float scale)
 {
 	PolyHedra * temp = new PolyHedra();
 
@@ -93,11 +93,19 @@ void YMT::PolyHedra::Insert_Face4(FaceCorner corn0, FaceCorner corn1, FaceCorner
 
 	temp -> Insert_Face4(FaceCorner(0), FaceCorner(1), FaceCorner(2), FaceCorner(3));
 
-	temp -> Skin -> Insert_Face4(Skin2DFaceCorner(Point2D(0.0f, 1.0f)), Skin2DFaceCorner(Point2D(0.0f, 0.0f)), Skin2DFaceCorner(Point2D(1.0f, 1.0f)), Skin2DFaceCorner(Point2D(1.0f, 0.0f)));
-
 	temp -> Done();
+
+
+	PolyHedra_Skin2DA * skin = new PolyHedra_Skin2DA(*temp);
+
+	skin -> Insert_Face4(Skin2DFaceCorner(Point2D(0.0f, 1.0f)), Skin2DFaceCorner(Point2D(0.0f, 0.0f)), Skin2DFaceCorner(Point2D(1.0f, 1.0f)), Skin2DFaceCorner(Point2D(1.0f, 0.0f)));
+
+	skin -> Done();
+
+
+	temp -> Skin = skin;
 	return temp;
-}*/
+}
 YMT::PolyHedra * YMT::PolyHedra::Cube(float scale)
 {
 	PolyHedra * temp = new PolyHedra();
@@ -121,7 +129,10 @@ YMT::PolyHedra * YMT::PolyHedra::Cube(float scale)
 
 	temp -> Done();
 
+
 	PolyHedra_Skin2DA * skin = new PolyHedra_Skin2DA(*temp);
+	skin -> W = 8;
+	skin -> H = 4;
 
 	skin -> Insert_Face4(Skin2DFaceCorner(Point2D(0.00f, 0.00f)), Skin2DFaceCorner(Point2D(0.00f, 0.50f)), Skin2DFaceCorner(Point2D(0.25f, 0.00f)), Skin2DFaceCorner(Point2D(0.25f, 0.50f)));
 	skin -> Insert_Face4(Skin2DFaceCorner(Point2D(0.25f, 0.00f)), Skin2DFaceCorner(Point2D(0.25f, 0.50f)), Skin2DFaceCorner(Point2D(0.50f, 0.00f)), Skin2DFaceCorner(Point2D(0.50f, 0.50f)));
@@ -132,6 +143,7 @@ YMT::PolyHedra * YMT::PolyHedra::Cube(float scale)
 	skin -> Insert_Face4(Skin2DFaceCorner(Point2D(0.75f, 1.00f)), Skin2DFaceCorner(Point2D(0.50f, 1.00f)), Skin2DFaceCorner(Point2D(0.75f, 0.50f)), Skin2DFaceCorner(Point2D(0.50f, 0.50f)));
 
 	skin -> Done();
+
 
 	temp -> Skin = skin;
 	return temp;

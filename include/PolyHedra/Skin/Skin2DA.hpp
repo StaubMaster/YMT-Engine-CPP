@@ -19,6 +19,9 @@ class PolyHedra_Skin2DA : public PolyHedra_SkinGenericBase<Skin2DCorner, Skin2DF
 	public:
 		PolyHedra_Skin2DA(YMT::PolyHedra & polyhedra);
 		~PolyHedra_Skin2DA();
+	
+	public:
+		TextureBase * ToTexture() const override;
 };
 
 #endif

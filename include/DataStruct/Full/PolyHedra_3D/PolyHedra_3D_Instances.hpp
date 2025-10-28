@@ -10,11 +10,14 @@
 # include "OpenGL/openGL.h"
 # include <iostream>
 
+class TextureBase;
+
 class PolyHedra_3D_Instances
 {
 	public:
 		PolyHedra_3D_BufferArray Buffer;
 		//YMT::PolyHedra * Main;
+		TextureBase * Texture;
 		EntryContainerDynamic<Simple3D_InstData> Instances;
 
 	public:

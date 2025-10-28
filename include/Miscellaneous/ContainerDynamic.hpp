@@ -67,6 +67,14 @@ class ContainerDynamic
 			}
 			return Memory[udx];
 		}
+		const ItemType & operator [] (unsigned int udx) const
+		{
+			if (udx >= _Count)
+			{
+				throw Exception_OutOfRange();
+			}
+			return Memory[udx];
+		}
 
 	private:
 		static unsigned int BinarySize(unsigned int size)
