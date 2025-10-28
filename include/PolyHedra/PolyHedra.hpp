@@ -6,7 +6,7 @@
 
 struct PolyHedra_MainData;
 
-class PolyHedra_Skin2DA;
+class PolyHedra_SkinBase;
 
 struct Point2D;
 
@@ -23,7 +23,8 @@ class PolyHedra
 	private:
 		ContainerDynamic<Corner>	Corners;
 		ContainerDynamic<Face>		Faces;
-		PolyHedra_Skin2DA *			Skin;
+	public:
+		PolyHedra_SkinBase *		Skin;
 
 	public:
 		bool UseCornerNormals;

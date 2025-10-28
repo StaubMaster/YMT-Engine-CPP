@@ -25,7 +25,9 @@
 #include "DataO.hpp"
 
 #include "PolyHedra/PolyHedra.hpp"
-#include "Texture2DArray.hpp"
+#include "PolyHedra/Skin/SkinBase.hpp"
+#include "PolyHedra/Skin/Skin2DA.hpp"
+#include "Texture/Texture2DArray.hpp"
 #include "Window.hpp"
 
 #include "DirectoryContext.hpp"
@@ -45,7 +47,7 @@ Trans3D	ViewTrans;
 Depth	ViewDepth;
 
 YMT::PolyHedra * Poly0;
-Texture2DArray * Tex0;
+//Texture2DArray * Tex0;
 
 PolyHedra_3D_Instances * PH_Instances;
 int Entrys_Count;
@@ -179,10 +181,9 @@ void Init()
 	//Poly0 = YMT::PolyHedra::ConeC(12, 0.5f);
 
 	Poly0 -> UseCornerNormals = false;
-	Tex0 = new Texture2DArray(128, 128, 1, (FileContext[])
+	Poly0 -> Skin -> Texture = new Texture2DArray(128, 128, 1, (FileContext[])
 	{
 		ImageDir.File("Orientation.png"),
-		//ImageDir.File("GrayDeant.png"),
 	});
 	PH_Instances = new PolyHedra_3D_Instances(Poly0);
 
@@ -196,7 +197,6 @@ void Free()
 
 	delete PH_Instances;
 	delete [] Entrys;
-	delete Tex0;
 	delete Poly0;
 
 	FreeShaders();
@@ -224,7 +224,8 @@ void Frame(double timeDelta)
 	(*Entrys[0])[0].Trans.Rot = ViewTrans.Rot;
 	(*Entrys[0])[0].Trans.Rot.CalcBack();
 
-	Tex0 -> Bind();
+	//Tex0 -> Bind();
+	Poly0 -> Skin -> Texture -> Bind();
 	PH_Instances -> Update();
 	PH_Instances -> Draw();
 }

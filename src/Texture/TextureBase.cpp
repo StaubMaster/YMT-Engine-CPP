@@ -1,4 +1,4 @@
-#include "TextureBase.hpp"
+#include "Texture/TextureBase.hpp"
 
 #include "OpenGL/openGL.h"
 #include <iostream>

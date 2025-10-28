@@ -1,4 +1,4 @@
-#include "Texture2DArray.hpp"
+#include "Texture/Texture2DArray.hpp"
 
 #include "Format/Image.hpp"
 #include "FileContext.hpp"

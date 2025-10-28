@@ -137,6 +137,10 @@ YMT_DIR := ..
 LIBRARYS += $(foreach library, $(shell $(MAKE) -C $(YMT_DIR) -s librarys), $(YMT_DIR)/$(library))
 INCLUDES += $(foreach include, $(shell $(MAKE) -C $(YMT_DIR) -s includes), $(YMT_DIR)/$(include))
 
+work:
+	$(MAKE) -C $(YMT_DIR) work -s
+	@$(MAKE) $(EXES) -s
+
 repos:
 #	@echo -e "$(COLOR_REPO)$(FANCY_NAME): $(COLOR_TYPE)Target: $(COLOR_FILE)$@$(COLOR_NONE)"
 	@$(MAKE) -C $(YMT_DIR) -s

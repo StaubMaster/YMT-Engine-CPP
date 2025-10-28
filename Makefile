@@ -98,17 +98,23 @@ FILES_SRC := \
 	DataStruct/Main/Waveform/OBJ_3D_Shader.cpp \
 	DataStruct/Main/Waveform/MTL.cpp \
 \
-	TextureBase.cpp \
-	Texture2DArray.cpp \
+	TimeMeasure.cpp \
+	Window.cpp
+
+WORKING_FILES_SRC := \
+	Texture/TextureBase.cpp \
+	Texture/Texture2DArray.cpp \
+	Texture/TextureGen.cpp \
 \
 	PolyHedra/PolyHedra.cpp \
 	PolyHedra/PolyHedraData.cpp \
 	PolyHedra/Skin/SkinBase.cpp \
 	PolyHedra/Skin/Skin2D_Data.cpp \
 	PolyHedra/Skin/Skin2DA.cpp \
-\
-	TimeMeasure.cpp \
-	Window.cpp
+
+WORKING_FILES_OBJ := $(WORKING_FILES_SRC:.cpp=.o)
+
+FILES_SRC += $(WORKING_FILES_SRC)
 
 FILES_OBJ := $(FILES_SRC:.cpp=.o)
 
@@ -116,6 +122,7 @@ DIR_SRC := src/
 DIR_OBJ := obj/
 
 FILES_ABS_OBJ := $(addprefix $(DIR_OBJ)/, $(FILES_OBJ))
+WORKING_FILES_ABS_OBJ := $(addprefix $(DIR_OBJ)/, $(WORKING_FILES_OBJ))
 
 
 
@@ -128,6 +135,12 @@ FILES_ABS_OBJ := $(addprefix $(DIR_OBJ)/, $(FILES_OBJ))
 $(NAME) : repos $(FILES_ABS_OBJ)
 	@echo -e "$(COLOR_REPO)$(FANCY_NAME): $(COLOR_TYPE)Target: $(COLOR_FILE)$@$(COLOR_NONE)"
 	@ar -rcs $(NAME) $(FILES_ABS_OBJ)
+
+work:
+	@echo -e "$(COLOR_REPO)$(FANCY_NAME): $(COLOR_TYPE)Target: $(COLOR_FILE)$@$(COLOR_NONE)"
+	@rm -f $(WORKING_FILES_ABS_OBJ)
+	@$(MAKE) $(WORKING_FILES_ABS_OBJ)
+	@$(MAKE) $(NAME)
 
 all: repos_all
 	@echo -e "$(COLOR_REPO)$(FANCY_NAME): $(COLOR_TYPE)Target: $(COLOR_FILE)$@$(COLOR_NONE)"
