@@ -1,7 +1,7 @@
 Type PolyHedra
 Format PH_2025_10_27
 
-Skin: test.skin.ymt
+Skin test.skin.ymt
 
 
 c -1.0 -1.0 -1.0	# 0 ---

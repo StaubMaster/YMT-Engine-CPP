@@ -106,11 +106,13 @@ WORKING_FILES_SRC := \
 	Texture/Texture2DArray.cpp \
 	Texture/TextureGen.cpp \
 \
-	PolyHedra/PolyHedra.cpp \
 	PolyHedra/PolyHedraData.cpp \
+	PolyHedra/PolyHedra.cpp \
+	PolyHedra/PolyHedra_Load.cpp \
+\
 	PolyHedra/Skin/SkinBase.cpp \
-	PolyHedra/Skin/Skin2D_Data.cpp \
 	PolyHedra/Skin/Skin2DA.cpp \
+	PolyHedra/Skin/Skin2D_Data.cpp \
 
 WORKING_FILES_OBJ := $(WORKING_FILES_SRC:.cpp=.o)
 

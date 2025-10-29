@@ -11,6 +11,8 @@ class PolyHedra_SkinBase;
 struct Point2D;
 
 class Image;
+class FileContext;
+class LineCommand;
 
 namespace YMT
 {
@@ -49,6 +51,16 @@ class PolyHedra
 		static PolyHedra * Cube(float scale = 1.0f);
 		static PolyHedra * ConeC(int segments, float width = 1.0f, float height = 1.0f);
 		static PolyHedra * FullTexture(Image * img, float scale = 1.0f);
+
+	private:
+		void Parse_Type(const LineCommand & cmd);
+		void Parse_Format(const LineCommand & cmd);
+		void Parse_Skin(const LineCommand & cmd);
+		void Parse_c(const LineCommand & cmd);
+		void Parse_f(const LineCommand & cmd);
+		void Parse(const LineCommand & cmd);
+	public:
+		static PolyHedra * Load(const FileContext & file);
 
 	public:
 		PolyHedra_MainData * ToMainData(int & count);

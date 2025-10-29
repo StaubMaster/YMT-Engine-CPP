@@ -1,0 +1,16 @@
+
+
+show should Data be stored ?
+
+
+one problem is "synchronization" between Skin and PolyHedra
+
+
+
+should auxiliary info be stored directly in the PolyHedra or an extra Object ?
+so when Loading, FileContext needs to be remembered for 
+
+
+
+
+

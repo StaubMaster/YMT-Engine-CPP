@@ -179,9 +179,12 @@ void Init()
 
 	InitShaders();
 
-	//Poly0 = YMT::PolyHedra::Cube();
+	YMT::PolyHedra * test = YMT::PolyHedra::Load(FileContext("../media/YMT/test/cube.polyhedra.ymt"));
+	delete test;
+
+	Poly0 = YMT::PolyHedra::Cube();
 	//Poly0 = YMT::PolyHedra::ConeC(12, 0.5f);
-	Poly0 = YMT::PolyHedra::FullTexture(TextureGen::Orientation2D());
+	//Poly0 = YMT::PolyHedra::FullTexture(TextureGen::Orientation2D());
 
 	Poly0 -> UseCornerNormals = false;
 

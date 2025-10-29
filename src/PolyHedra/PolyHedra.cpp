@@ -233,11 +233,18 @@ PolyHedra_MainData * YMT::PolyHedra::ToMainData(int & count)
 			data[c + 1].Normal = cornerY.Normal;
 			data[c + 2].Normal = cornerZ.Normal;
 		}
+	}
 
-		const Skin2DFace & skin_face = ((PolyHedra_Skin2DA*)Skin) -> Faces[f];
-		data[c + 0].Texture = skin_face.Corner0.Tex;
-		data[c + 1].Texture = skin_face.Corner1.Tex;
-		data[c + 2].Texture = skin_face.Corner2.Tex;
+	{
+		const PolyHedra_Skin2DA * skin = (const PolyHedra_Skin2DA *)Skin;
+		for (unsigned int f = 0; f < skin -> Faces.Count(); f++)
+		{
+			int c = f * 3;
+			const Skin2DFace & face = ((PolyHedra_Skin2DA*)Skin) -> Faces[f];
+			data[c + 0].Texture = face.Corner0.Tex;
+			data[c + 1].Texture = face.Corner1.Tex;
+			data[c + 2].Texture = face.Corner2.Tex;
+		}
 	}
 
 	return data;
