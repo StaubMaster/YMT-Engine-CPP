@@ -10,6 +10,7 @@ namespace YMT
 };
 
 class TextureBase;
+class FileContext;
 class Image;
 
 class PolyHedra_SkinBase
@@ -22,6 +23,9 @@ class PolyHedra_SkinBase
 	public:
 		PolyHedra_SkinBase(YMT::PolyHedra & polyhedra);
 		virtual ~PolyHedra_SkinBase();
+
+	public:
+		static PolyHedra_SkinBase * Load(const FileContext & file);
 
 	public:
 		virtual void Done() = 0;

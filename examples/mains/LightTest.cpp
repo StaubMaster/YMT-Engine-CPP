@@ -179,10 +179,11 @@ void Init()
 
 	InitShaders();
 
-	YMT::PolyHedra * test = YMT::PolyHedra::Load(FileContext("../media/YMT/test/cube.polyhedra.ymt"));
-	delete test;
+	Poly0 = YMT::PolyHedra::Load(FileContext("../media/YMT/test/cube.polyhedra.ymt"));
+	//YMT::PolyHedra * test = YMT::PolyHedra::Load(FileContext("../media/YMT/test/cube.polyhedra.ymt"));
+	//delete test;
 
-	Poly0 = YMT::PolyHedra::Cube();
+	//Poly0 = YMT::PolyHedra::Cube();
 	//Poly0 = YMT::PolyHedra::ConeC(12, 0.5f);
 	//Poly0 = YMT::PolyHedra::FullTexture(TextureGen::Orientation2D());
 
@@ -229,7 +230,10 @@ void Frame(double timeDelta)
 	(*Entrys[0])[0].Trans.Rot.CalcBack();
 
 	PH_Instances -> Update();
-	PH_Instances -> Texture -> Bind();
+	if (PH_Instances -> Texture != NULL)
+	{
+		PH_Instances -> Texture -> Bind();
+	}
 	PH_Instances -> Draw();
 }
 

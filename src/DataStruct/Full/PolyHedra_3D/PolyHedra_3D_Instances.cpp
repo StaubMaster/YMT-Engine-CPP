@@ -11,7 +11,14 @@ PolyHedra_3D_Instances::PolyHedra_3D_Instances(YMT::PolyHedra * polyhedra)
 	Buffer.BindMain(data, count);
 	delete [] data;
 
-	Texture = polyhedra -> Skin -> ToTexture();
+	if (polyhedra -> Skin != NULL)
+	{
+		Texture = polyhedra -> Skin -> ToTexture();
+	}
+	else
+	{
+		Texture = NULL;
+	}
 }
 PolyHedra_3D_Instances::~PolyHedra_3D_Instances()
 {

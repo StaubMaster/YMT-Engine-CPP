@@ -138,7 +138,7 @@ $(NAME) : repos $(FILES_ABS_OBJ)
 	@echo -e "$(COLOR_REPO)$(FANCY_NAME): $(COLOR_TYPE)Target: $(COLOR_FILE)$@$(COLOR_NONE)"
 	@ar -rcs $(NAME) $(FILES_ABS_OBJ)
 
-work:
+work: repos
 	@echo -e "$(COLOR_REPO)$(FANCY_NAME): $(COLOR_TYPE)Target: $(COLOR_FILE)$@$(COLOR_NONE)"
 	@rm -f $(WORKING_FILES_ABS_OBJ)
 	@$(MAKE) $(WORKING_FILES_ABS_OBJ)

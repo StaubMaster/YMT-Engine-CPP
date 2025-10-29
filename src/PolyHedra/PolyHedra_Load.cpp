@@ -1,6 +1,11 @@
 #include "PolyHedra/PolyHedra.hpp"
+#include "PolyHedra/PolyHedraData.hpp"
+
 #include "FileContext.hpp"
 #include "Parsing/LineCommand.hpp"
+
+#include "DataStruct/Point3D.hpp"
+#include "DataO.hpp"
 
 
 
@@ -26,11 +31,32 @@ void YMT::PolyHedra::Parse_Skin(const LineCommand & cmd)
 }
 void YMT::PolyHedra::Parse_c(const LineCommand & cmd)
 {
-	(void)cmd;
+	if (cmd.Args.size() < 3 || cmd.Args.size() > 3) { std::cout << cmd.Name << ": " << "Bad Number of Args" << "\n"; return; }
+	Point3D c;
+	c.X = std::stof(cmd.Args[0]);
+	c.Y = std::stof(cmd.Args[1]);
+	c.Z = std::stof(cmd.Args[2]);
+	std::cout << "c: " << c << "\n";
+	Insert_Corn(Corner(c));
 }
 void YMT::PolyHedra::Parse_f(const LineCommand & cmd)
 {
-	(void)cmd;
+	if (cmd.Args.size() < 3 || cmd.Args.size() > 4) { std::cout << cmd.Name << ": " << "Bad Number of Args" << "\n"; return; }
+
+	unsigned int idx[cmd.Args.size()];
+	for (size_t i = 0; i < cmd.Args.size(); i++)
+	{
+		idx[i] = std::stoul(cmd.Args[i]);
+	}
+
+	if (cmd.Args.size() == 3)
+	{
+		Insert_Face3(FaceCorner(idx[0]), FaceCorner(idx[1]), FaceCorner(idx[2]));
+	}
+	else if (cmd.Args.size() == 4)
+	{
+		Insert_Face4(FaceCorner(idx[0]), FaceCorner(idx[1]), FaceCorner(idx[2]), FaceCorner(idx[3]));
+	}
 }
 void YMT::PolyHedra::Parse(const LineCommand & cmd)
 {

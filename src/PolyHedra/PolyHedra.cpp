@@ -235,6 +235,11 @@ PolyHedra_MainData * YMT::PolyHedra::ToMainData(int & count)
 		}
 	}
 
+	if (Skin == NULL)
+	{
+		
+	}
+	else
 	{
 		const PolyHedra_Skin2DA * skin = (const PolyHedra_Skin2DA *)Skin;
 		for (unsigned int f = 0; f < skin -> Faces.Count(); f++)
