@@ -1,5 +1,5 @@
-#ifndef  POLYHEDRA_SKIN_GENERIC_BASE_HPP
-# define POLYHEDRA_SKIN_GENERIC_BASE_HPP
+#ifndef  SKIN_GENERIC_BASE_HPP
+# define SKIN_GENERIC_BASE_HPP
 
 # include "SkinBase.hpp"
 
@@ -14,17 +14,17 @@ namespace YMT
 class TextureBase;
 
 template<typename CornerType, typename FaceCornerType, typename FaceType>
-class PolyHedra_SkinGenericBase : public PolyHedra_SkinBase
+class SkinGenericBase : public SkinBase
 {
 	public:
 		ContainerDynamic<CornerType>	Corners;
 		ContainerDynamic<FaceType>		Faces;
 
 	public:
-		PolyHedra_SkinGenericBase(YMT::PolyHedra & polyhedra) :
-			PolyHedra_SkinBase(polyhedra)
+		SkinGenericBase() :
+			SkinBase()
 			{ }
-		virtual ~PolyHedra_SkinGenericBase() { }
+		virtual ~SkinGenericBase() { }
 
 	public:
 		void Done() override

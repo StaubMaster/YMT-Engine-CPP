@@ -7,8 +7,10 @@
 
 #include "DataStruct/Angle3D.hpp"
 
-#include "Format/Image.hpp"
 #include "Texture/TextureGen.hpp"
+#include "Format/Image.hpp"
+
+#include "FileContext.hpp"
 
 #include <sstream>
 #define TAU 6.28318530717958647692528676655900576839433879875021164194988918461563281257241799725606965068423413
@@ -16,12 +18,15 @@
 
 
 YMT::PolyHedra::PolyHedra() :
-	Corners(), Faces(), Skin(NULL)
+	Corners(), Faces(),
+	File(NULL),
+	Skin(NULL)
 {
 	UseCornerNormals = false;
 }
 YMT::PolyHedra::~PolyHedra()
 {
+	delete File;
 	delete Skin;
 }
 
@@ -109,7 +114,7 @@ YMT::PolyHedra * YMT::PolyHedra::Cube(float scale)
 	temp -> Done();
 
 
-	PolyHedra_Skin2DA * skin = new PolyHedra_Skin2DA(*temp);
+	Skin2DA * skin = new Skin2DA();
 	skin -> W = 8;
 	skin -> H = 4;
 	skin -> Images.Insert(TextureGen::Orientation3D());
@@ -186,7 +191,7 @@ YMT::PolyHedra * YMT::PolyHedra::FullTexture(Image * img, float scale)
 	temp -> Done();
 
 
-	PolyHedra_Skin2DA * skin = new PolyHedra_Skin2DA(*temp);
+	Skin2DA * skin = new Skin2DA();
 	skin -> W = img -> W;
 	skin -> H = img -> H;
 	skin -> Images.Insert(img);
@@ -241,11 +246,11 @@ PolyHedra_MainData * YMT::PolyHedra::ToMainData(int & count)
 	}
 	else
 	{
-		const PolyHedra_Skin2DA * skin = (const PolyHedra_Skin2DA *)Skin;
+		const Skin2DA * skin = (const Skin2DA *)Skin;
 		for (unsigned int f = 0; f < skin -> Faces.Count(); f++)
 		{
 			int c = f * 3;
-			const Skin2DFace & face = ((PolyHedra_Skin2DA*)Skin) -> Faces[f];
+			const Skin2DFace & face = ((Skin2DA*)Skin) -> Faces[f];
 			data[c + 0].Texture = face.Corner0.Tex;
 			data[c + 1].Texture = face.Corner1.Tex;
 			data[c + 2].Texture = face.Corner2.Tex;

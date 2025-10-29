@@ -6,7 +6,7 @@
 
 struct PolyHedra_MainData;
 
-class PolyHedra_SkinBase;
+class SkinBase;
 
 struct Point2D;
 
@@ -28,7 +28,8 @@ class PolyHedra
 		ContainerDynamic<Corner>	Corners;
 		ContainerDynamic<Face>		Faces;
 	public:
-		PolyHedra_SkinBase *		Skin;
+		FileContext *	File;
+		SkinBase *		Skin;
 
 	public:
 		bool UseCornerNormals;
@@ -52,6 +53,11 @@ class PolyHedra
 		static PolyHedra * ConeC(int segments, float width = 1.0f, float height = 1.0f);
 		static PolyHedra * FullTexture(Image * img, float scale = 1.0f);
 
+	public:
+		PolyHedra_MainData * ToMainData(int & count);
+	public:
+		std::string ToInfo() const;
+
 	private:
 		void Parse_Type(const LineCommand & cmd);
 		void Parse_Format(const LineCommand & cmd);
@@ -61,11 +67,6 @@ class PolyHedra
 		void Parse(const LineCommand & cmd);
 	public:
 		static PolyHedra * Load(const FileContext & file);
-
-	public:
-		PolyHedra_MainData * ToMainData(int & count);
-	public:
-		std::string ToInfo() const;
 };
 };
 

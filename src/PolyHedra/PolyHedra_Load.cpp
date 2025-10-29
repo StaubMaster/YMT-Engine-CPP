@@ -1,7 +1,11 @@
 #include "PolyHedra/PolyHedra.hpp"
 #include "PolyHedra/PolyHedraData.hpp"
 
+#include "PolyHedra/Skin/SkinBase.hpp"
+#include "PolyHedra/Skin/Skin2DA.hpp"
+
 #include "FileContext.hpp"
+#include "FilePath.hpp"
 #include "Parsing/LineCommand.hpp"
 
 #include "DataStruct/Point3D.hpp"
@@ -25,9 +29,13 @@ void YMT::PolyHedra::Parse_Format(const LineCommand & cmd)
 void YMT::PolyHedra::Parse_Skin(const LineCommand & cmd)
 {
 	if (cmd.Args.size() != 1) { std::cout << cmd.Name << ": " << "Bad Number of Args" << "\n"; return; }
-	FileContext skin_file(cmd.Args[0]);
-	if (skin_file.Exists()) { std::cout << cmd.Name << ": " << "Bad Skin File" << "\n"; return; }
-	std::cout << cmd.Name << ": " << "Good\n";
+	FileContext file(File -> Directory() + "/" + cmd.Args[0]);
+	if (Skin != NULL) { std::cout << cmd.Name << ": " << "Skin already given" << "\n"; }
+	std::cout << "Prev: Skin: " << Skin << "\n";
+	delete Skin;
+	Skin = NULL;
+	if (!file.Exists()) { std::cout << cmd.Name << ": " << "Bad Skin File" << "\n"; return; }
+	Skin = SkinBase::Load(file);
 }
 void YMT::PolyHedra::Parse_c(const LineCommand & cmd)
 {
@@ -47,6 +55,7 @@ void YMT::PolyHedra::Parse_f(const LineCommand & cmd)
 	for (size_t i = 0; i < cmd.Args.size(); i++)
 	{
 		idx[i] = std::stoul(cmd.Args[i]);
+		std::cout << "[" << idx[i] << "]" << "\n";
 	}
 
 	if (cmd.Args.size() == 3)
@@ -83,7 +92,10 @@ YMT::PolyHedra * YMT::PolyHedra::Load(const FileContext & file)
 {
 	std::cout << "\n";
 	PolyHedra * temp = new PolyHedra();
+	temp -> Skin = new Skin2DA();
+	temp -> File = new FileContext(file);
 	LineCommand::Split(file, *temp, &Parse);
 	std::cout << "\n";
+	temp -> Done();
 	return temp;
 }
