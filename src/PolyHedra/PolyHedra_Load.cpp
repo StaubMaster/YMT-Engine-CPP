@@ -13,89 +13,108 @@
 
 
 
-void YMT::PolyHedra::Parse_Type(const LineCommand & cmd)
+/*
+	Parse each line
+	for errors / Debug stuff
+		console out should be normalized
+		also use errors for certain things
+		like args number
+		Unknown / Invalid
+	Exceptions
+		right now I use exceptions that create and store a String internally
+		make a BaseException for that
+		have FileExceptions and LineExceptions ?
+			LineExceptions skip the line but continue in the File ?
+			dont know of any case where that applies right now
+			also could just give the BaseException an extra info ?
+			so Bits that say what type of exception it is
+*/
+
+
+
+YMT::PolyHedra::PolyHedraParsingEnvironmentData::PolyHedraParsingEnvironmentData(const FileContext & file)
+	: ParsingCommand::EnvironmentData(file), Data(NULL)
+{ }
+void YMT::PolyHedra::PolyHedraParsingEnvironmentData::Parse(const ParsingCommand & cmd)
 {
-	if (cmd.Args.size() != 1) { std::cout << cmd.Name << ": " << "Bad Number of Args" << "\n"; return; }
-	if (cmd.Args[0] != "PolyHedra") { std::cout << cmd.Name << ": " << "Bad Type " << "\n"; return; }
-	std::cout << cmd.Name << ": " << "Good\n";
+	std::string name = cmd.Name();
+	if (name == "")				{ /*std::cout << "empty\n";*/ }
+	else if (name == "Type")	{ Parse_Type(cmd); }
+	else if (name == "Format")	{ Parse_Format(cmd); }
+	else if (name == "Skin")	{ Parse_Skin(cmd); }
+	else if (name == "c")		{ Parse_c(cmd); }
+	else if (name == "f")		{ Parse_f(cmd); }
+	else						{ std::cout << "unknown: " << cmd << "\n"; }
 }
-void YMT::PolyHedra::Parse_Format(const LineCommand & cmd)
+void YMT::PolyHedra::PolyHedraParsingEnvironmentData::Parse_Type(const ParsingCommand & cmd)
 {
-	if (cmd.Args.size() != 1) { std::cout << cmd.Name << ": " << "Bad Number of Args" << "\n"; return; }
-	if (cmd.Args[0] != "PH_2025_10_27") { std::cout << cmd.Name << ": " << "Bad Type " << "\n"; return; }
-	std::cout << cmd.Name << ": " << "Good\n";
-	(void)cmd;
+	if (!cmd.CheckCount(CountCheckEqual(1))) { throw ParsingCommand::ExceptionInvalidCount(cmd, CountCheckEqual(1)); }
+	if (cmd.ToString(0) != "PolyHedra") { throw ParsingCommand::ExceptionInvalidArg(cmd, 0); }
 }
-void YMT::PolyHedra::Parse_Skin(const LineCommand & cmd)
+void YMT::PolyHedra::PolyHedraParsingEnvironmentData::Parse_Format(const ParsingCommand & cmd)
 {
-	if (cmd.Args.size() != 1) { std::cout << cmd.Name << ": " << "Bad Number of Args" << "\n"; return; }
-	FileContext file(File -> Directory() + "/" + cmd.Args[0]);
-	if (Skin != NULL) { std::cout << cmd.Name << ": " << "Skin already given" << "\n"; }
-	std::cout << "Prev: Skin: " << Skin << "\n";
-	delete Skin;
-	Skin = NULL;
-	if (!file.Exists()) { std::cout << cmd.Name << ": " << "Bad Skin File" << "\n"; return; }
-	Skin = SkinBase::Load(file);
+	if (!cmd.CheckCount(CountCheckEqual(1))) { throw ParsingCommand::ExceptionInvalidCount(cmd, CountCheckEqual(1)); }
+	if (cmd.ToString(0) != "PH_2025_10_27") { throw ParsingCommand::ExceptionInvalidArg(cmd, 0); }
 }
-void YMT::PolyHedra::Parse_c(const LineCommand & cmd)
+void YMT::PolyHedra::PolyHedraParsingEnvironmentData::Parse_Skin(const ParsingCommand & cmd)
 {
-	if (cmd.Args.size() < 3 || cmd.Args.size() > 3) { std::cout << cmd.Name << ": " << "Bad Number of Args" << "\n"; return; }
+	if (!cmd.CheckCount(CountCheckEqual(1))) { throw ParsingCommand::ExceptionInvalidCount(cmd, CountCheckEqual(1)); }
+	FileContext file(File.Directory() + "/" + cmd.ToString(0));
+	if (Data -> Skin != NULL)
+	{
+		std::cout << cmd.Name() << ": " << "Skin already given" << "\n";
+		std::cout << "Prev: Skin: " << Data -> Skin << "\n";
+		delete Data -> Skin;
+		Data -> Skin = NULL;
+	}
+	if (!file.Exists()) { std::cout << cmd.Name() << ": " << "Bad Skin File" << "\n"; return; }
+	Data -> Skin = SkinBase::Load(file);
+}
+void YMT::PolyHedra::PolyHedraParsingEnvironmentData::Parse_c(const ParsingCommand & cmd)
+{
+	if (!cmd.CheckCount(CountCheckRange(3, 3))) { throw ParsingCommand::ExceptionInvalidCount(cmd, CountCheckRange(3, 3)); }
 	Point3D c;
-	c.X = std::stof(cmd.Args[0]);
-	c.Y = std::stof(cmd.Args[1]);
-	c.Z = std::stof(cmd.Args[2]);
-	std::cout << "c: " << c << "\n";
-	Insert_Corn(Corner(c));
+	c.X = cmd.ToFloat(0);
+	c.Y = cmd.ToFloat(1);
+	c.Z = cmd.ToFloat(2);
+	//std::cout << "c: " << c << "\n";
+	Data -> Insert_Corn(Corner(c));
 }
-void YMT::PolyHedra::Parse_f(const LineCommand & cmd)
+void YMT::PolyHedra::PolyHedraParsingEnvironmentData::Parse_f(const ParsingCommand & cmd)
 {
-	if (cmd.Args.size() < 3 || cmd.Args.size() > 4) { std::cout << cmd.Name << ": " << "Bad Number of Args" << "\n"; return; }
+	if (!cmd.CheckCount(CountCheckRange(3, 4))) { throw ParsingCommand::ExceptionInvalidCount(cmd, CountCheckRange(3, 4)); }
 
-	unsigned int idx[cmd.Args.size()];
-	for (size_t i = 0; i < cmd.Args.size(); i++)
+	unsigned int idx[cmd.Count()];
+	for (unsigned int i = 0; i < cmd.Count(); i++)
 	{
-		idx[i] = std::stoul(cmd.Args[i]);
-		std::cout << "[" << idx[i] << "]" << "\n";
+		idx[i] = cmd.ToUInt32(i);
+		//std::cout << "[" << idx[i] << "]" << "\n";
 	}
 
-	if (cmd.Args.size() == 3)
+	if (cmd.Count() == 3)
 	{
-		Insert_Face3(FaceCorner(idx[0]), FaceCorner(idx[1]), FaceCorner(idx[2]));
+		Data -> Insert_Face3(FaceCorner(idx[0]), FaceCorner(idx[1]), FaceCorner(idx[2]));
 	}
-	else if (cmd.Args.size() == 4)
+	else if (cmd.Count() == 4)
 	{
-		Insert_Face4(FaceCorner(idx[0]), FaceCorner(idx[1]), FaceCorner(idx[2]), FaceCorner(idx[3]));
+		Data -> Insert_Face4(FaceCorner(idx[0]), FaceCorner(idx[1]), FaceCorner(idx[2]), FaceCorner(idx[3]));
 	}
-}
-void YMT::PolyHedra::Parse(const LineCommand & cmd)
-{
-	std::cout << "Command: '" << cmd.Name << "'";
-	std::cout << " ";
-	std::cout << "[" << cmd.Args.size() << "]";
-	for (size_t i = 0; i < cmd.Args.size(); i++)
-	{
-		std::cout << " ";
-		std::cout << "<" << cmd.Args[i] << ">";
-	}
-	std::cout << "\n";
-
-	if (cmd.Name == "")				{ std::cout << "Empty\n"; }
-	else if (cmd.Name == "Type")	{ Parse_Type(cmd); }
-	else if (cmd.Name == "Format")	{ Parse_Format(cmd); }
-	else if (cmd.Name == "Skin")	{ Parse_Skin(cmd); }
-	else if (cmd.Name == "c")		{ Parse_c(cmd); }
-	else if (cmd.Name == "f")		{ Parse_f(cmd); }
-	else { std::cout << "Unknown\n"; }
 }
 
 YMT::PolyHedra * YMT::PolyHedra::Load(const FileContext & file)
 {
 	std::cout << "\n";
-	PolyHedra * temp = new PolyHedra();
-	temp -> Skin = new Skin2DA();
-	temp -> File = new FileContext(file);
-	LineCommand::Split(file, *temp, &Parse);
+	PolyHedraParsingEnvironmentData data(file);
+	data.Data = new PolyHedra();
+	ParsingCommand::SplitFileIntoCommands(data);
+	if (data.Data != NULL)
+	{
+		data.Data -> Done();
+	}
+	else
+	{
+		data.Data = Cube();
+	}
 	std::cout << "\n";
-	temp -> Done();
-	return temp;
+	return data.Data;
 }

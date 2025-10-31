@@ -1,0 +1,15 @@
+
+show to show for Standards ?
+
+Types:
+	floats
+	indexe (ints)
+	string
+
+other:
+	()	optional
+	[]	group
+	...	repeat last an arbitrary amount of times 
+			including or excluding 0
+
+

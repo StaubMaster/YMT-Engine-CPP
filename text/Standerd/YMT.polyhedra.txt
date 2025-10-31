@@ -1,0 +1,10 @@
+
+Type PolyHedraType
+Format PolyHedraFormat
+
+Skin SkinFile
+
+c X Y Z
+f 0 1 2 (3)
+
+

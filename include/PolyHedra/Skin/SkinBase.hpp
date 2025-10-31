@@ -4,6 +4,8 @@
 # include "Miscellaneous/ContainerDynamic.hpp"
 //# include "Texture/TextureBase.hpp"
 
+# include "Parsing/ParsingCommand.hpp"
+
 namespace YMT
 {
 	class PolyHedra;
@@ -31,19 +33,17 @@ class SkinBase
 		virtual TextureBase * ToTexture() const = 0;
 
 	public:
-		struct ParsingEnvironmentData
+		struct ParsingEnvironmentData : public ParsingCommand::EnvironmentData
 		{
-			const FileContext & File;
 			SkinBase * Skin;
-
 			ParsingEnvironmentData(const FileContext & file);
+			void Parse(const ParsingCommand & cmd) override;
 
-			void Parse_Type(const LineCommand & cmd);
-			void Parse_Format(const LineCommand & cmd);
-			void Parse(const LineCommand & cmd);
+			void Parse_Type(const ParsingCommand & cmd);
+			void Parse_Format(const ParsingCommand & cmd);
 		};
 	public:
-		virtual void Parse(const LineCommand & cmd) = 0;
+		virtual void Parse(const ParsingCommand & cmd) = 0;
 	public:
 		static SkinBase * Load(const FileContext & file);
 };

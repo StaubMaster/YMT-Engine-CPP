@@ -1,0 +1,12 @@
+
+Type SkinType
+Format SkinFormat
+
+W TextureWidth
+H TextureHeight
+
+File ImageFile
+
+t [X Y] [X Y] [X Y] ([X Y])
+
+

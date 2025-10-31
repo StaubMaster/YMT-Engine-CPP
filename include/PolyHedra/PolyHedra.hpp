@@ -2,7 +2,11 @@
 # define POLYHEDRA_HPP
 
 # include "Miscellaneous/ContainerDynamic.hpp"
+
+# include "Parsing/ParsingCommand.hpp"
+
 # include <string>
+# include <exception>
 
 struct PolyHedra_MainData;
 
@@ -59,12 +63,24 @@ class PolyHedra
 		std::string ToInfo() const;
 
 	private:
-		void Parse_Type(const LineCommand & cmd);
-		void Parse_Format(const LineCommand & cmd);
-		void Parse_Skin(const LineCommand & cmd);
-		void Parse_c(const LineCommand & cmd);
-		void Parse_f(const LineCommand & cmd);
-		void Parse(const LineCommand & cmd);
+		struct PolyHedraParsingEnvironmentData : public ParsingCommand::EnvironmentData
+		{
+			/*
+				Line
+				have ParsingCommand here instead of as Parameter
+				have the full Line String here
+			*/
+
+			PolyHedra * Data;
+			PolyHedraParsingEnvironmentData(const FileContext & file);
+			void Parse(const ParsingCommand & cmd) override;
+
+			void Parse_Type(const ParsingCommand & cmd);
+			void Parse_Format(const ParsingCommand & cmd);
+			void Parse_Skin(const ParsingCommand & cmd);
+			void Parse_c(const ParsingCommand & cmd);
+			void Parse_f(const ParsingCommand & cmd);
+		};
 	public:
 		static PolyHedra * Load(const FileContext & file);
 };

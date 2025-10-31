@@ -23,44 +23,38 @@ SkinBase::~SkinBase()
 
 
 SkinBase::ParsingEnvironmentData::ParsingEnvironmentData(const FileContext & file) :
-	File(file), Skin(NULL)
+	ParsingCommand::EnvironmentData(file), Skin(NULL)
 { }
-void SkinBase::ParsingEnvironmentData::Parse_Type(const LineCommand & cmd)
+void SkinBase::ParsingEnvironmentData::Parse(const ParsingCommand & cmd)
 {
-	if (cmd.Args.size() != 1) { std::cout << cmd.Name << ": " << "Bad Number of Args" << "\n"; return; }
-	if (cmd.Args[0] != "Skin2DA") { std::cout << cmd.Name << ": " << "Bad Type " << "\n"; return; }
-	Skin = new Skin2DA();
-	Skin -> File = &File;
+	std::string name = cmd.Name();
+	if (name== "")				{ /*std::cout << "Skin: " << "Empty\n";*/ }
+	else if (name == "Type")	{ Parse_Type(cmd); }
+	else if (name == "Format")	{ Parse_Format(cmd); }
+	else if (Skin != NULL)		{ Skin -> Parse(cmd); }
+	else						{ std::cout << "unknown: " << cmd << "\n"; }
 }
-void SkinBase::ParsingEnvironmentData::Parse_Format(const LineCommand & cmd)
+void SkinBase::ParsingEnvironmentData::Parse_Type(const ParsingCommand & cmd)
 {
-	if (cmd.Args.size() != 1) { std::cout << cmd.Name << ": " << "Bad Number of Args" << "\n"; return; }
-	if (cmd.Args[0] != "S_2025_10_27") { std::cout << cmd.Name << ": " << "Bad Type " << "\n"; return; }
-	std::cout << cmd.Name << ": " << "Good\n";
-	(void)cmd;
-}
-void SkinBase::ParsingEnvironmentData::Parse(const LineCommand & cmd)
-{
-	std::cout << "Skin: " << "Command: '" << cmd.Name << "'";
-	std::cout << " ";
-	std::cout << "[" << cmd.Args.size() << "]";
-	for (size_t i = 0; i < cmd.Args.size(); i++)
+	if (!cmd.CheckCount(CountCheckEqual(1))) { throw ParsingCommand::ExceptionInvalidCount(cmd, CountCheckEqual(1)); }
+	if (cmd.ToString(0) == "Skin2DA")
 	{
-		std::cout << " ";
-		std::cout << "<" << cmd.Args[i] << ">";
+		Skin = new Skin2DA();
+		Skin -> File = &File;
+		return;
 	}
-	std::cout << "\n";
-
-	if (cmd.Name == "")	{ std::cout << "Skin: " << "Empty\n"; }
-	else if (cmd.Name == "Type") { Parse_Type(cmd); }
-	else if (cmd.Name == "Format") { Parse_Format(cmd); }
-	else if (Skin != NULL) { Skin -> Parse(cmd); }
-	else { std::cout << "Skin: " << "Unknown\n"; }
+	throw ParsingCommand::ExceptionInvalidArg(cmd, 0);
 }
+void SkinBase::ParsingEnvironmentData::Parse_Format(const ParsingCommand & cmd)
+{
+	if (!cmd.CheckCount(CountCheckEqual(1))) { throw ParsingCommand::ExceptionInvalidCount(cmd, CountCheckEqual(1)); }
+	if (cmd.ToString(0) != "S_2025_10_27") { throw ParsingCommand::ExceptionInvalidArg(cmd, 0); }
+}
+
 SkinBase * SkinBase::Load(const FileContext & file)
 {
 	ParsingEnvironmentData data(file);
-	LineCommand::Split(file, data, &SkinBase::ParsingEnvironmentData::Parse);
+	ParsingCommand::SplitFileIntoCommands(data);
 	data.Skin -> Done();
 	return data.Skin;
 }
