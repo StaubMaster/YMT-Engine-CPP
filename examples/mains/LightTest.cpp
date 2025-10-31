@@ -179,7 +179,8 @@ void Init()
 
 	InitShaders();
 
-	Poly0 = YMT::PolyHedra::Load(FileContext("../media/YMT/test/cube.polyhedra.ymt"));
+	//Poly0 = YMT::PolyHedra::Load(FileContext("../media/YMT/test/cube.polyhedra.ymt"));
+	Poly0 = YMT::PolyHedra::Load(FileContext("../media/YMT/Train/Drehgestell_Achse.polyhedra.ymt"));
 	//Poly0 = YMT::PolyHedra::Cube();
 	//Poly0 = YMT::PolyHedra::ConeC(12, 0.5f);
 	//Poly0 = YMT::PolyHedra::FullTexture(TextureGen::Orientation2D());

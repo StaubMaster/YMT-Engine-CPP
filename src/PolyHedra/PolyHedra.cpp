@@ -47,10 +47,19 @@ void YMT::PolyHedra::Calc_Face_Normals()
 	for (unsigned int i = 0; i < Faces.Count(); i++)
 	{
 		Face & face = Faces[i];
-		const Point3D & cornerX = Corners[face.Corner0.Udx].Position;
-		const Point3D & cornerY = Corners[face.Corner1.Udx].Position;
-		const Point3D & cornerZ = Corners[face.Corner2.Udx].Position;
-		face.Normal = Point3D::cross(cornerY - cornerX, cornerZ - cornerX).normalize();
+		if (face.Corner0.Udx < Corners.Count() &&
+			face.Corner1.Udx < Corners.Count() &&
+			face.Corner2.Udx < Corners.Count())
+		{
+			const Point3D & cornerX = Corners[face.Corner0.Udx].Position;
+			const Point3D & cornerY = Corners[face.Corner1.Udx].Position;
+			const Point3D & cornerZ = Corners[face.Corner2.Udx].Position;
+			face.Normal = Point3D::cross(cornerY - cornerX, cornerZ - cornerX).normalize();
+		}
+		else
+		{
+			face.Normal = Point3D();
+		}
 	}
 }
 void YMT::PolyHedra::Calc_Corn_Normals()
@@ -216,27 +225,32 @@ PolyHedra_MainData * YMT::PolyHedra::ToMainData(int & count)
 
 	for (unsigned int f = 0; f < Faces.Count(); f++)
 	{
-		const Face & face = Faces[f];
-		const Corner & cornerX = Corners[face.Corner0.Udx];
-		const Corner & cornerY = Corners[face.Corner1.Udx];
-		const Corner & cornerZ = Corners[face.Corner2.Udx];
-
 		int c = f * 3;
-		data[c + 0].Position = cornerX.Position;
-		data[c + 1].Position = cornerY.Position;
-		data[c + 2].Position = cornerZ.Position;
-
-		if (!UseCornerNormals)
+		const Face & face = Faces[f];
+		if (face.Corner0.Udx < Corners.Count() &&
+			face.Corner1.Udx < Corners.Count() &&
+			face.Corner2.Udx < Corners.Count())
 		{
-			data[c + 0].Normal = face.Normal;
-			data[c + 1].Normal = face.Normal;
-			data[c + 2].Normal = face.Normal;
-		}
-		else
-		{
-			data[c + 0].Normal = cornerX.Normal;
-			data[c + 1].Normal = cornerY.Normal;
-			data[c + 2].Normal = cornerZ.Normal;
+			const Corner & cornerX = Corners[face.Corner0.Udx];
+			const Corner & cornerY = Corners[face.Corner1.Udx];
+			const Corner & cornerZ = Corners[face.Corner2.Udx];
+			
+			data[c + 0].Position = cornerX.Position;
+			data[c + 1].Position = cornerY.Position;
+			data[c + 2].Position = cornerZ.Position;
+			
+			if (!UseCornerNormals)
+			{
+				data[c + 0].Normal = face.Normal;
+				data[c + 1].Normal = face.Normal;
+				data[c + 2].Normal = face.Normal;
+			}
+			else
+			{
+				data[c + 0].Normal = cornerX.Normal;
+				data[c + 1].Normal = cornerY.Normal;
+				data[c + 2].Normal = cornerZ.Normal;
+			}
 		}
 	}
 

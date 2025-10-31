@@ -7,4 +7,59 @@ Skin SkinFile
 c X Y Z
 f 0 1 2 (3)
 
+offset corner_offset face_offset
+	changes internal index offsets
+	an index without a sign is absolute
+	an index with a sign is relative
+		to the internal index offset
+
+
+
+	Placeholder
+		'CHAR_TO_INDICATE_OPEN'		0
+		'CHAR_TO_INDICATE_CLOSE'	1
+
+belt## [ 0_0 0_1 0_2 ... 0_n ] [ 1_0 1_1 1_2 ... 1_n ]
+	connects a Pair of Lists of Points
+	with 2 lists for each side of the Belt
+	Variants:
+		belt># : belt<#
+			determins Face direction
+		belt#'CHAR_TO_INDICATE_OPEN'
+			open : last Points dont connect to first Points
+		belt#'CHAR_TO_INDICATE_CLOSED'
+			closed : last Points connect to first Points
+
+band [ 0_0 1_0 ] [ 1_0 1_1 ] [ 2_0 2_1 ] ... [ n_0 n_1 ]
+	connects a List of Pairs of Points
+	each Pair is a section of the Band
+	Variants:
+		belt># : belt<#
+			determins Face direction
+		belt#'CHAR_TO_INDICATE_OPEN'
+			open : last Pair dont connect to first Pair
+		belt#'CHAR_TO_INDICATE_CLOSED'
+			closed : last Pair connect to first Pair
+
+fan m [ 0 1 2 ... n ]
+	connects a List of Points to a Center Point
+	Variants:
+		belt># : belt<#
+			determins Face direction
+		belt#'CHAR_TO_INDICATE_OPEN'
+			open : last Point dont connect to first Point
+		belt#'CHAR_TO_INDICATE_CLOSED'
+			closed : last Point connect to first Point
+
+circle seg_count seg_offset cX cY cC rad nX nY nC angle_offset
+	seg_count		Segment count
+						negative count goes backwards
+						use >< to determin direction
+	seg_offset		Segment index offset
+	cX cY cZ		Center Position
+	rad				Radius
+	nX nY nZ		Normal of Angle
+						Angle.Z is used for spinning
+	angle_offset	Angle.Z offset
+
 

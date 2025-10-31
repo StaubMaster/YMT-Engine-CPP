@@ -71,15 +71,21 @@ class PolyHedra
 				have the full Line String here
 			*/
 
-			PolyHedra * Data;
+			PolyHedra *		Data;
+			unsigned int	CornerOffset;
+			unsigned int	FaceOffset;
+
 			PolyHedraParsingEnvironmentData(const FileContext & file);
 			void Parse(const ParsingCommand & cmd) override;
 
 			void Parse_Type(const ParsingCommand & cmd);
 			void Parse_Format(const ParsingCommand & cmd);
 			void Parse_Skin(const ParsingCommand & cmd);
-			void Parse_c(const ParsingCommand & cmd);
-			void Parse_f(const ParsingCommand & cmd);
+
+			void Parse_Corner(const ParsingCommand & cmd);
+			void Parse_Face(const ParsingCommand & cmd);
+
+
 		};
 	public:
 		static PolyHedra * Load(const FileContext & file);
