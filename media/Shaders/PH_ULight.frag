@@ -76,6 +76,7 @@ vec3 CalcLightFactor()
 		float spot_dot;
 		spot_dot = dot(spot_rel, Spot.Direction);
 		spot_dot = (spot_dot - Spot.Range.Min) / Spot.Range.Len;
+		spot_dot = min(1.0, max(0.0, spot_dot));
 		spot_dot = spot_dot * dot(spot_rel, normalize(fs_inn.Normal));
 		spot_dot = min(1.0, max(0.0, spot_dot));
 		spot_factor = Spot.Base.Intensity * Spot.Base.Color * spot_dot;

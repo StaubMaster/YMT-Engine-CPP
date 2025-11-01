@@ -78,6 +78,8 @@ LightSpot Light_Spot;
 Uniform::LightSpot * Uni_Light_Spot;
 
 
+Trans3D SpotLightTrans0;
+
 
 
 void InitShaders()
@@ -225,8 +227,8 @@ void Fancify()
 	FancyInsert(idx_truss, Point3D(  0, 42, +22), Angle3D(Angle3D::DegreeToRadian(90), 0, 0));
 	FancyInsert(idx_truss, Point3D(+20, 42, +22), Angle3D(Angle3D::DegreeToRadian(90), 0, 0));
 
-	FancyInsert(idx_stage_light, Point3D(+20, 30, -20), Angle3D(0, 0, 0));
-	FancyInsert(idx_stage_light_holder, Point3D(+20, 30, -20), Angle3D(0, 0, 0));
+	FancyInsert(idx_stage_light, SpotLightTrans0.Pos, SpotLightTrans0.Rot);
+	FancyInsert(idx_stage_light_holder, SpotLightTrans0.Pos, Angle3D(SpotLightTrans0.Rot.X, 0, 0));
 }
 
 
@@ -283,8 +285,8 @@ void Frame(double timeDelta)
 	}
 	ViewTrans.Rot.CalcBack();
 	Multi_View -> ChangeData(ViewTrans);
-	Light_Spot.Pos = ViewTrans.Pos;
-	Light_Spot.Dir = ViewTrans.Rot.rotate(Point3D(0, 0, 1));
+	//Light_Spot.Pos = ViewTrans.Pos;
+	//Light_Spot.Dir = ViewTrans.Rot.rotate(Point3D(0, 0, 1));
 
 	PH_Shader -> Use();
 	Uni_Light_Ambient -> PutData(Light_Ambient);
@@ -361,10 +363,16 @@ int main()
 	ViewDepth.Range = Range(0.8f, 1.0f);
 	ViewDepth.Color = win -> DefaultColor;
 
-	Light_Ambient = LightBase(0.25f, Color(1.0f, 0.0f, 0.0f));
-	Light_Solar = LightSolar(0.1f, Color(0.0f, 0.0f, 1.0f), Point3D(+1, -3, +2).normalize());
+	//Light_Ambient = LightBase(0.25f, Color(1.0f, 0.0f, 0.0f));
+	Light_Ambient = LightBase(0.05f, Color(1.0f, 1.0f, 1.0f));
+	//Light_Solar = LightSolar(0.1f, Color(0.0f, 0.0f, 1.0f), Point3D(+1, -3, +2).normalize());
+	Light_Solar = LightSolar(0.2f, Color(1.0f, 1.0f, 1.0f), Point3D(+1, -3, +2).normalize());
 	//Light_Spot = LightSpot(1.0f, Color(0.0f, 1.0f, 0.0f), Point3D(0, 0, 0), Point3D(0, 0, 0), Range(0.8, 0.95));
-	Light_Spot = LightSpot(1.0f, Color(1.0f, 1.0f, 1.0f), Point3D(0, 0, 0), Point3D(0, 0, 0), Range(0.3, 0.95));
+	//Light_Spot = LightSpot(1.0f, Color(1.0f, 1.0f, 1.0f), Point3D(0, 0, 0), Point3D(0, 0, 0), Range(0.3, 0.95));
+
+	SpotLightTrans0 = Trans3D(Point3D(+32, 30, -10), Angle3D(Angle3D::DegreeToRadian(-45), Angle3D::DegreeToRadian(-40), 0));
+	SpotLightTrans0.Rot.CalcBack();
+	Light_Spot = LightSpot(1.0f, Color(1.0f, 1.0f, 1.0f), SpotLightTrans0.Pos + SpotLightTrans0.Rot.rotate(Point3D(0, 0, +3)), SpotLightTrans0.Rot.rotate(Point3D(0, 0, 1)), Range(0.8, 0.95));
 
 
 
