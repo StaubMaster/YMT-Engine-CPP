@@ -13,10 +13,12 @@ struct PolyHedra_MainData;
 class SkinBase;
 
 struct Point2D;
+struct AxisBox3D;
 
 class Image;
 class FileContext;
 class LineCommand;
+
 
 namespace YMT
 {
@@ -61,6 +63,7 @@ class PolyHedra
 		PolyHedra_MainData * ToMainData(int & count);
 	public:
 		std::string ToInfo() const;
+		AxisBox3D	CalcBound() const;
 
 	private:
 		struct PolyHedraParsingEnvironmentData : public ParsingCommand::EnvironmentData

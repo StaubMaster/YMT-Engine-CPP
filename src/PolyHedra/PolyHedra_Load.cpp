@@ -11,6 +11,7 @@
 
 #include "DataStruct/Point3D.hpp"
 #include "DataStruct/Angle3D.hpp"
+#include "DataStruct/AxisBox3D.hpp"
 #include "DataO.hpp"
 
 
@@ -320,7 +321,9 @@ YMT::PolyHedra * YMT::PolyHedra::Load(const FileContext & file)
 	{
 		data.Data = Cube();
 	}
+	std::cout << ": " << file.Name() << "\n";
 	std::cout << "Count: " << data.Data -> Corners.Count() << " : " << data.Data -> Faces.Count() << "\n";
+	std::cout << "Bound: " << data.Data -> CalcBound() << "\n";
 	std::cout << "\n";
 	return data.Data;
 }

@@ -4,6 +4,7 @@
 #include "DataStruct/Angle3D.hpp"
 //#include "DataStruct/Transformation3D.hpp"
 #include "DataStruct/Undex3D.hpp"
+#include "DataStruct/AxisBox3D.hpp"
 
 #include "DataStruct/Point2D.hpp"
 //#include "DataStruct/SizeRatio2D.hpp"
@@ -54,5 +55,11 @@ std::ostream & operator <<(std::ostream & o, const Undex3D & val)
 std::ostream & operator <<(std::ostream & o, const Color & val)
 {
 	o << "(" << " R:" << val.R << " G:" << val.G << " B:" << val.B << " )";
+	return o;
+}
+
+std::ostream & operator <<(std::ostream & o, const AxisBox3D & val)
+{
+	o << "(" << val.Min << " : " << val.Max << " )";
 	return o;
 }

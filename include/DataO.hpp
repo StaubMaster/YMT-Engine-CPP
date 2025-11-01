@@ -17,4 +17,6 @@ std::ostream & operator <<(std::ostream & o, const Undex3D & val);
 
 std::ostream & operator <<(std::ostream & o, const Color & val);
 
+std::ostream & operator <<(std::ostream & o, const AxisBox3D & val);
+
 #endif

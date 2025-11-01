@@ -6,6 +6,7 @@
 #include "DataStruct/Main/PolyHedra/PolyHedra_MainData.hpp"
 
 #include "DataStruct/Angle3D.hpp"
+#include "DataStruct/AxisBox3D.hpp"
 
 #include "Texture/TextureGen.hpp"
 #include "Format/Image.hpp"
@@ -297,4 +298,14 @@ std::string YMT::PolyHedra::ToInfo() const
 	ss << "\n" << "Face Count: " << Faces.Count();
 
 	return ss.str();
+}
+
+AxisBox3D	YMT::PolyHedra::CalcBound() const
+{
+	AxisBox3D box;
+	for (unsigned int i = 0; i < Corners.Count(); i++)
+	{
+		box.Consider(Corners[i].Position);
+	}
+	return box;
 }
