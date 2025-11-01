@@ -50,11 +50,13 @@ Window * win;
 Trans3D	ViewTrans;
 Depth	ViewDepth;
 
-YMT::PolyHedra * Poly0;
+ContainerDynamic<YMT::PolyHedra*> FancyPolyHedras;
+ContainerDynamic<PolyHedra_3D_Instances*> FancyPolyHedraInstances;
 
-PolyHedra_3D_Instances * PH_Instances;
-int Entrys_Count;
-EntryContainerDynamic<Simple3D_InstData>::Entry ** Entrys;
+YMT::PolyHedra * Poly0;
+PolyHedra_3D_Instances * PH0_Instances;
+
+ContainerDynamic<EntryContainerDynamic<Simple3D_InstData>::Entry*> Entrys;
 
 BaseShader * PH_Shader;
 
@@ -131,10 +133,9 @@ void AddInstances()
 	int Range_SizeH = 0x0FF;
 	int j_len = 16;
 	int i_len = 16;
-	Entrys = new EntryContainerDynamic<Simple3D_InstData>::Entry*[j_len];
 	for (int j = 0; j < j_len; j++)
 	{
-		Entrys[j] = PH_Instances -> Alloc(i_len);
+		Entrys.Insert(PH0_Instances -> Alloc(i_len));
 		//std::cout << "[" << j << "]" << (*Entrys[j]).Offset << "|" << (*Entrys[j]).Length << "\n";
 		Point3D center(
 			(std::rand() & Range_Size1) - Range_SizeH,
@@ -157,7 +158,6 @@ void AddInstances()
 			(*Entrys[j])[i].Trans.Rot = rot;
 		}
 	}
-	Entrys_Count = j_len;
 
 	/*for (int j = 0; j < j_len; j++)
 	{
@@ -165,14 +165,69 @@ void AddInstances()
 	}*/
 
 	{
-		std::cout << "Instance Count: " << (PH_Instances -> Instances.Length) << "\n";
-		//int MemSize = (PH_Instances -> Instances.Length) * sizeof(Simple3D_InstData);
+		std::cout << "Instance Count: " << (PH0_Instances -> Instances.Length) << "\n";
+		//int MemSize = (PH0_Instances -> Instances.Length) * sizeof(Simple3D_InstData);
 		//std::cout << (MemSize / (1)) << " Bytes\n";
 		//std::cout << (MemSize / (1 * 1000)) << "k Bytes\n";
 		//std::cout << (MemSize / (1 * 1000 * 1000)) << "M Bytes\n";
 	}
 }
 
+
+void FancyInsert(unsigned int ph_idx, Point3D pos, Angle3D rot)
+{
+	unsigned int idx = Entrys.Count();
+	Entrys.Insert(FancyPolyHedraInstances[ph_idx] -> Alloc(1));
+	(*Entrys[idx])[0].Trans = Trans3D(pos, rot);
+	(*Entrys[idx])[0].Trans.Rot.CalcBack();
+}
+void Fancify()
+{
+	unsigned int idx_stage =				FancyPolyHedras.Insert(YMT::PolyHedra::Load(FileContext("../media/YMT/Light/Stage.polyhedra.ymt")));
+	unsigned int idx_stage_light =			FancyPolyHedras.Insert(YMT::PolyHedra::Load(FileContext("../media/YMT/Light/Stage_Light.polyhedra.ymt")));
+	unsigned int idx_stage_light_holder =	FancyPolyHedras.Insert(YMT::PolyHedra::Load(FileContext("../media/YMT/Light/Stage_Light_Holder.polyhedra.ymt")));
+	unsigned int idx_truss =				FancyPolyHedras.Insert(YMT::PolyHedra::Load(FileContext("../media/YMT/Light/Truss_Square40cm_Len200cm.polyhedra.ymt")));
+	unsigned int idx_truss_cube =			FancyPolyHedras.Insert(YMT::PolyHedra::Load(FileContext("../media/YMT/Light/Truss_Cube40cm.polyhedra.ymt")));
+
+	for (unsigned int i = 0; i < FancyPolyHedras.Count(); i++)
+	{
+		FancyPolyHedraInstances.Insert(new PolyHedra_3D_Instances(FancyPolyHedras[i]));
+	}
+
+	FancyInsert(idx_stage, Point3D(0, 0, 0), Angle3D(0, 0, 0));
+
+	FancyInsert(idx_truss, Point3D(-32, 10, -22), Angle3D(0, Angle3D::DegreeToRadian(90), 0));
+	FancyInsert(idx_truss, Point3D(-32, 30, -22), Angle3D(0, Angle3D::DegreeToRadian(90), 0));
+	FancyInsert(idx_truss_cube, Point3D(-32, 42, -22), Angle3D(0, 0, 0));
+
+	FancyInsert(idx_truss, Point3D(+32, 10, -22), Angle3D(0, Angle3D::DegreeToRadian(90), 0));
+	FancyInsert(idx_truss, Point3D(+32, 30, -22), Angle3D(0, Angle3D::DegreeToRadian(90), 0));
+	FancyInsert(idx_truss_cube, Point3D(+32, 42, -22), Angle3D(0, 0, 0));
+
+	FancyInsert(idx_truss, Point3D(-20, 42, -22), Angle3D(Angle3D::DegreeToRadian(90), 0, 0));
+	FancyInsert(idx_truss, Point3D(  0, 42, -22), Angle3D(Angle3D::DegreeToRadian(90), 0, 0));
+	FancyInsert(idx_truss, Point3D(+20, 42, -22), Angle3D(Angle3D::DegreeToRadian(90), 0, 0));
+
+	FancyInsert(idx_truss, Point3D(-32, 42, -10), Angle3D(0, 0, 0));
+	FancyInsert(idx_truss, Point3D(+32, 42, -10), Angle3D(0, 0, 0));
+	FancyInsert(idx_truss, Point3D(-32, 42, +10), Angle3D(0, 0, 0));
+	FancyInsert(idx_truss, Point3D(+32, 42, +10), Angle3D(0, 0, 0));
+
+	FancyInsert(idx_truss, Point3D(-32, 10, +22), Angle3D(0, Angle3D::DegreeToRadian(90), 0));
+	FancyInsert(idx_truss, Point3D(-32, 30, +22), Angle3D(0, Angle3D::DegreeToRadian(90), 0));
+	FancyInsert(idx_truss_cube, Point3D(-32, 42, +22), Angle3D(0, 0, 0));
+
+	FancyInsert(idx_truss, Point3D(+32, 10, +22), Angle3D(0, Angle3D::DegreeToRadian(90), 0));
+	FancyInsert(idx_truss, Point3D(+32, 30, +22), Angle3D(0, Angle3D::DegreeToRadian(90), 0));
+	FancyInsert(idx_truss_cube, Point3D(+32, 42, +22), Angle3D(0, 0, 0));
+
+	FancyInsert(idx_truss, Point3D(-20, 42, +22), Angle3D(Angle3D::DegreeToRadian(90), 0, 0));
+	FancyInsert(idx_truss, Point3D(  0, 42, +22), Angle3D(Angle3D::DegreeToRadian(90), 0, 0));
+	FancyInsert(idx_truss, Point3D(+20, 42, +22), Angle3D(Angle3D::DegreeToRadian(90), 0, 0));
+
+	FancyInsert(idx_stage_light, Point3D(+20, 30, -20), Angle3D(0, 0, 0));
+	FancyInsert(idx_stage_light_holder, Point3D(+20, 30, -20), Angle3D(0, 0, 0));
+}
 
 
 void Init()
@@ -189,21 +244,14 @@ void Init()
 	//Poly0 = YMT::PolyHedra::Load(FileContext("../media/YMT/Spline/Wagen_Flach.polyhedra.ymt"));			//	Faces Wrong way, some Geometry Wrong
 	//Poly0 = YMT::PolyHedra::Load(FileContext("../media/YMT/Spline/Wagen_Tief.polyhedra.ymt"));			//	Faces Wrong way, some Geometry Wrong
 
-	//Poly0 = YMT::PolyHedra::Load(FileContext("../media/YMT/Light/Stage_Light.polyhedra.ymt"));			//	Faces Wrong way
-	//Poly0 = YMT::PolyHedra::Load(FileContext("../media/YMT/Light/Stage_Light_Holder.polyhedra.ymt"));		//	Faces Wrong way
-	Poly0 = YMT::PolyHedra::Load(FileContext("../media/YMT/Light/Truss_Square40cm_Len200cm.polyhedra.ymt"));
-	//Poly0 = YMT::PolyHedra::Load(FileContext("../media/YMT/Light/Truss_Cube40cm.polyhedra.ymt"));
-
 	//Poly0 = YMT::PolyHedra::Load(FileContext("../media/YMT/test/cube.polyhedra.ymt"));
-	//Poly0 = YMT::PolyHedra::Cube();
+	Poly0 = YMT::PolyHedra::Cube();
 	//Poly0 = YMT::PolyHedra::ConeC(12, 0.5f);
 	//Poly0 = YMT::PolyHedra::FullTexture(TextureGen::Orientation2D());
-
-	Poly0 -> UseCornerNormals = false;
-
-	PH_Instances = new PolyHedra_3D_Instances(Poly0);
+	PH0_Instances = new PolyHedra_3D_Instances(Poly0);
 
 	AddInstances();
+	Fancify();
 
 	std::cout << "Init 1\n";
 }
@@ -211,9 +259,16 @@ void Free()
 {
 	std::cout << "Free 0\n";
 
-	delete PH_Instances;
-	delete [] Entrys;
+	delete PH0_Instances;
 	delete Poly0;
+	for (unsigned int i = 0; i < FancyPolyHedraInstances.Count(); i++)
+	{
+		delete FancyPolyHedraInstances[i];
+	}
+	for (unsigned int i = 0; i < FancyPolyHedras.Count(); i++)
+	{
+		delete FancyPolyHedras[i];
+	}
 
 	FreeShaders();
 
@@ -241,12 +296,22 @@ void Frame(double timeDelta)
 	(*Entrys[0])[0].Trans.Rot = Angle3D();
 	(*Entrys[0])[0].Trans.Rot.CalcBack();
 
-	PH_Instances -> Update();
-	if (PH_Instances -> Texture != NULL)
+	PH0_Instances -> Update();
+	if (PH0_Instances -> Texture != NULL)
 	{
-		PH_Instances -> Texture -> Bind();
+		PH0_Instances -> Texture -> Bind();
 	}
-	PH_Instances -> Draw();
+	PH0_Instances -> Draw();
+
+	for (unsigned int i = 0; i < FancyPolyHedraInstances.Count(); i++)
+	{
+		FancyPolyHedraInstances[i] -> Update();
+		if (FancyPolyHedraInstances[i] -> Texture != NULL)
+		{
+			FancyPolyHedraInstances[i] -> Texture -> Bind();
+		}
+		FancyPolyHedraInstances[i] -> Draw();
+	}
 }
 
 void Resize(int w, int h)
@@ -291,7 +356,7 @@ int main()
 
 	win -> DefaultColor = Color(0.25f, 0.0f, 0.0f);
 
-	ViewTrans = Trans3D(Point3D(0, 0, 0), Angle3D(0, 0, 0));
+	ViewTrans = Trans3D(Point3D(0, 20, -50), Angle3D(0, 0, 0));
 	ViewDepth.Factors = DepthFactors(0.1f, 100.0f);
 	ViewDepth.Range = Range(0.8f, 1.0f);
 	ViewDepth.Color = win -> DefaultColor;
