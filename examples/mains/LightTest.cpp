@@ -127,6 +127,8 @@ void FreeShaders()
 
 void AddInstances()
 {
+	int Range_Size1 = 0x1FF;
+	int Range_SizeH = 0x0FF;
 	int j_len = 16;
 	int i_len = 16;
 	Entrys = new EntryContainerDynamic<Simple3D_InstData>::Entry*[j_len];
@@ -135,22 +137,22 @@ void AddInstances()
 		Entrys[j] = PH_Instances -> Alloc(i_len);
 		//std::cout << "[" << j << "]" << (*Entrys[j]).Offset << "|" << (*Entrys[j]).Length << "\n";
 		Point3D center(
-			(std::rand() & 0x1F) - 0xF,
-			(std::rand() & 0x1F) - 0xF,
-			(std::rand() & 0x1F) - 0xF
+			(std::rand() & Range_Size1) - Range_SizeH,
+			(std::rand() & Range_Size1) - Range_SizeH,
+			(std::rand() & Range_Size1) - Range_SizeH
 		);
 		Angle3D rot(
-			(std::rand() & 0x1F) - 0xF,
-			(std::rand() & 0x1F) - 0xF,
-			(std::rand() & 0x1F) - 0xF
+			(std::rand() & Range_Size1) - Range_SizeH,
+			(std::rand() & Range_Size1) - Range_SizeH,
+			(std::rand() & Range_Size1) - Range_SizeH
 		);
 		rot.CalcFore();
 		for (int i = 0; i < i_len; i++)
 		{
 			(*Entrys[j])[i].Trans.Pos = center + Point3D(
-				(std::rand() & 0x1F) - 0xF,
-				(std::rand() & 0x1F) - 0xF,
-				(std::rand() & 0x1F) - 0xF
+				(std::rand() & Range_Size1) - Range_SizeH,
+				(std::rand() & Range_Size1) - Range_SizeH,
+				(std::rand() & Range_Size1) - Range_SizeH
 			);
 			(*Entrys[j])[i].Trans.Rot = rot;
 		}
@@ -179,8 +181,15 @@ void Init()
 
 	InitShaders();
 
-	//Poly0 = YMT::PolyHedra::Load(FileContext("../media/YMT/test/cube.polyhedra.ymt"));
-	Poly0 = YMT::PolyHedra::Load(FileContext("../media/YMT/Train/Drehgestell_Achse.polyhedra.ymt"));
+	//Poly0 = YMT::PolyHedra::Load(FileContext("../media/YMT/Train/Drehgestell_Achse.polyhedra.ymt"));
+	//Poly0 = YMT::PolyHedra::Load(FileContext("../media/YMT/Train/Drehgestell_Halter.polyhedra.ymt"));	//	Faces wrong way
+	//Poly0 = YMT::PolyHedra::Load(FileContext("../media/YMT/Train/Drehgestell_Rahmen.polyhedra.ymt"));	//	Faces Wrong way
+	//Poly0 = YMT::PolyHedra::Load(FileContext("../media/YMT/Train/Gleis_Seg.polyhedra.ymt"));			//	Faces Wrong way
+	//Poly0 = YMT::PolyHedra::Load(FileContext("../media/YMT/Train/Schienen_Seg.polyhedra.ymt"));		//	Faces Wrong way
+	//Poly0 = YMT::PolyHedra::Load(FileContext("../media/YMT/Train/Wagen_Flach.polyhedra.ymt"));		//	Faces Wrong way, some Geometry Wrong
+	//Poly0 = YMT::PolyHedra::Load(FileContext("../media/YMT/Train/Wagen_Tief.polyhedra.ymt"));			//	Faces Wrong way, some Geometry Wrong
+
+	Poly0 = YMT::PolyHedra::Load(FileContext("../media/YMT/test/cube.polyhedra.ymt"));
 	//Poly0 = YMT::PolyHedra::Cube();
 	//Poly0 = YMT::PolyHedra::ConeC(12, 0.5f);
 	//Poly0 = YMT::PolyHedra::FullTexture(TextureGen::Orientation2D());
@@ -285,7 +294,7 @@ int main()
 	Light_Ambient = LightBase(0.25f, Color(1.0f, 0.0f, 0.0f));
 	Light_Solar = LightSolar(0.1f, Color(0.0f, 0.0f, 1.0f), Point3D(+1, -3, +2).normalize());
 	//Light_Spot = LightSpot(1.0f, Color(0.0f, 1.0f, 0.0f), Point3D(0, 0, 0), Point3D(0, 0, 0), Range(0.8, 0.95));
-	Light_Spot = LightSpot(1.0f, Color(1.0f, 1.0f, 1.0f), Point3D(0, 0, 0), Point3D(0, 0, 0), Range(0.8, 0.95));
+	Light_Spot = LightSpot(1.0f, Color(1.0f, 1.0f, 1.0f), Point3D(0, 0, 0), Point3D(0, 0, 0), Range(0.3, 0.95));
 
 
 

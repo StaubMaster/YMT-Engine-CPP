@@ -3,6 +3,15 @@
 
 
 
+Image * TextureGen::NoSkin()
+{
+	Image * img = new Image(1, 1);
+
+	img -> setPixel(0, 0, 0xFFFFFF);
+
+	return img;
+}
+
 Image * TextureGen::Orientation2D()
 {
 	Image * img = new Image(2, 2);

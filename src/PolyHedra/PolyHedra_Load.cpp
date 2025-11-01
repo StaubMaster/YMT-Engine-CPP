@@ -3,12 +3,14 @@
 
 #include "PolyHedra/Skin/SkinBase.hpp"
 #include "PolyHedra/Skin/Skin2DA.hpp"
+#include "Texture/TextureGen.hpp"
 
 #include "FileContext.hpp"
 #include "FilePath.hpp"
 #include "Parsing/LineCommand.hpp"
 
 #include "DataStruct/Point3D.hpp"
+#include "DataStruct/Angle3D.hpp"
 #include "DataO.hpp"
 
 
@@ -54,6 +56,14 @@ void YMT::PolyHedra::PolyHedraParsingEnvironmentData::Parse(const ParsingCommand
 	else if (name == "d")		{ Parse_Face(cmd); }
 	else if (name == "o")		{ Parse_Face(cmd); }
 
+	else if (name == "v")		{ Parse_Offset(cmd); }
+	else if (name == "circle")	{ Parse_Circle(cmd, false); }
+
+	else if (name == "belt0")	{ Parse_Belt(cmd, false, false); }
+	else if (name == "belt1")	{ Parse_Belt(cmd, false, true); }
+	else if (name == "fan0")	{ Parse_Fan(cmd, false, true); }
+	else if (name == "fan1")	{ Parse_Fan(cmd, true, true); }
+
 	else						{ std::cout << "unknown: " << cmd << "\n"; }
 }
 void YMT::PolyHedra::PolyHedraParsingEnvironmentData::Parse_Type(const ParsingCommand & cmd)
@@ -94,12 +104,18 @@ void YMT::PolyHedra::PolyHedraParsingEnvironmentData::Parse_Corner(const Parsing
 void YMT::PolyHedra::PolyHedraParsingEnvironmentData::Parse_Face(const ParsingCommand & cmd)
 {
 	if (!cmd.CheckCount(CountCheckRange(3, 4))) { throw ParsingCommand::ExceptionInvalidCount(cmd, CountCheckRange(3, 4)); }
+	//std::cout << cmd << "\n";
+	//std::cout << "COff: " << CornerOffset << "\n";
 
 	unsigned int idx[cmd.Count()];
 	for (unsigned int i = 0; i < cmd.Count(); i++)
 	{
-		idx[i] = cmd.ToUInt32(i);
-		//std::cout << "[" << idx[i] << "]" << "\n";
+		std::string idx_str = cmd.ToString(i);
+		if (idx_str[0] == '+' || idx_str[0] == '-')
+		{ idx[i] = CornerOffset + cmd.ToInt32(i); }
+		else
+		{ idx[i] = cmd.ToUInt32(i); }
+		//std::cout << "[" << idx[i] << "]" << Data -> Corners[idx[i]].Position << "\n";
 	}
 
 	if (cmd.Count() == 3)
@@ -112,7 +128,175 @@ void YMT::PolyHedra::PolyHedraParsingEnvironmentData::Parse_Face(const ParsingCo
 	}
 }
 
+void YMT::PolyHedra::PolyHedraParsingEnvironmentData::Parse_Offset(const ParsingCommand & cmd)
+{
+	if (!cmd.CheckCount(CountCheckEqual(2))) { throw ParsingCommand::ExceptionInvalidCount(cmd, CountCheckEqual(2)); }
 
+	{
+		std::string corner = cmd.ToString(0);
+		if (corner[0] == '+' || corner[0] == '-')
+		{ CornerOffset += cmd.ToInt32(0); }
+		else
+		{ CornerOffset = cmd.ToUInt32(0); }
+	}
+
+	{
+		std::string corner = cmd.ToString(1);
+		if (corner[0] == '+' || corner[0] == '-')
+		{ FaceOffset += cmd.ToInt32(1); }
+		else
+		{ FaceOffset = cmd.ToUInt32(1); }
+	}
+}
+void YMT::PolyHedra::PolyHedraParsingEnvironmentData::Parse_Belt(const ParsingCommand & cmd, bool direction, bool closure)
+{
+	unsigned int len = cmd.Count() / 2;
+	if (!cmd.CheckCount(CountCheckModulo(2, 0)) || len < 2) { throw ParsingCommand::ExceptionInvalidCount(cmd, CountCheckModulo(2, 0)); }
+
+	unsigned int idx0[len];
+	unsigned int idx1[len];
+	for (unsigned int i = 0; i < len; i++)
+	{
+		unsigned int i0 = i;
+		unsigned int i1 = i + len;
+
+		std::string idx0_str = cmd.ToString(i0);
+		if (idx0_str[0] == '+' || idx0_str[0] == '-')
+		{ idx0[i] = CornerOffset + cmd.ToInt32(i0); }
+		else
+		{ idx0[i] = cmd.ToUInt32(i0); }
+
+		std::string idx1_str = cmd.ToString(i1);
+		if (idx1_str[0] == '+' || idx1_str[0] == '-')
+		{ idx1[i] = CornerOffset + cmd.ToInt32(i1); }
+		else
+		{ idx1[i] = cmd.ToUInt32(i1); }
+	}
+
+	for (unsigned int i = 1; i < len; i++)
+	{
+		if (!direction)
+		{
+			//Data -> Insert_Face4(idx0[i - 1], idx0[i - 0], idx1[i - 1], idx1[i - 0]);
+			Data -> Insert_Face3(idx0[i - 1], idx0[i - 0], idx1[i - 1]);
+			Data -> Insert_Face3(idx1[i - 1], idx0[i - 0], idx1[i - 0]);
+		}
+		else
+		{
+			//Data -> Insert_Face4(idx1[i - 1], idx0[i - 0], idx1[i - 1], idx1[i - 0]);
+			Data -> Insert_Face3(idx1[i - 1], idx0[i - 0], idx0[i - 1]);
+			Data -> Insert_Face3(idx1[i - 0], idx0[i - 0], idx1[i - 1]);
+		}
+	}
+
+	if (closure)
+	{
+		if (!direction)
+		{
+			Data -> Insert_Face3(idx0[len - 1], idx0[0], idx1[len - 1]);
+			Data -> Insert_Face3(idx1[len - 1], idx0[0], idx1[0]);
+		}
+		else
+		{
+			Data -> Insert_Face3(idx0[0], idx0[len -1], idx1[len - 1]);
+			Data -> Insert_Face3(idx0[0], idx1[len -1], idx1[0]);
+		}
+	}
+}
+void YMT::PolyHedra::PolyHedraParsingEnvironmentData::Parse_Band(const ParsingCommand & cmd, bool direction, bool closure)
+{
+	(void)cmd;
+	(void)direction;
+	(void)closure;
+}
+void YMT::PolyHedra::PolyHedraParsingEnvironmentData::Parse_Fan(const ParsingCommand & cmd, bool direction, bool closure)
+{
+	unsigned int len = cmd.Count() - 1;
+	if (!cmd.CheckCount(CountCheckRange(2, 255))) { throw ParsingCommand::ExceptionInvalidCount(cmd, CountCheckRange(2, 255)); }
+
+	unsigned int middle;
+	{
+		std::string idx0_str = cmd.ToString(0);
+		if (idx0_str[0] == '+' || idx0_str[0] == '-')
+		{ middle = CornerOffset + cmd.ToInt32(0); }
+		else
+		{ middle = cmd.ToUInt32(0); }
+	}
+
+	unsigned int blade[len];
+	for (unsigned int i = 0; i < len; i++)
+	{
+		std::string idx1_str = cmd.ToString(i + 1);
+		if (idx1_str[0] == '+' || idx1_str[0] == '-')
+		{ blade[i] = CornerOffset + cmd.ToInt32(i + 1); }
+		else
+		{ blade[i] = cmd.ToUInt32(i + 1); }
+	}
+
+	for (unsigned int i = 1; i < len; i++)
+	{
+		if (!direction)
+		{
+			Data -> Insert_Face3(middle, blade[i - 1], blade[i - 0]);
+		}
+		else
+		{
+			Data -> Insert_Face3(middle, blade[i - 0], blade[i - 1]);
+		}
+	}
+
+	if (closure)
+	{
+		if (!direction)
+		{
+			Data -> Insert_Face3(middle, blade[len - 1], blade[0]);
+		}
+		else
+		{
+			Data -> Insert_Face3(middle, blade[0], blade[len - 1]);
+		}
+	}
+}
+void YMT::PolyHedra::PolyHedraParsingEnvironmentData::Parse_Circle(const ParsingCommand & cmd, bool direction)
+{
+	if (!cmd.CheckCount(CountCheckEqual(10))) { throw ParsingCommand::ExceptionInvalidCount(cmd, CountCheckEqual(10)); }
+	//std::cout << cmd << "\n";
+
+	int step_num = cmd.ToInt32(0);
+	int step_off = cmd.ToInt32(1);
+
+	Point3D center(
+		cmd.ToFloat(2),
+		cmd.ToFloat(3),
+		cmd.ToFloat(4)
+	);
+	float radius = cmd.ToFloat(5);
+
+	Angle3D angle = Angle3D::FromPoint3D(Point3D(
+		cmd.ToFloat(6),
+		cmd.ToFloat(7),
+		cmd.ToFloat(8)
+	));
+	float offset = Angle3D::DegreeToRadian(cmd.ToFloat(9));
+
+	int step_abs = 0;
+	if (step_num > 0) { step_abs = +step_num; offset += PI * 0; }
+	if (step_num < 0) { step_abs = -step_num; offset += PI * 1; }
+
+	Point3D rad_p(radius, 0, 0);
+	for (int i = 0; i < step_abs; i++)
+	{
+		angle.Z = ((i + step_off) * (TAU / step_num)) + offset;
+		angle.CalcBack();
+		Point3D p;
+		p = angle.rotate(rad_p);
+		p = p + center;
+		Data -> Insert_Corn(Corner(p));
+		//std::cout << p << "\n";
+	}
+
+	(void)direction;
+}
 
 YMT::PolyHedra * YMT::PolyHedra::Load(const FileContext & file)
 {
@@ -122,6 +306,14 @@ YMT::PolyHedra * YMT::PolyHedra::Load(const FileContext & file)
 	ParsingCommand::SplitFileIntoCommands(data);
 	if (data.Data != NULL)
 	{
+		if (data.Data -> Skin == NULL)
+		{
+			Skin2DA * skin = new Skin2DA();
+			skin -> W = 1;
+			skin -> H = 1;
+			skin -> Images.Insert(TextureGen::NoSkin());
+			data.Data -> Skin = skin;
+		}
 		data.Data -> Done();
 	}
 	else

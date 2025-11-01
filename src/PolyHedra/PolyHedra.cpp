@@ -13,7 +13,8 @@
 #include "FileContext.hpp"
 
 #include <sstream>
-#define TAU 6.28318530717958647692528676655900576839433879875021164194988918461563281257241799725606965068423413
+
+#include "DataO.hpp"
 
 
 
@@ -70,15 +71,16 @@ void YMT::PolyHedra::Calc_Corn_Normals()
 		for (unsigned int j = 0; j < Faces.Count(); j++)
 		{
 			const Face & face = Faces[j];
-			if (
-				face.Corner0.Udx == i ||
+			if (face.Corner0.Udx == i ||
 				face.Corner1.Udx == i ||
 				face.Corner2.Udx == i
 			)
 			{
 				normal_sum = normal_sum + face.Normal;
+				//std::cout << "Normal add: " << face.Normal << "\n";
 			}
 		}
+		//std::cout << "Normal: " << normal_sum << "\n";
 		Corners[i].Normal = normal_sum.normalize();
 	}
 }
@@ -234,11 +236,11 @@ PolyHedra_MainData * YMT::PolyHedra::ToMainData(int & count)
 			const Corner & cornerX = Corners[face.Corner0.Udx];
 			const Corner & cornerY = Corners[face.Corner1.Udx];
 			const Corner & cornerZ = Corners[face.Corner2.Udx];
-			
+
 			data[c + 0].Position = cornerX.Position;
 			data[c + 1].Position = cornerY.Position;
 			data[c + 2].Position = cornerZ.Position;
-			
+
 			if (!UseCornerNormals)
 			{
 				data[c + 0].Normal = face.Normal;
@@ -252,11 +254,18 @@ PolyHedra_MainData * YMT::PolyHedra::ToMainData(int & count)
 				data[c + 2].Normal = cornerZ.Normal;
 			}
 		}
+		else
+		{
+			//std::cout << "Invalid Face\n";
+		}
 	}
 
 	if (Skin == NULL)
 	{
-		
+		for (int i = 0; i < count; i++)
+		{
+			data[i].Texture = Point2D();
+		}
 	}
 	else
 	{
@@ -270,6 +279,11 @@ PolyHedra_MainData * YMT::PolyHedra::ToMainData(int & count)
 			data[c + 2].Texture = face.Corner2.Tex;
 		}
 	}
+
+	/*for (int i = 0; i < count; i++)
+	{
+		std::cout << "Main: " << data[i].Position << " : " << data[i].Normal << " : " << data[i].Texture << "\n";
+	}*/
 
 	return data;
 }

@@ -65,7 +65,7 @@ void Skin2DA::Parse_File(const ParsingCommand & cmd)
 void Skin2DA::Parse_t(const ParsingCommand & cmd)
 {
 	unsigned int len = cmd.Count() / 2;
-	if (!cmd.CheckCount(CountCheckModulo(2, 0)) || len < 3 || len > 4) { throw ParsingCommand::ExceptionInvalidCount(cmd, CountCheckModulo(2, 1)); }
+	if (!cmd.CheckCount(CountCheckModulo(2, 0)) || len < 3 || len > 4) { throw ParsingCommand::ExceptionInvalidCount(cmd, CountCheckModulo(2, 0)); }
 	Point2D t[len];
 	for (size_t i = 0; i < len; i++)
 	{

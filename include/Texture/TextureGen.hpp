@@ -7,6 +7,8 @@ struct Color;
 
 namespace TextureGen
 {
+	Image * NoSkin();
+
 	Image * Orientation2D();
 	Image * Orientation3D();
 

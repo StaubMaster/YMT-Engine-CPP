@@ -38,6 +38,32 @@ const Angle3D & Angle3D::operator =(const Angle3D & other)
 
 
 
+Angle3D Angle3D::FromPoint3D(const Point3D & dir)
+{
+	float len = dir.length();
+
+	Angle3D a(
+		atan2(dir.X, dir.Z),
+		atan2(dir.Y, len),
+		0
+	);
+
+	return a;
+}
+
+
+
+float Angle3D::DegreeToRadian(float degree)
+{
+	return ((degree * TAU) / 360);
+}
+float Angle3D::RadianToDegree(float radian)
+{
+	return ((radian * 360) / TAU);
+}
+
+
+
 void Angle3D::MatrixToString(float data[3][3])
 {
 	for (int i = 0; i < 3; i++)

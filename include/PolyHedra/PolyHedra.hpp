@@ -85,7 +85,11 @@ class PolyHedra
 			void Parse_Corner(const ParsingCommand & cmd);
 			void Parse_Face(const ParsingCommand & cmd);
 
-
+			void Parse_Offset(const ParsingCommand & cmd);
+			void Parse_Belt(const ParsingCommand & cmd, bool direction, bool closure);
+			void Parse_Band(const ParsingCommand & cmd, bool direction, bool closure);
+			void Parse_Fan(const ParsingCommand & cmd, bool direction, bool closure);
+			void Parse_Circle(const ParsingCommand & cmd, bool direction);
 		};
 	public:
 		static PolyHedra * Load(const FileContext & file);
