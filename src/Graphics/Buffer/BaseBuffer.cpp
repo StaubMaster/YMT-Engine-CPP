@@ -15,12 +15,12 @@ BaseBuffer::BaseBuffer(unsigned int buffer_count, Attribute::Base * attributes [
 	Attributes = new Attribute::Base * [BufferCount];
 	for (unsigned int i = 0; i < BufferCount; i++) { Attributes[i] = attributes[i]; }
 
-	std::cout << "++++ BaseBuffer\n";
+	//std::cout << "++++ BaseBuffer\n";
 	Count = 0;
 }
 BaseBuffer::~BaseBuffer()
 {
-	std::cout << "---- BaseBuffer\n";
+	//std::cout << "---- BaseBuffer\n";
 
 	glDeleteBuffers(BufferCount, BufferIDs);
 	delete [] BufferIDs;

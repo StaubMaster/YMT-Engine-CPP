@@ -40,7 +40,7 @@ const Angle3D & Angle3D::operator =(const Angle3D & other)
 
 Angle3D Angle3D::FromPoint3D(const Point3D & dir)
 {
-	float len = sqrt(dir.X * dir.X) + (dir.Z * dir.Z);
+	float len = sqrt((dir.X * dir.X) + (dir.Z * dir.Z));
 
 	Angle3D a(
 		atan2(dir.X, dir.Z),

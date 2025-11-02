@@ -51,6 +51,19 @@ fan m [ 0 1 2 ... n ]
 		belt#'CHAR_TO_INDICATE_CLOSED'
 			closed : last Point connect to first Point
 
+circle# seg_circle seg_count seg_offset cX cY cC rad nX nY nC angle_offset
+	Variants:
+		circle< : circle>
+			determins direction
+	seg_circle		Segments of the Circle
+	seg_count		Segments of the Circle that are used
+	seg_offset		Segment count offset
+	cX cY cZ		Center Position
+	rad				Radius
+	nX nY nZ		Normal of Angle
+						Angle.Z is used for spinning
+	angle_offset	Angle.Z offset
+
 circle seg_count seg_offset cX cY cC rad nX nY nC angle_offset
 	seg_count		Segment count
 						negative count goes backwards

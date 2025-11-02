@@ -92,6 +92,7 @@ class PolyHedra
 			void Parse_Belt(const ParsingCommand & cmd, bool direction, bool closure);
 			void Parse_Band(const ParsingCommand & cmd, bool direction, bool closure);
 			void Parse_Fan(const ParsingCommand & cmd, bool direction, bool closure);
+			void Parse_CircleOLD(const ParsingCommand & cmd);
 			void Parse_Circle(const ParsingCommand & cmd, bool direction);
 		};
 	public:

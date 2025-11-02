@@ -126,7 +126,7 @@ class EntryContainerBase
 					{
 						Container -> FreeEntry(EntryIndex);
 						UnReference();
-						std::cout << "---- Entry.Dispose()\n";
+						//std::cout << "---- Entry.Dispose()\n";
 					}
 				}
 		};
@@ -152,7 +152,7 @@ class EntryContainerBase
 			Data = new T[size];
 			Size = size;
 			Changed = false;
-			std::cout << "++++ EntryContainerBase\n";
+			//std::cout << "++++ EntryContainerBase\n";
 		}
 		~EntryContainerBase()
 		{
@@ -160,7 +160,7 @@ class EntryContainerBase
 			{
 				delete EntryRefs[i];
 			}
-			std::cout << "---- EntryContainerBase\n";
+			//std::cout << "---- EntryContainerBase\n";
 			delete [] Data;
 		}
 		void Dispose()

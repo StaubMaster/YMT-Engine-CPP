@@ -46,6 +46,7 @@ uniform sampler2DArray texture0;
 
 uniform LightBase Ambient;
 uniform LightSolar Solar;
+uniform uint SpotCount;
 uniform LightSpot Spot;
 
 

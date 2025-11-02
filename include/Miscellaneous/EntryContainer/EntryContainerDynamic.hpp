@@ -23,11 +23,11 @@ class EntryContainerDynamic : public EntryContainerBase<T>
 		EntryContainerDynamic() : EntryContainerBase<T>(0)
 		{
 			Length = 0;
-			std::cout << "++++ EntryContainerDynamic\n";
+			//std::cout << "++++ EntryContainerDynamic\n";
 		}
 		virtual ~EntryContainerDynamic()
 		{
-			std::cout << "---- EntryContainerDynamic\n";
+			//std::cout << "---- EntryContainerDynamic\n";
 		}
 
 	private:
