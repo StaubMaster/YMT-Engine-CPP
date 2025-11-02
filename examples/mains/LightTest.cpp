@@ -357,30 +357,11 @@ int main()
 		return -1;
 	}
 
-	try
-	{
-		win = new Window(640, 480);
-		win -> InitFunc = Init;
-		win -> FrameFunc = Frame;
-		win -> FreeFunc = Free;
-		win -> ResizeFunc = Resize;
-	}
-	catch (std::exception & ex)
-	{
-		std::cout << "exception: " << ex.what() << "\n";
-	}
-	catch (const char * err)
-	{
-		std::cerr << "String Error: "<< err << "\n";
-		glfwTerminate();
-		return -1;
-	}
-	catch (...)
-	{
-		std::cerr << "Unknown Error" << "\n";
-		glfwTerminate();
-		return -1;
-	}
+	win = new Window(640, 480);
+	win -> InitFunc = Init;
+	win -> FrameFunc = Frame;
+	win -> FreeFunc = Free;
+	win -> ResizeFunc = Resize;
 
 	win -> DefaultColor = Color(0.25f, 0.0f, 0.0f);
 

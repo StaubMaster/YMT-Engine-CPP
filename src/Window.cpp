@@ -10,6 +10,8 @@
 
 
 
+
+
 Window::Window(float w, float h)
 {
 	//glfwWindowHint(GLFW_CONTEXT_VERSION_MAJOR, 4);
