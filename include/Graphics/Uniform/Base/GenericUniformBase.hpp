@@ -5,7 +5,6 @@
 # include "Graphics/Uniform/Base/UniformBase.hpp"
 
 class BaseShader;
-class MultiformBase;
 
 namespace Uniform
 {

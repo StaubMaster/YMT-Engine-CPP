@@ -18,6 +18,9 @@
 #include "Graphics/Uniform/Data/LightSolar.hpp"
 #include "Graphics/Uniform/Data/LightSpot.hpp"
 
+#include "Graphics/Uniform/Data/UInt1.hpp"
+#include "Graphics/Uniform/Base/GenericUniformArray.hpp"
+
 #include "DataStruct/LightBase.hpp"
 #include "DataStruct/LightSolar.hpp"
 #include "DataStruct/LightSpot.hpp"
@@ -77,8 +80,11 @@ Uniform::LightSolar * Uni_Light_Solar;
 LightSpot Light_Spot;
 Uniform::LightSpot * Uni_Light_Spot;
 
+LightSpot * Light_Spot_Array;
+Uniform::GenericUniformArray<Uniform::LightSpot, LightSpot> * Uni_Light_Spot_Array;
 
-Trans3D SpotLightTrans0;
+unsigned int Light_Spot_Count;
+Uniform::UInt1 * Uni_Light_Spot_Count;
 
 
 
@@ -111,6 +117,8 @@ void InitShaders()
 	Uni_Light_Ambient = new Uniform::LightBase("Ambient", *PH_Shader);
 	Uni_Light_Solar = new Uniform::LightSolar("Solar", *PH_Shader);
 	Uni_Light_Spot = new Uniform::LightSpot("Spot", *PH_Shader);
+	Uni_Light_Spot_Count = new Uniform::UInt1(1, "SpotCount", *PH_Shader);
+	Uni_Light_Spot_Array = new Uniform::GenericUniformArray<Uniform::LightSpot, LightSpot>(Light_Spot_Count, "SpotArr", *PH_Shader);
 }
 void FreeShaders()
 {
@@ -127,6 +135,8 @@ void FreeShaders()
 	delete Uni_Light_Ambient;
 	delete Uni_Light_Solar;
 	delete Uni_Light_Spot;
+	delete Uni_Light_Spot_Count;
+	delete Uni_Light_Spot_Array;
 }
 
 void AddInstances()
@@ -228,8 +238,14 @@ void Fancify()
 	FancyInsert(idx_truss, Point3D(  0, 42, +22), Angle3D(Angle3D::DegreeToRadian(90), 0, 0));
 	FancyInsert(idx_truss, Point3D(+20, 42, +22), Angle3D(Angle3D::DegreeToRadian(90), 0, 0));
 
-	FancyInsert(idx_stage_light, SpotLightTrans0.Pos, SpotLightTrans0.Rot);
-	FancyInsert(idx_stage_light_holder, SpotLightTrans0.Pos, Angle3D(SpotLightTrans0.Rot.X, 0, 0));
+	for (unsigned int i = 0; i < Light_Spot_Count; i++)
+	{
+		Trans3D spotLightTrans(Light_Spot_Array[i].Pos, Angle3D::FromPoint3D(Light_Spot_Array[i].Dir));
+		spotLightTrans.Rot.CalcBack();
+		Point3D rel = spotLightTrans.Rot.rotate(Point3D(0, 0, 3));
+		FancyInsert(idx_stage_light, spotLightTrans.Pos - rel, spotLightTrans.Rot);
+		FancyInsert(idx_stage_light_holder, spotLightTrans.Pos - rel, Angle3D(spotLightTrans.Rot.X, 0, 0));
+	}
 
 	//FancyInsert(idx_chair, Point3D(-10, 4, 10), Angle3D(Angle3D::DegreeToRadian(180), Angle3D::DegreeToRadian(180), 0));
 	//FancyInsert(idx_chair, Point3D(- 5, 4, 10), Angle3D(0, Angle3D::DegreeToRadian(180), 0));
@@ -256,7 +272,6 @@ void Fancify()
 		FancyInsert(idx_chair, Point3D(-50, i, -45), Angle3D(Angle3D::DegreeToRadian(90), 0, 0));
 	}
 }
-
 
 void Init()
 {
@@ -318,6 +333,8 @@ void Frame(double timeDelta)
 	Uni_Light_Ambient -> PutData(Light_Ambient);
 	Uni_Light_Solar -> PutData(Light_Solar);
 	Uni_Light_Spot -> PutData(Light_Spot);
+	Uni_Light_Spot_Count -> PutData(&Light_Spot_Count);
+	Uni_Light_Spot_Array -> PutData(Light_Spot_Array, Light_Spot_Count);
 
 	(*Entrys[0])[0].Trans.Pos = Point3D(0, 0, 0);
 	//(*Entrys[0])[0].Trans.Rot = ViewTrans.Rot;
@@ -379,9 +396,21 @@ int main()
 	//Light_Spot = LightSpot(1.0f, Color(1.0f, 1.0f, 1.0f), Point3D(0, 0, 0), Point3D(0, 0, 0), Range(0.3, 0.95));
 
 	//SpotLightTrans0 = Trans3D(Point3D(+32, 30, -10), Angle3D(Angle3D::DegreeToRadian(-60), Angle3D::DegreeToRadian(-40), 0));
-	SpotLightTrans0 = Trans3D(Point3D(+32, 30, -10), Angle3D::FromPoint3D(Point3D(0, 0, 0) - Point3D(+32, 30, -10)));
+
+	Trans3D SpotLightTrans0 = Trans3D(Point3D(+32, 30, -10), Angle3D::FromPoint3D(Point3D(0, 0, 0) - Point3D(+32, 30, -10)));
 	SpotLightTrans0.Rot.CalcBack();
+
+	Trans3D SpotLightTrans1 = Trans3D(Point3D(-32, 30, -10), Angle3D::FromPoint3D(Point3D(0, 0, 0) - Point3D(-32, 30, -10)));
+	SpotLightTrans1.Rot.CalcBack();
+
 	Light_Spot = LightSpot(1.0f, Color(1.0f, 1.0f, 1.0f), SpotLightTrans0.Pos + SpotLightTrans0.Rot.rotate(Point3D(0, 0, +3)), SpotLightTrans0.Rot.rotate(Point3D(0, 0, 1)), Range(0.8, 0.95));
+
+	Light_Spot_Count = 2;
+	Light_Spot_Array = new LightSpot[Light_Spot_Count];
+
+	Light_Spot_Array[0] = LightSpot(1.0f, Color(0.0f, 1.0f, 0.0f), SpotLightTrans0.Pos + SpotLightTrans0.Rot.rotate(Point3D(0, 0, +3)), SpotLightTrans0.Rot.rotate(Point3D(0, 0, 1)), Range(0.8, 0.95));
+
+	Light_Spot_Array[1] = LightSpot(1.0f, Color(0.0f, 0.0f, 1.0f), SpotLightTrans1.Pos + SpotLightTrans1.Rot.rotate(Point3D(0, 0, +3)), SpotLightTrans1.Rot.rotate(Point3D(0, 0, 1)), Range(0.8, 0.95));
 
 
 
@@ -391,6 +420,7 @@ int main()
 
 
 
+	delete[] Light_Spot_Array;
 	delete win;
 
 

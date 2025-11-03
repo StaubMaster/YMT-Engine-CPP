@@ -46,8 +46,11 @@ uniform sampler2DArray texture0;
 
 uniform LightBase Ambient;
 uniform LightSolar Solar;
-uniform uint SpotCount;
 uniform LightSpot Spot;
+
+const uint SpotLimit = uint(2);
+uniform uint SpotCount;
+uniform LightSpot[SpotLimit] SpotArr;
 
 
 
@@ -71,22 +74,35 @@ vec3 CalcLightFactor()
 	vec3 ambient_factor = Ambient.Intensity * Ambient.Color;
 	vec3 solar_factor = Solar.Base.Intensity * Solar.Base.Color * dot(Solar.Direction, normalize(fs_inn.Normal));
 
-	vec3 spot_factor;
+	vec3 spot_factor[SpotLimit];
+	for (uint i = uint(0); i < SpotLimit; i++)
 	{
-		vec3 spot_rel = normalize(fs_inn.Absolute - Spot.Position);
+		//vec3 spot_rel = normalize(fs_inn.Absolute - Spot.Position);
+		//float spot_dot;
+		//spot_dot = dot(spot_rel, Spot.Direction);
+		//spot_dot = (spot_dot - Spot.Range.Min) / Spot.Range.Len;
+		//spot_dot = min(1.0, max(0.0, spot_dot));
+		//spot_dot = spot_dot * dot(spot_rel, normalize(fs_inn.Normal));
+		//spot_dot = min(1.0, max(0.0, spot_dot));
+		//spot_factor[i] = Spot.Base.Intensity * Spot.Base.Color * spot_dot;
+
+		vec3 spot_rel = normalize(fs_inn.Absolute - SpotArr[i].Position);
 		float spot_dot;
-		spot_dot = dot(spot_rel, Spot.Direction);
-		spot_dot = (spot_dot - Spot.Range.Min) / Spot.Range.Len;
+		spot_dot = dot(spot_rel, SpotArr[i].Direction);
+		spot_dot = (spot_dot - SpotArr[i].Range.Min) / SpotArr[i].Range.Len;
 		spot_dot = min(1.0, max(0.0, spot_dot));
 		spot_dot = spot_dot * dot(spot_rel, normalize(fs_inn.Normal));
 		spot_dot = min(1.0, max(0.0, spot_dot));
-		spot_factor = Spot.Base.Intensity * Spot.Base.Color * spot_dot;
+		spot_factor[i] = SpotArr[i].Base.Intensity * SpotArr[i].Base.Color * spot_dot;
 	}
 
 	vec3 light_factor = vec3(0.0, 0.0, 0.0);
 	light_factor = max(light_factor, ambient_factor);
 	light_factor = max(light_factor, solar_factor);
-	light_factor = max(light_factor, spot_factor);
+	for (uint i = uint(0); i < SpotLimit; i++)
+	{
+		light_factor = max(light_factor, spot_factor[i]);
+	}
 	return light_factor;
 }
 

@@ -41,6 +41,7 @@ FILES_SRC := \
 \
 	Graphics/Uniform/Base/UniformBase.cpp \
 	Graphics/Uniform/Data/Float1.cpp \
+	Graphics/Uniform/Data/UInt1.cpp \
 	Graphics/Uniform/Data/Point3D.cpp \
 	Graphics/Uniform/Data/Angle3D.cpp \
 	Graphics/Uniform/Data/Trans3D.cpp \
