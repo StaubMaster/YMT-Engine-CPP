@@ -269,8 +269,8 @@ repos_rm:
 OPENGL_REPO := $(REPOS_DIR)/OpenGL
 
 REPOS += $(OPENGL_REPO)
-LIBRARYS += $(OPENGL_REPO)/OpenGL.a
-INCLUDES += $(OPENGL_REPO)/../
+LIBRARYS += $(foreach library, $(shell $(MAKE) -C $(OPENGL_REPO) -s librarys), $(OPENGL_REPO)/$(library))
+INCLUDES += $(foreach include, $(shell $(MAKE) -C $(OPENGL_REPO) -s includes), $(OPENGL_REPO)/$(include))
 
 $(OPENGL_REPO)_clone : ;
 
