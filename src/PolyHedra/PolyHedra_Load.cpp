@@ -380,6 +380,15 @@ YMT::PolyHedra * YMT::PolyHedra::Load(const FileContext & file)
 	std::cout << "Bound:" << "Limit:" << bound << "\n";
 	std::cout << "Bound:" << "Size:" << bound.Size() << "\n";
 
+	/*	Unit Converter
+		Length:	to make Data more cohereent
+		Area:	not sure where I would need this
+		Volume:	might be interesting ?
+		Angle:	Deg to Rad & Rad to Deg
+		Time:	?
+		once a base is made it shouldnt be very difficult to add new Units
+	*/
+
 	std::cout << "\n";
 	return data.Data;
 }

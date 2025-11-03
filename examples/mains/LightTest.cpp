@@ -305,9 +305,9 @@ void Free()
 
 void Frame(double timeDelta)
 {
-	if (win -> IsMouseLocked())
+	if (win -> IsCursorLocked())
 	{
-		ViewTrans.TransformFlatX(win -> MoveFromKeys(2.0f * timeDelta), win -> SpinFromCursor(0.2f * timeDelta));
+		ViewTrans.TransformFlatX(win -> MoveFromKeys(20.0f * timeDelta), win -> SpinFromCursor(0.2f * timeDelta));
 	}
 	ViewTrans.Rot.CalcBack();
 	Multi_View -> ChangeData(ViewTrans);

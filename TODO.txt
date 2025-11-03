@@ -1,72 +1,27 @@
 
-MakeFile
-right now all the archives are put together in the example Makefile
-but that should be like the end result
 
-the end result should only have to include one archive file
-so go back to putting everything together before then
-but that also requires knowing where the glfw archives are
+store KeyStates from Callback in Window
+since openGL only gives down
 
-which is currently hardcoded my Windows
-and IDK where they are on the MACs
 
+
+/examples are very coplex at this point
+put them into their own project
+keep the examples here simple
 
 
 
 
 
 
-FileManager into its own project
-	put into its own project
-		looks better
-	BMP load (save ?)
-	DirectoryContext
-		give an Array of all Directorys
-		give an Array of all Files
-	Behaviour
-		Exception vs Null
-		for something like LoadPNG
-			return null or throw Exception
-		for something like LoadText
-			allways throw ?
-			since file not Existing can be checked
-				make something to check Permissions
-			what about any other error ?
-			if for other reasons it cant load the file
-				like RAM problems
-		it would be nicest to set what to do
-		for non throwing, return NULL or equivalent, and have a Referance to return what the error was ?
-		or just a ref to a bool to check weather NULL was returned from an error or normal Behaviour
-		with LoadPNG returning NULL is enough to show that an Error occured
-		it't like that with anything that is expected to return a deletable Pointer
-		but the problem then is LoadText
-		how to know if an Error occured vs if the file was empty
-		just make the user use try-catch
-		if I return NULL then that would need to be checked as well
-		so its probably fine ?
-	ToIStream
-	ToOStream
-	ToBitStream
-		change BitStream to be a Base
-		then have variants
-			one gets a void Pointer and reads from that
-			one gets a StringStream or something and reads from that
-		this is all reading BitStream
-		have a write BitStream
-			dont really need that right now
-			better call it IBitStream so I dont need to rename
-
-wrapper for Exception
-	lots of the Exceptions build a string and then return c_str() to that string
-
-
-
-
-
+42 Projects:
 OBJ_Parser and Particle Simulator
-also put into own projects
-make it so all of that stuff can be put into the 42 repo
-so it just has a simple makefile
+put into their own projects / the 42 repos
+maybe register first so people can where you're wasting your time
+they would mostly just download this repo
+should be fine since I wrote everything myself
+
+
 
 
 
@@ -83,16 +38,6 @@ IntelliSense Comments
 
 
 
-other/OpenGL
-	the OS checks in the other makefile are for this stuff
-	put them there
-	extract all the archive stuff and put it all into the openGL.a ?
-	so it's all in one place.
-	but there are still the other -l args
-	-l also looks for archives, look for those and compile them all into one
-	also turn this into a more general thing that check for openGL usability
-
-
 
 organize
 	Uniforms can be generalized to FloatN and IntN
@@ -101,7 +46,6 @@ organize
 	so allow for all DataTypes to converted into these simples
 	and then use those for simple Uniforms
 	do the same for Attributes
-
 	more comlex stuff can also be generalized to some degree
 	like Ray3D and AxisBox3D both being made of 2 Point3D s
 	but first do normal FloatN
@@ -135,50 +79,4 @@ Instance Data
 
 
 
-optimize compilation
-	foreward declaration
-		<iosfwd> in header instead of <iostream>
-
-
-
-
-
-MakeFile
-currenly sucks
-at home the Archives and Librarys are different
-there is a way to make the MakeFile check those ?
-
-
-
-
-
-there are also aparently a lot of things that openGL / glfw has already implemented
-something about light, maybe projection stuff
-
-but creating things myself gives me more freedom ?
-	like with Depth, I like to use Relative Distance instead of DepthFactors
-	since that means the same Depth when Spining
-	although that might also be doable with Factors
-	or at least outside the Fragment Shader
-
-
-
-
-
-also maybe start working on the Projects
-loading .obj should be simple compared to the .ymt I've already done
-
-openCL dosent currently work because of the Links (on Mac)
-but besides that I already have ComputeShaders and Instances
-so that that done as well
-
-Voxel I also already have but that Project needs a Partner :(
-
-
-
-
-
-
-
-also maybe look for a job.
 

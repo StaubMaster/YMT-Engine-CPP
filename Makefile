@@ -99,6 +99,7 @@ FILES_SRC := \
 	DataStruct/Main/Waveform/MTL.cpp \
 \
 	TimeMeasure.cpp \
+	Keys.cpp \
 	Window.cpp
 
 WORKING_FILES_SRC := \

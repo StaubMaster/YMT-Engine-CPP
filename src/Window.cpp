@@ -10,10 +10,17 @@
 
 
 
-
-
-Window::Window(float w, float h)
+Window::Window(float w, float h) :
+	win(NULL), Keys(7)
 {
+	Keys.KeyArrays[0] = KeyDataArray(32, 32);	//	Space
+	Keys.KeyArrays[1] = KeyDataArray(48, 57);	//	Numbers
+	Keys.KeyArrays[2] = KeyDataArray(65, 90);	//	Letters
+	Keys.KeyArrays[3] = KeyDataArray(256, 269);	//	Control0
+	Keys.KeyArrays[4] = KeyDataArray(290, 314);	//	Function
+	Keys.KeyArrays[5] = KeyDataArray(320, 336);	//	KeyPad
+	Keys.KeyArrays[6] = KeyDataArray(340, 348);	//	Control1
+
 	glfwSetErrorCallback(Callback_Error);
 
 	//glfwWindowHint(GLFW_CONTEXT_VERSION_MAJOR, 4);
@@ -78,45 +85,55 @@ void Window::Callback_Resize(GLFWwindow * window, int w, int h)
 void Window::Callback_Key(GLFWwindow * window, int key, int scancode, int action, int mods)
 {
 	Window * win = (Window *)glfwGetWindowUserPointer(window);
-	(void)win;
 
-	if (key == GLFW_KEY_TAB && action == GLFW_PRESS)
+	if (win -> Keys.Has(key))
 	{
-		int mode = glfwGetInputMode(window, GLFW_CURSOR);
-		if (mode == GLFW_CURSOR_DISABLED)
+		KeyData & data = win -> Keys[key];
+		if (action == GLFW_RELEASE)
 		{
-			glfwSetCursorPos(window, 0, 0);
-			glfwSetInputMode(window, GLFW_CURSOR, GLFW_CURSOR_NORMAL);
+			data.State.SetReleased();
 		}
-		else
+		if (action == GLFW_PRESS)
 		{
-			glfwSetInputMode(window, GLFW_CURSOR, GLFW_CURSOR_DISABLED);
-			glfwSetCursorPos(window, 0, 0);
+			data.State.SetPressed();
 		}
 	}
 
 	(void)scancode;
-	(void)action;
 	(void)mods;
 }
 
 
 
-bool Window::IsMouseLocked() const
+bool Window::IsCursorLocked() const
 {
 	return (glfwGetInputMode(win, GLFW_CURSOR) == GLFW_CURSOR_DISABLED);
+}
+void Window::ToggleCursorLock()
+{
+	int mode = glfwGetInputMode(win, GLFW_CURSOR);
+	if (mode == GLFW_CURSOR_DISABLED)
+	{
+		glfwSetCursorPos(win, 0, 0);
+		glfwSetInputMode(win, GLFW_CURSOR, GLFW_CURSOR_NORMAL);
+	}
+	else
+	{
+		glfwSetInputMode(win, GLFW_CURSOR, GLFW_CURSOR_DISABLED);
+		glfwSetCursorPos(win, 0, 0);
+	}
 }
 Point3D Window::MoveFromKeys(float speed) const
 {
 	Point3D move;
 
-	if (glfwGetKey(win, GLFW_KEY_A) == GLFW_PRESS) { move.X -= speed; }
-	if (glfwGetKey(win, GLFW_KEY_D) == GLFW_PRESS) { move.X += speed; }
-	if (glfwGetKey(win, GLFW_KEY_S) == GLFW_PRESS) { move.Z -= speed; }
-	if (glfwGetKey(win, GLFW_KEY_W) == GLFW_PRESS) { move.Z += speed; }
-	if (glfwGetKey(win, GLFW_KEY_SPACE) == GLFW_PRESS)      { move.Y += speed; }
-	if (glfwGetKey(win, GLFW_KEY_LEFT_SHIFT) == GLFW_PRESS) { move.Y -= speed; }
-	if (glfwGetKey(win, GLFW_KEY_LEFT_CONTROL) == GLFW_PRESS) { move = move * 10; }
+	if (Keys[GLFW_KEY_A].State.GetDown())				{ move.X -= speed; }
+	if (Keys[GLFW_KEY_D].State.GetDown())				{ move.X += speed; }
+	if (Keys[GLFW_KEY_S].State.GetDown())				{ move.Z -= speed; }
+	if (Keys[GLFW_KEY_W].State.GetDown())				{ move.Z += speed; }
+	if (Keys[GLFW_KEY_SPACE].State.GetDown())			{ move.Y += speed; }
+	if (Keys[GLFW_KEY_LEFT_SHIFT].State.GetDown())		{ move.Y -= speed; }
+	if (Keys[GLFW_KEY_LEFT_CONTROL].State.GetDown())	{ move = move * 10; }
 
 	return move;
 }
@@ -135,7 +152,7 @@ Angle3D Window::SpinFromCursor(float speed) const
 }
 Point2D Window::CursorCentered() const
 {
-	if (IsMouseLocked()) { return Point2D(0, 0); }
+	if (IsCursorLocked()) { return Point2D(0, 0); }
 
 	double x, y;
 	glfwGetCursorPos(win, &x, &y);
@@ -193,6 +210,11 @@ void Window::Run()
 			//glClearColor(0.5f, 0.5f, 0.5f, 1.0f);
 			glClearColor(DefaultColor.R, DefaultColor.G, DefaultColor.B, 1.0f);
 
+			if (Keys[GLFW_KEY_TAB].State.GetPressed())
+			{
+				ToggleCursorLock();
+			}
+
 			timeFunc.T0();
 			FrameFunc(FrameTimeDelta);
 			timeFunc.T1();
@@ -205,6 +227,8 @@ void Window::Run()
 			{
 				glfwSetCursorPos(win, 0, 0);
 			}
+
+			Keys.Frame();
 
 			timePoll.T0();
 			glfwPollEvents();
