@@ -14,6 +14,8 @@
 
 Window::Window(float w, float h)
 {
+	glfwSetErrorCallback(Callback_Error);
+
 	//glfwWindowHint(GLFW_CONTEXT_VERSION_MAJOR, 4);
 	//glfwWindowHint(GLFW_CONTEXT_VERSION_MINOR, 1);
 	glfwWindowHint(GLFW_CONTEXT_VERSION_MAJOR, 3);
@@ -61,6 +63,10 @@ Window::~Window()
 
 
 
+void Window::Callback_Error(int error, const char * description)
+{
+	std::cerr << "GLFW Error: " << error << ": " << description << "\n";
+}
 void Window::Callback_Resize(GLFWwindow * window, int w, int h)
 {
 	Window * win = (Window *)glfwGetWindowUserPointer(window);
@@ -154,8 +160,6 @@ void Window::Run()
 {
 	try
 	{
-	if (InitFunc != NULL) { InitFunc(); }
-
 	glEnable(GL_CULL_FACE);
 	glCullFace(GL_BACK);
 	glFrontFace(GL_CW);
@@ -168,7 +172,6 @@ void Window::Run()
 
 	int w, h;
 	glfwGetFramebufferSize(win, &w, &h);
-	if (ResizeFunc != NULL) { ResizeFunc(w, h); }
 
 	int frameSkipped = 0;
 	int frameCount = 0;
@@ -176,6 +179,10 @@ void Window::Run()
 	TimeMeasure timeSwap;
 	TimeMeasure timePoll;
 
+	if (InitFunc != NULL) { InitFunc(); }
+	if (ResizeFunc != NULL) { ResizeFunc(w, h); }
+
+	FrameTimeLast = glfwGetTime();
 	while (!glfwWindowShouldClose(win))
 	{
 		double FrameTimeCurr = glfwGetTime();

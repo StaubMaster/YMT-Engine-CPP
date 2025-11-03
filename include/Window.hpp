@@ -58,6 +58,7 @@ class Window
 		~Window();
 
 	private:
+		static void Callback_Error(int error, const char * decription);
 		static void Callback_Resize(GLFWwindow * window, int w, int h);
 		static void Callback_Key(GLFWwindow * window, int key, int scancode, int action, int mods);
 

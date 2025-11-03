@@ -352,6 +352,7 @@ void YMT::PolyHedra::PolyHedraParsingEnvironmentData::Parse_Circle(const Parsing
 YMT::PolyHedra * YMT::PolyHedra::Load(const FileContext & file)
 {
 	std::cout << "\n";
+	std::cout << "Loading PolyHedra File " << file.Name() << " ...\n";
 	PolyHedraParsingEnvironmentData data(file);
 	data.Data = new PolyHedra();
 	ParsingCommand::SplitFileIntoCommands(data);
@@ -371,9 +372,14 @@ YMT::PolyHedra * YMT::PolyHedra::Load(const FileContext & file)
 	{
 		data.Data = Cube();
 	}
-	std::cout << ": " << file.Name() << "\n";
-	std::cout << "Count: " << data.Data -> Corners.Count() << " : " << data.Data -> Faces.Count() << "\n";
-	std::cout << "Bound: " << data.Data -> CalcBound() << "\n";
+	std::cout << "Loading PolyHedra File " << file.Name() << " done\n";
+
+	std::cout << "Count:" << " V:" << data.Data -> Corners.Count() << "\n";
+	std::cout << "Count:" << " F:" << data.Data -> Faces.Count() << "\n";
+	AxisBox3D bound = data.Data -> CalcBound();
+	std::cout << "Bound:" << "Limit:" << bound << "\n";
+	std::cout << "Bound:" << "Size:" << bound.Size() << "\n";
+
 	std::cout << "\n";
 	return data.Data;
 }
