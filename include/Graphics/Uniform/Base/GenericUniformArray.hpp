@@ -14,16 +14,17 @@ namespace Uniform
 template <typename UniformType, typename DataType>
 class GenericUniformArray
 {
+	public:
+		const unsigned int	Limit;
 	private:
-		unsigned int	Count;
 		UniformType **	Uniforms;
 
 	public:
-		GenericUniformArray(unsigned int count, std::string name, BaseShader & shader)
+		GenericUniformArray(unsigned int count, std::string name, BaseShader & shader) :
+			Limit(count)
 		{
-			Count = count;
-			Uniforms = new UniformType*[Count];
-			for (unsigned int i = 0; i < Count; i++)
+			Uniforms = new UniformType*[Limit];
+			for (unsigned int i = 0; i < Limit; i++)
 			{
 				std::stringstream ss;
 				ss << name << "[" << i << "]";
@@ -34,7 +35,7 @@ class GenericUniformArray
 		}
 		~GenericUniformArray()
 		{
-			for (unsigned int i = 0; i < Count; i++)
+			for (unsigned int i = 0; i < Limit; i++)
 			{
 				delete Uniforms[i];
 			}
@@ -42,10 +43,16 @@ class GenericUniformArray
 		}
 
 	public:
+		UniformType & operator[](unsigned int index)
+		{
+			return *(Uniforms[index]);
+		}
+
+	public:
 		void PutData(DataType * data, unsigned int count)
 		{
-			if (Count < count) { count = Count; }
-			for (unsigned int i = 0; i < Count; i++)
+			if (Limit < count) { count = Limit; }
+			for (unsigned int i = 0; i < count; i++)
 			{
 				Uniforms[i] -> PutData(data[i]);
 			}

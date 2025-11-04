@@ -33,8 +33,8 @@ class PolyHedra_3D_Instances
 		*/
 
 	public:
-		void Update();
-		void Draw();
+		PolyHedra_3D_Instances & Update();
+		PolyHedra_3D_Instances & Draw();
 };
 
 #endif

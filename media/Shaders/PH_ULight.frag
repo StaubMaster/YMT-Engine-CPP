@@ -48,9 +48,9 @@ uniform LightBase Ambient;
 uniform LightSolar Solar;
 uniform LightSpot Spot;
 
-const uint SpotLimit = uint(2);
-uniform uint SpotCount;
+const uint SpotLimit = uint(4);
 uniform LightSpot[SpotLimit] SpotArr;
+uniform uint SpotCount;
 
 
 
@@ -75,17 +75,8 @@ vec3 CalcLightFactor()
 	vec3 solar_factor = Solar.Base.Intensity * Solar.Base.Color * dot(Solar.Direction, normalize(fs_inn.Normal));
 
 	vec3 spot_factor[SpotLimit];
-	for (uint i = uint(0); i < SpotLimit; i++)
+	for (uint i = uint(0); i < SpotCount; i++)
 	{
-		//vec3 spot_rel = normalize(fs_inn.Absolute - Spot.Position);
-		//float spot_dot;
-		//spot_dot = dot(spot_rel, Spot.Direction);
-		//spot_dot = (spot_dot - Spot.Range.Min) / Spot.Range.Len;
-		//spot_dot = min(1.0, max(0.0, spot_dot));
-		//spot_dot = spot_dot * dot(spot_rel, normalize(fs_inn.Normal));
-		//spot_dot = min(1.0, max(0.0, spot_dot));
-		//spot_factor[i] = Spot.Base.Intensity * Spot.Base.Color * spot_dot;
-
 		vec3 spot_rel = normalize(fs_inn.Absolute - SpotArr[i].Position);
 		float spot_dot;
 		spot_dot = dot(spot_rel, SpotArr[i].Direction);
@@ -99,7 +90,7 @@ vec3 CalcLightFactor()
 	vec3 light_factor = vec3(0.0, 0.0, 0.0);
 	light_factor = max(light_factor, ambient_factor);
 	light_factor = max(light_factor, solar_factor);
-	for (uint i = uint(0); i < SpotLimit; i++)
+	for (uint i = uint(0); i < SpotCount; i++)
 	{
 		light_factor = max(light_factor, spot_factor[i]);
 	}

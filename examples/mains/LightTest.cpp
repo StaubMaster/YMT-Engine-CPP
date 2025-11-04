@@ -41,12 +41,68 @@
 #include "FileContext.hpp"
 #include "Format/Image.hpp"
 
+struct SpotLightEntry
+{
+	Point3D		Position;
+	Point3D		Target;
+	LightSpot	* Light;
+	EntryContainerDynamic<Simple3D_InstData>::Entry *	EntryLight;
+	EntryContainerDynamic<Simple3D_InstData>::Entry *	EntryHolder;
 
+	SpotLightEntry() :
+		Position(),
+		Target(),
+		Light(NULL),
+		EntryLight(NULL),
+		EntryHolder(NULL)
+	{ }
+
+	void LookFromTo(Point3D from, Point3D to)
+	{
+		Position = from;
+		Target = to;
+	}
+	void Update()
+	{
+		Angle3D angle = Angle3D::FromPoint3D(Target - Position);
+		angle.CalcBack();
+
+		if (Light != NULL)
+		{
+			Light -> Pos = Position + angle.rotate(Point3D(0, 0, 3));
+			Light -> Dir = (Target - Position).normalize();
+		}
+
+		if (EntryLight != NULL)
+		{
+			(*EntryLight)[0].Trans.Pos = Position;
+			(*EntryLight)[0].Trans.Rot = angle;
+			(*EntryLight)[0].Trans.Rot.CalcBack();
+		}
+
+		if (EntryHolder != NULL)
+		{
+			(*EntryHolder)[0].Trans.Pos = Position;
+			(*EntryHolder)[0].Trans.Rot = Angle3D(angle.X, 0, 0);
+			(*EntryHolder)[0].Trans.Rot.CalcBack();
+		}
+	}
+
+	void Toggle()
+	{
+		if (Light -> Base.Intensity == 0.0f)
+		{
+			Light -> Base.Intensity = 1.0f;
+		}
+		else
+		{
+			Light -> Base.Intensity = 0.0f;
+		}
+	}
+};
 
 DirectoryContext ImageDir("../media/Images");
 DirectoryContext ShaderDir("../media/Shaders");
-
-
 
 Window * win;
 
@@ -71,16 +127,18 @@ Multiform::SizeRatio2D * Multi_ViewPortSizeRatio;
 Multiform::Trans3D * Multi_View;
 Multiform::Depth * Multi_Depth;
 
+float Light_Ambient_Intensity;
 LightBase Light_Ambient;
 Uniform::LightBase * Uni_Light_Ambient;
 
+float Light_Solar_Intensity;
 LightSolar Light_Solar;
 Uniform::LightSolar * Uni_Light_Solar;
 
-LightSpot Light_Spot;
-Uniform::LightSpot * Uni_Light_Spot;
-
+unsigned int Light_Spot_Limit;
 LightSpot * Light_Spot_Array;
+SpotLightEntry * Light_Spot_Entry_Array;
+
 Uniform::GenericUniformArray<Uniform::LightSpot, LightSpot> * Uni_Light_Spot_Array;
 
 unsigned int Light_Spot_Count;
@@ -116,9 +174,8 @@ void InitShaders()
 
 	Uni_Light_Ambient = new Uniform::LightBase("Ambient", *PH_Shader);
 	Uni_Light_Solar = new Uniform::LightSolar("Solar", *PH_Shader);
-	Uni_Light_Spot = new Uniform::LightSpot("Spot", *PH_Shader);
+	Uni_Light_Spot_Array = new Uniform::GenericUniformArray<Uniform::LightSpot, LightSpot>(Light_Spot_Limit, "SpotArr", *PH_Shader);
 	Uni_Light_Spot_Count = new Uniform::UInt1(1, "SpotCount", *PH_Shader);
-	Uni_Light_Spot_Array = new Uniform::GenericUniformArray<Uniform::LightSpot, LightSpot>(Light_Spot_Count, "SpotArr", *PH_Shader);
 }
 void FreeShaders()
 {
@@ -134,9 +191,8 @@ void FreeShaders()
 
 	delete Uni_Light_Ambient;
 	delete Uni_Light_Solar;
-	delete Uni_Light_Spot;
-	delete Uni_Light_Spot_Count;
 	delete Uni_Light_Spot_Array;
+	delete Uni_Light_Spot_Count;
 }
 
 void AddInstances()
@@ -195,12 +251,13 @@ void FancyInsert(unsigned int ph_idx, Point3D pos, Angle3D rot)
 }
 void Fancify()
 {
-	unsigned int idx_stage =				FancyPolyHedras.Insert(YMT::PolyHedra::Load(FileContext("../media/YMT/Light/Stage.polyhedra.ymt")));
-	unsigned int idx_stage_light =			FancyPolyHedras.Insert(YMT::PolyHedra::Load(FileContext("../media/YMT/Light/Stage_Light.polyhedra.ymt")));
-	unsigned int idx_stage_light_holder =	FancyPolyHedras.Insert(YMT::PolyHedra::Load(FileContext("../media/YMT/Light/Stage_Light_Holder.polyhedra.ymt")));
-	unsigned int idx_truss =				FancyPolyHedras.Insert(YMT::PolyHedra::Load(FileContext("../media/YMT/Light/Truss_Square40cm_Len200cm.polyhedra.ymt")));
-	unsigned int idx_truss_cube =			FancyPolyHedras.Insert(YMT::PolyHedra::Load(FileContext("../media/YMT/Light/Truss_Cube40cm.polyhedra.ymt")));
-	unsigned int idx_chair =				FancyPolyHedras.Insert(YMT::PolyHedra::Load(FileContext("../media/YMT/Light/Chair.polyhedra.ymt")));
+	DirectoryContext YMT_Dir("../media/YMT/Light/");
+	unsigned int idx_stage =				FancyPolyHedras.Insert(YMT::PolyHedra::Load(YMT_Dir.File("Stage.polyhedra.ymt")));
+	unsigned int idx_stage_light =			FancyPolyHedras.Insert(YMT::PolyHedra::Load(YMT_Dir.File("Stage_Light.polyhedra.ymt")));
+	unsigned int idx_stage_light_holder =	FancyPolyHedras.Insert(YMT::PolyHedra::Load(YMT_Dir.File("Stage_Light_Holder.polyhedra.ymt")));
+	unsigned int idx_truss =				FancyPolyHedras.Insert(YMT::PolyHedra::Load(YMT_Dir.File("Truss_Square40cm_Len200cm.polyhedra.ymt")));
+	unsigned int idx_truss_cube =			FancyPolyHedras.Insert(YMT::PolyHedra::Load(YMT_Dir.File("Truss_Cube40cm.polyhedra.ymt")));
+	unsigned int idx_chair =				FancyPolyHedras.Insert(YMT::PolyHedra::Load(YMT_Dir.File("Chair.polyhedra.ymt")));
 
 	for (unsigned int i = 0; i < FancyPolyHedras.Count(); i++)
 	{
@@ -238,23 +295,12 @@ void Fancify()
 	FancyInsert(idx_truss, Point3D(  0, 42, +22), Angle3D(Angle3D::DegreeToRadian(90), 0, 0));
 	FancyInsert(idx_truss, Point3D(+20, 42, +22), Angle3D(Angle3D::DegreeToRadian(90), 0, 0));
 
-	for (unsigned int i = 0; i < Light_Spot_Count; i++)
+	for (unsigned int i = 0; i < Light_Spot_Limit; i++)
 	{
-		Trans3D spotLightTrans(Light_Spot_Array[i].Pos, Angle3D::FromPoint3D(Light_Spot_Array[i].Dir));
-		spotLightTrans.Rot.CalcBack();
-		Point3D rel = spotLightTrans.Rot.rotate(Point3D(0, 0, 3));
-		FancyInsert(idx_stage_light, spotLightTrans.Pos - rel, spotLightTrans.Rot);
-		FancyInsert(idx_stage_light_holder, spotLightTrans.Pos - rel, Angle3D(spotLightTrans.Rot.X, 0, 0));
+		Light_Spot_Entry_Array[i].EntryLight = FancyPolyHedraInstances[idx_stage_light] -> Alloc(1);
+		Light_Spot_Entry_Array[i].EntryHolder = FancyPolyHedraInstances[idx_stage_light_holder] -> Alloc(1);
 	}
 
-	//FancyInsert(idx_chair, Point3D(-10, 4, 10), Angle3D(Angle3D::DegreeToRadian(180), Angle3D::DegreeToRadian(180), 0));
-	//FancyInsert(idx_chair, Point3D(- 5, 4, 10), Angle3D(0, Angle3D::DegreeToRadian(180), 0));
-	//FancyInsert(idx_chair, Point3D(  0, 4, 10), Angle3D(Angle3D::DegreeToRadian(180), 0, 0));
-	//FancyInsert(idx_chair, Point3D(  0, 4, 00), Angle3D(0, 0, 0));
-	//FancyInsert(idx_chair, Point3D(-10, 4, 00), Angle3D(0, 0, 0));
-	//FancyInsert(idx_chair, Point3D(-10, 5, 00), Angle3D(0, 0, 0));
-	//FancyInsert(idx_chair, Point3D(-10, 6, 00), Angle3D(0, 0, 0));
-	
 	for (int y = 0; y < 5; y++)
 	{
 		for (int x = -5; x <= +5; x++)
@@ -318,6 +364,10 @@ void Free()
 	std::cout << "Free 1\n";
 }
 
+void Update(double timeDelta)
+{
+	(void)timeDelta;
+}
 void Frame(double timeDelta)
 {
 	if (win -> IsCursorLocked())
@@ -329,33 +379,49 @@ void Frame(double timeDelta)
 	//Light_Spot.Pos = ViewTrans.Pos;
 	//Light_Spot.Dir = ViewTrans.Rot.rotate(Point3D(0, 0, 1));
 
+	if (win -> Keys[GLFW_KEY_1].State.GetPressed())
+	{
+		if (Light_Ambient.Intensity == 0.0f)
+		{ Light_Ambient.Intensity = Light_Ambient_Intensity; }
+		else
+		{ Light_Ambient.Intensity = 0.0f; }
+	}
+	if (win -> Keys[GLFW_KEY_2].State.GetPressed())
+	{
+		if (Light_Solar.Base.Intensity == 0.0f)
+		{ Light_Solar.Base.Intensity = Light_Solar_Intensity; }
+		else
+		{ Light_Solar.Base.Intensity = 0.0f; }
+	}
+	if (win -> Keys[GLFW_KEY_3].State.GetPressed()) { Light_Spot_Entry_Array[0].Toggle(); }
+	if (win -> Keys[GLFW_KEY_4].State.GetPressed()) { Light_Spot_Entry_Array[1].Toggle(); }
+	if (win -> Keys[GLFW_KEY_5].State.GetPressed()) { Light_Spot_Entry_Array[2].Toggle(); }
+
+	for (unsigned int i = 0; i < Light_Spot_Limit; i++)
+	{
+		Light_Spot_Entry_Array[i].Update();
+	}
+
 	PH_Shader -> Use();
 	Uni_Light_Ambient -> PutData(Light_Ambient);
 	Uni_Light_Solar -> PutData(Light_Solar);
-	Uni_Light_Spot -> PutData(Light_Spot);
+	for (unsigned int i = 0; i < Light_Spot_Limit; i++)
+	{
+		if (Light_Spot_Entry_Array[i].Light != NULL)
+		{
+			(*Uni_Light_Spot_Array)[i].PutData(*(Light_Spot_Entry_Array[i].Light));
+		}
+	}
 	Uni_Light_Spot_Count -> PutData(&Light_Spot_Count);
-	Uni_Light_Spot_Array -> PutData(Light_Spot_Array, Light_Spot_Count);
 
-	(*Entrys[0])[0].Trans.Pos = Point3D(0, 0, 0);
-	//(*Entrys[0])[0].Trans.Rot = ViewTrans.Rot;
-	(*Entrys[0])[0].Trans.Rot = Angle3D();
+	(*Entrys[0])[0].Trans.Pos = Point3D(0, 10, 0);
+	(*Entrys[0])[0].Trans.Rot.X += 0.01f;
 	(*Entrys[0])[0].Trans.Rot.CalcBack();
 
-	PH0_Instances -> Update();
-	if (PH0_Instances -> Texture != NULL)
-	{
-		PH0_Instances -> Texture -> Bind();
-	}
-	PH0_Instances -> Draw();
-
+	PH0_Instances -> Update().Draw();
 	for (unsigned int i = 0; i < FancyPolyHedraInstances.Count(); i++)
 	{
-		FancyPolyHedraInstances[i] -> Update();
-		if (FancyPolyHedraInstances[i] -> Texture != NULL)
-		{
-			FancyPolyHedraInstances[i] -> Texture -> Bind();
-		}
-		FancyPolyHedraInstances[i] -> Draw();
+		FancyPolyHedraInstances[i] -> Update().Draw();
 	}
 }
 
@@ -380,37 +446,36 @@ int main()
 	win -> FreeFunc = Free;
 	win -> ResizeFunc = Resize;
 
-	win -> DefaultColor = Color(0.25f, 0.0f, 0.0f);
+	win -> DefaultColor = Color(0.0f, 0.0f, 0.0f);
 
 	ViewTrans = Trans3D(Point3D(0, 10, -65), Angle3D(0, 0, 0));
-	//ViewTrans = Trans3D(Point3D(0, 10, -10), Angle3D(0, 0, 0));
 	ViewDepth.Factors = DepthFactors(0.1f, 1000.0f);
 	ViewDepth.Range = Range(0.8f, 1.0f);
 	ViewDepth.Color = win -> DefaultColor;
 
-	//Light_Ambient = LightBase(0.25f, Color(1.0f, 0.0f, 0.0f));
-	Light_Ambient = LightBase(0.05f, Color(1.0f, 1.0f, 1.0f));
-	//Light_Solar = LightSolar(0.1f, Color(0.0f, 0.0f, 1.0f), Point3D(+1, -3, +2).normalize());
-	Light_Solar = LightSolar(0.2f, Color(1.0f, 1.0f, 1.0f), Point3D(+1, -3, +2).normalize());
-	//Light_Spot = LightSpot(1.0f, Color(0.0f, 1.0f, 0.0f), Point3D(0, 0, 0), Point3D(0, 0, 0), Range(0.8, 0.95));
-	//Light_Spot = LightSpot(1.0f, Color(1.0f, 1.0f, 1.0f), Point3D(0, 0, 0), Point3D(0, 0, 0), Range(0.3, 0.95));
+	Light_Ambient_Intensity = 0.01f;
+	Light_Solar_Intensity = 0.2f;
+	Light_Ambient = LightBase(Light_Ambient_Intensity, Color(1.0f, 1.0f, 1.0f));
+	Light_Solar = LightSolar(Light_Solar_Intensity, Color(1.0f, 1.0f, 1.0f), Point3D(+1, -3, +2).normalize());
 
-	//SpotLightTrans0 = Trans3D(Point3D(+32, 30, -10), Angle3D(Angle3D::DegreeToRadian(-60), Angle3D::DegreeToRadian(-40), 0));
+	Light_Spot_Limit = 4;
+	Light_Spot_Array = new LightSpot[Light_Spot_Limit];
+	Light_Spot_Array[0] = LightSpot(1.0f, Color(0.0f, 1.0f, 0.0f), Point3D(), Point3D(), Range(0.8, 0.95));
+	Light_Spot_Array[1] = LightSpot(1.0f, Color(0.0f, 0.0f, 1.0f), Point3D(), Point3D(), Range(0.8, 0.95));
+	Light_Spot_Array[2] = LightSpot(1.0f, Color(1.0f, 0.0f, 0.0f), Point3D(), Point3D(), Range(0.8, 0.95));
+	Light_Spot_Array[3] = LightSpot(1.0f, Color(1.0f, 1.0f, 1.0f), Point3D(), Point3D(), Range(0.8, 0.95));
+	Light_Spot_Count = 3;
 
-	Trans3D SpotLightTrans0 = Trans3D(Point3D(+32, 30, -10), Angle3D::FromPoint3D(Point3D(0, 0, 0) - Point3D(+32, 30, -10)));
-	SpotLightTrans0.Rot.CalcBack();
+	Light_Spot_Entry_Array = new SpotLightEntry[Light_Spot_Limit];
+	Light_Spot_Entry_Array[0].LookFromTo(Point3D(+32, 30, -10), Point3D(0, 0, 0));
+	Light_Spot_Entry_Array[1].LookFromTo(Point3D(+32, 30, +10), Point3D(0, 0, 0));
+	Light_Spot_Entry_Array[2].LookFromTo(Point3D(-32, 30, -10), Point3D(0, 0, 0));
+	Light_Spot_Entry_Array[3].LookFromTo(Point3D(-32, 30, +10), Point3D(0, 0, 0));
 
-	Trans3D SpotLightTrans1 = Trans3D(Point3D(-32, 30, -10), Angle3D::FromPoint3D(Point3D(0, 0, 0) - Point3D(-32, 30, -10)));
-	SpotLightTrans1.Rot.CalcBack();
-
-	Light_Spot = LightSpot(1.0f, Color(1.0f, 1.0f, 1.0f), SpotLightTrans0.Pos + SpotLightTrans0.Rot.rotate(Point3D(0, 0, +3)), SpotLightTrans0.Rot.rotate(Point3D(0, 0, 1)), Range(0.8, 0.95));
-
-	Light_Spot_Count = 2;
-	Light_Spot_Array = new LightSpot[Light_Spot_Count];
-
-	Light_Spot_Array[0] = LightSpot(1.0f, Color(0.0f, 1.0f, 0.0f), SpotLightTrans0.Pos + SpotLightTrans0.Rot.rotate(Point3D(0, 0, +3)), SpotLightTrans0.Rot.rotate(Point3D(0, 0, 1)), Range(0.8, 0.95));
-
-	Light_Spot_Array[1] = LightSpot(1.0f, Color(0.0f, 0.0f, 1.0f), SpotLightTrans1.Pos + SpotLightTrans1.Rot.rotate(Point3D(0, 0, +3)), SpotLightTrans1.Rot.rotate(Point3D(0, 0, 1)), Range(0.8, 0.95));
+	Light_Spot_Entry_Array[0].Light = &Light_Spot_Array[0];
+	Light_Spot_Entry_Array[1].Light = &Light_Spot_Array[1];
+	Light_Spot_Entry_Array[2].Light = &Light_Spot_Array[2];
+	Light_Spot_Entry_Array[3].Light = &Light_Spot_Array[3];
 
 
 
@@ -420,6 +485,7 @@ int main()
 
 
 
+	delete[] Light_Spot_Entry_Array;
 	delete[] Light_Spot_Array;
 	delete win;
 
