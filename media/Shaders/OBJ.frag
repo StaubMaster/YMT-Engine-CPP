@@ -113,6 +113,6 @@ void main()
 	//col = abs(normalize(fs_inn.Normal));	//	Normals
 	//col = vec3(fs_inn.Tex.x, 0.0, fs_inn.Tex.y);	//	Texture
 
-	col = vec3(1,1,1);
+	//col = vec3(1,1,1);
 	Color = vec4(col, 1);
 }

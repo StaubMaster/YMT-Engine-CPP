@@ -37,11 +37,11 @@ endif
 
 
 MAINS = \
-	LightTest.cpp
+	OBJ_Parse.cpp
+#	LightTest.cpp
 #	DefaultInstances.cpp
 #	test.cpp
-#	ParticleSimulation.cpp \
-#	OBJ_Parse.cpp \
+#	ParticleSimulation.cpp
 
 EXES = $(MAINS:.cpp=.exe)
 

@@ -1,10 +1,10 @@
 #include <iostream>
 #include "OpenGL/openGL.h"
 
-#include "OBJ/OBJ.hpp"
-#include "OBJ/OBJ_Main.hpp"
-#include "OBJ/OBJ_3D_BufferArray.hpp"
-#include "OBJ/OBJ_3D_Shader.hpp"
+#include "DataStruct/Main/Waveform/OBJ.hpp"
+#include "DataStruct/Main/Waveform/OBJ_Main.hpp"
+#include "DataStruct/Main/Waveform/OBJ_3D_BufferArray.hpp"
+#include "DataStruct/Main/Waveform/OBJ_3D_Shader.hpp"
 
 #include "Graphics/Multiform/Data/SizeRatio2D.hpp"
 #include "Graphics/Multiform/Data/Trans3D.hpp"
@@ -15,13 +15,13 @@
 #include "DataStruct/AxisBox3D.hpp"
 #include "DataO.hpp"
 
-#include "TextureArray.hpp"
-#include "PolyHedra.hpp"
+#include "Texture/Texture2DArray.hpp"
+#include "PolyHedra/PolyHedra.hpp"
 #include "Window.hpp"
 
-#include "FileManager/DirectoryContext.hpp"
-#include "FileManager/FileContext.hpp"
-#include "FileManager/Format/Image.hpp"
+#include "DirectoryContext.hpp"
+#include "FileContext.hpp"
+#include "Format/Image.hpp"
 
 
 
@@ -35,7 +35,7 @@ Window * win;
 Trans3D ViewTrans;
 Depth	ViewDepth;
 
-TextureArray * Tex0;
+Texture2DArray * Tex0;
 int OBJ_Count;
 OBJ ** OBJs;
 Point3D * OBJs_Center;
@@ -99,7 +99,7 @@ void Init()
 
 	InitShaders();
 
-	Tex0 = new TextureArray(ImageDir.File("Orientation.png"));
+	Tex0 = new Texture2DArray(ImageDir.File("Orientation.png"));
 
 	OBJ_BufferArray = new OBJ_3D_BufferArray * [OBJ_Count];
 	for (int i = 0; i < OBJ_Count; i++)
@@ -173,7 +173,7 @@ void Update_ObjTrans(double timeDelta)
 		OBJs_Trans[i].Rot.CalcBack();
 		OBJs_Trans[i].Pos = OBJs_Trans[i].Pos - (OBJs_Trans[i].Rot.rotate(OBJs_Center[i]));
 
-		if (!win -> IsMouseLocked())
+		if (!win -> IsCursorLocked())
 		{
 			OBJs_Trans[i].Pos = OBJs_Trans[i].Pos + ViewTrans.Rot.rotate(win -> MoveFromKeys(2.0f * timeDelta));
 		}
@@ -206,7 +206,7 @@ void Update_ObjTrans(double timeDelta)
 
 void Frame(double timeDelta)
 {
-	if (win -> IsMouseLocked())
+	if (win -> IsCursorLocked())
 	{
 		ViewTrans.TransformFlatX(win -> MoveFromKeys(2.0f * timeDelta), win -> SpinFromCursor(0.2f * timeDelta));
 	}
@@ -268,7 +268,8 @@ int main(int argc, char * argv [])
 		glfwTerminate();
 		return -1;
 	}
-	win -> DefaultColor = Color(0.25f, 0.0f, 0.0f);
+	//win -> DefaultColor = Color(0.25f, 0.0f, 0.0f);
+	win -> DefaultColor = Color(0.0f, 0.0f, 0.0f);
 
 
 

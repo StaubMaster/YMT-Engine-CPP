@@ -1,0 +1,28 @@
+
+should be simple
+something new
+
+not sure where to use it yet
+maybe for Voxels but that is far away
+and I would probably just do it for fun
+
+
+
+Perlin Noise:
+
+I made already
+in VoxelGL
+but it could probably be improved
+
+
+
+
+Static Noise:
+
+last time I made it I basically just calculated a hash of coordinates
+the hash is 256 Bits but a standerd 32 Bits would probably be enough
+
+for getting an actual output the value would be &ed or %ed
+but then the problem is that the probability of non n^2 values are not even
+
+

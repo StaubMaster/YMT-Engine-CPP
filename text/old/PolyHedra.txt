@@ -1,6 +1,6 @@
 
 
-show should Data be stored ?
+how should Data be stored ?
 
 
 one problem is "synchronization" between Skin and PolyHedra

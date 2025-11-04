@@ -1,0 +1,12 @@
+
+kinda tedious
+something new
+
+would be in examples so maybe do that before
+
+
+
+I found the old Spline stuff
+it is very badly named and hardcoded into some other stuff
+need to seperate it out into more useful classes
+

@@ -1,0 +1,19 @@
+
+should be simple
+would make things more standerdized internally
+would not change things externally
+
+dosent need anything else
+
+
+
+make more Bases
+bring back the FloatN stuff
+allow FloatN to be used by itself
+as just an "unnamed" type
+
+
+
+do the same with Attributes
+
+

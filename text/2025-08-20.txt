@@ -1,7 +1,0 @@
-
-OpenCL
-	I was tinking about using a single Buffer for reading and writing
-	now that I think about it, that is a dumb idea
-	because that might cause race condition stuff
-
-

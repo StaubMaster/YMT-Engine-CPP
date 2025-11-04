@@ -1,0 +1,15 @@
+
+should be simple
+would changes things internally and externally
+
+rename Engine before this
+although changing the clone afterward would not be that hard
+but probably still better to do this before
+
+
+
+/examples are very coplex at this point
+put them into their own project
+keep the examples here simple
+
+

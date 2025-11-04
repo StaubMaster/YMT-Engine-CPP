@@ -1,0 +1,47 @@
+
+should be simple
+would change things internally and externally
+
+probably do Matrix before this
+
+
+
+right now Angle3D need to call CalcBack of CalcFore
+to calc the matrix
+this is kind of irrelivant since using a Transposed Matrix does the same thing
+so allways calculate the matrix the same internally
+and the have rotateFore and rotateBack again
+
+probably dont name them that
+since there is also "inverted" angles
+one refers to Axis Order
+the other refers to having an Angle that brings a Point back to its initial point
+
+so basically:
+if I have an angle a0
+an angle a1 that is the inverse of a0
+and an arbitrary point p
+
+then: a1.rotateFore(a0.rotateFore(p)) == p
+and : a1.rotateBack(a0.rotateBack(p)) == p
+
+but : a1.rotateFore(a0.rotateBack(p)) != p
+and : a1.rotateBack(a0.rotateFore(p)) != p
+
+use operators for this stuff ?
+should rotating a Point be +- or */ ?
+inverting should probably be -sign
+there are no */ signs so +- it is
+unless inverted rotation can also be done recalculating
+which case operators dont work ?
+they do work but there would be 4 cases to differentiante
+
+have operators but also functions that do the same thing
+rotateNormalFore
+rotateInvertFore
+rotateNormalBack
+rotateInvertBack
+maybe think of better names
+
+
+

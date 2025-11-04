@@ -1,0 +1,16 @@
+
+should be simple
+would changes things internally and externally
+
+do before other things that require the project
+
+
+
+rename Project
+CPP- should be at the beginning
+CPP-YMT-Engine maybe
+or just CPP-Engine
+CPP-3D-Engibe
+CPP-GL-Engibe
+rename before making other projects that include this
+but basically everything I want to do includes renaming first

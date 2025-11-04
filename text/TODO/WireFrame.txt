@@ -1,0 +1,28 @@
+
+probably somewhat difficult / tedious
+
+something new
+
+
+not sure where to use it yet
+
+
+
+
+make a general one for PolyHedra ?
+modified version of PolyHedra that uses Edges instead of Faces
+
+everything else like texture and Normals would also not be needed
+
+
+
+also something like AxisBox3D and Point2Point Lines would also be Wires
+should those have their own Shaders
+or make a WireFrame PolyHedra for them
+and then get transformed to where they are needed
+
+that would also mean that they need scaling
+which isnt currently being done
+but thats very simple
+
+

@@ -1,7 +1,0 @@
-
-for storing Memory
-and outputting as Text
-in 1000 and 1024
-
-Returned from:
-	FileInfo

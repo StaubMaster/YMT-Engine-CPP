@@ -1,0 +1,32 @@
+
+
+probably somewhat difficult / tedious
+
+something new
+
+
+
+needed by Particle Simulator
+
+
+
+in the C# there is what is basically a simple vector Text thingy
+in VoxelGL there is a Texture Text thing
+
+the interpretation of charCode to Pallet / Image Index is the same / similar
+
+so make a Base Text Buffer / Shader
+or just make one for now and then make a Base later
+
+which one would be better
+both are mostly copying with improving
+so it dosent really matter ?
+
+
+
+the main part is probably the UI scaling stuff
+
+also the old verions recalculate the Text stuff every Frame
+also use a EntryContainer system
+
+

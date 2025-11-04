@@ -1,0 +1,13 @@
+
+probably tedious
+
+not needed but would organize things
+
+
+
+a Collection of EntryInstances
+which arent currently called that because the Names arent that good currently
+
+basically what I already have in the C# engine
+
+

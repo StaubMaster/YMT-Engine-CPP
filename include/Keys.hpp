@@ -20,6 +20,12 @@ automatically create arrays
 these wont ever change so nah
 */
 
+/*
+	right now these still use GLFW Tokens.
+	which act weird sometimes dont properly work sometimes
+	might just be IntelliSense not understanding my genius
+*/
+
 struct KeyState
 {
 	unsigned char State;

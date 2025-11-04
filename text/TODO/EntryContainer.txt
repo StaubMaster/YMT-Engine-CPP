@@ -1,0 +1,12 @@
+
+
+simple
+
+not needed but would be good
+
+
+
+right now reordering is done as soon as an entry is disposed
+it should (have an option) to only do that once Update() is called
+
+

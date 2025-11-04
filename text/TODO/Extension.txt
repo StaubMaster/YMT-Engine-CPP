@@ -1,0 +1,10 @@
+
+unrelated
+
+
+
+put the chrome extensions into a repo
+maybe give it a ui so the parts can be turned on and off
+stop doing it with a timer
+
+
