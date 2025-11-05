@@ -269,7 +269,8 @@ int main(int argc, char * argv [])
 		return -1;
 	}
 	//win -> DefaultColor = Color(0.25f, 0.0f, 0.0f);
-	win -> DefaultColor = Color(0.0f, 0.0f, 0.0f);
+	//win -> DefaultColor = Color(0.0f, 0.0f, 0.0f);
+	win -> DefaultColor = Color(1, 1, 1);
 
 
 

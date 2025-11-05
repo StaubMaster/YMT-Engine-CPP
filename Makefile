@@ -1,11 +1,39 @@
 
 
 
+################################################################
+#                           OS Stuff                           #
+################################################################
+
+ifeq ($(OS), Windows_NT)
+	CheckOS := Windows
+else
+	CheckOS := $(shell uname -s)
+endif
+
 FANCY_NAME := YMT
+
+ifeq ($(CheckOS), Windows)
+
+FANCY_ECHO := echo -e
 COLOR_REPO := \e[38;2;127;127;127m
 COLOR_TYPE := \e[38;2;127;255;127m
 COLOR_FILE := \e[38;2;127;127;255m
 COLOR_NONE := \e[m
+
+endif
+
+ifeq ($(CheckOS), Darwin)
+
+FANCY_ECHO := echo
+COLOR_REPO := \033[38;2;127;127;127m
+COLOR_TYPE := \033[38;2;127;255;127m
+COLOR_FILE := \033[38;2;127;127;255m
+COLOR_NONE := \033[m
+
+endif
+
+################################################################
 
 
 
@@ -137,32 +165,32 @@ WORKING_FILES_ABS_OBJ := $(addprefix $(DIR_OBJ)/, $(WORKING_FILES_OBJ))
 ################################################################
 
 $(NAME) : repos $(FILES_ABS_OBJ)
-	@echo -e "$(COLOR_REPO)$(FANCY_NAME): $(COLOR_TYPE)Target: $(COLOR_FILE)$@$(COLOR_NONE)"
+	@$(FANCY_ECHO) "$(COLOR_REPO)$(FANCY_NAME): $(COLOR_TYPE)Target: $(COLOR_FILE)$@$(COLOR_NONE)"
 	@ar -rcs $(NAME) $(FILES_ABS_OBJ)
 
 work: repos
-	@echo -e "$(COLOR_REPO)$(FANCY_NAME): $(COLOR_TYPE)Target: $(COLOR_FILE)$@$(COLOR_NONE)"
+	@$(FANCY_ECHO) "$(COLOR_REPO)$(FANCY_NAME): $(COLOR_TYPE)Target: $(COLOR_FILE)$@$(COLOR_NONE)"
 	@rm -f $(WORKING_FILES_ABS_OBJ)
 	@$(MAKE) $(WORKING_FILES_ABS_OBJ)
 	@$(MAKE) $(NAME)
 
 all: repos_all
-	@echo -e "$(COLOR_REPO)$(FANCY_NAME): $(COLOR_TYPE)Target: $(COLOR_FILE)$@$(COLOR_NONE)"
+	@$(FANCY_ECHO) "$(COLOR_REPO)$(FANCY_NAME): $(COLOR_TYPE)Target: $(COLOR_FILE)$@$(COLOR_NONE)"
 	@$(MAKE) $(REPOS)
 	@$(MAKE) $(FILES_ABS_OBJ)
 	@$(MAKE) $(NAME)
 
 clean: repos_clean
-	@echo -e "$(COLOR_REPO)$(FANCY_NAME): $(COLOR_TYPE)Target: $(COLOR_FILE)$@$(COLOR_NONE)"
+	@$(FANCY_ECHO) "$(COLOR_REPO)$(FANCY_NAME): $(COLOR_TYPE)Target: $(COLOR_FILE)$@$(COLOR_NONE)"
 	@rm -f $(FILES_ABS_OBJ)
 
 fclean: repos_fclean
-	@echo -e "$(COLOR_REPO)$(FANCY_NAME): $(COLOR_TYPE)Target: $(COLOR_FILE)$@$(COLOR_NONE)"
+	@$(FANCY_ECHO) "$(COLOR_REPO)$(FANCY_NAME): $(COLOR_TYPE)Target: $(COLOR_FILE)$@$(COLOR_NONE)"
 	@$(MAKE) clean
 	@rm -f $(NAME)
 
 re:
-	@echo -e "$(COLOR_REPO)$(FANCY_NAME): $(COLOR_TYPE)Target: $(COLOR_FILE)$@$(COLOR_NONE)"
+	@$(FANCY_ECHO) "$(COLOR_REPO)$(FANCY_NAME): $(COLOR_TYPE)Target: $(COLOR_FILE)$@$(COLOR_NONE)"
 	@$(MAKE) fclean
 	@$(MAKE) all
 
@@ -175,7 +203,7 @@ re:
 
 
 $(DIR_OBJ)/%.o : $(DIR_SRC)/%.cpp
-	@echo -e "$(COLOR_REPO)$(FANCY_NAME): $(COLOR_TYPE)Compiling: $(COLOR_FILE)$@$(COLOR_NONE)"
+	@$(FANCY_ECHO) "$(COLOR_REPO)$(FANCY_NAME): $(COLOR_TYPE)Compiling: $(COLOR_FILE)$@$(COLOR_NONE)"
 	@mkdir -p $(dir $@)
 	@$(COMPILER) $(FLAGS) $(ARGS_INCLUDES) -c $< -o $@
 
@@ -215,20 +243,20 @@ REPOS_DIR := other/
 REPOS = 
 
 repos: repos_clone
-#	echo -e "$(COLOR_REPO)$(FANCY_NAME): $(COLOR_TYPE)Target: $(COLOR_FILE)$@$(COLOR_NONE)"
-	@echo -e "$(COLOR_REPO)$(FANCY_NAME): $(COLOR_TYPE)Compiling: $(COLOR_FILE)$@$(COLOR_NONE)"
+#	$(FANCY_ECHO) "$(COLOR_REPO)$(FANCY_NAME): $(COLOR_TYPE)Target: $(COLOR_FILE)$@$(COLOR_NONE)"
+	@$(FANCY_ECHO) "$(COLOR_REPO)$(FANCY_NAME): $(COLOR_TYPE)Compiling: $(COLOR_FILE)$@$(COLOR_NONE)"
 	@$(foreach repo, $(REPOS), \
 		$(MAKE) -C $(repo) ; \
 	)
 
 repos_all: repos_clone
-#	@echo -e "$(COLOR_REPO)$(FANCY_NAME): $(COLOR_TYPE)Target: $(COLOR_FILE)$@$(COLOR_NONE)"
+#	@$(FANCY_ECHO) "$(COLOR_REPO)$(FANCY_NAME): $(COLOR_TYPE)Target: $(COLOR_FILE)$@$(COLOR_NONE)"
 	@$(foreach repo, $(REPOS), \
 		$(MAKE) -C $(repo) all ; \
 	)
 
 repos_clean:
-#	@echo -e "$(COLOR_REPO)$(FANCY_NAME): $(COLOR_TYPE)Target: $(COLOR_FILE)$@$(COLOR_NONE)"
+#	@$(FANCY_ECHO) "$(COLOR_REPO)$(FANCY_NAME): $(COLOR_TYPE)Target: $(COLOR_FILE)$@$(COLOR_NONE)"
 	@$(foreach repo, $(REPOS), \
 		if [ -d $(repo) ] ; then \
 			$(MAKE) -C $(repo) clean ; \
@@ -236,7 +264,7 @@ repos_clean:
 	)
 
 repos_fclean:
-#	@echo -e "$(COLOR_REPO)$(FANCY_NAME): $(COLOR_TYPE)Target: $(COLOR_FILE)$@$(COLOR_NONE)"
+#	@$(FANCY_ECHO) "$(COLOR_REPO)$(FANCY_NAME): $(COLOR_TYPE)Target: $(COLOR_FILE)$@$(COLOR_NONE)"
 	@$(foreach repo, $(REPOS), \
 		if [ -d $(repo) ] ; then \
 			$(MAKE) -C $(repo) fclean ; \
@@ -244,13 +272,13 @@ repos_fclean:
 	)
 
 repos_clone:
-#	echo -e "$(COLOR_REPO)$(FANCY_NAME): $(COLOR_TYPE)Target: $(COLOR_FILE)$@$(COLOR_NONE)"
+#	$(FANCY_ECHO) "$(COLOR_REPO)$(FANCY_NAME): $(COLOR_TYPE)Target: $(COLOR_FILE)$@$(COLOR_NONE)"
 	$(foreach repo, $(REPOS), \
 		$(MAKE) $(repo)_clone ; \
 	)
 
 repos_rm:
-#	@echo -e "$(COLOR_REPO)$(FANCY_NAME): $(COLOR_TYPE)Target: $(COLOR_FILE)$@$(COLOR_NONE)"
+#	@$(FANCY_ECHO) "$(COLOR_REPO)$(FANCY_NAME): $(COLOR_TYPE)Target: $(COLOR_FILE)$@$(COLOR_NONE)"
 #	@rm -rf $(REPOS)
 	@$(foreach repo, $(REPOS), \
 		$(MAKE) $(repo)_rm ; \
@@ -299,7 +327,7 @@ $(FM_REPO)_clone :
 	@if ! [ -d $(FM_REPO) ] ; then \
 		git clone $(FM_HTTPS) $(FM_REPO) -q ; \
 	fi
-#		echo -e "$(COLOR_REPO)$(FANCY_NAME): $(COLOR_TYPE)Cloning: $(COLOR_FILE)FileManager$(COLOR_NONE)"; \
+#		$(FANCY_ECHO) "$(COLOR_REPO)$(FANCY_NAME): $(COLOR_TYPE)Cloning: $(COLOR_FILE)FileManager$(COLOR_NONE)"; \
 
 $(FM_REPO)_rm :
 	@rm -rf $(FM_REPO)
