@@ -1,0 +1,32 @@
+
+not even sure what exactly I want to do here
+
+might be useful
+
+
+
+glGet is a group of functions that can be used to get various internal openGL info
+
+like the current Active Program, which I am currently storing myself
+dont need to do that
+
+
+
+it can also get Limits like for Vertex Attributes
+make a check for Attributes that check if the index is above the max ?
+then throw an error ?
+
+it would at least tell when something dosent work
+instead of having to figure out why
+
+
+
+this is kind of part of the whoe Debugging thing
+
+function that shows all Limit info
+function that shows all variable info
+	maybe not all but just "global" stuff
+funcitons that show variable info for specific things
+	like all Texture data like if it loops and such
+
+
