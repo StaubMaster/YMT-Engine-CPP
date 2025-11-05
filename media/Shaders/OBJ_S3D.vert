@@ -51,6 +51,13 @@ layout(location = 7) in vec3	VSpecularColor;
 
 layout(location = 20) in vec3	IPos;
 layout(location = 21) in mat3	IRot;
+//	Max on Mac is 16
+//	these are needed
+/*
+	Col might be doable with primitiveID or whatever its called
+	all the Material stuff could be done with a SSBO
+	and the Primitive only stores the Material
+*/
 
 
 
@@ -95,13 +102,12 @@ void main()
 	vs_out.Relative = (vs_out.Absolute - View.Pos) * View.Rot;
 	gl_Position = proj(vs_out.Relative);
 
-	//vs_out.Normal = DSA(VNorm, ISin, ICos);
 	vs_out.Normal = VNorm * IRot;
 	vs_out.Tex = VTex;
-	vs_out.Col = VCol;
-
-	vs_out.AmbientColor = VAmbientColor;
-	vs_out.DiffuseColor = VDiffuseColor;
-	vs_out.SpecularPower = VSpecularPower;
-	vs_out.SpecularColor = VSpecularColor;
+//	vs_out.Col = VCol;
+//
+//	vs_out.AmbientColor = VAmbientColor;
+//	vs_out.DiffuseColor = VDiffuseColor;
+//	vs_out.SpecularPower = VSpecularPower;
+//	vs_out.SpecularColor = VSpecularColor;
 }

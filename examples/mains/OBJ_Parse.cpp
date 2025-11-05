@@ -11,6 +11,9 @@
 #include "Graphics/Multiform/Data/Depth.hpp"
 #include "Graphics/Multiform/Data/LInter.hpp"
 
+#include "Graphics/Shader/ShaderCode.hpp"
+#include "Graphics/Shader/BaseShader.hpp"
+
 #include "DataStruct/LInter.hpp"
 #include "DataStruct/AxisBox3D.hpp"
 #include "DataO.hpp"
@@ -55,6 +58,31 @@ bool ColorToTex_Direction = false;
 bool ColorToTex_Direction_last = false;
 
 
+void Show_GL_Info()
+{
+	int dataInt;
+	glGetIntegerv(GL_MAX_VERTEX_ATTRIBS, &dataInt);
+	std::cout << "GL_MAX_VERTEX_ATTRIBS: " << dataInt << "\n";
+	/* 16  on Mac */
+
+	glGetIntegerv(GL_MAX_UNIFORM_LOCATIONS, &dataInt);
+	std::cout << "GL_MAX_UNIFORM_LOCATIONS: " << dataInt << "\n";
+	/*	16 on Mac
+
+		https://registry.khronos.org/OpenGL-Refpages/gl4/html/glGet.xhtml
+
+		GL_MAX_UNIFORM_LOCATIONS
+			data returns one value, the maximum number of explicitly assignable uniform locations, which must be at least 1024.
+
+		GL_MAX_UNIFORM_LOCATIONS is accepted only if the GL version is 4.3 or greater.
+	*/
+
+	glGetIntegerv(GL_MAX_VERTEX_OUTPUT_COMPONENTS, &dataInt);
+	std::cout << "GL_MAX_VERTEX_OUTPUT_COMPONENTS: " << dataInt << "\n";
+
+	glGetIntegerv(GL_MAX_FRAGMENT_INPUT_COMPONENTS, &dataInt);
+	std::cout << "GL_MAX_FRAGMENT_INPUT_COMPONENTS: " << dataInt << "\n";
+}
 
 void InitShaders()
 {
@@ -62,6 +90,40 @@ void InitShaders()
 
 	ColorToTex = LInter::T0();
 	ColorToTex_Direction = false;
+
+	std::cout << "\n";
+	Show_GL_Info();
+	std::cout << "\n";
+	{
+		std::cout << "OBJ\n";
+		BaseShader * Test_Shader = new BaseShader((const ShaderCode []) {
+			ShaderCode::FromFile(ShaderDir.File("OBJ_S3D.vert")),
+			ShaderCode::FromFile(ShaderDir.File("OBJ.frag"))
+		}, 2);
+		Uniform::SizeRatio2D * Uni_ViewPortSizeRatio = new Uniform::SizeRatio2D("ViewPortSizeRatio", *Test_Shader);
+		Uniform::Trans3D * Uni_View = new Uniform::Trans3D("View", *Test_Shader);
+		Uniform::Depth * Uni_Depth = new Uniform::Depth("Depth", *Test_Shader);
+		delete Uni_ViewPortSizeRatio;
+		delete Uni_View;
+		delete Uni_Depth;
+		delete Test_Shader;
+	}
+	std::cout << "\n";
+	{
+		std::cout << "Light\n";
+		BaseShader * Test_Shader = new BaseShader((const ShaderCode []) {
+			ShaderCode::FromFile(ShaderDir.File("PH_S3D.vert")),
+			ShaderCode::FromFile(ShaderDir.File("PH_ULight.frag"))
+		}, 2);
+		Uniform::SizeRatio2D * Uni_ViewPortSizeRatio = new Uniform::SizeRatio2D("ViewPortSizeRatio", *Test_Shader);
+		Uniform::Trans3D * Uni_View = new Uniform::Trans3D("View", *Test_Shader);
+		Uniform::Depth * Uni_Depth = new Uniform::Depth("Depth", *Test_Shader);
+		delete Uni_ViewPortSizeRatio;
+		delete Uni_View;
+		delete Uni_Depth;
+		delete Test_Shader;
+	}
+	std::cout << "\n";
 
 	Multi_ViewPortSizeRatio = new Multiform::SizeRatio2D("ViewPortSizeRatio");
 	Multi_View = new Multiform::Trans3D("View");
@@ -270,7 +332,7 @@ int main(int argc, char * argv [])
 	}
 	//win -> DefaultColor = Color(0.25f, 0.0f, 0.0f);
 	//win -> DefaultColor = Color(0.0f, 0.0f, 0.0f);
-	win -> DefaultColor = Color(1, 1, 1);
+	win -> DefaultColor = Color(0.5f, 0.5f, 0.5f);
 
 
 

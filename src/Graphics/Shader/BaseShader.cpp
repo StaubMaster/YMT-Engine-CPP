@@ -52,6 +52,7 @@ void BaseShader::UniformsUpdate()
 int BaseShader::UniformFind(const std::string & name) const
 {
 	int location = glGetUniformLocation(ID, name.c_str());
+	//std::cout << "Uniform '" << name <<"' " << location << " " << ID << ".\n";
 	if (location == -1)
 	{
 		std::cout << "Uniform '" << name <<"' not found in Prog " << ID << ".\n";

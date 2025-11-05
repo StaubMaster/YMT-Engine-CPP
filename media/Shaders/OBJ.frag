@@ -59,7 +59,7 @@ out vec4 Color;
 
 
 
-vec3 CalcLightFactor()
+/*vec3 CalcLightFactor()
 {
 	vec3 ambient_factor = fs_inn.AmbientColor;
 	vec3 diffuse_factor = fs_inn.DiffuseColor * dot(normalize(fs_inn.Normal), LightSolar);
@@ -115,4 +115,4 @@ void main()
 
 	//col = vec3(1,1,1);
 	Color = vec4(col, 1);
-}
+}*/

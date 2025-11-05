@@ -1,0 +1,23 @@
+
+probably complicated
+
+not relly required for anything but would be nice to have
+
+
+
+right now whenever I need to debug something I need to go through the code and add std::out everywhere
+it would probably be easier to have those permanent and to just turn them on and off as needed
+
+
+
+how would one turn them on and off ?
+defines ?
+that would require recompiling which is bad
+it would be better if if could be turned on and off at any time
+
+so just have a variable to turn this stuff on and off
+I dont want it to take too much space
+
+also when it is off it should not waste time assambling messages at all
+
+
