@@ -1,15 +1,16 @@
 
-NAME = openGL.a
-FLAGS = -Wall -Wextra -Werror
+NAME := openGL.a
+FLAGS := -Wall -Wextra -Werror
 
 
 
-FILES_SRC = \
+FILES_SRC := \
+	openGL.cpp \
 	glad/glad.c
 
-FILES_OBJ = $(FILES_SRC:.c=.o)
-
-
+FILES_OBJ := $(FILES_SRC)
+FILES_OBJ := $(FILES_OBJ:.c=.o)
+FILES_OBJ := $(FILES_OBJ:.cpp=.o)
 
 
 
@@ -43,6 +44,9 @@ re:
 
 %.o : %.c
 	cc $(FLAGS) -c $^ -o $@
+
+%.o : %.cpp
+	c++ -std=c++11 $(FLAGS) -c $^ -o $@
 
 
 

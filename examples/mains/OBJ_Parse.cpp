@@ -1,5 +1,6 @@
 #include <iostream>
 #include "OpenGL/openGL.h"
+#include "OpenGL/openGL.hpp"
 
 #include "DataStruct/Main/Waveform/OBJ.hpp"
 #include "DataStruct/Main/Waveform/OBJ_Main.hpp"
@@ -92,9 +93,15 @@ void InitShaders()
 	ColorToTex_Direction = false;
 
 	std::cout << "\n";
-	Show_GL_Info();
+	//Show_GL_Info();
 	std::cout << "\n";
-	{
+	//OpenGL::ShowContextInfo();
+	std::cout << "\n";
+	//OpenGL::ShowCurrentInfo();
+	std::cout << "\n";
+	OpenGL::ShowLimits();
+	std::cout << "\n";
+	/*{
 		std::cout << "OBJ\n";
 		BaseShader * Test_Shader = new BaseShader((const ShaderCode []) {
 			ShaderCode::FromFile(ShaderDir.File("OBJ_S3D.vert")),
@@ -107,9 +114,9 @@ void InitShaders()
 		delete Uni_View;
 		delete Uni_Depth;
 		delete Test_Shader;
-	}
+	}*/
 	std::cout << "\n";
-	{
+	/*{
 		std::cout << "Light\n";
 		BaseShader * Test_Shader = new BaseShader((const ShaderCode []) {
 			ShaderCode::FromFile(ShaderDir.File("PH_S3D.vert")),
@@ -122,7 +129,7 @@ void InitShaders()
 		delete Uni_View;
 		delete Uni_Depth;
 		delete Test_Shader;
-	}
+	}*/
 	std::cout << "\n";
 
 	Multi_ViewPortSizeRatio = new Multiform::SizeRatio2D("ViewPortSizeRatio");
