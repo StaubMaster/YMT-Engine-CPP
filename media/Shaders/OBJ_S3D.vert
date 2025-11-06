@@ -51,13 +51,6 @@ layout(location = 7) in vec3	VSpecularColor;
 
 layout(location = 8) in vec3	IPos;
 layout(location = 9) in mat3	IRot;
-//	Max on Mac is 16
-//	these are needed
-/*
-	Col might be doable with primitiveID or whatever its called
-	all the Material stuff could be done with a SSBO
-	and the Primitive only stores the Material
-*/
 
 
 

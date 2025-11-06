@@ -58,7 +58,10 @@ float ColorToTex_Speed = 0.01f;
 bool ColorToTex_Direction = false;
 bool ColorToTex_Direction_last = false;
 
-
+/*
+	Uniform to turn off Lights
+	would be easier to have Uniform Value Bases
+*/
 
 void InitShaders()
 {
@@ -66,38 +69,6 @@ void InitShaders()
 
 	ColorToTex = LInter::T0();
 	ColorToTex_Direction = false;
-
-	std::cout << "\n";
-	/*{
-		std::cout << "OBJ\n";
-		BaseShader * Test_Shader = new BaseShader((const ShaderCode []) {
-			ShaderCode::FromFile(ShaderDir.File("OBJ_S3D.vert")),
-			ShaderCode::FromFile(ShaderDir.File("OBJ.frag"))
-		}, 2);
-		Uniform::SizeRatio2D * Uni_ViewPortSizeRatio = new Uniform::SizeRatio2D("ViewPortSizeRatio", *Test_Shader);
-		Uniform::Trans3D * Uni_View = new Uniform::Trans3D("View", *Test_Shader);
-		Uniform::Depth * Uni_Depth = new Uniform::Depth("Depth", *Test_Shader);
-		delete Uni_ViewPortSizeRatio;
-		delete Uni_View;
-		delete Uni_Depth;
-		delete Test_Shader;
-	}*/
-	std::cout << "\n";
-	/*{
-		std::cout << "Light\n";
-		BaseShader * Test_Shader = new BaseShader((const ShaderCode []) {
-			ShaderCode::FromFile(ShaderDir.File("PH_S3D.vert")),
-			ShaderCode::FromFile(ShaderDir.File("PH_ULight.frag"))
-		}, 2);
-		Uniform::SizeRatio2D * Uni_ViewPortSizeRatio = new Uniform::SizeRatio2D("ViewPortSizeRatio", *Test_Shader);
-		Uniform::Trans3D * Uni_View = new Uniform::Trans3D("View", *Test_Shader);
-		Uniform::Depth * Uni_Depth = new Uniform::Depth("Depth", *Test_Shader);
-		delete Uni_ViewPortSizeRatio;
-		delete Uni_View;
-		delete Uni_Depth;
-		delete Test_Shader;
-	}*/
-	std::cout << "\n";
 
 	Multi_ViewPortSizeRatio = new Multiform::SizeRatio2D("ViewPortSizeRatio");
 	Multi_View = new Multiform::Trans3D("View");
