@@ -59,31 +59,6 @@ bool ColorToTex_Direction = false;
 bool ColorToTex_Direction_last = false;
 
 
-void Show_GL_Info()
-{
-	int dataInt;
-	glGetIntegerv(GL_MAX_VERTEX_ATTRIBS, &dataInt);
-	std::cout << "GL_MAX_VERTEX_ATTRIBS: " << dataInt << "\n";
-	/* 16  on Mac */
-
-	glGetIntegerv(GL_MAX_UNIFORM_LOCATIONS, &dataInt);
-	std::cout << "GL_MAX_UNIFORM_LOCATIONS: " << dataInt << "\n";
-	/*	16 on Mac
-
-		https://registry.khronos.org/OpenGL-Refpages/gl4/html/glGet.xhtml
-
-		GL_MAX_UNIFORM_LOCATIONS
-			data returns one value, the maximum number of explicitly assignable uniform locations, which must be at least 1024.
-
-		GL_MAX_UNIFORM_LOCATIONS is accepted only if the GL version is 4.3 or greater.
-	*/
-
-	glGetIntegerv(GL_MAX_VERTEX_OUTPUT_COMPONENTS, &dataInt);
-	std::cout << "GL_MAX_VERTEX_OUTPUT_COMPONENTS: " << dataInt << "\n";
-
-	glGetIntegerv(GL_MAX_FRAGMENT_INPUT_COMPONENTS, &dataInt);
-	std::cout << "GL_MAX_FRAGMENT_INPUT_COMPONENTS: " << dataInt << "\n";
-}
 
 void InitShaders()
 {
@@ -92,14 +67,6 @@ void InitShaders()
 	ColorToTex = LInter::T0();
 	ColorToTex_Direction = false;
 
-	std::cout << "\n";
-	//Show_GL_Info();
-	std::cout << "\n";
-	//OpenGL::ShowContextInfo();
-	std::cout << "\n";
-	//OpenGL::ShowCurrentInfo();
-	std::cout << "\n";
-	OpenGL::ShowLimits();
 	std::cout << "\n";
 	/*{
 		std::cout << "OBJ\n";

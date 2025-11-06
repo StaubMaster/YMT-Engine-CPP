@@ -49,8 +49,8 @@ layout(location = 5) in vec3	VDiffuseColor;
 layout(location = 6) in float	VSpecularPower;
 layout(location = 7) in vec3	VSpecularColor;
 
-layout(location = 20) in vec3	IPos;
-layout(location = 21) in mat3	IRot;
+layout(location = 8) in vec3	IPos;
+layout(location = 9) in mat3	IRot;
 //	Max on Mac is 16
 //	these are needed
 /*
