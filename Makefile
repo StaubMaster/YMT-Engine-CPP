@@ -69,7 +69,11 @@ FILES_SRC := \
 	Graphics/Shader/BaseShader.cpp \
 \
 	Graphics/Uniform/Base/UniformBase.cpp \
-	Graphics/Uniform/Data/Float1.cpp \
+	Graphics/Uniform/Base/FloatN.cpp \
+	Graphics/Uniform/Base/Float1.cpp \
+	Graphics/Uniform/Base/Float2.cpp \
+	Graphics/Uniform/Base/Float3.cpp \
+\
 	Graphics/Uniform/Data/UInt1.cpp \
 	Graphics/Uniform/Data/Point3D.cpp \
 	Graphics/Uniform/Data/Angle3D.cpp \

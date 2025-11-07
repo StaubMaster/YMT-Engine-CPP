@@ -21,6 +21,11 @@ class UniformBase
 		Multiform::MultiformBase * Uniform;
 		bool Changed;
 
+		/*
+			name and shader go down the Constructor chain until here
+			put them both into one container called UniformData or something
+			so only one thing needs to be passed down instead of 2 ?
+		*/
 	protected:
 		UniformBase(std::string name, BaseShader & shader);
 		virtual ~UniformBase();

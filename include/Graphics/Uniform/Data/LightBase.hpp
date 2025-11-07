@@ -5,7 +5,7 @@
 # include "Graphics/Uniform/Base/GenericUniformBase.hpp"
 # include "DataDec.hpp"
 
-# include "Graphics/Uniform/Data/Float1.hpp"
+# include "Graphics/Uniform/Base/Float1.hpp"
 # include "Graphics/Uniform/Data/Color.hpp"
 
 class BaseShader;

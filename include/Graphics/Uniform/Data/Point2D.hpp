@@ -3,6 +3,7 @@
 # define UNI_POINT_2D_HPP
 
 # include "Graphics/Uniform/Base/GenericUniformBase.hpp"
+# include "Graphics/Uniform/Base/Float2.hpp"
 # include "DataDec.hpp"
 
 class BaseShader;
@@ -12,7 +13,7 @@ namespace Uniform
 class Point2D : public Uniform::GenericUniformBase<::Point2D>
 {
 	private:
-		int Location;
+		Uniform::Float2 Location;
 
 	public:
 		Point2D(std::string name, BaseShader & shader);

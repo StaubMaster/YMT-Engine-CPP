@@ -14,5 +14,5 @@ Uniform::Angle3D::Angle3D(std::string name, BaseShader & shader) : GenericUnifor
 
 void Uniform::Angle3D::PutData(::Angle3D a)
 {
-	glUniformMatrix3fv(Location, 1, true, ((float*)(&a)) + 3);
+	glUniformMatrix3fv(Location, 1, true, (const float *)(&a.Mat));
 }

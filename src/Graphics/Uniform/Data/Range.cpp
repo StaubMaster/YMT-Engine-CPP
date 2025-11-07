@@ -5,16 +5,15 @@
 
 
 
-Uniform::Range::Range(std::string name, BaseShader & shader) : GenericUniformBase(name, shader)
-{
-	LocationMin = shader.UniformFind(name + ".Min");
-	LocationLen = shader.UniformFind(name + ".Len");
-	LocationMax = shader.UniformFind(name + ".Max");
-}
+Uniform::Range::Range(std::string name, BaseShader & shader) : GenericUniformBase(name, shader),
+	Min(name + ".Min", shader),
+	Len(name + ".Len", shader),
+	Max(name + ".Max", shader)
+{ }
 
 void Uniform::Range::PutData(::Range val)
 {
-	glUniform1fv(LocationMin, 1, (float*)(&val.Min));
-	glUniform1fv(LocationLen, 1, (float*)(&val.Len));
-	glUniform1fv(LocationMax, 1, (float*)(&val.Max));
+	Min.PutVoid(&val.Min);
+	Len.PutVoid(&val.Len);
+	Max.PutVoid(&val.Max);
 }

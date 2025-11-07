@@ -5,12 +5,11 @@
 
 
 
-Uniform::DepthFactors::DepthFactors(std::string name, BaseShader & shader) : GenericUniformBase(name, shader)
-{
-	Location = shader.UniformFind(name);
-}
+Uniform::DepthFactors::DepthFactors(std::string name, BaseShader & shader) : GenericUniformBase(name, shader),
+	Location(7, name, shader)
+{ }
 
-void Uniform::DepthFactors::PutData(::DepthFactors df)
+void Uniform::DepthFactors::PutData(::DepthFactors val)
 {
-	glUniform1fv(Location, 7, (float*)(&df));
+	Location.PutVoid(&val);
 }

@@ -5,12 +5,11 @@
 
 
 
-Uniform::Point2D::Point2D(std::string name, BaseShader & shader) : GenericUniformBase(name, shader)
-{
-	Location = shader.UniformFind(name);
-}
+Uniform::Point2D::Point2D(std::string name, BaseShader & shader) : GenericUniformBase(name, shader),
+	Location(name, shader)
+{ }
 
 void Uniform::Point2D::PutData(::Point2D p)
 {
-	glUniform2fv(Location, 1, (float*)(&p));
+	Location.PutVoid(&p);
 }

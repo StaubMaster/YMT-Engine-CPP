@@ -16,7 +16,7 @@ struct Angle3D
 		float	Y;
 		float	Z;
 
-	private:
+	public:
 		Matrix3x3	Mat;
 
 	public:

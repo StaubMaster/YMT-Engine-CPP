@@ -7,14 +7,13 @@
 
 
 
-Uniform::LInter::LInter(std::string name, BaseShader & shader) : GenericUniformBase(name, shader)
-{
-	LocationT0 = shader.UniformFind(name + ".T0");
-	LocationT1 = shader.UniformFind(name + ".T1");
-}
+Uniform::LInter::LInter(std::string name, BaseShader & shader) : GenericUniformBase(name, shader),
+	T0(name + ".T0", shader),
+	T1(name + ".T1", shader)
+{ }
 
 void Uniform::LInter::PutData(::LInter val)
 {
-	glUniform1fv(LocationT0, 1, ((float*)(&val) + 0));
-	glUniform1fv(LocationT1, 1, ((float*)(&val) + 1));
+	T0.PutData(((const float *)&val) + 0);
+	T1.PutData(((const float *)&val) + 1);
 }

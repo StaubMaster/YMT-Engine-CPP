@@ -5,12 +5,11 @@
 
 
 
-Uniform::Color::Color(std::string name, BaseShader & shader) : GenericUniformBase(name, shader)
-{
-	Location = shader.UniformFind(name);
-}
+Uniform::Color::Color(std::string name, BaseShader & shader) : GenericUniformBase(name, shader),
+	Location(name, shader)
+{ }
 
 void Uniform::Color::PutData(::Color val)
 {
-	glUniform3fv(Location, 1, (float*)(&val));
+	Location.PutVoid(&val);
 }

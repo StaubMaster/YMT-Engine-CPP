@@ -6,11 +6,9 @@
 
 
 Uniform::LightBase::LightBase(std::string name, BaseShader & shader) : GenericUniformBase(name, shader),
-	Intensity(1, name + ".Intensity", shader),
+	Intensity(name + ".Intensity", shader),
 	Color(name + ".Color", shader)
-{
-
-}
+{ }
 
 void Uniform::LightBase::PutData(::LightBase val)
 {
