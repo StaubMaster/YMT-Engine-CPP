@@ -4,13 +4,14 @@
 
 # include "Graphics/Attribute/Base/AttributeLocation.hpp"
 # include "Graphics/Attribute/Base/AttributeBase.hpp"
+# include "Graphics/Attribute/Base/FloatN.hpp"
 
 namespace Attribute
 {
 class Point4D : public Attribute::Base
 {
 	private:
-		Attribute::Location Pos;
+		Attribute::FloatN Pos;
 
 	public:
 		Point4D(

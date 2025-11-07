@@ -11,9 +11,9 @@ Attribute::Angle3D::Angle3D(
 	unsigned int stride,
 	unsigned int index
 ) :
-	Location0(GL_FLOAT, sizeof(float) * 3, 3, divisor, stride, index + 0),
-	Location1(GL_FLOAT, sizeof(float) * 3, 3, divisor, stride, index + 1),
-	Location2(GL_FLOAT, sizeof(float) * 3, 3, divisor, stride, index + 2)
+	Location0(3, divisor, stride, index + 0),
+	Location1(3, divisor, stride, index + 1),
+	Location2(3, divisor, stride, index + 2)
 { }
 
 

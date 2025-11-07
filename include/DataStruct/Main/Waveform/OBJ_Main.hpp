@@ -16,7 +16,7 @@
 # include "Graphics/Attribute/Data/Point4D.hpp"
 # include "Graphics/Attribute/Data/Point3D.hpp"
 # include "Graphics/Attribute/Data/Color.hpp"
-# include "Graphics/Attribute/Data/Float1.hpp"
+# include "Graphics/Attribute/Base/FloatN.hpp"
 
 
 
@@ -49,7 +49,7 @@ class OBJ_MainAttrib : public Attribute::Base
 
 		Attribute::Color	AmbientColor;
 		Attribute::Color	DiffuseColor;
-		Attribute::Float1	SpecularPower;
+		Attribute::FloatN	SpecularPower;
 		Attribute::Color	SpecularColor;
 
 	public:

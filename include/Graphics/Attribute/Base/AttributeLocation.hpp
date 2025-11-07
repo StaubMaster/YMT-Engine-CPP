@@ -6,14 +6,20 @@ namespace Attribute
 {
 class Location
 {
+	/*
+		Offset inside Data Pointer
+		Size is not directly used by gl
+		glPointer uses offset + Offset
+		offset is increased by Size
+	*/
 	private:
 	public:
-		//	set from Child
+		//	from Child
 		const unsigned int Type;
 		const unsigned int Size;
 		const unsigned int Count;
 
-		//	set from outside
+		//	from Buffer
 		const unsigned int Divisor;
 		const unsigned int Stride;
 		const unsigned int Index;
@@ -26,9 +32,6 @@ class Location
 			unsigned int divisor,
 			unsigned int stride,
 			unsigned int index);
-
-	public:
-		void Bind(const unsigned char * & offset) const;
 };
 };
 

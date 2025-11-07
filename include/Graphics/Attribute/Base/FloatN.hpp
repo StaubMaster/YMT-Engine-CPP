@@ -1,22 +1,28 @@
 
-#ifndef  ATTRIB_FLOAT_1_HPP
-# define ATTRIB_FLOAT_1_HPP
+#ifndef  ATTRIB_FLOAT_N_HPP
+# define ATTRIB_FLOAT_N_HPP
 
 # include "Graphics/Attribute/Base/AttributeLocation.hpp"
 # include "Graphics/Attribute/Base/AttributeBase.hpp"
 
 namespace Attribute
 {
-class Float1 : public Attribute::Base
+class FloatN : public Attribute::Base
 {
 	private:
 		Attribute::Location Location;
 
 	public:
-		Float1(
+		FloatN(
+			unsigned int n,
 			unsigned int divisor,
 			unsigned int stride,
-			unsigned int index
+			unsigned int indexPos
+		);
+		FloatN(
+			unsigned int divisor,
+			unsigned int stride,
+			unsigned int indexPos
 		);
 
 	public:

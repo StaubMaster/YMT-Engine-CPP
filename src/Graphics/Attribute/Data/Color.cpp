@@ -9,7 +9,7 @@ Attribute::Color::Color(
 	unsigned int stride,
 	unsigned int indexCol
 ) :
-	Col(GL_FLOAT, sizeof(::Color), 3, divisor, stride, indexCol)
+	Col(3, divisor, stride, indexCol)
 { }
 
 

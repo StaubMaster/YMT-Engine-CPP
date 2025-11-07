@@ -9,7 +9,7 @@ Attribute::Point2D::Point2D(
 	unsigned int stride,
 	unsigned int indexPos
 ) :
-	Pos(GL_FLOAT, sizeof(::Point2D), 2, divisor, stride, indexPos)
+	Pos(2, divisor, stride, indexPos)
 { }
 
 

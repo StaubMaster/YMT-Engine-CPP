@@ -73,8 +73,9 @@ FILES_SRC := \
 	Graphics/Uniform/Base/Float1.cpp \
 	Graphics/Uniform/Base/Float2.cpp \
 	Graphics/Uniform/Base/Float3.cpp \
+	Graphics/Uniform/Base/UIntN.cpp \
+	Graphics/Uniform/Base/UInt1.cpp \
 \
-	Graphics/Uniform/Data/UInt1.cpp \
 	Graphics/Uniform/Data/Point3D.cpp \
 	Graphics/Uniform/Data/Angle3D.cpp \
 	Graphics/Uniform/Data/Trans3D.cpp \
@@ -103,13 +104,14 @@ FILES_SRC := \
 \
 	Graphics/Attribute/Base/AttributeLocation.cpp \
 	Graphics/Attribute/Base/AttributeBase.cpp \
+	Graphics/Attribute/Base/FloatN.cpp \
+\
 	Graphics/Attribute/Data/Point3D.cpp \
 	Graphics/Attribute/Data/Angle3D.cpp \
 	Graphics/Attribute/Data/Trans3D.cpp \
 	Graphics/Attribute/Data/Point2D.cpp \
 	Graphics/Attribute/Data/Point4D.cpp \
 	Graphics/Attribute/Data/Color.cpp \
-	Graphics/Attribute/Data/Float1.cpp \
 \
 	DataStruct/Main/PolyHedra/PolyHedra_MainData.cpp \
 	DataStruct/Main/PolyHedra/PolyHedra_MainAttrib.cpp \

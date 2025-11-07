@@ -19,12 +19,3 @@ Attribute::Location::Location(
 	Index(index)
 { }
 
-
-
-void Attribute::Location::Bind(const unsigned char * & offset) const
-{
-	glEnableVertexAttribArray(Index);
-	glVertexAttribPointer(Index, Count, Type, GL_FALSE, Stride, offset);
-	glVertexAttribDivisor(Index, Divisor);
-	offset += Size;
-}

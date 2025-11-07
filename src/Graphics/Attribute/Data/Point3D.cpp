@@ -9,12 +9,12 @@ Attribute::Point3D::Point3D(
 	unsigned int stride,
 	unsigned int indexPos
 ) :
-	Pos(GL_FLOAT, sizeof(::Point3D), 3, divisor, stride, indexPos)
+	Location(3, divisor, stride, indexPos)
 { }
 
 
 
 void Attribute::Point3D::Bind(const unsigned char * & offset) const
 {
-	Pos.Bind(offset);
+	Location.Bind(offset);
 }

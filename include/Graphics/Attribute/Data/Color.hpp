@@ -4,13 +4,14 @@
 
 # include "Graphics/Attribute/Base/AttributeLocation.hpp"
 # include "Graphics/Attribute/Base/AttributeBase.hpp"
+# include "Graphics/Attribute/Base/FloatN.hpp"
 
 namespace Attribute
 {
 class Color : public Attribute::Base
 {
 	private:
-		Attribute::Location Col;
+		Attribute::FloatN Col;
 
 	public:
 		Color(

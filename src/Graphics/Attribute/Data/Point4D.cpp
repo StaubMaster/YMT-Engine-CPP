@@ -9,7 +9,7 @@ Attribute::Point4D::Point4D(
 	unsigned int stride,
 	unsigned int indexPos
 ) :
-	Pos(GL_FLOAT, sizeof(::Point4D), 4, divisor, stride, indexPos)
+	Pos(4, divisor, stride, indexPos)
 { }
 
 
