@@ -14,3 +14,9 @@ CPP-3D-Engine
 CPP-GL-Engine
 rename before making other projects that include this
 but basically everything I want to do includes renaming first
+
+still mark these as YMT ?
+
+maybe think of a different acronym
+something more optimistic ?
+
