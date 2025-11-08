@@ -2,6 +2,8 @@
 #include "OpenGL/openGL.h"
 #include "OpenGL/openGL.hpp"
 
+#include "Debug.hpp"
+
 #include "DataStruct/Main/Waveform/OBJ.hpp"
 #include "DataStruct/Main/Waveform/OBJ_Main.hpp"
 #include "DataStruct/Main/Waveform/OBJ_3D_BufferArray.hpp"
@@ -239,6 +241,8 @@ void Resize(int w, int h)
 
 int main(int argc, char * argv [])
 {
+	Debug::NewFileInDir(DirectoryContext("../media/Logs/"));
+
 	if (argc <= 0)
 	{
 		std::cout << "Argc: " << argc << " <= 0\n";

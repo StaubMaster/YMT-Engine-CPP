@@ -136,7 +136,8 @@ FILES_SRC := \
 \
 	TimeMeasure.cpp \
 	Keys.cpp \
-	Window.cpp
+	Window.cpp \
+	Debug.cpp
 
 WORKING_FILES_SRC := \
 	Texture/TextureBase.cpp \

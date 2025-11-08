@@ -1,6 +1,9 @@
 #include "Graphics/Buffer/BaseBuffer.hpp"
 #include "Graphics/Attribute/Base/AttributeBase.hpp"
 
+#include "Debug.hpp"
+#include <sstream>
+
 #include "OpenGL/openGL.h"
 #include <iostream>
 
@@ -15,12 +18,12 @@ BaseBuffer::BaseBuffer(unsigned int buffer_count, Attribute::Base * attributes [
 	Attributes = new Attribute::Base * [BufferCount];
 	for (unsigned int i = 0; i < BufferCount; i++) { Attributes[i] = attributes[i]; }
 
-	//std::cout << "++++ BaseBuffer\n";
+	Debug::Log << "++++ BaseBuffer" << Debug::Done;
 	Count = 0;
 }
 BaseBuffer::~BaseBuffer()
 {
-	//std::cout << "---- BaseBuffer\n";
+	Debug::Log << "---- BaseBuffer" << Debug::Done;
 
 	glDeleteBuffers(BufferCount, BufferIDs);
 	delete [] BufferIDs;
