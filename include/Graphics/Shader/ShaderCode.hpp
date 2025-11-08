@@ -27,6 +27,8 @@ class ShaderCode
 		const ShaderCode & operator = (const ShaderCode & other);
 
 	public:
+		int getID() const;
+	public:
 		void Attach(int ProgramID) const;
 		void Detach(int ProgramID) const;
 

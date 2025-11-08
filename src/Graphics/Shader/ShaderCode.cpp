@@ -1,6 +1,9 @@
 #include "Graphics/Shader/ShaderCode.hpp"
 #include "FileContext.hpp"
 
+#include "Debug.hpp"
+#include <sstream>
+
 #include "OpenGL/openGL.h"
 #include <iostream>
 
@@ -10,16 +13,21 @@ ShaderCode::ShaderCode(GLenum type, const std::string code, const std::string pa
 {
 	Path = path;
 	ID = glCreateShader(type);
-	//std::cout << "++++ Shader " << ID << "\n";
+	Debug::Log << "++++ ShaderCode " << ID << Debug::Done;
 	Compile(code);
 }
 ShaderCode::~ShaderCode()
 {
-	//std::cout << "---- Shader " << ID << "\n";
+	Debug::Log << "---- ShaderCode " << ID << Debug::Done;
 	glDeleteShader(ID);
 }
 
 
+
+int ShaderCode::getID() const
+{
+	return ID;
+}
 
 void ShaderCode::Attach(int ProgramID) const
 {
@@ -32,7 +40,7 @@ void ShaderCode::Detach(int ProgramID) const
 
 void ShaderCode::Compile(const std::string code)
 {
-	//std::cout << "Compiling Shader " << ID << " ...\n";
+	Debug::Log << "Compiling ShaderCode " << ID << " ..." << Debug::Done;
 	const char * arr[1] = {
 		code.c_str(),
 	};
@@ -47,7 +55,7 @@ void ShaderCode::Compile(const std::string code)
 		std::string log = std::string(log_arr, log_len);
 		throw ECompileLog(log, Path);
 	}
-	//std::cout << "Compiling Shader " << ID << " done\n";
+	Debug::Log << "Compiling ShaderCode " << ID << " done" << Debug::Done;
 }
 
 ShaderCode::ECompileLog::ECompileLog(const std::string log, const std::string path)

@@ -305,9 +305,9 @@ int main(int argc, char * argv [])
 
 
 
-	std::cout << "++++ Run\n";
+	Debug::Log << "++++ Run" << Debug::Done;
 	win -> Run();
-	std::cout << "---- Run\n";
+	Debug::Log << "---- Run" << Debug::Done;
 
 
 

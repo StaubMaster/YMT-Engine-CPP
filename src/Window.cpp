@@ -5,6 +5,9 @@
 #include "DataStruct/Angle3D.hpp"
 #include "DataStruct/Point2D.hpp"
 
+#include "Debug.hpp"
+#include <sstream>
+
 #include "OpenGL/openGL.h"
 #include <iostream>
 
@@ -196,7 +199,12 @@ void Window::Run()
 	TimeMeasure timeSwap;
 	TimeMeasure timePoll;
 
-	if (InitFunc != NULL) { InitFunc(); }
+	if (InitFunc != NULL)
+	{
+		Debug::Log << "++++ Window Init" << Debug::Done;
+		InitFunc();
+		Debug::Log << "---- Window Init" << Debug::Done;
+	}
 	if (ResizeFunc != NULL) { ResizeFunc(w, h); }
 
 	FrameTimeLast = glfwGetTime();
@@ -268,5 +276,10 @@ void Window::Run()
 		std::cerr << "Unknown Error\n";
 	}
 
-	if (FreeFunc != NULL) { FreeFunc(); }
+	if (FreeFunc != NULL)
+	{
+		Debug::Log << "++++ Window Free" << Debug::Done;
+		FreeFunc();
+		Debug::Log << "---- Window Free" << Debug::Done;
+	}
 }

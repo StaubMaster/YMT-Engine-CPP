@@ -14,6 +14,9 @@
 #include "DataStruct/AxisBox3D.hpp"
 #include "DataO.hpp"
 
+#include "Debug.hpp"
+#include <sstream>
+
 
 
 /*
@@ -351,8 +354,7 @@ void YMT::PolyHedra::PolyHedraParsingEnvironmentData::Parse_Circle(const Parsing
 
 YMT::PolyHedra * YMT::PolyHedra::Load(const FileContext & file)
 {
-	//std::cout << "\n";
-	//std::cout << "Loading PolyHedra File " << file.Name() << " ...\n";
+	Debug::Log << "Loading PolyHedra File " << file.Name() << " ..." << Debug::Done;
 	PolyHedraParsingEnvironmentData data(file);
 	data.Data = new PolyHedra();
 	ParsingCommand::SplitFileIntoCommands(data);
@@ -372,13 +374,12 @@ YMT::PolyHedra * YMT::PolyHedra::Load(const FileContext & file)
 	{
 		data.Data = Cube();
 	}
-	//std::cout << "Loading PolyHedra File " << file.Name() << " done\n";
-
-	//std::cout << "Count:" << " V:" << data.Data -> Corners.Count() << "\n";
-	//std::cout << "Count:" << " F:" << data.Data -> Faces.Count() << "\n";
-	//AxisBox3D bound = data.Data -> CalcBound();
-	//std::cout << "Bound:" << "Limit:" << bound << "\n";
-	//std::cout << "Bound:" << "Size:" << bound.Size() << "\n";
+	Debug::Log << "Loading PolyHedra File " << file.Name() << " done" << Debug::Done;
+	Debug::Log << "Count:" << " V:" << data.Data -> Corners.Count() << Debug::Done;
+	Debug::Log << "Count:" << " F:" << data.Data -> Faces.Count() << Debug::Done;
+	AxisBox3D bound = data.Data -> CalcBound();
+	Debug::Log << "Bound:" << "Limit:" << bound << Debug::Done;
+	Debug::Log << "Bound:" << "Size:" << bound.Size() << Debug::Done;
 
 	/*	Unit Converter
 		Length:	to make Data more cohereent
@@ -389,6 +390,5 @@ YMT::PolyHedra * YMT::PolyHedra::Load(const FileContext & file)
 		once a base is made it shouldnt be very difficult to add new Units
 	*/
 
-	//std::cout << "\n";
 	return data.Data;
 }
