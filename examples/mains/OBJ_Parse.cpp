@@ -241,7 +241,7 @@ void Resize(int w, int h)
 
 int main(int argc, char * argv [])
 {
-	Debug::NewFileInDir(DirectoryContext("../media/Logs/"));
+	Debug::NewFileInDir(DirectoryContext("logs/"));
 
 	if (argc <= 0)
 	{

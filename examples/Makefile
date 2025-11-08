@@ -66,6 +66,7 @@ MAINS_DIR = mains/
 ################################################################
 
 all:
+	@mkdir logs/
 	@$(FANCY_ECHO) "$(COLOR_REPO)$(FANCY_NAME): $(COLOR_TYPE)Target: $(COLOR_FILE)$@$(COLOR_NONE)"
 	@$(MAKE) $(EXES) -s
 
@@ -87,8 +88,8 @@ re:
 ################################################################
 
 
-test:
-	echo -e "\e[38;2;0;255;0masd\e[masd"
+
+
 
 %.exe : $(MAINS_DIR)%.cpp repos
 	@$(FANCY_ECHO) "$(COLOR_REPO)$(FANCY_NAME): $(COLOR_TYPE)Compiling: $(COLOR_FILE)$@$(COLOR_NONE)"
