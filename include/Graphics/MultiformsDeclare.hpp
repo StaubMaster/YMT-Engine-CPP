@@ -6,11 +6,13 @@ namespace Multiform
 {
 	class Base;
 
-	class DepthFactors;
-	class Depth;
-
-	class Range;
 	class Color;
+
+	class Depth;
+	class DepthFactors;
+
+	class LInter;
+	class Range;
 
 	class SizeRatio2D;
 

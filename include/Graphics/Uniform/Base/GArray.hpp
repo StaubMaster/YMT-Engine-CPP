@@ -7,7 +7,10 @@
 
 # include <sstream>
 
-class BaseShader;
+namespace Shader
+{
+	class Base;
+};
 
 namespace Uniform
 {
@@ -20,7 +23,7 @@ class GArray
 		UniformType **	Uniforms;
 
 	public:
-		GArray(unsigned int count, std::string name, BaseShader & shader) :
+		GArray(unsigned int count, std::string name, Shader::Base & shader) :
 			Limit(count)
 		{
 			Uniforms = new UniformType*[Limit];
@@ -28,10 +31,9 @@ class GArray
 			{
 				std::stringstream ss;
 				ss << name << "[" << i << "]";
-				std::cout << "Uni:" << ss.str() << "\n";
+				//std::cout << "Uni:" << ss.str() << "\n";
 				Uniforms[i] = new UniformType(ss.str(), shader);
 			}
-			(void)shader;
 		}
 		~GArray()
 		{

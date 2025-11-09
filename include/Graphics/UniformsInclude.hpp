@@ -4,6 +4,15 @@
 
 # include "Uniform/Base/Base.hpp"
 # include "Uniform/Base/GBase.hpp"
+# include "Uniform/Base/GArray.hpp"
+
+# include "Uniform/Base/FloatN.hpp"
+# include "Uniform/Base/Float1.hpp"
+# include "Uniform/Base/Float2.hpp"
+# include "Uniform/Base/Float3.hpp"
+
+# include "Uniform/Base/UIntN.hpp"
+# include "Uniform/Base/UInt1.hpp"
 
 # include "Uniform/DepthFactors.hpp"
 # include "Uniform/Range.hpp"

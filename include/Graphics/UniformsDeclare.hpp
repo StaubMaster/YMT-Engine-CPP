@@ -6,6 +6,14 @@ namespace Uniform
 {
 	class Base;
 
+	class FloatN;
+	class Float1;
+	class Float2;
+	class Float3;
+
+	class UIntN;
+	class UInt1;
+
 	class DepthFactors;
 	class Range;
 	class Color;
