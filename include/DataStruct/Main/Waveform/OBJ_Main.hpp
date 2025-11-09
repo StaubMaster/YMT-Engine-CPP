@@ -13,9 +13,9 @@
 # include "Graphics/Attribute/Base/AttributeLocation.hpp"
 # include "Graphics/Attribute/Base/AttributeBase.hpp"
 
-# include "Graphics/Attribute/Data/Point4D.hpp"
-# include "Graphics/Attribute/Data/Point3D.hpp"
-# include "Graphics/Attribute/Data/Color.hpp"
+# include "Graphics/Attribute/Point4D.hpp"
+# include "Graphics/Attribute/Point3D.hpp"
+# include "Graphics/Attribute/Color.hpp"
 # include "Graphics/Attribute/Base/FloatN.hpp"
 
 

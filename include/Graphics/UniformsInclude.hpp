@@ -5,22 +5,22 @@
 # include "Uniform/Base/Base.hpp"
 # include "Uniform/Base/GBase.hpp"
 
-# include "Uniform/Data/DepthFactors.hpp"
-# include "Uniform/Data/Range.hpp"
+# include "Uniform/DepthFactors.hpp"
+# include "Uniform/Range.hpp"
 
-# include "Uniform/Data/Point2D.hpp"
-# include "Uniform/Data/SizeRatio2D.hpp"
+# include "Uniform/Point2D.hpp"
+# include "Uniform/SizeRatio2D.hpp"
 
-# include "Uniform/Data/Point3D.hpp"
-# include "Uniform/Data/Angle3D.hpp"
-# include "Uniform/Data/Trans3D.hpp"
+# include "Uniform/Point3D.hpp"
+# include "Uniform/Angle3D.hpp"
+# include "Uniform/Trans3D.hpp"
 
-# include "Uniform/Data/Color.hpp"
-# include "Uniform/Data/LInter.hpp"
-# include "Uniform/Data/Depth.hpp"
+# include "Uniform/Color.hpp"
+# include "Uniform/LInter.hpp"
+# include "Uniform/Depth.hpp"
 
-# include "Uniform/Data/LightBase.hpp"
-# include "Uniform/Data/LightSolar.hpp"
-# include "Uniform/Data/LightSpot.hpp"
+# include "Uniform/LightBase.hpp"
+# include "Uniform/LightSolar.hpp"
+# include "Uniform/LightSpot.hpp"
 
 #endif

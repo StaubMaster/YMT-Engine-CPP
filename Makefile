@@ -78,28 +78,28 @@ FILES_SRC := \
 	Graphics/Uniform/Base/UIntN.cpp \
 	Graphics/Uniform/Base/UInt1.cpp \
 \
-	Graphics/Uniform/Data/Point3D.cpp \
-	Graphics/Uniform/Data/Angle3D.cpp \
-	Graphics/Uniform/Data/Trans3D.cpp \
-	Graphics/Uniform/Data/Point2D.cpp \
-	Graphics/Uniform/Data/SizeRatio2D.cpp \
-	Graphics/Uniform/Data/DepthFactors.cpp \
-	Graphics/Uniform/Data/Range.cpp \
-	Graphics/Uniform/Data/Depth.cpp \
-	Graphics/Uniform/Data/LInter.cpp \
-	Graphics/Uniform/Data/Color.cpp \
-	Graphics/Uniform/Data/LightBase.cpp \
-	Graphics/Uniform/Data/LightSolar.cpp \
-	Graphics/Uniform/Data/LightSpot.cpp \
+	Graphics/Uniform/Point3D.cpp \
+	Graphics/Uniform/Angle3D.cpp \
+	Graphics/Uniform/Trans3D.cpp \
+	Graphics/Uniform/Point2D.cpp \
+	Graphics/Uniform/SizeRatio2D.cpp \
+	Graphics/Uniform/DepthFactors.cpp \
+	Graphics/Uniform/Range.cpp \
+	Graphics/Uniform/Depth.cpp \
+	Graphics/Uniform/LInter.cpp \
+	Graphics/Uniform/Color.cpp \
+	Graphics/Uniform/LightBase.cpp \
+	Graphics/Uniform/LightSolar.cpp \
+	Graphics/Uniform/LightSpot.cpp \
 \
 	Graphics/Multiform/Base/Base.cpp \
-	Graphics/Multiform/Data/Trans3D.cpp \
-	Graphics/Multiform/Data/SizeRatio2D.cpp \
-	Graphics/Multiform/Data/DepthFactors.cpp \
-	Graphics/Multiform/Data/Range.cpp \
-	Graphics/Multiform/Data/Depth.cpp \
-	Graphics/Multiform/Data/LInter.cpp \
-	Graphics/Multiform/Data/Color.cpp \
+	Graphics/Multiform/Trans3D.cpp \
+	Graphics/Multiform/SizeRatio2D.cpp \
+	Graphics/Multiform/DepthFactors.cpp \
+	Graphics/Multiform/Range.cpp \
+	Graphics/Multiform/Depth.cpp \
+	Graphics/Multiform/LInter.cpp \
+	Graphics/Multiform/Color.cpp \
 \
 	Graphics/Buffer/BaseBufferArray.cpp \
 	Graphics/Buffer/BaseBuffer.cpp \
@@ -108,12 +108,12 @@ FILES_SRC := \
 	Graphics/Attribute/Base/AttributeBase.cpp \
 	Graphics/Attribute/Base/FloatN.cpp \
 \
-	Graphics/Attribute/Data/Point3D.cpp \
-	Graphics/Attribute/Data/Angle3D.cpp \
-	Graphics/Attribute/Data/Trans3D.cpp \
-	Graphics/Attribute/Data/Point2D.cpp \
-	Graphics/Attribute/Data/Point4D.cpp \
-	Graphics/Attribute/Data/Color.cpp \
+	Graphics/Attribute/Point3D.cpp \
+	Graphics/Attribute/Angle3D.cpp \
+	Graphics/Attribute/Trans3D.cpp \
+	Graphics/Attribute/Point2D.cpp \
+	Graphics/Attribute/Point4D.cpp \
+	Graphics/Attribute/Color.cpp \
 \
 	Graphics/Texture/Base.cpp \
 	Graphics/Texture/2DArray.cpp \

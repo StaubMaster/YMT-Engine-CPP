@@ -4,7 +4,7 @@
 
 # include "Graphics/Attribute/Base/AttributeBase.hpp"
 
-# include "Graphics/Attribute/Data/Trans3D.hpp"
+# include "Graphics/Attribute/Trans3D.hpp"
 
 class Simple3D_InstAttrib : public Attribute::Base
 {

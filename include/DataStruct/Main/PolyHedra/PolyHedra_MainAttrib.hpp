@@ -5,8 +5,8 @@
 # include "Graphics/Attribute/Base/AttributeLocation.hpp"
 # include "Graphics/Attribute/Base/AttributeBase.hpp"
 
-# include "Graphics/Attribute/Data/Point3D.hpp"
-# include "Graphics/Attribute/Data/Point2D.hpp"
+# include "Graphics/Attribute/Point3D.hpp"
+# include "Graphics/Attribute/Point2D.hpp"
 
 class PolyHedra_MainAttrib : public Attribute::Base
 {
