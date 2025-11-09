@@ -5,7 +5,9 @@ class Image;
 
 struct Color;
 
-namespace TextureGen
+namespace Texture
+{
+namespace Generate
 {
 	Image * NoSkin();
 
@@ -13,6 +15,7 @@ namespace TextureGen
 	Image * Orientation3D();
 
 	Image * GradiantX(Color col0, Color col1, unsigned int sections);
+};
 };
 
 #endif

@@ -1,6 +1,6 @@
-#include "Graphics/Shader/BaseShader.hpp"
-#include "Graphics/Shader/ShaderCode.hpp"
-#include "Graphics/Uniform/Base/UniformBase.hpp"
+#include "Graphics/Shader/Base.hpp"
+#include "Graphics/Shader/Code.hpp"
+#include "Graphics/Uniform/Base/Base.hpp"
 
 #include "Debug.hpp"
 #include <sstream>
@@ -8,17 +8,17 @@
 #include "OpenGL/openGL.h"
 #include <iostream>
 
-int BaseShader::CurrentID = -1;
+int Shader::Base::CurrentID = -1;
 
 
 
-BaseShader::BaseShader(const ShaderCode * code, int count)
+Shader::Base::Base(const Code * code, int count)
 {
 	ID = glCreateProgram();
 	Debug::Log << "++++ BaseShader " << ID << Debug::Done;
 	Compile(code, count);
 }
-BaseShader::~BaseShader()
+Shader::Base::~Base()
 {
 	Debug::Log << "---- BaseShader " << ID << Debug::Done;
 	glDeleteProgram(ID);
@@ -26,23 +26,23 @@ BaseShader::~BaseShader()
 
 
 
-void BaseShader::Use()
+void Shader::Base::Use()
 {
 	if (!Is())
 	{
 		glUseProgram(ID);
-		BaseShader::CurrentID = ID;
+		Shader::Base::CurrentID = ID;
 		UniformsUpdate();
 	}
 }
-bool BaseShader::Is() const
+bool Shader::Base::Is() const
 {
-	return (BaseShader::CurrentID == ID);
+	return (Shader::Base::CurrentID == ID);
 }
 
 
 
-void BaseShader::UniformsUpdate()
+void Shader::Base::UniformsUpdate()
 {
 	for (int i = 0; i < (int)Uniforms.size(); i++)
 	{
@@ -52,7 +52,7 @@ void BaseShader::UniformsUpdate()
 		}
 	}
 }
-int BaseShader::UniformFind(const std::string & name) const
+int Shader::Base::UniformFind(const std::string & name) const
 {
 	int location = glGetUniformLocation(ID, name.c_str());
 	//std::cout << "Uniform '" << name <<"' " << location << " " << ID << ".\n";
@@ -71,10 +71,10 @@ int BaseShader::UniformFind(const std::string & name) const
 
 
 
-void BaseShader::Compile(const ShaderCode * code, int count)
+void Shader::Base::Compile(const Code * code, int count)
 {
 	Debug::Log << "Compiling BaseShader " << ID << " ..." << Debug::Done;
-	Debug::Log << "BaseShader " << ID << " using ShaderCode";
+	Debug::Log << "BaseShader " << ID << " using Code";
 	for (int i = 0; i < count; i++) { Debug::Log << " " << code[i].getID(); }
 	Debug::Log << Debug::Done;
 
@@ -93,12 +93,12 @@ void BaseShader::Compile(const ShaderCode * code, int count)
 	Debug::Log << "Compiling BaseShader " << ID << " done" << Debug::Done;
 }
 
-BaseShader::ECompileLog::ECompileLog(const std::string log)
+Shader::Base::ECompileLog::ECompileLog(const std::string log)
 {
 	Log = log;
 	Text = "Log returned from compiling File.\n\n" + Log;
 }
-const char * BaseShader::ECompileLog::what() const throw()
+const char * Shader::Base::ECompileLog::what() const throw()
 {
 	return Text.c_str();
 }

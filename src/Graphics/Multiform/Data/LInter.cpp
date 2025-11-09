@@ -2,7 +2,7 @@
 
 
 
-Multiform::LInter::LInter(std::string name) : GenericMultiformBase(name)
+Multiform::LInter::LInter(std::string name) : GBase(name)
 {
 
 }

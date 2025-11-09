@@ -200,12 +200,6 @@ void Window::Run()
 	int w, h;
 	glfwGetFramebufferSize(win, &w, &h);
 
-	int frameSkipped = 0;
-	int frameCount = 0;
-	TimeMeasure timeFunc;
-	TimeMeasure timeSwap;
-	TimeMeasure timePoll;
-
 	if (InitFunc != NULL)
 	{
 		Debug::Log << "++++ Window Init" << Debug::Done;
@@ -213,6 +207,12 @@ void Window::Run()
 		Debug::Log << "---- Window Init" << Debug::Done;
 	}
 	if (ResizeFunc != NULL) { ResizeFunc(w, h); }
+
+	int frameSkipped = 0;
+	int frameCount = 0;
+	TimeMeasure timeFunc;
+	TimeMeasure timeSwap;
+	TimeMeasure timePoll;
 
 	FrameTimeLast = glfwGetTime();
 	while (!glfwWindowShouldClose(win))

@@ -1,13 +1,11 @@
 #include "Graphics/Uniform/Data/Angle3D.hpp"
-#include "Graphics/Shader/BaseShader.hpp"
+#include "Graphics/Shader/Base.hpp"
 #include "DataStruct/Angle3D.hpp"
 #include "OpenGL/openGL.h"
 
-#include <iostream>
 
 
-
-Uniform::Angle3D::Angle3D(std::string name, BaseShader & shader) : GenericUniformBase(name, shader)
+Uniform::Angle3D::Angle3D(std::string name, Shader::Base & shader) : GBase(name, shader)
 {
 	Location = shader.UniformFind(name);
 }

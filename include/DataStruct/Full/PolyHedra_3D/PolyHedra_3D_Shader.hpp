@@ -2,12 +2,12 @@
 #ifndef  POLYHEDRA_3D_SHADER_HPP
 # define POLYHEDRA_3D_SHADER_HPP
 
-# include "Graphics/Shader/BaseShader.hpp"
-# include "Graphics/Uniform/Uniforms.hpp"
+# include "Graphics/Shader/Base.hpp"
+# include "Graphics/UniformsInclude.hpp"
 
 class DirectoryContext;
 
-class PolyHedra_3D_Shader : public BaseShader
+class PolyHedra_3D_Shader : public Shader::Base
 {
 	public:
 		Uniform::SizeRatio2D	ViewPortSizeRatio;

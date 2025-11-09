@@ -1,11 +1,9 @@
 #include "Graphics/Uniform/Data/LightBase.hpp"
-#include "Graphics/Shader/BaseShader.hpp"
 #include "DataStruct/LightBase.hpp"
-#include "OpenGL/openGL.h"
 
 
 
-Uniform::LightBase::LightBase(std::string name, BaseShader & shader) : GenericUniformBase(name, shader),
+Uniform::LightBase::LightBase(std::string name, Shader::Base & shader) : GBase(name, shader),
 	Intensity(name + ".Intensity", shader),
 	Color(name + ".Color", shader)
 { }

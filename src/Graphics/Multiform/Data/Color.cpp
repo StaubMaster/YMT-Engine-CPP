@@ -2,7 +2,7 @@
 
 
 
-Multiform::Color::Color(std::string name) : GenericMultiformBase(name)
+Multiform::Color::Color(std::string name) : GBase(name)
 {
 
 }

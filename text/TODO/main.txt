@@ -1,0 +1,15 @@
+
+
+
+
+all the Example mains need  setup
+	setting the Directorys
+	starting the Window
+maybe even more stuff
+
+
+have the main predefined somewhere else
+where all the setup is standardized
+
+
+

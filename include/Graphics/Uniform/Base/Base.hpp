@@ -4,21 +4,24 @@
 
 # include <string>
 
-class BaseShader;
+namespace Shader
+{
+	class Base;
+};
 
 namespace Multiform
 {
-	class MultiformBase;
+	class Base;
 };
 
 namespace Uniform
 {
-class UniformBase
+class Base
 {
 	public:
 		std::string Name;
-		BaseShader & Shader;
-		Multiform::MultiformBase * Uniform;
+		Shader::Base & Shader;
+		Multiform::Base * Uniform;
 		bool Changed;
 
 		/*
@@ -27,8 +30,8 @@ class UniformBase
 			so only one thing needs to be passed down instead of 2 ?
 		*/
 	protected:
-		UniformBase(std::string name, BaseShader & shader);
-		virtual ~UniformBase();
+		Base(std::string name, Shader::Base & shader);
+		virtual ~Base();
 
 	public:
 		void PutData();

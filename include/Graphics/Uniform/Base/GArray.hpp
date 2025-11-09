@@ -2,8 +2,8 @@
 #ifndef  GENERIC_UNIFORM_ARRAY_HPP
 # define GENERIC_UNIFORM_ARRAY_HPP
 
-# include "Graphics/Uniform/Base/UniformBase.hpp"
-# include "Graphics/Uniform/Base/GenericUniformBase.hpp"
+# include "Graphics/Uniform/Base/Base.hpp"
+# include "Graphics/Uniform/Base/GBase.hpp"
 
 # include <sstream>
 
@@ -12,7 +12,7 @@ class BaseShader;
 namespace Uniform
 {
 template <typename UniformType, typename DataType>
-class GenericUniformArray
+class GArray
 {
 	public:
 		const unsigned int	Limit;
@@ -20,7 +20,7 @@ class GenericUniformArray
 		UniformType **	Uniforms;
 
 	public:
-		GenericUniformArray(unsigned int count, std::string name, BaseShader & shader) :
+		GArray(unsigned int count, std::string name, BaseShader & shader) :
 			Limit(count)
 		{
 			Uniforms = new UniformType*[Limit];
@@ -33,7 +33,7 @@ class GenericUniformArray
 			}
 			(void)shader;
 		}
-		~GenericUniformArray()
+		~GArray()
 		{
 			for (unsigned int i = 0; i < Limit; i++)
 			{

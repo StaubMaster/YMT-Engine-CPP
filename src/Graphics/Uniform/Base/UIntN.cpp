@@ -1,9 +1,9 @@
 #include "Graphics/Uniform/Base/UIntN.hpp"
-#include "Graphics/Shader/BaseShader.hpp"
+#include "Graphics/Shader/Base.hpp"
 
 
 
-Uniform::UIntN::UIntN(int count, std::string name, BaseShader & shader) : GenericUniformBase(name, shader),
+Uniform::UIntN::UIntN(int count, std::string name, Shader::Base & shader) : GBase(name, shader),
 	Location(shader.UniformFind(name)),
 	Count(count)
 { }

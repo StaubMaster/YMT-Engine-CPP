@@ -1,11 +1,9 @@
 #include "Graphics/Uniform/Data/DepthFactors.hpp"
-#include "Graphics/Shader/BaseShader.hpp"
 #include "DataStruct/DepthFactors.hpp"
-#include "OpenGL/openGL.h"
 
 
 
-Uniform::DepthFactors::DepthFactors(std::string name, BaseShader & shader) : GenericUniformBase(name, shader),
+Uniform::DepthFactors::DepthFactors(std::string name, Shader::Base & shader) : GBase(name, shader),
 	Location(7, name, shader)
 { }
 

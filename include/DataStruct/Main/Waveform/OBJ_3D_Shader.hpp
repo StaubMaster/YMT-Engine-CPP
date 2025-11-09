@@ -2,12 +2,12 @@
 #ifndef  OBJ_3D_SHADER_HPP
 # define OBJ_3D_SHADER_HPP
 
-# include "Graphics/Shader/BaseShader.hpp"
-# include "Graphics/Uniform/Uniforms.hpp"
+# include "Graphics/Shader/Base.hpp"
+# include "Graphics/UniformsInclude.hpp"
 
 class DirectoryContext;
 
-class OBJ_3D_Shader : public BaseShader
+class OBJ_3D_Shader : public Shader::Base
 {
 	public:
 		Uniform::SizeRatio2D	ViewPortSizeRatio;

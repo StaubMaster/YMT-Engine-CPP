@@ -3,7 +3,7 @@
 
 #include "PolyHedra/Skin/SkinBase.hpp"
 #include "PolyHedra/Skin/Skin2DA.hpp"
-#include "Graphics/Texture/TextureGen.hpp"
+#include "Graphics/Texture/Generate.hpp"
 
 #include "FileContext.hpp"
 #include "FilePath.hpp"
@@ -365,7 +365,7 @@ YMT::PolyHedra * YMT::PolyHedra::Load(const FileContext & file)
 			Skin2DA * skin = new Skin2DA();
 			skin -> W = 1;
 			skin -> H = 1;
-			skin -> Images.Insert(TextureGen::NoSkin());
+			skin -> Images.Insert(Texture::Generate::NoSkin());
 			data.Data -> Skin = skin;
 		}
 		data.Data -> Done();

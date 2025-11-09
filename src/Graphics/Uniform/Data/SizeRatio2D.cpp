@@ -1,12 +1,11 @@
 #include "Graphics/Uniform/Data/SizeRatio2D.hpp"
-#include "Graphics/Shader/BaseShader.hpp"
 #include "DataStruct/SizeRatio2D.hpp"
 #include "DataStruct/Point2D.hpp"
 #include "OpenGL/openGL.h"
 
 
 
-Uniform::SizeRatio2D::SizeRatio2D(std::string name, BaseShader & shader) : GenericUniformBase(name, shader),
+Uniform::SizeRatio2D::SizeRatio2D(std::string name, Shader::Base & shader) : GBase(name, shader),
 	Size(name + ".Size", shader),
 	Ratio(name + ".Ratio", shader)
 {

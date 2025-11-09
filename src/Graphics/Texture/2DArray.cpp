@@ -1,4 +1,4 @@
-#include "Graphics/Texture/Texture2DArray.hpp"
+#include "Graphics/Texture/2DArray.hpp"
 
 #include "Format/Image.hpp"
 #include "FileContext.hpp"
@@ -8,8 +8,8 @@
 
 
 
-Texture2DArray::Texture2DArray(const Image * img)
-	: TextureBase(GL_TEXTURE_2D_ARRAY)
+Texture::T2DArray::T2DArray(const Image * img)
+	: Texture::Base(GL_TEXTURE_2D_ARRAY)
 {
 	SizeRatio = SizeRatio2D(img -> W, img -> H);
 	glTexImage3D(GL_TEXTURE_2D_ARRAY, 0, GL_RGBA8, img -> W, img -> H, 1, 0, GL_RGBA, GL_UNSIGNED_INT_8_8_8_8_REV, img -> Data32);
@@ -21,8 +21,8 @@ Texture2DArray::Texture2DArray(const Image * img)
 
 	glGenerateMipmap(GL_TEXTURE_2D_ARRAY);
 }
-Texture2DArray::Texture2DArray(unsigned int w, unsigned int h, unsigned int count, const Image ** img)
-	: TextureBase(GL_TEXTURE_2D_ARRAY)
+Texture::T2DArray::T2DArray(unsigned int w, unsigned int h, unsigned int count, const Image ** img)
+	: Texture::Base(GL_TEXTURE_2D_ARRAY)
 {
 	SizeRatio = SizeRatio2D(w, h);
 
@@ -42,8 +42,8 @@ Texture2DArray::Texture2DArray(unsigned int w, unsigned int h, unsigned int coun
 
 	glGenerateMipmap(GL_TEXTURE_2D_ARRAY);
 }
-Texture2DArray::Texture2DArray(const FileContext & file)
-	: TextureBase(GL_TEXTURE_2D_ARRAY)
+Texture::T2DArray::T2DArray(const FileContext & file)
+	: Texture::Base(GL_TEXTURE_2D_ARRAY)
 {
 	Image * img = file.LoadImagePNG();
 	SizeRatio = SizeRatio2D(img -> W, img -> H);
@@ -57,8 +57,8 @@ Texture2DArray::Texture2DArray(const FileContext & file)
 
 	glGenerateMipmap(GL_TEXTURE_2D_ARRAY);
 }
-Texture2DArray::Texture2DArray(unsigned int w, unsigned int h, unsigned int count, const FileContext files [])
-	: TextureBase(GL_TEXTURE_2D_ARRAY)
+Texture::T2DArray::T2DArray(unsigned int w, unsigned int h, unsigned int count, const FileContext files [])
+	: Texture::Base(GL_TEXTURE_2D_ARRAY)
 {
 	SizeRatio = SizeRatio2D(w, h);
 
@@ -81,7 +81,7 @@ Texture2DArray::Texture2DArray(unsigned int w, unsigned int h, unsigned int coun
 
 	glGenerateMipmap(GL_TEXTURE_2D_ARRAY);
 }
-Texture2DArray::~Texture2DArray()
+Texture::T2DArray::~T2DArray()
 {
 
 }

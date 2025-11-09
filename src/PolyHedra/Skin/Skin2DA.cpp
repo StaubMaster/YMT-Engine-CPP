@@ -1,6 +1,8 @@
 #include "PolyHedra/Skin/Skin2DA.hpp"
 #include "PolyHedra/PolyHedra.hpp"
 
+#include "Graphics/Texture/2DArray.hpp"
+
 #include "Parsing/LineCommand.hpp"
 #include "FileContext.hpp"
 
@@ -18,9 +20,9 @@ Skin2DA::~Skin2DA()
 
 
 
-TextureBase * Skin2DA::ToTexture() const
+Texture::Base * Skin2DA::ToTexture() const
 {
-	return new Texture2DArray(W, H, Images.Count(), (const Image**)Images.ToPointer());
+	return new Texture::T2DArray(W, H, Images.Count(), (const Image**)Images.ToPointer());
 }
 
 

@@ -2,7 +2,7 @@
 
 
 
-Multiform::DepthFactors::DepthFactors(std::string name) : GenericMultiformBase(name)
+Multiform::DepthFactors::DepthFactors(std::string name) : GBase(name)
 {
 	
 }

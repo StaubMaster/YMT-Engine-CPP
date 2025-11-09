@@ -2,7 +2,7 @@
 
 
 
-Multiform::Depth::Depth(std::string name) : GenericMultiformBase(name)
+Multiform::Depth::Depth(std::string name) : GBase(name)
 {
 
 }

@@ -1,11 +1,9 @@
 #include "Graphics/Uniform/Data/Depth.hpp"
 #include "DataStruct/Depth.hpp"
-#include "OpenGL/openGL.h"
-#include <iostream>
 
 
 
-Uniform::Depth::Depth(std::string name, BaseShader & shader) : GenericUniformBase(name, shader),
+Uniform::Depth::Depth(std::string name, Shader::Base & shader) : GBase(name, shader),
 	Factors(name + ".Factors", shader),
 	Range(name + ".Range", shader),
 	Color(name + ".Color", shader)

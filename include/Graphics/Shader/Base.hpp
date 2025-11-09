@@ -1,21 +1,19 @@
 
-#ifndef BASE_SHADER
-# define BASE_SHADER
+#ifndef  SHADER_BASE_HPP
+# define SHADER_BASE_HPP
 
-//# include <iostream>
 # include <vector>
-//# include "OpenGL/openGL.h"
-//# include "Graphics/ShaderCode.hpp"
-//# include "Graphics/Uniform/Base/UniformBase.hpp"
 # include <string>
 
-class ShaderCode;
 namespace Uniform
 {
-	class UniformBase;
+	class Base;
 };
 
-class BaseShader
+namespace Shader
+{
+class Code;
+class Base
 {
 	private:
 		static int CurrentID;
@@ -23,11 +21,11 @@ class BaseShader
 	private:
 		int ID;
 	public:
-		std::vector<Uniform::UniformBase *> Uniforms;
+		std::vector<Uniform::Base *> Uniforms;
 
 	public:
-		BaseShader(const ShaderCode * code, int count);
-		virtual ~BaseShader();
+		Base(const Code * code, int count);
+		virtual ~Base();
 
 	public:
 		void Use();
@@ -38,7 +36,7 @@ class BaseShader
 		int UniformFind(const std::string & name) const;
 
 	private:
-		void Compile(const ShaderCode * code, int count);
+		void Compile(const Code * code, int count);
 
 		class ECompileLog : std::exception
 		{
@@ -52,6 +50,7 @@ class BaseShader
 			public:
 				const char * what() const throw();
 		};
+};
 };
 
 #endif

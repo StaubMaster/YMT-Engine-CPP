@@ -2,26 +2,29 @@
 #ifndef  UNI_LIGHT_SOLAR_HPP
 # define UNI_LIGHT_SOLAR_HPP
 
-# include "Graphics/Uniform/Base/GenericUniformBase.hpp"
+# include "Graphics/Uniform/Base/GBase.hpp"
 # include "DataDec.hpp"
 
 # include "Graphics/Uniform/Data/LightBase.hpp"
 # include "Graphics/Uniform/Data/Point3D.hpp"
 
-class BaseShader;
+namespace Shader
+{
+	class Base;
+};
 
 struct LightSolar;
 
 namespace Uniform
 {
-class LightSolar : public Uniform::GenericUniformBase<::LightSolar>
+class LightSolar : public Uniform::GBase<::LightSolar>
 {
 	private:
 		Uniform::LightBase	Base;
 		Uniform::Point3D	Dir;
 
 	public:
-		LightSolar(std::string name, BaseShader & shader);
+		LightSolar(std::string name, Shader::Base & shader);
 
 	public:
 		void PutData(::LightSolar val) override;

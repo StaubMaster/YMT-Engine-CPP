@@ -2,7 +2,7 @@
 
 
 
-Multiform::Range::Range(std::string name) : GenericMultiformBase(name)
+Multiform::Range::Range(std::string name) : GBase(name)
 {
 
 }

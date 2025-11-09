@@ -1,11 +1,9 @@
 #include "Graphics/Uniform/Data/Color.hpp"
-#include "Graphics/Shader/BaseShader.hpp"
 #include "DataStruct/Color.hpp"
-#include "OpenGL/openGL.h"
 
 
 
-Uniform::Color::Color(std::string name, BaseShader & shader) : GenericUniformBase(name, shader),
+Uniform::Color::Color(std::string name, Shader::Base & shader) : GBase(name, shader),
 	Location(name, shader)
 { }
 

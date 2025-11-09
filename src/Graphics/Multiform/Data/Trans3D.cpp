@@ -2,7 +2,7 @@
 
 
 
-Multiform::Trans3D::Trans3D(std::string name) : GenericMultiformBase(name)
+Multiform::Trans3D::Trans3D(std::string name) : GBase(name)
 {
 
 }

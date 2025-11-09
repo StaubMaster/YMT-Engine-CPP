@@ -1,0 +1,19 @@
+
+
+
+
+I already had the Idead of a Graphics Manager at the beginning
+right now all the examples have a lot of stuff defined there
+
+make a Manager that internally includes all that stuff
+
+before that, figure out what stuff to up in the Manager
+like all the Light stuff is pretty much done
+maybe allow more spotLights
+but besides that it is basically a fully functional "Module"
+
+although there is also some other stuff that could be collected together
+so a LightShader, with all the Uniforms inside
+
+
+

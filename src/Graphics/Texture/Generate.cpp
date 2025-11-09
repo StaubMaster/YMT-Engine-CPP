@@ -1,9 +1,9 @@
-#include "Graphics/Texture/TextureGen.hpp"
+#include "Graphics/Texture/Generate.hpp"
 #include "Format/Image.hpp"
 
 
 
-Image * TextureGen::NoSkin()
+Image * Texture::Generate::NoSkin()
 {
 	Image * img = new Image(1, 1);
 
@@ -12,7 +12,7 @@ Image * TextureGen::NoSkin()
 	return img;
 }
 
-Image * TextureGen::Orientation2D()
+Image * Texture::Generate::Orientation2D()
 {
 	Image * img = new Image(2, 2);
 
@@ -24,7 +24,7 @@ Image * TextureGen::Orientation2D()
 	return img;
 }
 
-Image * TextureGen::Orientation3D()
+Image * Texture::Generate::Orientation3D()
 {
 	Image * img = new Image(8, 4);
 

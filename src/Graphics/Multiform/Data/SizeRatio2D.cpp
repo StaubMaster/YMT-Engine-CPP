@@ -2,7 +2,7 @@
 
 
 
-Multiform::SizeRatio2D::SizeRatio2D(std::string name) : GenericMultiformBase(name)
+Multiform::SizeRatio2D::SizeRatio2D(std::string name) : GBase(name)
 {
-	
+
 }

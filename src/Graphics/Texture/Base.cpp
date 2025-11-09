@@ -1,4 +1,4 @@
-#include "Graphics/Texture/TextureBase.hpp"
+#include "Graphics/Texture/Base.hpp"
 
 #include "Debug.hpp"
 #include <sstream>
@@ -8,22 +8,22 @@
 
 
 
-TextureBase::TextureBase(unsigned int type)
+Texture::Base::Base(unsigned int type)
 {
 	Type = type;
 	glGenTextures(1, &GL_Texture);
 	glBindTexture(Type, GL_Texture);
-	Debug::Log << "++++ TextureBase" << Debug::Done;
+	Debug::Log << "++++ Texture::Base" << Debug::Done;
 }
-TextureBase::~TextureBase()
+Texture::Base::~Base()
 {
-	Debug::Log << "---- TextureBase" << Debug::Done;
+	Debug::Log << "---- Texture::Base" << Debug::Done;
 	glDeleteTextures(1, &GL_Texture);
 }
 
 
 
-void TextureBase::Bind()
+void Texture::Base::Bind()
 {
 	glBindTexture(Type, GL_Texture);
 }

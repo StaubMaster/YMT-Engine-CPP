@@ -1,6 +1,6 @@
 
-#ifndef SHADER_CODE
-# define SHADER_CODE
+#ifndef  SHADER_CODE_HPP
+# define SHADER_CODE_HPP
 
 //# include <exception>
 //# include <string>
@@ -12,19 +12,21 @@
 typedef unsigned int GLenum;
 class FileContext;
 
-class ShaderCode
+namespace Shader
+{
+class Code
 {
 	private:
 		int ID;
 		std::string Path;
 
 	private:
-		ShaderCode(GLenum type, const std::string code, std::string path);
+		Code(GLenum type, const std::string code, std::string path);
 	public:
-		~ShaderCode();
+		~Code();
 
-		ShaderCode(const ShaderCode & other);
-		const ShaderCode & operator = (const ShaderCode & other);
+		Code(const Code & other);
+		const Code & operator = (const Code & other);
 
 	public:
 		int getID() const;
@@ -52,7 +54,7 @@ class ShaderCode
 
 
 	public:
-		static ShaderCode FromFile(const FileContext & file);
+		static Code FromFile(const FileContext & file);
 
 	private:
 		class EInvalidFileExtention : std::exception
@@ -67,6 +69,7 @@ class ShaderCode
 			public:
 				const char * what() const throw();
 		};
+};
 };
 
 #endif

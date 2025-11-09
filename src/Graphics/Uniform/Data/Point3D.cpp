@@ -1,10 +1,9 @@
 #include "Graphics/Uniform/Data/Point3D.hpp"
-#include "Graphics/Shader/BaseShader.hpp"
 #include "DataStruct/Point3D.hpp"
 
 
 
-Uniform::Point3D::Point3D(std::string name, BaseShader & shader) : GenericUniformBase(name, shader),
+Uniform::Point3D::Point3D(std::string name, Shader::Base & shader) : GBase(name, shader),
 	Location(name, shader)
 { }
 

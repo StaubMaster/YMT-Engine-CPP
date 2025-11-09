@@ -3,7 +3,6 @@
 
 # include "PolyHedra/Skin/SkinGenericBase.hpp"
 # include "PolyHedra/Skin/Skin2D_Data.hpp"
-# include "Graphics/Texture/Texture2DArray.hpp"
 
 # include "Miscellaneous/ContainerDynamic.hpp"
 
@@ -21,7 +20,7 @@ class Skin2DA : public SkinGenericBase<Skin2DCorner, Skin2DFaceCorner, Skin2DFac
 		~Skin2DA();
 	
 	public:
-		TextureBase * ToTexture() const override;
+		Texture::Base * ToTexture() const override;
 
 	public:
 		void Parse(const ParsingCommand & cmd) override;

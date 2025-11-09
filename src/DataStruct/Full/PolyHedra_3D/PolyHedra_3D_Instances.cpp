@@ -1,6 +1,6 @@
 #include "DataStruct/Full/PolyHedra_3D/PolyHedra_3D_Instances.hpp"
 #include "PolyHedra/Skin/SkinBase.hpp"
-#include "Graphics/Texture/TextureBase.hpp"
+#include "Graphics/Texture/Base.hpp"
 
 
 

@@ -67,10 +67,10 @@ FILES_SRC := \
 	DataStruct/Matrix3x3.cpp \
 	DataO.cpp \
 \
-	Graphics/Shader/ShaderCode.cpp \
-	Graphics/Shader/BaseShader.cpp \
+	Graphics/Shader/Code.cpp \
+	Graphics/Shader/Base.cpp \
 \
-	Graphics/Uniform/Base/UniformBase.cpp \
+	Graphics/Uniform/Base/Base.cpp \
 	Graphics/Uniform/Base/FloatN.cpp \
 	Graphics/Uniform/Base/Float1.cpp \
 	Graphics/Uniform/Base/Float2.cpp \
@@ -92,7 +92,7 @@ FILES_SRC := \
 	Graphics/Uniform/Data/LightSolar.cpp \
 	Graphics/Uniform/Data/LightSpot.cpp \
 \
-	Graphics/Multiform/Base/MultiformBase.cpp \
+	Graphics/Multiform/Base/Base.cpp \
 	Graphics/Multiform/Data/Trans3D.cpp \
 	Graphics/Multiform/Data/SizeRatio2D.cpp \
 	Graphics/Multiform/Data/DepthFactors.cpp \
@@ -115,9 +115,9 @@ FILES_SRC := \
 	Graphics/Attribute/Data/Point4D.cpp \
 	Graphics/Attribute/Data/Color.cpp \
 \
-	Graphics/Texture/TextureBase.cpp \
-	Graphics/Texture/Texture2DArray.cpp \
-	Graphics/Texture/TextureGen.cpp \
+	Graphics/Texture/Base.cpp \
+	Graphics/Texture/2DArray.cpp \
+	Graphics/Texture/Generate.cpp \
 \
 	DataStruct/Main/PolyHedra/PolyHedra_MainData.cpp \
 	DataStruct/Main/PolyHedra/PolyHedra_MainAttrib.cpp \

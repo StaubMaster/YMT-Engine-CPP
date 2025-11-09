@@ -1,0 +1,11 @@
+
+
+
+
+
+right now a lot of things need their own #include
+collect a lot of them into categorys
+this would slow down compile time ?
+maybe a lot ?
+
+

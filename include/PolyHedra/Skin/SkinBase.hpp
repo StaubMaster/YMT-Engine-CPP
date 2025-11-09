@@ -2,7 +2,6 @@
 # define SKIN_BASE_HPP
 
 # include "Miscellaneous/ContainerDynamic.hpp"
-//# include "Texture/TextureBase.hpp"
 
 # include "Parsing/ParsingCommand.hpp"
 
@@ -11,7 +10,10 @@ namespace YMT
 	class PolyHedra;
 };
 
-class TextureBase;
+namespace Texture
+{
+	class Base;
+};
 
 class Image;
 class FileContext;
@@ -30,7 +32,7 @@ class SkinBase
 	public:
 		virtual void Done() = 0;
 
-		virtual TextureBase * ToTexture() const = 0;
+		virtual Texture::Base * ToTexture() const = 0;
 
 	public:
 		struct ParsingEnvironmentData : public ParsingCommand::EnvironmentData

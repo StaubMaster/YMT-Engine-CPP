@@ -1,20 +1,23 @@
-#ifndef  TEXTURE_HPP
-# define TEXTURE_HPP
+#ifndef  TEXTURE_BASE_HPP
+# define TEXTURE_BASE_HPP
 
 class FileContext;
 
-class TextureBase
+namespace Texture
+{
+class Base
 {
 	private:
 		unsigned int GL_Texture;
 		unsigned int Type;
 
 	public:
-		TextureBase(unsigned int type);
-		virtual ~TextureBase();
+		Base(unsigned int type);
+		virtual ~Base();
 
 	public:
 		virtual void Bind();
+};
 };
 
 #endif

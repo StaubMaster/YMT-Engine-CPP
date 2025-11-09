@@ -8,7 +8,7 @@
 #include "DataStruct/Angle3D.hpp"
 #include "DataStruct/AxisBox3D.hpp"
 
-#include "Graphics/Texture/TextureGen.hpp"
+#include "Graphics/Texture/Generate.hpp"
 #include "Format/Image.hpp"
 
 #include "FileContext.hpp"
@@ -129,7 +129,7 @@ YMT::PolyHedra * YMT::PolyHedra::Cube(float scale)
 	Skin2DA * skin = new Skin2DA();
 	skin -> W = 8;
 	skin -> H = 4;
-	skin -> Images.Insert(TextureGen::Orientation3D());
+	skin -> Images.Insert(Texture::Generate::Orientation3D());
 
 	skin -> Insert_Face4(Skin2DFaceCorner(Point2D(0.00f, 0.00f)), Skin2DFaceCorner(Point2D(0.00f, 0.50f)), Skin2DFaceCorner(Point2D(0.25f, 0.00f)), Skin2DFaceCorner(Point2D(0.25f, 0.50f)));
 	skin -> Insert_Face4(Skin2DFaceCorner(Point2D(0.25f, 0.00f)), Skin2DFaceCorner(Point2D(0.25f, 0.50f)), Skin2DFaceCorner(Point2D(0.50f, 0.00f)), Skin2DFaceCorner(Point2D(0.50f, 0.50f)));

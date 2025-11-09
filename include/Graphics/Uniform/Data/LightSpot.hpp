@@ -2,20 +2,23 @@
 #ifndef  UNI_LIGHT_SPOT_HPP
 # define UNI_LIGHT_SPOT_HPP
 
-# include "Graphics/Uniform/Base/GenericUniformBase.hpp"
+# include "Graphics/Uniform/Base/GBase.hpp"
 # include "DataDec.hpp"
 
 # include "Graphics/Uniform/Data/LightBase.hpp"
 # include "Graphics/Uniform/Data/Point3D.hpp"
 # include "Graphics/Uniform/Data/Range.hpp"
 
-class BaseShader;
+namespace Shader
+{
+	class Base;
+};
 
 struct LightSpot;
 
 namespace Uniform
 {
-class LightSpot : public Uniform::GenericUniformBase<::LightSpot>
+class LightSpot : public Uniform::GBase<::LightSpot>
 {
 	private:
 		Uniform::LightBase	Base;
@@ -24,7 +27,7 @@ class LightSpot : public Uniform::GenericUniformBase<::LightSpot>
 		Uniform::Range		Range;
 
 	public:
-		LightSpot(std::string name, BaseShader & shader);
+		LightSpot(std::string name, Shader::Base & shader);
 
 	public:
 		void PutData(::LightSpot val) override;

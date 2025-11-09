@@ -2,16 +2,16 @@
 #ifndef  GENERIC_MULTIFORM_BASE_HPP
 # define GENERIC_MULTIFORM_BASE_HPP
 
-# include "Graphics/Shader/BaseShader.hpp"
-# include "Graphics/Multiform/Base/MultiformBase.hpp"
-# include "Graphics/Uniform/Base/UniformBase.hpp"
+# include "Graphics/Shader/Base.hpp"
+# include "Graphics/Multiform/Base/Base.hpp"
+# include "Graphics/Uniform/Base/Base.hpp"
 
 # include <typeinfo>
 
 namespace Multiform
 {
 template <typename UniformType, typename DataType>
-class GenericMultiformBase : public MultiformBase
+class GBase : public Base
 {
 	public:
 		UniformType ** Uniforms;
@@ -19,13 +19,13 @@ class GenericMultiformBase : public MultiformBase
 		DataType Data;
 
 	public:
-		GenericMultiformBase(std::string name) :
-			MultiformBase(name)
+		GBase(std::string name) :
+			Base(name)
 		{
 			Uniforms = NULL;
 			UniformsCount = 0;
 		}
-		virtual ~GenericMultiformBase()
+		virtual ~GBase()
 		{
 			if (Uniforms != NULL)
 			{
@@ -34,30 +34,20 @@ class GenericMultiformBase : public MultiformBase
 		}
 
 	public:
-		void FindUniforms(BaseShader ** shaders, int count) override
+		void FindUniforms(Shader::Base ** shaders, int count) override
 		{
 			UniformType ** uniforms = new UniformType*[count];
 			int c = 0;
 
-			//std::cout << "Shader.Count " << count << "\n";
 			for (int s = 0; s < count; s++)
 			{
-				//std::cout << "Shader[" << s << "]\n";
-				//std::cout << "Uniform.Count " << ((int)shaders[s] -> Uniforms.size()) << "\n";
 				for (int u = 0; u < (int)shaders[s] -> Uniforms.size(); u++)
 				{
-					//std::cout << "Uniform[" << u << "]\n";
-					Uniform::UniformBase * uni = shaders[s] -> Uniforms[u];
-					//std::cout << "Uniform '" << (this -> Name) << "'\n";
-					//std::cout << "Uniform '" << (uni -> Name) << "'\n";
-					//std::cout << "Type: " << typeid(UniformType).name() << "\n";
-					//std::cout << "Type: " << typeid(*uni).name() << "\n";
+					Uniform::Base * uni = shaders[s] -> Uniforms[u];
 					if (uni -> Name == this -> Name)
 					{
-						//std::cout << "Uniform Name matches\n";
 						if (typeid(*uni) == typeid(UniformType))
 						{
-							//std::cout << "Uniform Type matches\n";
 							uni -> Uniform = this;
 							uniforms[c] = (UniformType*)(uni);
 							c++;
@@ -79,7 +69,7 @@ class GenericMultiformBase : public MultiformBase
 			delete [] uniforms;
 		}
 
-		void Data_PutUniform(Uniform::UniformBase * uni_base) override
+		void Data_PutUniform(Uniform::Base * uni_base) override
 		{
 			UniformType * uni = (UniformType*)uni_base;
 			uni -> PutData(Data);

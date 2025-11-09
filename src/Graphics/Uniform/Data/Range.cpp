@@ -1,11 +1,10 @@
 #include "Graphics/Uniform/Data/Range.hpp"
-#include "Graphics/Shader/BaseShader.hpp"
 #include "DataStruct/Range.hpp"
 #include "OpenGL/openGL.h"
 
 
 
-Uniform::Range::Range(std::string name, BaseShader & shader) : GenericUniformBase(name, shader),
+Uniform::Range::Range(std::string name, Shader::Base & shader) : GBase(name, shader),
 	Min(name + ".Min", shader),
 	Len(name + ".Len", shader),
 	Max(name + ".Max", shader)

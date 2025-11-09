@@ -4,15 +4,18 @@
 
 # include "Graphics/Uniform/Base/FloatN.hpp"
 
-class BaseShader;
+namespace Shader
+{
+	class Base;
+};
 
 namespace Uniform
 {
 class Float3 : public Uniform::FloatN
 {
 	public:
-		Float3(std::string name, BaseShader & shader);
-		Float3(int count, std::string name, BaseShader & shader);
+		Float3(std::string name, Shader::Base & shader);
+		Float3(int count, std::string name, Shader::Base & shader);
 
 	public:
 		void PutData(const float * val) override;
