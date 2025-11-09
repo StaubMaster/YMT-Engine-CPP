@@ -1,0 +1,10 @@
+
+right now Shaders have their files hardcoded
+but to access them you need to know the media directory
+which cannot be accessed reliably via relative paths
+since the exe can be run from anywhere
+but an absolute path also cant be used
+
+a macro define can be set from the Makefile
+in the Engine Makefile, get the Makefile directory and set the macro based on that
+then use that to set a DirectoryContext at the beginning of the main

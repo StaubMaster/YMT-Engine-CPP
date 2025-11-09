@@ -1,0 +1,7 @@
+
+Clean functions should only clean this Project
+not all the other Projects
+basically, if you want to clean or re, that relates to this Project
+so you need tore everything else
+but cleaning might be good ?, so only the .a remain ?
+all_clean: makes all then cleans ?
