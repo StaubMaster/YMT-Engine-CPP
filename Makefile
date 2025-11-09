@@ -39,7 +39,7 @@ endif
 
 
 
-NAME := YMT.a
+NAME := Engine.a
 COMPILER := c++ -std=c++11
 FLAGS := -Wall -Wextra -Werror -D ENGINE_DIR='"$(shell pwd)"'
 
@@ -115,6 +115,10 @@ FILES_SRC := \
 	Graphics/Attribute/Data/Point4D.cpp \
 	Graphics/Attribute/Data/Color.cpp \
 \
+	Graphics/Texture/TextureBase.cpp \
+	Graphics/Texture/Texture2DArray.cpp \
+	Graphics/Texture/TextureGen.cpp \
+\
 	DataStruct/Main/PolyHedra/PolyHedra_MainData.cpp \
 	DataStruct/Main/PolyHedra/PolyHedra_MainAttrib.cpp \
 	DataStruct/Main/PolyHedra/PolyHedra_MainBuffer.cpp \
@@ -135,10 +139,6 @@ FILES_SRC := \
 	DataStruct/Main/Waveform/OBJ_3D_BufferArray.cpp \
 	DataStruct/Main/Waveform/OBJ_3D_Shader.cpp \
 	DataStruct/Main/Waveform/MTL.cpp \
-\
-	Texture/TextureBase.cpp \
-	Texture/Texture2DArray.cpp \
-	Texture/TextureGen.cpp \
 \
 	PolyHedra/PolyHedraData.cpp \
 	PolyHedra/PolyHedra.cpp \
@@ -175,9 +175,9 @@ $(NAME) : repos $(FILES_ABS_OBJ)
 
 all: repos
 	@$(FANCY_ECHO) "$(COLOR_REPO)$(FANCY_NAME): $(COLOR_TYPE)Target: $(COLOR_FILE)$@$(COLOR_NONE)"
-	@$(MAKE) $(REPOS)
-	@$(MAKE) $(FILES_ABS_OBJ)
-	@$(MAKE) $(NAME)
+	@$(MAKE) -s $(REPOS)
+	@$(MAKE) -s $(FILES_ABS_OBJ)
+	@$(MAKE) -s $(NAME)
 
 clean:
 	@$(FANCY_ECHO) "$(COLOR_REPO)$(FANCY_NAME): $(COLOR_TYPE)Target: $(COLOR_FILE)$@$(COLOR_NONE)"
@@ -185,13 +185,13 @@ clean:
 
 fclean:
 	@$(FANCY_ECHO) "$(COLOR_REPO)$(FANCY_NAME): $(COLOR_TYPE)Target: $(COLOR_FILE)$@$(COLOR_NONE)"
-	@$(MAKE) clean
+	@$(MAKE) -s clean
 	@rm -f $(NAME)
 
 re:
 	@$(FANCY_ECHO) "$(COLOR_REPO)$(FANCY_NAME): $(COLOR_TYPE)Target: $(COLOR_FILE)$@$(COLOR_NONE)"
-	@$(MAKE) fclean
-	@$(MAKE) all
+	@$(MAKE) -s fclean
+	@$(MAKE) -s all
 
 .PHONY: all clean fclean re
 
@@ -204,7 +204,7 @@ re:
 $(DIR_OBJ)/%.o : $(DIR_SRC)/%.cpp
 	@$(FANCY_ECHO) "$(COLOR_REPO)$(FANCY_NAME): $(COLOR_TYPE)Compiling: $(COLOR_FILE)$@$(COLOR_NONE)"
 	@mkdir -p $(dir $@)
-	$(COMPILER) $(FLAGS) $(ARGS_INCLUDES) -c $< -o $@
+	@$(COMPILER) $(FLAGS) $(ARGS_INCLUDES) -c $< -o $@
 
 
 
@@ -245,20 +245,20 @@ repos: repos_clone
 #	$(FANCY_ECHO) "$(COLOR_REPO)$(FANCY_NAME): $(COLOR_TYPE)Target: $(COLOR_FILE)$@$(COLOR_NONE)"
 #	@$(FANCY_ECHO) "$(COLOR_REPO)$(FANCY_NAME): $(COLOR_TYPE)Compiling: $(COLOR_FILE)$@$(COLOR_NONE)"
 	@$(foreach repo, $(REPOS), \
-		$(MAKE) -C $(repo) ; \
+		$(MAKE) -C $(repo) -s ; \
 	)
 
 repos_all: repos_clone
 #	@$(FANCY_ECHO) "$(COLOR_REPO)$(FANCY_NAME): $(COLOR_TYPE)Target: $(COLOR_FILE)$@$(COLOR_NONE)"
 	@$(foreach repo, $(REPOS), \
-		$(MAKE) -C $(repo) all ; \
+		$(MAKE) -C $(repo) -s all ; \
 	)
 
 repos_clean:
 #	@$(FANCY_ECHO) "$(COLOR_REPO)$(FANCY_NAME): $(COLOR_TYPE)Target: $(COLOR_FILE)$@$(COLOR_NONE)"
 	@$(foreach repo, $(REPOS), \
 		if [ -d $(repo) ] ; then \
-			$(MAKE) -C $(repo) clean ; \
+			$(MAKE) -C $(repo) -s clean ; \
 		fi ; \
 	)
 
@@ -266,20 +266,20 @@ repos_fclean:
 #	@$(FANCY_ECHO) "$(COLOR_REPO)$(FANCY_NAME): $(COLOR_TYPE)Target: $(COLOR_FILE)$@$(COLOR_NONE)"
 	@$(foreach repo, $(REPOS), \
 		if [ -d $(repo) ] ; then \
-			$(MAKE) -C $(repo) fclean ; \
+			$(MAKE) -C $(repo) -s fclean ; \
 		fi ; \
 	)
 
 repos_clone:
 #	$(FANCY_ECHO) "$(COLOR_REPO)$(FANCY_NAME): $(COLOR_TYPE)Target: $(COLOR_FILE)$@$(COLOR_NONE)"
-	$(foreach repo, $(REPOS), \
-		$(MAKE) $(repo)_clone ; \
+	@$(foreach repo, $(REPOS), \
+		$(MAKE) $(repo)_clone -s ; \
 	)
 
 repos_rm:
 #	@$(FANCY_ECHO) "$(COLOR_REPO)$(FANCY_NAME): $(COLOR_TYPE)Target: $(COLOR_FILE)$@$(COLOR_NONE)"
 	@$(foreach repo, $(REPOS), \
-		$(MAKE) $(repo)_rm ; \
+		$(MAKE) $(repo)_rm -s ; \
 	)
 #	@rm -rf $(REPOS)
 

@@ -3,7 +3,7 @@
 
 # include "PolyHedra/Skin/SkinGenericBase.hpp"
 # include "PolyHedra/Skin/Skin2D_Data.hpp"
-# include "Texture/Texture2DArray.hpp"
+# include "Graphics/Texture/Texture2DArray.hpp"
 
 # include "Miscellaneous/ContainerDynamic.hpp"
 

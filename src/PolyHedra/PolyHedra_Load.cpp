@@ -3,7 +3,7 @@
 
 #include "PolyHedra/Skin/SkinBase.hpp"
 #include "PolyHedra/Skin/Skin2DA.hpp"
-#include "Texture/TextureGen.hpp"
+#include "Graphics/Texture/TextureGen.hpp"
 
 #include "FileContext.hpp"
 #include "FilePath.hpp"

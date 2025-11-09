@@ -8,7 +8,7 @@
 #include "DataStruct/Angle3D.hpp"
 #include "DataStruct/AxisBox3D.hpp"
 
-#include "Texture/TextureGen.hpp"
+#include "Graphics/Texture/TextureGen.hpp"
 #include "Format/Image.hpp"
 
 #include "FileContext.hpp"

@@ -1,4 +1,4 @@
-#include "Texture/TextureGen.hpp"
+#include "Graphics/Texture/TextureGen.hpp"
 #include "Format/Image.hpp"
 
 

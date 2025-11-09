@@ -1,6 +1,6 @@
 #include "PolyHedra/Skin/SkinBase.hpp"
 #include "PolyHedra/Skin/Skin2DA.hpp"
-#include "Texture/TextureBase.hpp"
+#include "Graphics/Texture/TextureBase.hpp"
 #include "Format/Image.hpp"
 #include "Parsing/LineCommand.hpp"
 

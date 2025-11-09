@@ -1,4 +1,4 @@
-#include "Texture/TextureBase.hpp"
+#include "Graphics/Texture/TextureBase.hpp"
 
 #include "Debug.hpp"
 #include <sstream>
