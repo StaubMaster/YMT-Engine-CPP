@@ -37,6 +37,8 @@ endif
 
 
 
+
+
 NAME := YMT.a
 COMPILER := c++ -std=c++11
 FLAGS := -Wall -Wextra -Werror -D ENGINE_DIR='"$(shell pwd)"'
@@ -134,12 +136,6 @@ FILES_SRC := \
 	DataStruct/Main/Waveform/OBJ_3D_Shader.cpp \
 	DataStruct/Main/Waveform/MTL.cpp \
 \
-	TimeMeasure.cpp \
-	Keys.cpp \
-	Window.cpp \
-	Debug.cpp
-
-WORKING_FILES_SRC := \
 	Texture/TextureBase.cpp \
 	Texture/Texture2DArray.cpp \
 	Texture/TextureGen.cpp \
@@ -151,10 +147,11 @@ WORKING_FILES_SRC := \
 	PolyHedra/Skin/SkinBase.cpp \
 	PolyHedra/Skin/Skin2DA.cpp \
 	PolyHedra/Skin/Skin2D_Data.cpp \
-
-WORKING_FILES_OBJ := $(WORKING_FILES_SRC:.cpp=.o)
-
-FILES_SRC += $(WORKING_FILES_SRC)
+\
+	TimeMeasure.cpp \
+	Keys.cpp \
+	Window.cpp \
+	Debug.cpp
 
 FILES_OBJ := $(FILES_SRC:.cpp=.o)
 
@@ -176,23 +173,17 @@ $(NAME) : repos $(FILES_ABS_OBJ)
 	@$(FANCY_ECHO) "$(COLOR_REPO)$(FANCY_NAME): $(COLOR_TYPE)Target: $(COLOR_FILE)$@$(COLOR_NONE)"
 	@ar -rcs $(NAME) $(FILES_ABS_OBJ)
 
-work: repos
-	@$(FANCY_ECHO) "$(COLOR_REPO)$(FANCY_NAME): $(COLOR_TYPE)Target: $(COLOR_FILE)$@$(COLOR_NONE)"
-	@rm -f $(WORKING_FILES_ABS_OBJ)
-	@$(MAKE) $(WORKING_FILES_ABS_OBJ)
-	@$(MAKE) $(NAME)
-
-all: repos_all
+all: repos
 	@$(FANCY_ECHO) "$(COLOR_REPO)$(FANCY_NAME): $(COLOR_TYPE)Target: $(COLOR_FILE)$@$(COLOR_NONE)"
 	@$(MAKE) $(REPOS)
 	@$(MAKE) $(FILES_ABS_OBJ)
 	@$(MAKE) $(NAME)
 
-clean: repos_clean
+clean:
 	@$(FANCY_ECHO) "$(COLOR_REPO)$(FANCY_NAME): $(COLOR_TYPE)Target: $(COLOR_FILE)$@$(COLOR_NONE)"
 	@rm -f $(FILES_ABS_OBJ)
 
-fclean: repos_fclean
+fclean:
 	@$(FANCY_ECHO) "$(COLOR_REPO)$(FANCY_NAME): $(COLOR_TYPE)Target: $(COLOR_FILE)$@$(COLOR_NONE)"
 	@$(MAKE) clean
 	@rm -f $(NAME)
@@ -252,7 +243,7 @@ REPOS =
 
 repos: repos_clone
 #	$(FANCY_ECHO) "$(COLOR_REPO)$(FANCY_NAME): $(COLOR_TYPE)Target: $(COLOR_FILE)$@$(COLOR_NONE)"
-	@$(FANCY_ECHO) "$(COLOR_REPO)$(FANCY_NAME): $(COLOR_TYPE)Compiling: $(COLOR_FILE)$@$(COLOR_NONE)"
+#	@$(FANCY_ECHO) "$(COLOR_REPO)$(FANCY_NAME): $(COLOR_TYPE)Compiling: $(COLOR_FILE)$@$(COLOR_NONE)"
 	@$(foreach repo, $(REPOS), \
 		$(MAKE) -C $(repo) ; \
 	)
@@ -287,10 +278,10 @@ repos_clone:
 
 repos_rm:
 #	@$(FANCY_ECHO) "$(COLOR_REPO)$(FANCY_NAME): $(COLOR_TYPE)Target: $(COLOR_FILE)$@$(COLOR_NONE)"
-#	@rm -rf $(REPOS)
 	@$(foreach repo, $(REPOS), \
 		$(MAKE) $(repo)_rm ; \
 	)
+#	@rm -rf $(REPOS)
 
 .PHONY: repos repos_all repos_clean repos_fclean repos_clone repos_rm
 
@@ -335,7 +326,6 @@ $(FM_REPO)_clone :
 	@if ! [ -d $(FM_REPO) ] ; then \
 		git clone $(FM_HTTPS) $(FM_REPO) -q ; \
 	fi
-#		$(FANCY_ECHO) "$(COLOR_REPO)$(FANCY_NAME): $(COLOR_TYPE)Cloning: $(COLOR_FILE)FileManager$(COLOR_NONE)"; \
 
 $(FM_REPO)_rm :
 	@rm -rf $(FM_REPO)

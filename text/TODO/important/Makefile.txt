@@ -1,0 +1,54 @@
+
+Clean functions should only clean this Project
+not all the other Projects
+basically, if you want to clean or re, that relates to this Project
+so you need tore everything else
+but cleaning might be good ?, so only the .a remain ?
+all_clean: makes all then cleans ?
+
+
+
+what does the Makefile need to do ?
+
+
+$(NAME):		comile everything that needs to be compiled to updated
+all:			same as $(NAME)
+clean:			
+flean:
+re:
+
+librarys:		return repo librarys
+includes:		return repo includes
+
+repos:			$(NAME) for repos
+repos_all:		all for repos
+repos_clean:	clean for repos
+repos_fclean:	fclean for repos
+repos_re:		re for repos
+repos_clone:	clone all repos
+repos_rm:		remove all repos
+
+
+
+	Engine:
+the Engine has a lot of files which can take a lot of time to recompile
+split into categorys ?
+
+	DataStruct
+
+	Shaders		only 2 files, ignoring inherited stuff
+	Uniforms	put together with Shaders ?
+	Multiforms	put together with Shaders ?
+
+	Buffers		only 2 files, ignoring inherited stuff
+	Attributes	put together with Buffers ?
+	Texture		put together with Buffers ?
+
+	Display		all the Main Inst Full stuff
+	Base		the stuff in the Base Directory
+	PolyHedra
+
+
+
+
+
