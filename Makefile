@@ -39,7 +39,7 @@ endif
 
 NAME := YMT.a
 COMPILER := c++ -std=c++11
-FLAGS := -Wall -Wextra -Werror
+FLAGS := -Wall -Wextra -Werror -D ENGINE_DIR='"$(shell pwd)"'
 
 
 
@@ -213,7 +213,7 @@ re:
 $(DIR_OBJ)/%.o : $(DIR_SRC)/%.cpp
 	@$(FANCY_ECHO) "$(COLOR_REPO)$(FANCY_NAME): $(COLOR_TYPE)Compiling: $(COLOR_FILE)$@$(COLOR_NONE)"
 	@mkdir -p $(dir $@)
-	@$(COMPILER) $(FLAGS) $(ARGS_INCLUDES) -c $< -o $@
+	$(COMPILER) $(FLAGS) $(ARGS_INCLUDES) -c $< -o $@
 
 
 
@@ -226,8 +226,8 @@ $(DIR_OBJ)/%.o : $(DIR_SRC)/%.cpp
 LIBRARYS = $(NAME)
 INCLUDES = include/
 
-ARGS_LIBRARYS = $(foreach library, $(LIBRARYS), $(library))
-ARGS_INCLUDES = $(foreach include, $(INCLUDES), -I$(include))
+ARGS_LIBRARYS = $(foreach library,$(LIBRARYS),$(library))
+ARGS_INCLUDES = $(foreach include,$(INCLUDES),-I$(include))
 
 librarys: repos_clone
 	@echo $(LIBRARYS)

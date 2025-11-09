@@ -11,11 +11,18 @@
 #include "OpenGL/openGL.h"
 #include <iostream>
 
+#ifndef ENGINE_DIR
+# error Engine Directory Unknown
+# define ENGINE_DIR
+#endif
+
 
 
 Window::Window(float w, float h) :
 	win(NULL), Keys(7)
 {
+	std::cout << "Engine Dir: " << ENGINE_DIR << "\n";
+
 	Keys.KeyArrays[0] = KeyDataArray(32, 32);	//	Space
 	Keys.KeyArrays[1] = KeyDataArray(48, 57);	//	Numbers
 	Keys.KeyArrays[2] = KeyDataArray(65, 90);	//	Letters
