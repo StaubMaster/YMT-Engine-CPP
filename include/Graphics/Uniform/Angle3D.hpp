@@ -3,7 +3,7 @@
 # define UNI_Angle_3D_HPP
 
 # include "Graphics/Uniform/Base/GBase.hpp"
-# include "DataDec.hpp"
+# include "DataDeclare.hpp"
 
 namespace Shader
 {

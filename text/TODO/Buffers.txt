@@ -1,0 +1,31 @@
+
+
+
+
+
+put Buffers in NameSpace
+
+before that organize / name them better
+
+
+BaseBuffer can have multiple IDs
+but only has one Attribute Array
+it would need one Attribute Array per BufferID ?
+
+so make that the BaseBuffer
+and then a bunch of those would be a BaseBufferArray
+
+except BaseBufferArray is currently the name of the VertexBuffer
+which makes sense, since that is what stores the Buffers
+
+so
+Buffer::BaseArray
+{
+	Buffer::Base * Buffers;
+	unsigned int BufferCount;
+	BaseArray(unsigned int count);
+}
+Buffer::Base
+{
+	Base(unsigned int ID);
+}

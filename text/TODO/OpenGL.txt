@@ -5,13 +5,9 @@ would change Makefile
 
 
 
-OpenGL currently needs a few -l flags to Compile
-these are hardcoded in the Examples, so where the final .exe is made
 
-but it would much better if these were specified in the OpenGL Makefile
-so the final thing dosent need to know about those flags
 
-also maybe make something that checks for the correct flags
+make something that checks for the correct flags
 instead of having them hardcoded per OS
 
 

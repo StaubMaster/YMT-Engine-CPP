@@ -4,7 +4,7 @@
 
 # include "Graphics/Uniform/Base/GBase.hpp"
 # include "Graphics/Uniform/Base/Float2.hpp"
-# include "DataDec.hpp"
+# include "DataDeclare.hpp"
 
 namespace Shader
 {

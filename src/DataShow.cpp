@@ -1,22 +1,23 @@
-#include "DataO.hpp"
+#include "DataShow.hpp"
+#include "DataInclude.hpp"
 
-#include "DataStruct/Point3D.hpp"
-#include "DataStruct/Angle3D.hpp"
-//#include "DataStruct/Transformation3D.hpp"
-#include "DataStruct/Undex3D.hpp"
-#include "DataStruct/AxisBox3D.hpp"
-
-#include "DataStruct/Point2D.hpp"
-//#include "DataStruct/SizeRatio2D.hpp"
-
-//#include "DataStruct/DepthFactors.hpp"
-//#include "DataStruct/Range.hpp"
-//#include "DataStruct/LInter.hpp"
-
-#include "DataStruct/Color.hpp"
-//#include "DataStruct/Depth.hpp"
-
-#include "DataStruct/Point4D.hpp"
+//#include "DataStruct/Point3D.hpp"
+//#include "DataStruct/Angle3D.hpp"
+////#include "DataStruct/Transformation3D.hpp"
+//#include "DataStruct/Undex3D.hpp"
+//#include "DataStruct/AxisBox3D.hpp"
+//
+//#include "DataStruct/Point2D.hpp"
+////#include "DataStruct/SizeRatio2D.hpp"
+//
+////#include "DataStruct/DepthFactors.hpp"
+////#include "DataStruct/Range.hpp"
+////#include "DataStruct/LInter.hpp"
+//
+//#include "DataStruct/Color.hpp"
+////#include "DataStruct/Depth.hpp"
+//
+//#include "DataStruct/Point4D.hpp"
 
 #include <iostream>
 

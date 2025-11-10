@@ -11,5 +11,6 @@ maybe even more stuff
 have the main predefined somewhere else
 where all the setup is standardized
 
+so isntead of the Examples having their own main, they instead have Init() Free() and Frame()
 
 

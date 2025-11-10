@@ -3,7 +3,7 @@
 # define UNI_DEPTH_HPP
 
 # include "Graphics/Uniform/Base/GBase.hpp"
-# include "DataDec.hpp"
+# include "DataDeclare.hpp"
 
 # include "Graphics/Uniform/DepthFactors.hpp"
 # include "Graphics/Uniform/Range.hpp"

@@ -65,7 +65,7 @@ FILES_SRC := \
 	DataStruct/LightSpot.cpp \
 	DataStruct/Ray3D.cpp \
 	DataStruct/Matrix3x3.cpp \
-	DataO.cpp \
+	DataShow.cpp \
 \
 	Graphics/Shader/Code.cpp \
 	Graphics/Shader/Base.cpp \
