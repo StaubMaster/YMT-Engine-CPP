@@ -11,7 +11,7 @@ else
 	CheckOS := $(shell uname -s)
 endif
 
-FANCY_NAME := YMT
+FANCY_NAME := Engine
 
 ifeq ($(CheckOS), Windows)
 
@@ -216,6 +216,7 @@ $(DIR_OBJ)/%.o : $(DIR_SRC)/%.cpp
 
 LIBRARYS = $(NAME)
 INCLUDES = include/
+ARGUMENTS =
 
 ARGS_LIBRARYS = $(foreach library,$(LIBRARYS),$(library))
 ARGS_INCLUDES = $(foreach include,$(INCLUDES),-I$(include))
@@ -226,7 +227,10 @@ librarys: repos_clone
 includes: repos_clone
 	@echo $(INCLUDES)
 
-.PHONY: librarys includes
+arguments: repos_clone
+	@echo $(ARGUMENTS)
+
+.PHONY: librarys includes arguments
 
 ################################################################
 
@@ -300,6 +304,7 @@ OPENGL_REPO := $(REPOS_DIR)/OpenGL
 REPOS += $(OPENGL_REPO)
 LIBRARYS += $(foreach library, $(shell $(MAKE) -C $(OPENGL_REPO) -s librarys), $(OPENGL_REPO)/$(library))
 INCLUDES += $(foreach include, $(shell $(MAKE) -C $(OPENGL_REPO) -s includes), $(OPENGL_REPO)/$(include))
+ARGUMENTS += $(foreach argument, $(shell $(MAKE) -C $(OPENGL_REPO) -s arguments), $(argument))
 
 $(OPENGL_REPO)_clone : ;
 
@@ -321,7 +326,8 @@ FM_REPO := $(REPOS_DIR)/FileManager
 REPOS += $(FM_REPO)
 LIBRARYS += $(foreach library, $(shell $(MAKE) -C $(FM_REPO) -s librarys), $(FM_REPO)/$(library))
 INCLUDES += $(foreach include, $(shell $(MAKE) -C $(FM_REPO) -s includes), $(FM_REPO)/$(include))
-
+ARGUMENTS += $(foreach argument, $(shell $(MAKE) -C $(FM_REPO) -s arguments), $(argument))
+ 
 $(FM_REPO)_clone :
 	@if ! [ -d $(FM_REPO) ] ; then \
 		git clone $(FM_HTTPS) $(FM_REPO) -q ; \

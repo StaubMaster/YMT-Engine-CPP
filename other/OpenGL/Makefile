@@ -14,6 +14,51 @@ FILES_OBJ := $(FILES_OBJ:.cpp=.o)
 
 
 
+
+
+################################################################
+#                           OS Stuff                           #
+################################################################
+
+ifeq ($(OS), Windows_NT)
+	CheckOS := Windows
+else
+	CheckOS := $(shell uname -s)
+endif
+
+FANCY_NAME := Examples
+
+ifeq ($(CheckOS), Windows)
+OS_ARGS := \
+	-lglfw3 \
+	-lgdi32
+
+FANCY_ECHO := echo -e
+COLOR_REPO := \e[38;2;127;127;127m
+COLOR_TYPE := \e[38;2;127;255;127m
+COLOR_FILE := \e[38;2;127;127;255m
+COLOR_NONE := \e[m
+
+endif
+
+ifeq ($(CheckOS), Darwin)
+OS_ARGS := \
+	-lglfw
+
+FANCY_ECHO := echo
+COLOR_REPO := \033[38;2;127;127;127m
+COLOR_TYPE := \033[38;2;127;255;127m
+COLOR_FILE := \033[38;2;127;127;255m
+COLOR_NONE := \033[m
+
+endif
+
+################################################################
+
+
+
+
+
 ################################################################
 
 $(NAME) : $(FILES_OBJ)
@@ -58,6 +103,7 @@ re:
 
 LIBRARYS = $(NAME)
 INCLUDES = ../
+ARGUMENTS = $(OS_ARGS)
 
 librarys:
 	@echo $(LIBRARYS)
@@ -65,38 +111,11 @@ librarys:
 includes:
 	@echo $(INCLUDES)
 
-.PHONY: librarys includes
+arguments:
+	@echo $(ARGUMENTS)
+
+.PHONY: librarys includes arguments
 
 ################################################################
-
-
-
-
-
-#ifeq ($(OS), Windows_NT)
-#	CheckOS := Windows
-#else
-#	CheckOS := $(shell uname -s)
-#endif
-#
-#ifeq ($(CheckOS), Windows)
-#LIBRARYS += \
-#	-lglfw3 \
-#	-lOpenCL \
-#	-lgdi32
-#endif
-#
-#ifeq ($(CheckOS), Darwin)
-#LIBRARYS += \
-#	-lglfw
-#endif
-
-#	dosent want to work ?
-#	make librarys only gives $(NAME)
-#	maybe I'm doing something wrong
-#	also the order matters
-#	openCL isnt needed for regular openGL stuff
-#	but when I include it later I might need to use -lgdi32 a second time
-#	which would be unoptimal
 
 
