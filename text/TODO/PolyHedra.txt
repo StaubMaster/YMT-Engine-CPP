@@ -1,0 +1,7 @@
+
+
+
+right now the PolyHedra Generation and Parsing functions are part of the main class
+organize by making them their own classes / namespaces
+
+

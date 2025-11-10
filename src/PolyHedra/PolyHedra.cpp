@@ -145,9 +145,14 @@ YMT::PolyHedra * YMT::PolyHedra::Cube(float scale)
 	temp -> Skin = skin;
 	return temp;
 }
-/*YMT::PolyHedra * YMT::PolyHedra::ConeC(int segments, float width, float height)
+YMT::PolyHedra * YMT::PolyHedra::ConeC(int segments, float width, float height)
 {
 	PolyHedra * temp = new PolyHedra();
+
+	Skin2DA * skin = new Skin2DA();
+	skin -> W = 8;
+	skin -> H = 4;
+	skin -> Images.Insert(Texture::Generate::Orientation3D());
 
 	Angle3D angle;
 
@@ -178,7 +183,7 @@ YMT::PolyHedra * YMT::PolyHedra::Cube(float scale)
 			FaceCorner(idx_last)
 		);
 
-		temp -> Skin -> Insert_Face4(
+		skin -> Insert_Face4(
 			Skin2DFaceCorner(Point2D(texM, 0.0f)),
 			Skin2DFaceCorner(Point2D(tex1, 1.0f)),
 			Skin2DFaceCorner(Point2D(tex0, 1.0f)),
@@ -188,7 +193,7 @@ YMT::PolyHedra * YMT::PolyHedra::Cube(float scale)
 
 	temp -> Done();
 	return temp;
-}*/
+}
 YMT::PolyHedra * YMT::PolyHedra::FullTexture(Image * img, float scale)
 {
 	PolyHedra * temp = new PolyHedra();
