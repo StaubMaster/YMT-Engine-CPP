@@ -18,12 +18,25 @@ BaseBuffer::BaseBuffer(unsigned int buffer_count, Attribute::Base * attributes [
 	Attributes = new Attribute::Base * [BufferCount];
 	for (unsigned int i = 0; i < BufferCount; i++) { Attributes[i] = attributes[i]; }
 
-	Debug::Log << "++++ BaseBuffer" << Debug::Done;
+
+	Debug::Log << "++++ BaseBuffer ";
+	Debug::Log << "[" << BufferCount << "]";
+	for (unsigned int i = 0; i < BufferCount; i++)
+	{
+		Debug::Log << " " << BufferIDs[i];
+	}
+	Debug::Log << Debug::Done;
 	Count = 0;
 }
 BaseBuffer::~BaseBuffer()
 {
-	Debug::Log << "---- BaseBuffer" << Debug::Done;
+	Debug::Log << "---- BaseBuffer";
+	Debug::Log << "[" << BufferCount << "]";
+	for (unsigned int i = 0; i < BufferCount; i++)
+	{
+		Debug::Log << " " << BufferIDs[i];
+	}
+	Debug::Log << Debug::Done;
 
 	glDeleteBuffers(BufferCount, BufferIDs);
 	delete [] BufferIDs;

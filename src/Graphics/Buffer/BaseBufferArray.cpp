@@ -9,11 +9,11 @@
 BaseBufferArray::BaseBufferArray()
 {
 	glGenVertexArrays(1, &ArrayID);
-	Debug::Log << "++++ BaseBufferArray" << Debug::Done;
+	Debug::Log << "++++ BaseBufferArray " << ArrayID << Debug::Done;
 }
 BaseBufferArray::~BaseBufferArray()
 {
-	Debug::Log << "---- BaseBufferArray" << Debug::Done;
+	Debug::Log << "---- BaseBufferArray " << ArrayID << Debug::Done;
 	glDeleteVertexArrays(1, &ArrayID);
 }
 

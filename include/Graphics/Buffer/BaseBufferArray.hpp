@@ -11,6 +11,10 @@ class BaseBufferArray
 		BaseBufferArray();
 		virtual ~BaseBufferArray();
 
+		//	should only be used as Pointers
+		BaseBufferArray(const BaseBufferArray & other) = delete;
+		BaseBufferArray & operator =(const BaseBufferArray & other) = delete;
+
 	public:
 		void Use();
 
