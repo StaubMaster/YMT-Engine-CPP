@@ -67,9 +67,6 @@ class PolyHedra
 		~PolyHedra();
 
 	public:
-		struct Generate;
-
-	public:
 		PolyHedra_MainData * ToMainData(int & count);
 	public:
 		std::string ToInfo() const;
@@ -78,6 +75,10 @@ class PolyHedra
 	public:
 		struct Template;
 		Template * ToTemplate();
+
+	public:
+		struct Generate;
+
 	private:
 		struct ParsingData;
 	public:

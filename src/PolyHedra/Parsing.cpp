@@ -87,7 +87,7 @@ void YMT::PolyHedra::ParsingData::Parse(const ParsingCommand & cmd)
 	else if (name == "fan>1")	{ Parse_Fan(cmd, false, true); }
 	else if (name == "fan<1")	{ Parse_Fan(cmd, true, true); }
 
-	else						{ std::cout << "unknown: " << cmd << "\n"; }
+	else						{ Debug::Log << "unknown: " << cmd << Debug::Done; }
 }
 void YMT::PolyHedra::ParsingData::Parse_Type(const ParsingCommand & cmd)
 {
@@ -102,6 +102,8 @@ void YMT::PolyHedra::ParsingData::Parse_Format(const ParsingCommand & cmd)
 void YMT::PolyHedra::ParsingData::Parse_Skin(const ParsingCommand & cmd)
 {
 	if (!cmd.CheckCount(CountCheckEqual(1))) { throw ParsingCommand::ExceptionInvalidCount(cmd, CountCheckEqual(1)); }
+	//Debug::Log << cmd << Debug::Done;
+
 	FileContext file(File.Directory() + "/" + cmd.ToString(0));
 	if (PH -> Skin != NULL)
 	{
@@ -117,6 +119,8 @@ void YMT::PolyHedra::ParsingData::Parse_Skin(const ParsingCommand & cmd)
 void YMT::PolyHedra::ParsingData::Parse_Corner(const ParsingCommand & cmd)
 {
 	if (!cmd.CheckCount(CountCheckRange(3, 3))) { throw ParsingCommand::ExceptionInvalidCount(cmd, CountCheckRange(3, 3)); }
+	//Debug::Log << cmd << Debug::Done;
+
 	Point3D c;
 	c.X = cmd.ToFloat(0);
 	c.Y = cmd.ToFloat(1);
@@ -127,7 +131,7 @@ void YMT::PolyHedra::ParsingData::Parse_Corner(const ParsingCommand & cmd)
 void YMT::PolyHedra::ParsingData::Parse_Face(const ParsingCommand & cmd)
 {
 	if (!cmd.CheckCount(CountCheckRange(3, 4))) { throw ParsingCommand::ExceptionInvalidCount(cmd, CountCheckRange(3, 4)); }
-	//std::cout << cmd << "\n";
+	//Debug::Log << cmd << Debug::Done;
 	//std::cout << "COff: " << CornerOffset << "\n";
 
 	unsigned int idx[cmd.Count()];
@@ -154,6 +158,7 @@ void YMT::PolyHedra::ParsingData::Parse_Face(const ParsingCommand & cmd)
 void YMT::PolyHedra::ParsingData::Parse_Offset(const ParsingCommand & cmd)
 {
 	if (!cmd.CheckCount(CountCheckEqual(2))) { throw ParsingCommand::ExceptionInvalidCount(cmd, CountCheckEqual(2)); }
+	//Debug::Log << cmd << Debug::Done;
 
 	{
 		std::string corner = cmd.ToString(0);
@@ -175,6 +180,7 @@ void YMT::PolyHedra::ParsingData::Parse_Belt(const ParsingCommand & cmd, bool di
 {
 	unsigned int len = cmd.Count() / 2;
 	if (!cmd.CheckCount(CountCheckModulo(2, 0)) || len < 2) { throw ParsingCommand::ExceptionInvalidCount(cmd, CountCheckModulo(2, 0)); }
+	//Debug::Log << cmd << Debug::Done;
 
 	unsigned int idx0[len];
 	unsigned int idx1[len];
@@ -236,6 +242,7 @@ void YMT::PolyHedra::ParsingData::Parse_Fan(const ParsingCommand & cmd, bool dir
 {
 	unsigned int len = cmd.Count() - 1;
 	if (!cmd.CheckCount(CountCheckRange(2, 255))) { throw ParsingCommand::ExceptionInvalidCount(cmd, CountCheckRange(2, 255)); }
+	//Debug::Log << cmd << Debug::Done;
 
 	unsigned int middle;
 	{
@@ -283,7 +290,7 @@ void YMT::PolyHedra::ParsingData::Parse_Fan(const ParsingCommand & cmd, bool dir
 void YMT::PolyHedra::ParsingData::Parse_CircleOLD(const ParsingCommand & cmd)
 {
 	if (!cmd.CheckCount(CountCheckEqual(10))) { throw ParsingCommand::ExceptionInvalidCount(cmd, CountCheckEqual(10)); }
-	//std::cout << cmd << "\n";
+	//Debug::Log << cmd << Debug::Done;
 
 	int step_num = cmd.ToInt32(0);
 	int step_off = cmd.ToInt32(1);
@@ -321,7 +328,7 @@ void YMT::PolyHedra::ParsingData::Parse_CircleOLD(const ParsingCommand & cmd)
 void YMT::PolyHedra::ParsingData::Parse_Circle(const ParsingCommand & cmd, bool direction)
 {
 	if (!cmd.CheckCount(CountCheckEqual(11))) { throw ParsingCommand::ExceptionInvalidCount(cmd, CountCheckEqual(11)); }
-	//std::cout << cmd << "\n";
+	//Debug::Log << cmd << Debug::Done;
 
 	float step = (TAU / cmd.ToInt32(0));
 	int step_num = cmd.ToInt32(1);
@@ -364,7 +371,10 @@ YMT::PolyHedra * YMT::PolyHedra::Load(const FileContext & file)
 	Debug::Log << "Loading PolyHedra File " << file.Name() << " ..." << Debug::Done;
 	ParsingData data(file);
 	data.PH = new PolyHedra();
+	data.Data = new PolyHedra::Template(*data.PH);
+
 	ParsingCommand::SplitFileIntoCommands(data);
+
 	if (data.Data != NULL)
 	{
 		if (data.PH -> Skin == NULL)
