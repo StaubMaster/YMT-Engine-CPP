@@ -1,5 +1,7 @@
-#include "PolyHedra/PolyHedra.hpp"
-#include "PolyHedra/PolyHedraData.hpp"
+#include "PolyHedra/Parsing.hpp"
+#include "PolyHedra/Data.hpp"
+#include "PolyHedra/Template.hpp"
+#include "PolyHedra/Generate.hpp"
 
 #include "PolyHedra/Skin/SkinBase.hpp"
 #include "PolyHedra/Skin/Skin2DA.hpp"
@@ -38,13 +40,18 @@
 
 
 
-YMT::PolyHedra::PolyHedraParsingEnvironmentData::PolyHedraParsingEnvironmentData(const FileContext & file)
-	: ParsingCommand::EnvironmentData(file),
+YMT::PolyHedra::ParsingData::ParsingData(const FileContext & file)
+: ParsingCommand::EnvironmentData(file),
+	PH(NULL),
 	Data(NULL),
 	CornerOffset(0),
 	FaceOffset(0)
 { }
-void YMT::PolyHedra::PolyHedraParsingEnvironmentData::Parse(const ParsingCommand & cmd)
+YMT::PolyHedra::ParsingData::~ParsingData()
+{
+	delete Data;
+}
+void YMT::PolyHedra::ParsingData::Parse(const ParsingCommand & cmd)
 {
 	std::string name = cmd.Name();
 	if (name == "")				{ /*std::cout << "empty\n";*/ }
@@ -82,32 +89,32 @@ void YMT::PolyHedra::PolyHedraParsingEnvironmentData::Parse(const ParsingCommand
 
 	else						{ std::cout << "unknown: " << cmd << "\n"; }
 }
-void YMT::PolyHedra::PolyHedraParsingEnvironmentData::Parse_Type(const ParsingCommand & cmd)
+void YMT::PolyHedra::ParsingData::Parse_Type(const ParsingCommand & cmd)
 {
 	if (!cmd.CheckCount(CountCheckEqual(1))) { throw ParsingCommand::ExceptionInvalidCount(cmd, CountCheckEqual(1)); }
 	if (cmd.ToString(0) != "PolyHedra") { throw ParsingCommand::ExceptionInvalidArg(cmd, 0); }
 }
-void YMT::PolyHedra::PolyHedraParsingEnvironmentData::Parse_Format(const ParsingCommand & cmd)
+void YMT::PolyHedra::ParsingData::Parse_Format(const ParsingCommand & cmd)
 {
 	if (!cmd.CheckCount(CountCheckEqual(1))) { throw ParsingCommand::ExceptionInvalidCount(cmd, CountCheckEqual(1)); }
 	if (cmd.ToString(0) != "PH_2025_10_27") { throw ParsingCommand::ExceptionInvalidArg(cmd, 0); }
 }
-void YMT::PolyHedra::PolyHedraParsingEnvironmentData::Parse_Skin(const ParsingCommand & cmd)
+void YMT::PolyHedra::ParsingData::Parse_Skin(const ParsingCommand & cmd)
 {
 	if (!cmd.CheckCount(CountCheckEqual(1))) { throw ParsingCommand::ExceptionInvalidCount(cmd, CountCheckEqual(1)); }
 	FileContext file(File.Directory() + "/" + cmd.ToString(0));
-	if (Data -> Skin != NULL)
+	if (PH -> Skin != NULL)
 	{
 		std::cout << cmd.Name() << ": " << "Skin already given" << "\n";
-		std::cout << "Prev: Skin: " << Data -> Skin << "\n";
-		delete Data -> Skin;
-		Data -> Skin = NULL;
+		std::cout << "Prev: Skin: " << PH -> Skin << "\n";
+		delete PH -> Skin;
+		PH -> Skin = NULL;
 	}
 	if (!file.Exists()) { std::cout << cmd.Name() << ": " << "Bad Skin File" << "\n"; return; }
-	Data -> Skin = SkinBase::Load(file);
+	PH -> Skin = SkinBase::Load(file);
 }
 
-void YMT::PolyHedra::PolyHedraParsingEnvironmentData::Parse_Corner(const ParsingCommand & cmd)
+void YMT::PolyHedra::ParsingData::Parse_Corner(const ParsingCommand & cmd)
 {
 	if (!cmd.CheckCount(CountCheckRange(3, 3))) { throw ParsingCommand::ExceptionInvalidCount(cmd, CountCheckRange(3, 3)); }
 	Point3D c;
@@ -117,7 +124,7 @@ void YMT::PolyHedra::PolyHedraParsingEnvironmentData::Parse_Corner(const Parsing
 	//std::cout << "c: " << c << "\n";
 	Data -> Insert_Corn(Corner(c));
 }
-void YMT::PolyHedra::PolyHedraParsingEnvironmentData::Parse_Face(const ParsingCommand & cmd)
+void YMT::PolyHedra::ParsingData::Parse_Face(const ParsingCommand & cmd)
 {
 	if (!cmd.CheckCount(CountCheckRange(3, 4))) { throw ParsingCommand::ExceptionInvalidCount(cmd, CountCheckRange(3, 4)); }
 	//std::cout << cmd << "\n";
@@ -144,7 +151,7 @@ void YMT::PolyHedra::PolyHedraParsingEnvironmentData::Parse_Face(const ParsingCo
 	}
 }
 
-void YMT::PolyHedra::PolyHedraParsingEnvironmentData::Parse_Offset(const ParsingCommand & cmd)
+void YMT::PolyHedra::ParsingData::Parse_Offset(const ParsingCommand & cmd)
 {
 	if (!cmd.CheckCount(CountCheckEqual(2))) { throw ParsingCommand::ExceptionInvalidCount(cmd, CountCheckEqual(2)); }
 
@@ -164,7 +171,7 @@ void YMT::PolyHedra::PolyHedraParsingEnvironmentData::Parse_Offset(const Parsing
 		{ FaceOffset = cmd.ToUInt32(1); }
 	}
 }
-void YMT::PolyHedra::PolyHedraParsingEnvironmentData::Parse_Belt(const ParsingCommand & cmd, bool direction, bool closure)
+void YMT::PolyHedra::ParsingData::Parse_Belt(const ParsingCommand & cmd, bool direction, bool closure)
 {
 	unsigned int len = cmd.Count() / 2;
 	if (!cmd.CheckCount(CountCheckModulo(2, 0)) || len < 2) { throw ParsingCommand::ExceptionInvalidCount(cmd, CountCheckModulo(2, 0)); }
@@ -219,13 +226,13 @@ void YMT::PolyHedra::PolyHedraParsingEnvironmentData::Parse_Belt(const ParsingCo
 		}
 	}
 }
-void YMT::PolyHedra::PolyHedraParsingEnvironmentData::Parse_Band(const ParsingCommand & cmd, bool direction, bool closure)
+void YMT::PolyHedra::ParsingData::Parse_Band(const ParsingCommand & cmd, bool direction, bool closure)
 {
 	(void)cmd;
 	(void)direction;
 	(void)closure;
 }
-void YMT::PolyHedra::PolyHedraParsingEnvironmentData::Parse_Fan(const ParsingCommand & cmd, bool direction, bool closure)
+void YMT::PolyHedra::ParsingData::Parse_Fan(const ParsingCommand & cmd, bool direction, bool closure)
 {
 	unsigned int len = cmd.Count() - 1;
 	if (!cmd.CheckCount(CountCheckRange(2, 255))) { throw ParsingCommand::ExceptionInvalidCount(cmd, CountCheckRange(2, 255)); }
@@ -273,7 +280,7 @@ void YMT::PolyHedra::PolyHedraParsingEnvironmentData::Parse_Fan(const ParsingCom
 		}
 	}
 }
-void YMT::PolyHedra::PolyHedraParsingEnvironmentData::Parse_CircleOLD(const ParsingCommand & cmd)
+void YMT::PolyHedra::ParsingData::Parse_CircleOLD(const ParsingCommand & cmd)
 {
 	if (!cmd.CheckCount(CountCheckEqual(10))) { throw ParsingCommand::ExceptionInvalidCount(cmd, CountCheckEqual(10)); }
 	//std::cout << cmd << "\n";
@@ -311,7 +318,7 @@ void YMT::PolyHedra::PolyHedraParsingEnvironmentData::Parse_CircleOLD(const Pars
 		//std::cout << p << "\n";
 	}
 }
-void YMT::PolyHedra::PolyHedraParsingEnvironmentData::Parse_Circle(const ParsingCommand & cmd, bool direction)
+void YMT::PolyHedra::ParsingData::Parse_Circle(const ParsingCommand & cmd, bool direction)
 {
 	if (!cmd.CheckCount(CountCheckEqual(11))) { throw ParsingCommand::ExceptionInvalidCount(cmd, CountCheckEqual(11)); }
 	//std::cout << cmd << "\n";
@@ -355,29 +362,29 @@ void YMT::PolyHedra::PolyHedraParsingEnvironmentData::Parse_Circle(const Parsing
 YMT::PolyHedra * YMT::PolyHedra::Load(const FileContext & file)
 {
 	Debug::Log << "Loading PolyHedra File " << file.Name() << " ..." << Debug::Done;
-	PolyHedraParsingEnvironmentData data(file);
-	data.Data = new PolyHedra();
+	ParsingData data(file);
+	data.PH = new PolyHedra();
 	ParsingCommand::SplitFileIntoCommands(data);
 	if (data.Data != NULL)
 	{
-		if (data.Data -> Skin == NULL)
+		if (data.PH -> Skin == NULL)
 		{
 			Skin2DA * skin = new Skin2DA();
 			skin -> W = 1;
 			skin -> H = 1;
 			skin -> Images.Insert(Texture::Generate::NoSkin());
-			data.Data -> Skin = skin;
+			data.PH -> Skin = skin;
 		}
 		data.Data -> Done();
 	}
 	else
 	{
-		data.Data = Cube();
+		data.PH = Generate::Cube();
 	}
 	Debug::Log << "Loading PolyHedra File " << file.Name() << " done" << Debug::Done;
-	Debug::Log << "Count:" << " V:" << data.Data -> Corners.Count() << Debug::Done;
-	Debug::Log << "Count:" << " F:" << data.Data -> Faces.Count() << Debug::Done;
-	AxisBox3D bound = data.Data -> CalcBound();
+	Debug::Log << "Count:" << " V:" << data.PH -> Corners.Count() << Debug::Done;
+	Debug::Log << "Count:" << " F:" << data.PH -> Faces.Count() << Debug::Done;
+	AxisBox3D bound = data.PH -> CalcBound();
 	Debug::Log << "Bound:" << "Limit:" << bound << Debug::Done;
 	Debug::Log << "Bound:" << "Size:" << bound.Size() << Debug::Done;
 
@@ -390,5 +397,5 @@ YMT::PolyHedra * YMT::PolyHedra::Load(const FileContext & file)
 		once a base is made it shouldnt be very difficult to add new Units
 	*/
 
-	return data.Data;
+	return data.PH;
 }

@@ -140,9 +140,11 @@ FILES_SRC := \
 	DataStruct/Main/Waveform/OBJ_3D_Shader.cpp \
 	DataStruct/Main/Waveform/MTL.cpp \
 \
-	PolyHedra/PolyHedraData.cpp \
 	PolyHedra/PolyHedra.cpp \
-	PolyHedra/PolyHedra_Load.cpp \
+	PolyHedra/Data.cpp \
+	PolyHedra/Template.cpp \
+	PolyHedra/Parsing.cpp \
+	PolyHedra/Generate.cpp \
 \
 	PolyHedra/Skin/SkinBase.cpp \
 	PolyHedra/Skin/Skin2DA.cpp \
