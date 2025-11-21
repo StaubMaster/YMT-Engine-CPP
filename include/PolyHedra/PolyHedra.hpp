@@ -3,8 +3,6 @@
 
 # include "Miscellaneous/ContainerDynamic.hpp"
 
-# include "Parsing/ParsingCommand.hpp"
-
 # include <string>
 # include <exception>
 
@@ -17,15 +15,38 @@ struct AxisBox3D;
 
 class Image;
 class FileContext;
-class LineCommand;
 
+/*
+Functions for changing the PolyHedra
+are required for creating it
+but I dont want them exposed once the PolyHedra is done
+
+go back to having a seperate PolyHedra::Templace for that ?
+it has all the Functions for changing the PolyHedra
+Template dosent need to store its own Values
+it can just referance the PolyHedra
+if I make it nested
+
+but if I make it nested, then I need put it all in the same Header
+which is what I want to avoid
+
+make the Template "parallel" to PolyHedra
+PolyHedra.ToTemplate() will return a Template with referances to its
+
+YES I CAN forward declare nested classes
+thats literally what the first thing in the class is
+
+but the question still is what to catually store in the Template
+probably FileContext
+
+maybe other Context stuff
+*/
 
 namespace YMT
 {
-
 class PolyHedra
 {
-	private:
+	public:
 		struct Corner;
 		struct FaceCorner;
 		struct Face;
@@ -37,7 +58,7 @@ class PolyHedra
 		FileContext *	File;
 		SkinBase *		Skin;
 
-	public:
+	private:
 		bool UseCornerNormals;
 
 	private:
@@ -45,56 +66,21 @@ class PolyHedra
 	public:
 		~PolyHedra();
 
-	private:
-		void Done();
-		void Calc_Face_Normals();
-		void Calc_Corn_Normals();
-
-		void Insert_Corn(Corner corn);
-		void Insert_Face3(FaceCorner corn0, FaceCorner corn1, FaceCorner corn2);
-		void Insert_Face4(FaceCorner corn0, FaceCorner corn1, FaceCorner corn2, FaceCorner corn3);
-
-	public:
-		static PolyHedra * Cube(float scale = 1.0f);
-		static PolyHedra * ConeC(int segments, float width = 1.0f, float height = 1.0f);
-		static PolyHedra * FullTexture(Image * img, float scale = 1.0f);
-
 	public:
 		PolyHedra_MainData * ToMainData(int & count);
 	public:
 		std::string ToInfo() const;
 		AxisBox3D	CalcBound() const;
 
+	public:
+		struct Template;
+		Template * ToTemplate();
+
+	public:
+		struct Generate;
+
 	private:
-		struct PolyHedraParsingEnvironmentData : public ParsingCommand::EnvironmentData
-		{
-			/*
-				Line
-				have ParsingCommand here instead of as Parameter
-				have the full Line String here
-			*/
-
-			PolyHedra *		Data;
-			unsigned int	CornerOffset;
-			unsigned int	FaceOffset;
-
-			PolyHedraParsingEnvironmentData(const FileContext & file);
-			void Parse(const ParsingCommand & cmd) override;
-
-			void Parse_Type(const ParsingCommand & cmd);
-			void Parse_Format(const ParsingCommand & cmd);
-			void Parse_Skin(const ParsingCommand & cmd);
-
-			void Parse_Corner(const ParsingCommand & cmd);
-			void Parse_Face(const ParsingCommand & cmd);
-
-			void Parse_Offset(const ParsingCommand & cmd);
-			void Parse_Belt(const ParsingCommand & cmd, bool direction, bool closure);
-			void Parse_Band(const ParsingCommand & cmd, bool direction, bool closure);
-			void Parse_Fan(const ParsingCommand & cmd, bool direction, bool closure);
-			void Parse_CircleOLD(const ParsingCommand & cmd);
-			void Parse_Circle(const ParsingCommand & cmd, bool direction);
-		};
+		struct ParsingData;
 	public:
 		static PolyHedra * Load(const FileContext & file);
 };

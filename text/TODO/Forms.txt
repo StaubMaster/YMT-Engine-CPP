@@ -1,0 +1,120 @@
+
+alraedy have in VoxelGL
+will probably redo / change
+
+
+
+
+
+create User Interface stuff
+so like Forms from C#
+
+
+
+save/load from/to File ?
+for that I should first improve the File Parsing
+
+
+
+Controls:
+Form	the Base
+Button	click/hold/toggle/multistate ?
+Text	just show / writable ?
+Slider
+
+what does every control need ?
+Control (Base)
+{
+	MinDist
+	MaxDist
+	Size
+
+	Anchor
+	Color
+
+	Parent *
+}
+
+TextControl : Control
+{
+	Text
+}
+
+GroupControl : Control
+{
+	Children []
+}
+
+
+Pos/Size
+each control needs 2 of MinDist/Size/MaxDist set
+the other is calculated
+
+MinDist is the distance from the top left the Parent
+MaxDist is the distance from the botton right of the Parent
+Size is the distance from MinDist to MaxDist
+
+ MinDist          Size               MaxDist
+|-------|-----------------------|---------------|
+# - - - - - - - - - - - - - - - - - - - - - - - #
+|												|
+|		# - - - - - - - - - - - #				|
+|		|		# - - - #		|				|
+|		|		|		|		|				|
+|		|		# - - - #		|				|
+|		|						|				|
+|		# - - - - - - - - - - - #				|
+|												|
+# - - - - - - - - - - - - - - - - - - - - - - - #
+		|-------|------|--------|
+		 MinDist  Size   MaxDist
+
+Min and Max makes it sound like a Box
+in which case Max would be MinDist + Size
+
+but the Dist is what describes that it is something different ?
+
+
+
+
+
+Buffers:
+I think Instances would be best ?
+I need a Box, which is 2 Tris
+so fill a MainBuffer with just 2 Tris
+and then fill the InstBuffer with all the Control Data
+
+InstData for Controls
+{
+	Pos (Center of Box)
+	Scale (Size of Box / 2)
+	Color
+	State ?
+}
+
+State:
+with the VoxelGL Controls
+the Color would be directly changed in the Control Update
+so changing Color when Hovering
+or the Toggle state
+
+put all the Colors in a Texture ?
+then give an Index of the Color to use
+
+they also have different colors on the edges
+VoxelGL just takes the Color and makes it slightly lighter / darker
+have the edge colors in Texture as well
+so it is a n x 3 Texture
+where y can be used to get the edge colors ?
+
+but the smallest dataType in GLSL is uint which is 32 bits
+and at that point just give the Color ?
+
+
+
+
+
+
+
+also all this stuff would be better with the Grid stuff from the C# Engine
+
