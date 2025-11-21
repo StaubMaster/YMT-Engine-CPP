@@ -18,6 +18,7 @@ class Window
 	public:
 		GLFWwindow * win;
 		KeyDataArrayArray Keys;
+		KeyDataArray MouseButtons;
 
 	public:
 		bool ShowFrameData;
@@ -45,6 +46,9 @@ class Window
 		static void Callback_Error(int error, const char * decription);
 		static void Callback_Resize(GLFWwindow * window, int w, int h);
 		static void Callback_Key(GLFWwindow * window, int key, int scancode, int action, int mods);
+		static void Callback_Text(GLFWwindow * window, unsigned int codepoint);
+		static void Callback_Click(GLFWwindow * window, int button, int action, int mods);
+		static void Callback_Scroll(GLFWwindow * window, double xOffset, double yOffset);
 
 	public:
 		bool IsCursorLocked() const;
@@ -52,6 +56,7 @@ class Window
 		Point3D MoveFromKeys(float speed) const;
 		Angle3D SpinFromCursor(float speed) const;
 		Point2D CursorCentered() const;
+		Point2D CursorPixel() const;
 
 	public:
 		void Run();

@@ -21,7 +21,8 @@
 Window::Window(float w, float h) :
 	win(NULL), Keys(7)
 {
-	std::cout << "Engine Dir: " << ENGINE_DIR << "\n";
+	//std::cout << "++++ Window(w, h) ...\n";
+	Debug::Log << "Engine Dir: " << ENGINE_DIR << Debug::Done;
 
 	Keys.KeyArrays[0] = KeyDataArray(32, 32);	//	Space
 	Keys.KeyArrays[1] = KeyDataArray(48, 57);	//	Numbers
@@ -30,6 +31,9 @@ Window::Window(float w, float h) :
 	Keys.KeyArrays[4] = KeyDataArray(290, 314);	//	Function
 	Keys.KeyArrays[5] = KeyDataArray(320, 336);	//	KeyPad
 	Keys.KeyArrays[6] = KeyDataArray(340, 348);	//	Control1
+
+	MouseButtons = KeyDataArray(0, 5);	//	Mouse Buttons
+	//Debug::Log << "Window Keys done" << Debug::Done;
 
 	glfwSetErrorCallback(Callback_Error);
 
@@ -43,12 +47,18 @@ Window::Window(float w, float h) :
 	glfwWindowHint(GLFW_OPENGL_PROFILE, GLFW_OPENGL_CORE_PROFILE);
 	glfwWindowHint(GLFW_OPENGL_FORWARD_COMPAT, GLFW_TRUE);
 	glfwWindowHint(GLFW_RESIZABLE, GLFW_TRUE);
+	//Debug::Log << "Window Settings done" << Debug::Done;
 
-	win = glfwCreateWindow(w, h, "YMT Window", NULL, NULL);
+	//Debug::Log << "here 0" << Debug::Done;
+	win = glfwCreateWindow(w, h, "Window", NULL, NULL);
+	//Debug::Log << "here 1" << Debug::Done;
+
 	if (win == NULL)
 	{
+		Debug::Log << "Window Making failed" << Debug::Done;
 		throw "Window Failed";
 	}
+	//Debug::Log << "Window Making done" << Debug::Done;
 
 	glfwMakeContextCurrent(win);
 
@@ -56,11 +66,16 @@ Window::Window(float w, float h) :
 	{
 		throw "glad load GL-Loader Failed";
 	}
+	//Debug::Log << "Window Loading done" << Debug::Done;
 
 	glfwSetWindowUserPointer(win, this);
 
 	glfwSetFramebufferSizeCallback(win, Callback_Resize);
 	glfwSetKeyCallback(win, Callback_Key);
+	glfwSetCharCallback(win, Callback_Text);
+	glfwSetMouseButtonCallback(win, Callback_Click);
+	glfwSetScrollCallback(win, Callback_Scroll);
+	//Debug::Log << "Window CallBacks done" << Debug::Done;
 
 	ShowFrameData = false;
 
@@ -72,10 +87,12 @@ Window::Window(float w, float h) :
 	ViewPortSizeRatio = SizeRatio2D(w, h);
 	Center = Point2D(w * 0.5f, h * 0.5f);
 	DefaultColor = Color(0.5f, 0.5f, 0.5f);
+
+	Debug::Log << "++++ Window" << Debug::Done;
 }
 Window::~Window()
 {
-
+	Debug::Log << "---- Window" << Debug::Done;
 }
 
 
@@ -99,19 +116,47 @@ void Window::Callback_Key(GLFWwindow * window, int key, int scancode, int action
 	if (win -> Keys.Has(key))
 	{
 		KeyData & data = win -> Keys[key];
-		if (action == GLFW_RELEASE)
-		{
-			data.State.SetReleased();
-		}
-		if (action == GLFW_PRESS)
-		{
-			data.State.SetPressed();
-		}
+		if (action == GLFW_PRESS)	{ data.State.SetPressed(); }
+		if (action == GLFW_RELEASE)	{ data.State.SetReleased(); }
 	}
 
 	(void)scancode;
 	(void)mods;
 }
+void Window::Callback_Text(GLFWwindow * window, unsigned int codepoint)
+{
+	Window * win = (Window *)glfwGetWindowUserPointer(window);
+	(void)win;
+	//std::cout << "Text: " << codepoint << "\n";
+	(void)codepoint;
+}
+void Window::Callback_Click(GLFWwindow * window, int button, int action, int mods)
+{
+	Window * win = (Window *)glfwGetWindowUserPointer(window);
+
+	//if (action == GLFW_RELEASE)	{ std::cout << "Click " << button << " Release\n"; }
+	//if (action == GLFW_PRESS)		{ std::cout << "Click " << button << " Press\n"; }
+
+	if (win -> MouseButtons.Has(button))
+	{
+		KeyData & data = win -> MouseButtons[button];
+		if (action == GLFW_RELEASE)	{ data.State.SetReleased(); }
+		if (action == GLFW_PRESS)	{ data.State.SetPressed(); }
+	}
+
+	(void)action;
+	(void)mods;
+}
+void Window::Callback_Scroll(GLFWwindow * window, double xOffset, double yOffset)
+{
+	Window * win = (Window *)glfwGetWindowUserPointer(window);
+	(void)win;
+	//std::cout << "Scroll: " << xOffset << " " << yOffset << "\n";
+	(void)xOffset;
+	(void)yOffset;
+}
+
+
 
 
 
@@ -180,6 +225,12 @@ Point2D Window::CursorCentered() const
 
 	return p;
 }
+Point2D Window::CursorPixel() const
+{
+	double x, y;
+	glfwGetCursorPos(win, &x, &y);
+	return Point2D(x, y);
+}
 
 
 
@@ -187,88 +238,88 @@ void Window::Run()
 {
 	try
 	{
-	glEnable(GL_CULL_FACE);
-	glCullFace(GL_BACK);
-	glFrontFace(GL_CW);
+		glEnable(GL_CULL_FACE);
+		glCullFace(GL_BACK);
+		glFrontFace(GL_CW);
 
-	glEnable(GL_DEPTH_TEST);
-	glDepthMask(GL_TRUE);
-	glDepthFunc(GL_LESS);
-	glDepthRange(0, 1);
-	glClearDepth(1.0f);
+		glEnable(GL_DEPTH_TEST);
+		glDepthMask(GL_TRUE);
+		glDepthFunc(GL_LESS);
+		glDepthRange(0, 1);
+		glClearDepth(1.0f);
 
-	int w, h;
-	glfwGetFramebufferSize(win, &w, &h);
+		int w, h;
+		glfwGetFramebufferSize(win, &w, &h);
 
-	if (InitFunc != NULL)
-	{
-		Debug::Log << "++++ Window Init" << Debug::Done;
-		InitFunc();
-		Debug::Log << "---- Window Init" << Debug::Done;
-	}
-	if (ResizeFunc != NULL) { ResizeFunc(w, h); }
-
-	int frameSkipped = 0;
-	int frameCount = 0;
-	TimeMeasure timeFunc;
-	TimeMeasure timeSwap;
-	TimeMeasure timePoll;
-
-	FrameTimeLast = glfwGetTime();
-	while (!glfwWindowShouldClose(win))
-	{
-		double FrameTimeCurr = glfwGetTime();
-		FrameTimeDelta = FrameTimeCurr - FrameTimeLast;
-		if (FrameTimeDelta >= (1.0 / 64.0))
+		if (InitFunc != NULL)
 		{
-			glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT);
-			//glClearColor(0.5f, 0.5f, 0.5f, 1.0f);
-			glClearColor(DefaultColor.R, DefaultColor.G, DefaultColor.B, 1.0f);
+			Debug::Log << "++++ Window Init" << Debug::Done;
+			InitFunc();
+			Debug::Log << "---- Window Init" << Debug::Done;
+		}
+		if (ResizeFunc != NULL) { ResizeFunc(w, h); }
 
-			if (Keys[GLFW_KEY_TAB].State.GetPressed())
+		int frameSkipped = 0;
+		int frameCount = 0;
+		TimeMeasure timeFunc;
+		TimeMeasure timeSwap;
+		TimeMeasure timePoll;
+
+		FrameTimeLast = glfwGetTime();
+		while (!glfwWindowShouldClose(win))
+		{
+			double FrameTimeCurr = glfwGetTime();
+			FrameTimeDelta = FrameTimeCurr - FrameTimeLast;
+			if (FrameTimeDelta >= (1.0 / 64.0))
 			{
-				ToggleCursorLock();
-			}
+				glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT);
+				glClearColor(DefaultColor.R, DefaultColor.G, DefaultColor.B, 1.0f);
 
-			timeFunc.T0();
-			FrameFunc(FrameTimeDelta);
-			timeFunc.T1();
-
-			timeSwap.T0();
-			glfwSwapBuffers(win);
-			timeSwap.T1();
-
-			if (glfwGetInputMode(win, GLFW_CURSOR) == GLFW_CURSOR_DISABLED)
-			{
-				glfwSetCursorPos(win, 0, 0);
-			}
-
-			Keys.Frame();
-
-			timePoll.T0();
-			glfwPollEvents();
-			timePoll.T1();
-
-			if (ShowFrameData)
-			{
-				if ((frameCount % 64) == 0)
+				if (Keys[GLFW_KEY_TAB].State.GetPressed())
 				{
-					std::cout << "Frame: " << frameCount << " (" << frameSkipped << ")" << "\n";
-					std::cout << "FrameTime: " << ((1.0 / 64.0) * 1000) << "ms\n";
-					std::cout << "Func: " << (timeFunc.Average() * 1000) << "ms\n";
-					std::cout << "Swap: " << (timeSwap.Average() * 1000) << "ms\n";
-					std::cout << "Poll: " << (timePoll.Average() * 1000) << "ms\n";
+					ToggleCursorLock();
 				}
-				frameCount++;
-				frameSkipped = 0;
+
+				timeFunc.T0();
+				FrameFunc(FrameTimeDelta);
+				timeFunc.T1();
+
+				timeSwap.T0();
+				glfwSwapBuffers(win);
+				timeSwap.T1();
+
+				if (glfwGetInputMode(win, GLFW_CURSOR) == GLFW_CURSOR_DISABLED)
+				{
+					glfwSetCursorPos(win, 0, 0);
+				}
+
+				Keys.Frame();
+				MouseButtons.Frame();
+
+				timePoll.T0();
+				glfwPollEvents();
+				timePoll.T1();
+
+				if (ShowFrameData)
+				{
+					if ((frameCount % 64) == 0)
+					{
+						std::cout << "Frame: " << frameCount << " (" << frameSkipped << ")" << "\n";
+						std::cout << "FrameTime: " << ((1.0 / 64.0) * 1000) << "ms\n";
+						std::cout << "Func: " << (timeFunc.Average() * 1000) << "ms\n";
+						std::cout << "Swap: " << (timeSwap.Average() * 1000) << "ms\n";
+						std::cout << "Poll: " << (timePoll.Average() * 1000) << "ms\n";
+					}
+					frameCount++;
+					frameSkipped = 0;
+				}
+				FrameTimeLast = FrameTimeCurr;
 			}
-			FrameTimeLast = FrameTimeCurr;
+			else
+			{
+				frameSkipped++;
+			}
 		}
-		else
-		{
-			frameSkipped++;
-		}
-	}
 	}
 	catch (std::exception & ex)
 	{

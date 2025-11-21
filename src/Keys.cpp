@@ -68,15 +68,20 @@ void KeyState::Frame()
 
 
 
+//#include <iostream>
+
 KeyDataArray::KeyDataArray()
 {
+	//std::cout << "++++ KeyDataArray() ...\n";
 	TokenMin = 0;
 	TokenMax = 0;
 	KeysCount = 0;
 	Keys = new KeyData[KeysCount];
+	//std::cout << "++++ KeyDataArray() done\n";
 }
 KeyDataArray::KeyDataArray(unsigned short tokenMin, unsigned int tokenMax)
 {
+	//std::cout << "++++ KeyDataArray(tokenMin, tokenNax) ....\n";
 	TokenMin = tokenMin;
 	TokenMax = tokenMax;
 	KeysCount = (TokenMax - TokenMin) + 1;
@@ -86,13 +91,17 @@ KeyDataArray::KeyDataArray(unsigned short tokenMin, unsigned int tokenMax)
 		Keys[i].State.State = 0;
 		Keys[i].Token = i + TokenMin;
 	}
+	//std::cout << "++++ KeyDataArray(tokenMin, tokenNax) done\n";
 }
 KeyDataArray::~KeyDataArray()
 {
+	//std::cout << "---- KeyDataArray() ....\n";
 	delete[] Keys;
+	//std::cout << "---- KeyDataArray() done\n";
 }
 KeyDataArray::KeyDataArray(const KeyDataArray & other)
 {
+	//std::cout << "==== KeyDataArray() ...\n";
 	TokenMin = other.TokenMin;
 	TokenMax = other.TokenMax;
 	KeysCount= other.KeysCount;
@@ -101,9 +110,11 @@ KeyDataArray::KeyDataArray(const KeyDataArray & other)
 	{
 		Keys[i] = other.Keys[i];
 	}
+	//std::cout << "==== KeyDataArray() done\n";
 }
 KeyDataArray & KeyDataArray::operator =(const KeyDataArray & other)
 {
+	//std::cout << "==== operator KeyDataArray() ...\n";
 	delete[] Keys;
 	TokenMin = other.TokenMin;
 	TokenMax = other.TokenMax;
@@ -113,6 +124,7 @@ KeyDataArray & KeyDataArray::operator =(const KeyDataArray & other)
 	{
 		Keys[i] = other.Keys[i];
 	}
+	//std::cout << "==== operator KeyDataArray() done\n";
 	return *this;
 }
 bool	KeyDataArray::Has(unsigned short token) const
@@ -141,12 +153,16 @@ void	KeyDataArray::Frame()
 
 KeyDataArrayArray::KeyDataArrayArray(unsigned int count)
 {
+	//std::cout << "++++ KeyDataArrayArray() ...\n";
 	KeyArraysCount = count;
 	KeyArrays = new KeyDataArray[KeyArraysCount];
+	//std::cout << "++++ KeyDataArrayArray() done\n";
 }
 KeyDataArrayArray::~KeyDataArrayArray()
 {
+	//std::cout << "---- KeyDataArrayArray() ...\n";
 	delete[] KeyArrays;
+	//std::cout << "---- KeyDataArrayArray() done\n";
 }
 
 bool	KeyDataArrayArray::Has(unsigned short token) const

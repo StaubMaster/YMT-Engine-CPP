@@ -21,7 +21,6 @@ void Range::ChangeMin(float min)
 {
 	Min = min;
 	Len = Max - min;
-
 }
 void Range::ChangeMax(float max)
 {
